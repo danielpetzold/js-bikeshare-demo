@@ -1,0 +1,21 @@
+@import '../util/layout';
+@import '../util/breakpoints';
+
+.grid {
+  @include content-grid(4, 12px);
+  margin: 0 6px;
+}
+
+@include media_query('tablet', 'min') {
+  .grid {
+    @include content-grid(12, 24px);
+    margin: 0;
+  }
+}
+
+@include media_query('desktop', 'min') {
+  .grid {
+    @include content-grid(12, 24px);
+    margin: 0;
+  }
+}
