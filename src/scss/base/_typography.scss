@@ -1,0 +1,30 @@
+@import "../util/fonts";
+@import "../util/colors";
+@import "../util/breakpoints";
+
+a {
+  text-decoration: none;
+}
+
+html{
+  font-size: 14px;
+  font-family: "Lato", sans-serif;
+  font-weight: normal;
+  color: $text-primary;
+}
+
+h1 { font-size: 30px; }
+h2 { font-size: 24px; font-weight: bold; }
+h3 { font-size: 24px; }
+
+@include media_query("tablet", "min") {
+  h1 { font-size: 50px; }
+  h2 { font-size: 32px; font-weight: bold; }
+  h3 { font-size: 24px; }
+}
+
+@include media_query('desktop', 'min') {
+  h1 { font-size: 50px; }
+  h2 { font-size: 32px; font-weight: bold; }
+  h3 { font-size: 24px; }
+}
