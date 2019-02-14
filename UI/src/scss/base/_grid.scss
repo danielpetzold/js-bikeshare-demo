@@ -6,10 +6,26 @@
   margin: 0 6px;
 }
 
+// Reduce span for mobile
+$span: 1;
+@for $i from 1 through 12 {
+  .col-width-#{$i} {
+    grid-column-end: span $span;
+  }
+  @if $i % 3 == 0 {
+    $span: $span + 1;
+  }
+}
+
 @include media_query('tablet', 'min') {
   .grid {
     @include content-grid(12, 24px);
     margin: 0;
+  }
+  @for $i from 1 through 12 {
+    .col-width-#{$i} {
+      grid-column-end: span #{$i};
+    }
   }
 }
 
@@ -17,5 +33,10 @@
   .grid {
     @include content-grid(12, 24px);
     margin: 0;
+  }
+  @for $i from 1 through 12 {
+    .col-width-#{$i} {
+      grid-column-end: span #{$i};
+    }
   }
 }
