@@ -1,0 +1,39 @@
+@import '../util/variables';
+
+.grid {
+  margin: 0 6px;
+
+  .grid {
+    margin: 0;
+  }
+
+  &__row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: auto;
+    grid-column-gap: 12px;
+    grid-row-gap: 12px;
+  }
+
+  // Mobile
+  @for $i from 1 through 4 {
+    &__column-m-#{$i} {
+      grid-column: span #{$i};
+    }
+  }
+
+  // Tablet & Desktop
+  @media screen and (min-width: $tablet-break) {
+    &__row {
+      grid-template-columns: repeat(12, 1fr);
+      grid-column-gap: 24px;
+      grid-row-gap: 24px;
+    }
+
+    @for $i from 1 through 12 {
+      &__column-#{$i} {
+        grid-column: span #{$i};
+      }
+    }
+  }
+}

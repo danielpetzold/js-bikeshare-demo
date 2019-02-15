@@ -1,0 +1,41 @@
+@import '../util/fonts';
+@import '../util/colors';
+@import '../util/variables';
+
+a {
+  text-decoration: none;
+}
+
+html {
+  font-size: 14px;
+  font-family: $main-font-family;
+  font-weight: normal;
+  color: $text-primary;
+}
+
+h1 {
+  font-size: 30px;
+}
+
+h2 {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+h3 {
+  font-size: 24px;
+}
+
+// Tablet & Desktop
+@media screen and (min-width: $tablet-break) {
+  h1 {
+    font-size: 50px;
+  }
+  h2 {
+    font-size: 32px;
+    font-weight: bold;
+  }
+  h3 {
+    font-size: 24px;
+  }
+}
