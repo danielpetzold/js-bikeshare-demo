@@ -26,6 +26,7 @@ phases:
       #- git checkout develop
       #- mkdir build
       - cd UI
+      - npm install
       - npm run build
       - cd build
       - ls -lsa
