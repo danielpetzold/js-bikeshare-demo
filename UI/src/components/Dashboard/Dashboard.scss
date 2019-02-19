@@ -12,7 +12,6 @@
   }
 
   @media screen and (min-width: $tablet-break) {
-    width: calc(100vw - 70px);
     margin-left: 70px;
 
     &__content {
