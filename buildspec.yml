@@ -23,7 +23,7 @@ phases:
       - ls -lsa
       #- git checkout develop
       - mkdir build
-      - zip build/bikeshare-node.zip UI/*
+      - zip -r build/bikeshare-node.zip UI/*
       # - command
     #finally:
       #echo Build finished on `date`
