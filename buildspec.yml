@@ -12,7 +12,8 @@ phases:
   install:
     commands:
       - apt-get update -y
-      - apt-get install -y git-all zip
+      - apt-get install -y zip
+      # git-all 
   #pre_build:
     #commands:
       # - command
@@ -20,17 +21,17 @@ phases:
   build:
     commands:
       - ls -lsa
-      - git checkout develop
+      #- git checkout develop
       - mkdir build
-      - zip UI/* build/bikeshare-node.zip
+      - zip build/bikeshare-node.zip UI/*
       # - command
-    finally:
-      echo Build finished on `date`
+    #finally:
+      #echo Build finished on `date`
   #post_build:
     #commands:
       # - command
       # - command
-#artifacts:
+artifacts:
   files:
     - build/bikeshare-node.zip
     # - location
