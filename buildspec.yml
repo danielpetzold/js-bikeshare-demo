@@ -1,0 +1,42 @@
+version: 0.2
+
+#env:
+  #variables:
+     # key: "value"
+     # key: "value"
+  #parameter-store:
+     # key: "value"
+     # key: "value"
+
+phases:
+  install:
+    commands:
+      - apt-get update -y
+      - apt-get install -y git-all zip
+  #pre_build:
+    #commands:
+      # - command
+      # - command
+  build:
+    commands:
+      - ls -lsa
+      - git checkout develop
+      - mkdir build
+      - zip UI/* build/bikeshare-node.zip
+      # - command
+    finally:
+      echo Build finished on `date`
+  #post_build:
+    #commands:
+      # - command
+      # - command
+#artifacts:
+  files:
+    - build/bikeshare-node.zip
+    # - location
+  #name: $(date +%Y-%m-%d)
+  discard-paths: yes
+  #base-directory: location
+#cache:
+  #paths:
+    # - paths
