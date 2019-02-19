@@ -11,8 +11,9 @@ version: 0.2
 phases:
   install:
     commands:
-      - apt-get update -y
-      - apt-get install -y zip
+      #- apt-get update -y
+      # zip is in the image
+      #- apt-get install -y zip
       # git-all 
   #pre_build:
     #commands:
@@ -21,9 +22,14 @@ phases:
   build:
     commands:
       - ls -lsa
+      # the default branch for the project is develop, so no need to switch
       #- git checkout develop
-      - mkdir build
-      - zip -r build/bikeshare-node.zip UI/*
+      #- mkdir build
+      - cd UI
+      - npm run build
+      - cd build
+      - ls -lsa
+      - zip -r bikeshare-node.zip *
       # - command
     #finally:
       #echo Build finished on `date`
@@ -33,7 +39,7 @@ phases:
       # - command
 artifacts:
   files:
-    - build/bikeshare-node.zip
+    - UI/build/bikeshare-node.zip
     # - location
   #name: $(date +%Y-%m-%d)
   discard-paths: yes
