@@ -1,10 +1,6 @@
-import React, { Component } from 'react';
+import React from 'react';
 import './Dashboard.scss';
 import NavBar from '../NavBar/NavBar';
-
-type State = {
-  isOpen: boolean;
-};
 
 class Dashboard extends React.Component<any, any> {
   render() {

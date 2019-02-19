@@ -20,9 +20,7 @@ class NavBar extends Component<any, any> {
     const { isOpen } = this.state;
     return (
       <div>
-        <nav
-          className={`nav-bar ${!this.state.isOpen ? `nav-bar--closed` : ``}`}
-        >
+        <nav className={`nav-bar ${!isOpen ? `nav-bar--closed` : ``} `}>
           <div className={'nav-bar__user'}>
             <div className="nav-bar__user-image" />
             <div className="nav-bar__user-info">
@@ -76,9 +74,7 @@ class NavBar extends Component<any, any> {
           </div>
         </nav>
         <div
-          className={`nav-bar__hamburger ${
-            this.state.isOpen ? `nav-bar--closed` : ``
-          }`}
+          className={`nav-bar__hamburger ${isOpen ? `nav-bar--closed` : ``} `}
           onClick={toggleMenu}
         >
           <i className="icon-ic-menu" />
