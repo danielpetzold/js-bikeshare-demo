@@ -1,0 +1,22 @@
+@import '../../scss/util/variables';
+@import '../../scss/util/colors';
+
+.main {
+  min-height: 2000px;
+  display: flex;
+  justify-content: center;
+
+  &__content {
+    width: 100%;
+    margin-left: 0;
+  }
+
+  @media screen and (min-width: $tablet-break) {
+    width: calc(100vw - 70px);
+    margin-left: 70px;
+
+    &__content {
+      width: 900px;
+    }
+  }
+}
