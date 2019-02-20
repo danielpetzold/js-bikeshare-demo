@@ -20,3 +20,15 @@
     /* Super Modern Browsers */ url('./fonts/Lato-Bold.woff') format('woff'),
     /* Modern Browsers */ url('./fonts/Lato-Bold.ttf') format('ttf');
 }
+
+// Custom Icon Font
+@font-face {
+  font-family: 'icomoon';
+  src: url('./fonts/icons/icomoon.eot?blirwz');
+  src: url('./fonts/icons/icomoon.eot?blirwz#iefix') format('embedded-opentype'),
+    url('./fonts/icons/icomoon.ttf?blirwz') format('truetype'),
+    url('./fonts/icons/icomoon.woff?blirwz') format('woff'),
+    url('./fonts/icons/icomoon.svg?blirwz#icomoon') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}

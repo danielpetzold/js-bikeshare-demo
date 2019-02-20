@@ -68,3 +68,7 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/de
 ### `npm run build` fails to minify
 
 This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+
+### Docker
+To Build the docker image: `docker build --rm -f Dockerfile -t js-bikeshare-demo .`
+Then run with:  `docker run --rm -d -p 80:80 js-bikeshare-demo:latest`
