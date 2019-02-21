@@ -1,0 +1,1 @@
+This Maven project packages a custom bean (.jar) to plug into 
