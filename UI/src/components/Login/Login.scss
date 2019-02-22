@@ -25,10 +25,10 @@
     justify-content: flex-start;
   }
   &__welcome {
-    margin-bottom: 40px;
     h2 {
       margin: 0;
     }
+    margin-bottom: 20px;
   }
   &__options {
     display: flex;
@@ -38,7 +38,7 @@
     height: 40px;
     border-radius: 5px;
     border: solid 1px $btn-green;
-    margin: auto;
+    margin: 40px auto;
     color: $btn-green;
     line-height: 40px;
     overflow: hidden;
@@ -60,7 +60,6 @@
   &__button {
     width: 294px;
     margin: auto;
-    margin-top: 40px;
   }
 }
 

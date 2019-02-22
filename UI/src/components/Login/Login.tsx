@@ -32,8 +32,8 @@ export default class Login extends Component<State> {
               <img src={logo} alt="logo" className={'login__logo'} />
               <div className={'login__content'}>
                 <div className={'login__welcome'}>
-                  <h2 className={'login__welcome'}>Welcome back</h2>
-                  <p className={'login__welcome'}>Sign in to continue</p>
+                  <h2>Welcome back</h2>
+                  <p>Sign in to continue</p>
                 </div>
                 <div className={'login__options'}>
                   <div
