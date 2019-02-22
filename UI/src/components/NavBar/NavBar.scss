@@ -5,6 +5,7 @@
   position: fixed;
   width: 100vw;
   background-color: $main-nav;
+  z-index: 99999;
 
   &--closed {
     display: none;
@@ -12,8 +13,9 @@
 
   &__hamburger {
     margin: 14px;
-    font-size: 24px;
+    font-size: 18px;
     position: fixed;
+    z-index: 9999;
   }
 
   // User Info section
