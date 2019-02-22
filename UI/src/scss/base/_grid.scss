@@ -1,7 +1,7 @@
 @import '../util/variables';
 
 .grid {
-  margin: 0 6px;
+  padding: 0 10px;
 
   .grid {
     margin: 0;
@@ -24,6 +24,8 @@
 
   // Tablet & Desktop
   @media screen and (min-width: $tablet-break) {
+    padding: 24px;
+
     &__row {
       grid-template-columns: repeat(12, 1fr);
       grid-column-gap: 24px;

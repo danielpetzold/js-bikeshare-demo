@@ -2,7 +2,7 @@
 @import '../../scss/util/colors';
 
 .main {
-  min-height: 2000px;
+  min-height: 100vh;
   display: flex;
   justify-content: center;
 
@@ -16,6 +16,43 @@
 
     &__content {
       width: 900px;
+    }
+  }
+}
+
+.dashboard {
+  &__header {
+    height: 168px;
+    position: fixed;
+    width: 100vw;
+    background: linear-gradient(to bottom, #3ccca5 0%, #1c9786 100%);
+  }
+
+  &__title {
+    color: white;
+    text-transform: capitalize;
+    margin-top: 18px;
+    margin-left: 56px;
+  }
+
+  &__body {
+    margin-top: 168px;
+    background-color: #f7f9fa;
+    height: 100vh;
+  }
+
+  @media screen and (min-width: $tablet-break) {
+    &__header {
+      height: 120px;
+      background: white;
+    }
+
+    &__title {
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #c9cccd;
+      margin: 0;
     }
   }
 }

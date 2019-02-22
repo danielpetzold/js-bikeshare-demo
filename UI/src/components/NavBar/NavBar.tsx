@@ -1,6 +1,7 @@
 import './NavBar.scss';
 import { Component } from 'react';
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 type State = {
   isOpen: boolean;
@@ -27,14 +28,16 @@ class NavBar extends Component<any, any> {
               <div className="nav-bar__user-name">Test Person</div>
               <div className="nav-bar__user-title">COO</div>
             </div>
-            <a className="nav-bar__log-out">Log Out</a>
+            <Link className="nav-bar__log-out" to="/Login">
+              Log Out
+            </Link>
           </div>
           <ul className={'nav-bar__top-menu'}>
             <li className="nav-bar__item nav-bar__item--active">
-              <a className="nav-bar__link" href="#">
+              <Link className="nav-bar__link" to="/Dashboard">
                 <i className="icon-ic-trending-up nav-bar__icon " />
                 <span className="nav-bar__text">Trends and Analytics</span>
-              </a>
+              </Link>
             </li>
             <li className="nav-bar__item">
               <a className="nav-bar__link" href="#">
