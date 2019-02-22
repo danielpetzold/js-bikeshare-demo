@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio -->
+<jasperTemplate xmlns="http://jasperreports.sourceforge.net/jasperreports/template" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/template http://jasperreports.sourceforge.net/xsd/jaspertemplate.xsd">
+	<template><![CDATA[Base_STYLE.jrtx]]></template>
+	<style name="IconStyle" hImageAlign="Center" vImageAlign="Middle"/>
+	<style name="OneSixthCardStyle"/>
+</jasperTemplate>

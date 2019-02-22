@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio -->
+<jasperTemplate xmlns="http://jasperreports.sourceforge.net/jasperreports/template" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/template http://jasperreports.sourceforge.net/xsd/jaspertemplate.xsd">
+	<style name="BaseReportStyle" isDefault="true" mode="Opaque" forecolor="#4A5357" backcolor="#FFFFFF" hTextAlign="Left" vTextAlign="Top" isBlankWhenNull="true" fontName="Lato" fontSize="12" pdfFontName="" pdfEncoding="" isPdfEmbedded="true"/>
+	<style name="TitleStyle" style="BaseReportStyle" fontSize="14" isPdfEmbedded="true"/>
+	<style name="EnhancedTitleStyle" style="TitleStyle" fontName="Lato" isBold="true"/>
+	<style name="SecondaryTitleStyle" style="TitleStyle" forecolor="#C9CCCD"/>
+	<style name="MetricLabelStyle" style="BaseReportStyle" fontName="Lato&#xD;&#xA;" fontSize="28" isBold="true" isItalic="false"/>
+</jasperTemplate>
