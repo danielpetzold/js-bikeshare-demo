@@ -6,8 +6,8 @@ interface State {
   selectedRole: string;
 }
 
-export default class Login extends Component<State> {
-  state = {
+export default class Login extends Component<any, State> {
+  readonly state: State = {
     selectedRole: ''
   };
 
@@ -20,7 +20,9 @@ export default class Login extends Component<State> {
     });
   };
 
-  handleLogin = () => {};
+  handleLogin = () => {
+    this.props.history.push('/dashboard');
+  };
 
   render() {
     const { selectedRole } = this.state;
@@ -44,7 +46,7 @@ export default class Login extends Component<State> {
                         : '')
                     }
                     id="COO"
-                    onClick={this.selectRole}
+                    onClick={e => this.selectRole(e)}
                   >
                     COO
                   </div>
@@ -63,14 +65,14 @@ export default class Login extends Component<State> {
                   <div
                     className={
                       'login__options__role' +
-                      (selectedRole === 'Local'
+                      (selectedRole === 'Driver'
                         ? ' login__options__role--active'
                         : '')
                     }
-                    id="Local"
+                    id="Driver"
                     onClick={this.selectRole}
                   >
-                    Local
+                    Driver
                   </div>
                 </div>
                 <button
