@@ -1,0 +1,90 @@
+@import '../../scss/util/colors';
+@import '../../scss/util/variables';
+@import '../../scss/base/buttons';
+
+.login {
+  margin: 0;
+  &__wrapper {
+    background: $background-alt;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  &__logo {
+    height: 77px;
+    width: 182px;
+    margin-top: 3em;
+    position: absolute;
+    top: 0;
+  }
+  &__content {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+  &__welcome {
+    margin-bottom: 40px;
+    h2 {
+      margin: 0;
+    }
+  }
+  &__options {
+    display: flex;
+    justify-content: space-evenly;
+    box-sizing: border-box;
+    align-items: center;
+    height: 40px;
+    border-radius: 5px;
+    border: solid 1px $btn-green;
+    margin: auto;
+    color: $btn-green;
+    line-height: 40px;
+    overflow: hidden;
+    cursor: pointer;
+    &__role {
+      padding: 0 15px;
+      background: white;
+      &--mid {
+        border-left: solid 1px $btn-green;
+        border-right: solid 1px $btn-green;
+      }
+    }
+    &__role:hover,
+    &__role--active {
+      background: $btn-green;
+      color: white;
+    }
+  }
+  &__button {
+    width: 294px;
+    margin: auto;
+    margin-top: 40px;
+  }
+}
+
+@media screen and (min-width: $tablet-break) {
+  .login {
+    background-image: linear-gradient(#57eac2b3, #0b8885b3),
+      url('../../assets/mariusz-pierog-532904-unsplash.jpg');
+    background-position: center;
+    background-size: cover;
+    .grid__column-4 {
+      grid-column: span 5;
+    }
+    .grid__column-m-4 {
+      grid-column: span 5;
+    }
+  }
+}
+@media screen and (min-width: $desktop-break) {
+  .login {
+    .grid__column-4 {
+      grid-column: span 4;
+    }
+    .grid__column-m-4 {
+      grid-column: span 4;
+    }
+  }
+}

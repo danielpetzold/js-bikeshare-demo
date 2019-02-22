@@ -1,0 +1,32 @@
+@import '../util/colors';
+
+.btn {
+  border-radius: 5px;
+  border-style: none;
+  color: white;
+  height: 40px;
+  &:disabled {
+    color: $text-primary;
+    background-color: $btn-grey;
+  }
+  &--primary--green {
+    @extend .btn;
+    background-color: $btn-green;
+  }
+  &--primary--teal {
+    @extend .btn;
+    background-color: $btn-teal;
+  }
+  &--secondary {
+    @extend .btn;
+    background-color: white;
+    &--green {
+      @extend .btn--secondary;
+      color: $btn-green;
+    }
+    &--teal {
+      @extend .btn--secondary;
+      color: $btn-teal;
+    }
+  }
+}
