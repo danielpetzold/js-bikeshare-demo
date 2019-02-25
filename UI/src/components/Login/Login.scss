@@ -4,6 +4,10 @@
 
 .login {
   margin: 0;
+  background-image: linear-gradient(#57eac2b3, #0b8885b3),
+    url('../../assets/mariusz-pierog-532904-unsplash.jpg');
+  background-position: center;
+  background-size: cover;
   &__wrapper {
     background: $background-alt;
     min-height: 100vh;
@@ -30,61 +34,48 @@
     }
     margin-bottom: 20px;
   }
-  &__options {
-    display: flex;
-    justify-content: space-evenly;
-    box-sizing: border-box;
-    align-items: center;
-    height: 40px;
-    border-radius: 5px;
-    border: solid 1px $btn-green;
-    margin: 40px auto;
-    color: $btn-green;
-    line-height: 40px;
-    overflow: hidden;
-    cursor: pointer;
-    &__role {
-      padding: 0 15px;
-      background: white;
-      &--mid {
-        border-left: solid 1px $btn-green;
-        border-right: solid 1px $btn-green;
-      }
-    }
-    &__role:hover,
-    &__role--active {
-      background: $btn-green;
-      color: white;
-    }
-  }
   &__button {
     width: 294px;
     margin: auto;
   }
 }
 
-@media screen and (min-width: $tablet-break) {
-  .login {
-    background-image: linear-gradient(#57eac2b3, #0b8885b3),
-      url('../../assets/mariusz-pierog-532904-unsplash.jpg');
-    background-position: center;
-    background-size: cover;
-    .grid__column-4 {
-      grid-column: span 5;
-    }
-    .grid__column-m-4 {
-      grid-column: span 5;
-    }
+.user-options {
+  display: flex;
+  justify-content: space-evenly;
+  box-sizing: border-box;
+  align-items: center;
+  height: 40px;
+  border-radius: 5px;
+  border: solid 1px $btn-green;
+  margin: 40px auto;
+  color: $btn-green;
+  line-height: 40px;
+  overflow: hidden;
+  cursor: pointer;
+  &:hover {
+    border: solid 1px $btn-teal;
+  }
+  &__role {
+    padding: 0 15px;
+    background: white;
+  }
+  &__role:hover {
+    background-color: $btn-teal;
+    color: white;
+  }
+  &__role--mid {
+    border-left: solid 1px $btn-green;
+    border-right: solid 1px $btn-green;
+  }
+  &__role--active {
+    background: $btn-green;
+    color: white;
   }
 }
 
-@media screen and (min-width: $desktop-break) {
-  .login {
-    .grid__column-4 {
-      grid-column: span 4;
-    }
-    .grid__column-m-4 {
-      grid-column: span 4;
-    }
+@media screen and (min-width: $tablet-break) {
+  .login__wrapper {
+    width: 475px;
   }
 }

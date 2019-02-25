@@ -8,25 +8,25 @@
   &:disabled {
     color: $text-primary;
     background-color: $btn-grey;
+    border-style: none;
   }
-  &--primary--green {
+  &--primary {
     @extend .btn;
     background-color: $btn-green;
-  }
-  &--primary--teal {
-    @extend .btn;
-    background-color: $btn-teal;
+    &:enabled:hover {
+      @extend .btn;
+      background-color: $btn-teal;
+    }
   }
   &--secondary {
     @extend .btn;
     background-color: white;
-    &--green {
-      @extend .btn--secondary;
-      color: $btn-green;
-    }
-    &--teal {
+    color: $btn-green;
+    border: solid 1px $btn-green;
+    &:enabled:hover {
       @extend .btn--secondary;
       color: $btn-teal;
+      border: solid 1px $btn-teal;
     }
   }
 }

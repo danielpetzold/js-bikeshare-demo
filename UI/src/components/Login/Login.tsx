@@ -37,12 +37,12 @@ export default class Login extends Component<any, State> {
                   <h2>Welcome back</h2>
                   <p>Sign in to continue</p>
                 </div>
-                <div className={'login__options'}>
+                <div className={'user-options'}>
                   <div
                     className={
-                      'login__options__role' +
+                      'user-options__role' +
                       (selectedRole === 'COO'
-                        ? ' login__options__role--active'
+                        ? ' user-options__role--active'
                         : '')
                     }
                     id="COO"
@@ -52,9 +52,9 @@ export default class Login extends Component<any, State> {
                   </div>
                   <div
                     className={
-                      'login__options__role login__options__role--mid' +
+                      'user-options__role user-options__role--mid' +
                       (selectedRole === 'Regional'
-                        ? ' login__options__role--active'
+                        ? ' user-options__role--active'
                         : '')
                     }
                     id="Regional"
@@ -64,9 +64,9 @@ export default class Login extends Component<any, State> {
                   </div>
                   <div
                     className={
-                      'login__options__role' +
+                      'user-options__role' +
                       (selectedRole === 'Driver'
-                        ? ' login__options__role--active'
+                        ? ' user-options__role--active'
                         : '')
                     }
                     id="Driver"
@@ -76,7 +76,7 @@ export default class Login extends Component<any, State> {
                   </div>
                 </div>
                 <button
-                  className={'login__button btn--primary--green'}
+                  className={'login__button btn--primary'}
                   disabled={!selectedRole}
                   onClick={this.handleLogin}
                 >
