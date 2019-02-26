@@ -29,6 +29,7 @@ class NoAccess extends Component<Props, NoAccess> {
 
   handleClickOutside = (event: any) => {
     if (this.wrapperRef && !this.wrapperRef.contains(event.target)) {
+      console.log('test');
       this.props.hideNoAccess();
     }
   };
