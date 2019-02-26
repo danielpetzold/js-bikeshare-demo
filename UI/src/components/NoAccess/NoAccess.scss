@@ -1,0 +1,50 @@
+@import '../../scss/util/variables';
+@import '../../scss/util/colors';
+
+.modal-wrapper {
+  padding: 0;
+  position: fixed;
+  z-index: 10;
+  height: 100vh;
+  width: 100vw;
+  background: #4b5458b3;
+  display: grid;
+  justify-items: center;
+  align-items: center;
+}
+.no-access {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  margin: 3%;
+  border-radius: 5px;
+  padding: 30px;
+  background: $background-alt;
+  h1 {
+    font-weight: 300;
+  }
+  &__button {
+    width: 180px;
+    margin-top: 32px;
+  }
+  &__close {
+    position: absolute;
+    right: 30px;
+    top: 30px;
+  }
+}
+
+@media screen and (min-width: $tablet-break) {
+  .no-access {
+    width: 700px;
+    margin: 0;
+    margin-left: 70px;
+    h1 {
+      font-size: 60px;
+    }
+    p {
+      font-size: 24px;
+      max-width: 660px;
+    }
+  }
+}
