@@ -2,15 +2,10 @@ export interface GeneralState {
   showNoAccess: boolean;
 }
 
-export const DISPLAY_NO_ACCESS = 'show no access modal';
-export const HIDE_NO_ACCESS = 'hide no access modal';
+export const TOGGLE_NO_ACCESS = 'show no access modal';
 
-interface DisplayNoAccess {
-  type: typeof DISPLAY_NO_ACCESS;
+interface ToggleNoAccess {
+  type: typeof TOGGLE_NO_ACCESS;
 }
 
-interface HideNoAccess {
-  type: typeof HIDE_NO_ACCESS;
-}
-
-export type GeneralActionTypes = DisplayNoAccess | HideNoAccess;
+export type GeneralActionTypes = ToggleNoAccess;

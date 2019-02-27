@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import moodBad from '../../assets/ic-mood-bad.svg';
 import './NoAccess.scss';
-import { hideNoAccess } from '../../actions/general';
+import { toggleNoAccess } from '../../actions/general';
 
 interface Props {
-  hideNoAccess: () => void;
+  toggleNoAccess: () => void;
 }
 
 interface NoAccess {
@@ -29,7 +29,7 @@ class NoAccess extends Component<Props, NoAccess> {
 
   handleClickOutside = (event: MouseEvent) => {
     if (this.wrapperRef && !this.wrapperRef.contains(event.target)) {
-      this.props.hideNoAccess();
+      this.props.toggleNoAccess();
     }
   };
 
@@ -46,17 +46,19 @@ class NoAccess extends Component<Props, NoAccess> {
               />
               <i
                 className={'icon-ic-close no-access__close'}
-                onClick={this.props.hideNoAccess}
+                onClick={this.props.toggleNoAccess}
               />
               <h1>What just happened?</h1>
               <p>
                 Sorry, but that’s all you can see so far with the demo software.
                 If you want to see more, you could always purchase Jaspersoft.
               </p>
-              <a href="https://www.jaspersoft.com/" target="_blank">
-                <button className={'no-access__button btn--primary'}>
-                  Contact Sales Team
-                </button>
+              <a
+                href="https://www.jaspersoft.com/"
+                target="_blank"
+                className={'no-access__button btn--primary'}
+              >
+                Contact Sales Team
               </a>
             </div>
           </div>
@@ -68,5 +70,5 @@ class NoAccess extends Component<Props, NoAccess> {
 
 export default connect(
   null,
-  { hideNoAccess }
+  { toggleNoAccess }
 )(NoAccess);

@@ -1,12 +1,7 @@
-import { DISPLAY_NO_ACCESS, HIDE_NO_ACCESS } from '../types/general';
+import { TOGGLE_NO_ACCESS } from '../types/general';
 
-export const displayNoAccess = () => {
+export const toggleNoAccess = () => {
   return {
-    type: DISPLAY_NO_ACCESS
-  };
-};
-export const hideNoAccess = () => {
-  return {
-    type: HIDE_NO_ACCESS
+    type: TOGGLE_NO_ACCESS
   };
 };

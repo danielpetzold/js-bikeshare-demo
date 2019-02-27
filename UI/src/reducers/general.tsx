@@ -1,12 +1,11 @@
 import {
   GeneralState,
   GeneralActionTypes,
-  DISPLAY_NO_ACCESS,
-  HIDE_NO_ACCESS
+  TOGGLE_NO_ACCESS
 } from '../types/general';
 
 const initialState: GeneralState = {
-  showNoAccess: false
+  showNoAccess: true
 };
 
 const generalReducer = (
@@ -14,15 +13,10 @@ const generalReducer = (
   action: GeneralActionTypes
 ): GeneralState => {
   switch (action.type) {
-    case DISPLAY_NO_ACCESS:
+    case TOGGLE_NO_ACCESS:
       return {
         ...state,
-        showNoAccess: true
-      };
-    case HIDE_NO_ACCESS:
-      return {
-        ...state,
-        showNoAccess: false
+        showNoAccess: !state.showNoAccess
       };
     default:
       return state;
