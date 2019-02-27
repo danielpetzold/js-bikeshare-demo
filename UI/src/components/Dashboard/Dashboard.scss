@@ -45,12 +45,14 @@
     color: $white;
     font-size: 24px;
     margin-top: 28px;
+    cursor: pointer;
   }
 
   &__region-time-frame {
     font-size: 16px;
     color: $white;
     margin-top: 13px;
+    cursor: pointer;
   }
 
   &__unfold-icon {
@@ -61,7 +63,7 @@
   &__body {
     margin-top: 168px;
     background-color: $background-alt;
-    height: 100vh;
+    height: calc(100vh - 168px);
   }
 
   @media screen and (min-width: $tablet-break) {

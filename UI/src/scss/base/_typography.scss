@@ -40,6 +40,13 @@ h3 {
   }
 }
 
+.title {
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #c9cccd;
+}
+
 [class^='icon-'],
 [class*=' icon-'] {
   /* use !important to prevent issues with browser extensions that change fonts */

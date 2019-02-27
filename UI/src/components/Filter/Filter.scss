@@ -1,0 +1,76 @@
+@import '../../scss/util/variables';
+@import '../../scss/util/colors';
+
+.filter {
+  display: none;
+  width: 100vw;
+  background-color: $background-alt;
+  position: absolute;
+  z-index: 999999;
+  margin: 0;
+
+  &__shadow {
+    position: absolute;
+    height: 100vh;
+    width: 100vw;
+    background-color: $gunmetal;
+    opacity: 0.6;
+  }
+
+  &__title {
+    margin-bottom: 10px;
+  }
+
+  &__container {
+    width: 900px;
+  }
+
+  &__active {
+    display: flex;
+    justify-content: center;
+  }
+
+  &__select {
+    margin-bottom: 30px;
+  }
+
+  &__option {
+    width: 100%;
+    height: 120px;
+    border-radius: 5px;
+    box-shadow: 0 2px 15px -7px rgba(0, 0, 0, 0.5);
+    background-color: $white;
+    color: $text-primary;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    box-sizing: border-box;
+    text-align: center;
+    cursor: pointer;
+
+    &--selected {
+      color: white;
+      background-color: $mobile-sub-nav;
+    }
+  }
+
+  &__save {
+    margin: 80px 0 30px 0;
+    .btn--primary {
+      width: 100%;
+    }
+    a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 40px;
+      color: $jade;
+    }
+  }
+
+  @media screen and (min-width: $tablet-break) {
+    margin-left: 70px;
+  }
+}
