@@ -1,15 +1,12 @@
-export const DISPLAY_NO_ACCESS = 'show no access modal';
-export const HIDE_NO_ACCESS = 'hide no access modal';
+import { DISPLAY_NO_ACCESS, HIDE_NO_ACCESS } from '../types/general';
 
 export const displayNoAccess = () => {
   return {
-    type: DISPLAY_NO_ACCESS,
-    payload: true
+    type: DISPLAY_NO_ACCESS
   };
 };
 export const hideNoAccess = () => {
   return {
-    type: HIDE_NO_ACCESS,
-    payload: false
+    type: HIDE_NO_ACCESS
   };
 };

@@ -10,7 +10,7 @@ interface Props {
 
 interface NoAccess {
   wrapperRef: {
-    contains: (e: React.ReactNode) => boolean;
+    contains: (target: React.ReactNode) => boolean;
   };
 }
 
@@ -27,9 +27,8 @@ class NoAccess extends Component<Props, NoAccess> {
     this.wrapperRef = node;
   };
 
-  handleClickOutside = (event: any) => {
+  handleClickOutside = (event: MouseEvent) => {
     if (this.wrapperRef && !this.wrapperRef.contains(event.target)) {
-      console.log('test');
       this.props.hideNoAccess();
     }
   };

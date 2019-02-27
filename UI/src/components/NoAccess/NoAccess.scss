@@ -13,13 +13,16 @@
   align-items: center;
 }
 .no-access {
+  box-sizing: border-box;
   position: relative;
   display: grid;
   justify-items: center;
-  margin: 3%;
-  border-radius: 5px;
-  padding: 30px;
+  width: 100vw;
+  height: 100vh;
   background: $background-alt;
+  padding: 20px;
+  padding-top: 33%;
+  grid-auto-rows: 75px;
   h1 {
     font-weight: 300;
   }
@@ -29,22 +32,30 @@
   }
   &__close {
     position: absolute;
-    right: 30px;
-    top: 30px;
+    right: 14px;
+    top: 14px;
+    font-size: 18px;
   }
 }
 
 @media screen and (min-width: $tablet-break) {
   .no-access {
     width: 700px;
-    margin: 0;
+    height: auto;
     margin-left: 70px;
+    border-radius: 5px;
+    grid-auto-rows: auto;
+    padding: 20px;
     h1 {
       font-size: 60px;
     }
     p {
       font-size: 24px;
       max-width: 660px;
+    }
+    &__close {
+      right: 20px;
+      top: 20px;
     }
   }
 }

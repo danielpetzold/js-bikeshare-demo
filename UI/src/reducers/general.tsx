@@ -1,20 +1,28 @@
-import { DISPLAY_NO_ACCESS, HIDE_NO_ACCESS } from '../actions/general';
+import {
+  GeneralState,
+  GeneralActionTypes,
+  DISPLAY_NO_ACCESS,
+  HIDE_NO_ACCESS
+} from '../types/general';
 
-const initialState = {
+const initialState: GeneralState = {
   showNoAccess: true
 };
 
-const generalReducer = (state = initialState, action: any) => {
+const generalReducer = (
+  state = initialState,
+  action: GeneralActionTypes
+): GeneralState => {
   switch (action.type) {
     case DISPLAY_NO_ACCESS:
       return {
         ...state,
-        showNoAccess: action.payload
+        showNoAccess: true
       };
     case HIDE_NO_ACCESS:
       return {
         ...state,
-        showNoAccess: action.payload
+        showNoAccess: false
       };
     default:
       return state;

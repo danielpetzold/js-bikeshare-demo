@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './Login.scss';
-import logo from '../../assets/group-41.svg';
+import logo from '../../assets/logo.svg';
 
 interface State {
   selectedRole: string;
