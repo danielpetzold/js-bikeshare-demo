@@ -6,7 +6,7 @@ import {
 } from '../types/general';
 
 const initialState: GeneralState = {
-  showNoAccess: true
+  showNoAccess: false
 };
 
 const generalReducer = (
