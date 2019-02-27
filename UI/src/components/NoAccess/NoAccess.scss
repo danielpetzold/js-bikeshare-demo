@@ -1,0 +1,66 @@
+@import '../../scss/util/variables';
+@import '../../scss/util/colors';
+
+.modal-wrapper {
+  padding: 0;
+  position: fixed;
+  z-index: 10;
+  height: 100vh;
+  width: 100vw;
+  background: rgba($background-grey, 0.7);
+  display: grid;
+  justify-items: center;
+  align-items: center;
+}
+.no-access {
+  box-sizing: border-box;
+  position: relative;
+  display: grid;
+  justify-items: center;
+  width: 100vw;
+  height: 100vh;
+  background: $background-alt;
+  padding: 20px;
+  padding-top: 33%;
+  grid-auto-rows: 75px;
+  h1 {
+    font-weight: 300;
+  }
+  &__button {
+    width: 180px;
+    margin-top: 32px;
+    text-align: center;
+    line-height: 40px;
+  }
+  &__close {
+    position: absolute;
+    right: 14px;
+    top: 14px;
+    font-size: 18px;
+  }
+  &__close:hover {
+    cursor: pointer;
+  }
+}
+
+@media screen and (min-width: $tablet-break) {
+  .no-access {
+    width: 700px;
+    height: auto;
+    margin-left: 70px;
+    border-radius: 5px;
+    grid-auto-rows: auto;
+    padding: 20px;
+    h1 {
+      font-size: 60px;
+    }
+    p {
+      font-size: 24px;
+      max-width: 660px;
+    }
+    &__close {
+      right: 20px;
+      top: 20px;
+    }
+  }
+}

@@ -3,9 +3,9 @@
 @import '../../scss/base/buttons';
 
 .login {
-  margin: 0;
+  padding: 0;
   background-image: linear-gradient(#57eac2b3, #0b8885b3),
-    url('../../assets/mariusz-pierog-532904-unsplash.jpg');
+    url('../../assets/login-background.jpg');
   background-position: center;
   background-size: cover;
   &__wrapper {
