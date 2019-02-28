@@ -39,6 +39,7 @@
     opacity: 0.5;
     color: $white;
     font-size: 12px;
+    margin-left: 4px;
   }
 
   &__region-filter {
@@ -105,7 +106,6 @@
     &__down-arrow-icon {
       opacity: 1;
       color: $text-primary;
-      margin-left: 4px;
     }
   }
 }
