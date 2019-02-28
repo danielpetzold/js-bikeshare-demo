@@ -1,20 +1,88 @@
 import React, { Component } from 'react';
 import './Filter.scss';
-import { Dispatch } from 'redux';
-import { toggleFilter } from '../../actions/dashboard.actions';
-import { connect } from 'react-redux';
+import { FilterData } from '../Dashboard/Dashboard';
 
 interface FilterProps {
-  toggleFilter: () => void;
+  close: () => void;
+  save: (region: FilterData, timeframe: FilterData) => void;
+  data: {
+    testRegions: FilterData[];
+    testTimeframe: FilterData[];
+  };
+  region: {
+    name: string;
+    id: string;
+  };
+  timeframe: {
+    name: string;
+    id: string;
+  };
 }
 
-class Filter extends Component<FilterProps> {
-  handleClick = (event: any) => {
+interface State {
+  regionFilter: FilterData;
+  timeframeFilter: FilterData;
+}
+
+class Filter extends Component<FilterProps, State> {
+  constructor(props: FilterProps) {
+    super(props);
+    this.state = {
+      regionFilter: props.region,
+      timeframeFilter: props.timeframe
+    };
+  }
+
+  saveFilter = () => {
+    this.props.save(this.state.regionFilter, this.state.timeframeFilter);
+    this.props.close();
+  };
+
+  closeFilter = (event: any) => {
     event.preventDefault();
-    this.props.toggleFilter();
+    this.props.close();
   };
 
   render() {
+    const regionList = this.props.data.testRegions.map(item => {
+      return (
+        <div className={'grid__column-2 grid__column-m-2 '} key={item.id}>
+          <div
+            className={
+              'filter__option ' +
+              `${
+                item.id === this.state.regionFilter.id
+                  ? 'filter__option--selected'
+                  : ''
+              }`
+            }
+            onClick={() => this.setState({ regionFilter: item })}
+          >
+            {item.name}
+          </div>
+        </div>
+      );
+    });
+
+    const timeFrameList = this.props.data.testTimeframe.map(item => {
+      return (
+        <div className={'grid__column-2 grid__column-m-2 '} key={item.id}>
+          <div
+            className={
+              'filter__option ' +
+              `${
+                item.id === this.state.timeframeFilter.id
+                  ? 'filter__option--selected'
+                  : ''
+              }`
+            }
+            onClick={() => this.setState({ timeframeFilter: item })}
+          >
+            {item.name}
+          </div>
+        </div>
+      );
+    });
     return (
       <div>
         <div className={'filter filter__active'}>
@@ -29,55 +97,21 @@ class Filter extends Component<FilterProps> {
                 <div className={'title'}>Select a region</div>
               </div>
             </div>
-            <div className={'grid__row filter__select'}>
-              <div className={'grid__column-2 grid__column-m-2'}>
-                <div className={'filter__option filter__option--selected '}>
-                  San Francisco Bay Area
-                </div>
-              </div>
-              <div className={'grid__column-2 grid__column-m-2'}>
-                <div className={'filter__option'}>San Francisco Bay Area</div>
-              </div>
-              <div className={'grid__column-2 grid__column-m-2'}>
-                <div className={'filter__option'}>San Francisco Bay Area</div>
-              </div>
-              <div className={'grid__column-2 grid__column-m-2'}>
-                <div className={'filter__option'}>San Francisco Bay Area</div>
-              </div>
-              <div className={'grid__column-2 grid__column-m-2'}>
-                <div className={'filter__option'}>San Francisco Bay Area</div>
-              </div>
-            </div>
+            <div className={'grid__row filter__select'}>{regionList}</div>
             <div className={'grid__row'}>
               <div className={'grid__column-12 grid__column-m-4 filter__title'}>
                 <div className={'title'}>Select a Timeframe</div>
               </div>
             </div>
-            <div className={'grid__row'}>
-              <div className={'grid__column-2 grid__column-m-2'}>
-                <div className={'filter__option filter__option--selected '}>
-                  Annual
-                </div>
-              </div>
-              <div className={'grid__column-2 grid__column-m-2'}>
-                <div className={'filter__option'}>Last Quarter</div>
-              </div>
-              <div className={'grid__column-2 grid__column-m-2'}>
-                <div className={'filter__option'}>Last Month</div>
-              </div>
-              <div className={'grid__column-2 grid__column-m-2'}>
-                <div className={'filter__option'}>Last Week</div>
-              </div>
-              <div className={'grid__column-2 grid__column-m-2'}>
-                <div className={'filter__option'}>Last 24 hours</div>
-              </div>
-            </div>
+            <div className={'grid__row'}>{timeFrameList}</div>
             <div className={'grid__row filter__save'}>
               <div className={'grid__column-2 grid__column-m-2'}>
-                <button className={'btn--primary'}>Save and Update</button>
+                <button onClick={this.saveFilter} className={'btn--primary'}>
+                  Save and Update
+                </button>
               </div>
               <div className={'grid__column-1 grid__column-m-2'}>
-                <a href={'#'} onClick={this.handleClick}>
+                <a href={'#'} onClick={this.closeFilter}>
                   Cancel
                 </a>
               </div>
@@ -89,11 +123,5 @@ class Filter extends Component<FilterProps> {
     );
   }
 }
-const mapDispatchToProps = (dispatch: Dispatch) => ({
-  toggleFilter: () => dispatch(toggleFilter())
-});
 
-export default connect(
-  null,
-  mapDispatchToProps
-)(Filter);
+export default Filter;
