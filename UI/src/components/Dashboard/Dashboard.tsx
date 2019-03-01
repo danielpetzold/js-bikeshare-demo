@@ -101,7 +101,9 @@ class Dashboard extends React.Component<DashboardProps, State> {
             <div className={'grid dashboard__header'}>
               <div className={'grid__row'}>
                 <div
-                  className={'grid__column- grid__column-m-4 dashboard__title'}
+                  className={
+                    'grid__column-12 grid__column-m-4 dashboard__title'
+                  }
                 >
                   Trends and Analytics
                 </div>
