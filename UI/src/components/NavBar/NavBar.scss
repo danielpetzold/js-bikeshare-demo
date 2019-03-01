@@ -5,7 +5,7 @@
   position: fixed;
   width: 100vw;
   background-color: $main-nav;
-  z-index: 99999;
+  z-index: 1;
 
   &--closed {
     display: none;
@@ -15,7 +15,8 @@
     margin: 14px;
     font-size: 18px;
     position: fixed;
-    z-index: 9999;
+    color: $white;
+    z-index: 2;
   }
 
   // User Info section
