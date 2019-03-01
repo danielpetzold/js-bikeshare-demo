@@ -1,0 +1,53 @@
+@import '../../scss/util/colors';
+
+.report-view {
+  &__form {
+    box-sizing: border-box;
+    width: 299px;
+    height: 713px;
+    border-radius: 5px;
+    box-shadow: 0 2px 15px -7px rgba(0, 0, 0, 0.5);
+    padding: 24px 12px;
+    margin-bottom: 24px;
+    hr {
+      border: 0;
+      border-top: 1px solid $text-disabled;
+      margin: 16px 0;
+    }
+    h4 {
+      color: $text-nav;
+      font-size: 16px;
+      font-weight: bold;
+      margin-top: 0;
+    }
+    p {
+      font-weight: bold;
+    }
+  }
+  &__option-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 17px;
+  }
+  &__arrow {
+    font-size: 14px;
+    color: $icon-primary-active;
+  }
+  &__form__content {
+    margin-bottom: 16px;
+    &--hidden {
+      display: none;
+    }
+  }
+  &__btn-wrapper {
+    width: 299px;
+    display: grid;
+    grid-auto-flow: column;
+    justify-content: space-between;
+  }
+  &__btn {
+    width: 142px;
+    height: 44px;
+  }
+}
