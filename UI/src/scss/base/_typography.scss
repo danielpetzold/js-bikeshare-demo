@@ -40,6 +40,13 @@ h3 {
   }
 }
 
+.title {
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #c9cccd;
+}
+
 [class^='icon-'],
 [class*=' icon-'] {
   /* use !important to prevent issues with browser extensions that change fonts */
@@ -58,6 +65,9 @@ h3 {
 
 .icon-ic-menu:before {
   content: '\e90b';
+}
+.icon-ic-unfold-more:before {
+  content: '\e90d';
 }
 .icon-ic-close:before {
   content: '\e90a';

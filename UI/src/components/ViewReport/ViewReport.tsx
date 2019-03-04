@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import './ViewReport.scss';
+import filterIcon from '../../fonts/icons/filter-icon.svg';
+import NavBar from '../NavBar/NavBar';
 
 interface State {
   startDate: string;
@@ -20,8 +22,8 @@ class ViewReport extends Component<{}, State> {
     dataOptions: { '1': false, '2': false, '3': false, '4': false },
     stationOptions: { '5': false, '6': false, '7': false, '8': false },
     riderOptions: { '9': false, '10': false, '11': false, '12': false },
-    datesOpen: false,
-    dataOpen: true,
+    datesOpen: true,
+    dataOpen: false,
     stationsOpen: false,
     ridersOpen: false
   };
@@ -41,7 +43,13 @@ class ViewReport extends Component<{}, State> {
   };
 
   clearForm = () => {
-    // console.log(this.initialState);
+    this.setState({
+      startDate: '',
+      endDate: '',
+      dataOptions: { '1': false, '2': false, '3': false, '4': false },
+      stationOptions: { '5': false, '6': false, '7': false, '8': false },
+      riderOptions: { '9': false, '10': false, '11': false, '12': false }
+    });
   };
 
   render() {
@@ -62,11 +70,7 @@ class ViewReport extends Component<{}, State> {
         i++;
         arr.push(
           <div className={'form-checkbox-row'} key={i}>
-            <div
-              id={key}
-              className={'form-checkbox '}
-              onClick={() => this.toggleChecked(name, key, !options[key])}
-            >
+            <label htmlFor={key} className={'form-checkbox '}>
               <input
                 type="checkbox"
                 name={key}
@@ -81,8 +85,8 @@ class ViewReport extends Component<{}, State> {
                   (options[key] ? 'form-checkbox__check--checked' : '')
                 }
               />
-            </div>
-            <label htmlFor={key}>{key}</label>
+            </label>
+            <p>{key}</p>
           </div>
         );
       }
@@ -90,118 +94,160 @@ class ViewReport extends Component<{}, State> {
     };
 
     return (
-      <div className={'grid report-view'}>
-        <div className={'grid__row'}>
-          <div className={'grid__column-12 grid__column-m-4'}>
-            <header>
-              <h3>Ops & Costs</h3>
-              <p>Quarter 1</p>
-              <p>January 1, 2018 - March 31, 2018</p>
-              <div>
-                <p>Modify Report</p>
-                <p>Filter</p>
+      <>
+        <NavBar />
+        <div className={'grid'}>
+          <div className={'grid__row report-view'}>
+            <div className={'grid__column-12 grid__column-m-4'}>
+              {/* HEADER */}
+              <header className={'report-view__header'}>
+                <h3>Ops & Costs</h3>
+                <p>Quarter 1</p>
+                <p>January 1, 2018 - March 31, 2018</p>
+                <div className={'report-view__header__links'}>
+                  <p>Modify Report</p>
+                  <img src={filterIcon} alt="filter" />
+                </div>
+              </header>
+              {/* CHART */}
+              <div className={'report-view__table report-view__no-mobile'}>
+                <p>Operational Performance</p>
+                {/* content */}
               </div>
-            </header>
-            <form className={'report-view__form'}>
-              {/* <input type="reset" value="Clear All" /> */}
-              <h4 onClick={this.clearForm}>Clear All</h4>
-              <div className={'report-view__option-title'}>
-                <p>Dates</p>
-                <i
-                  id="datesOpen"
+              {/* FORM */}
+              <form className={'report-form'}>
+                <h4 onClick={this.clearForm}>Clear All</h4>
+                {/* -DATES */}
+                <div className={'report-form__option-title'}>
+                  <p>Dates</p>
+                  <i
+                    id="datesOpen"
+                    className={
+                      'report-form__arrow ' +
+                      (datesOpen ? 'icon-ic-arrow-down' : 'icon-ic-arrow-right')
+                    }
+                    onClick={e => this.toggleOpen(e, !this.state.datesOpen)}
+                  />
+                </div>
+                <hr />
+                <div
                   className={
-                    'report-view__arrow ' +
-                    (datesOpen ? 'icon-ic-arrow-down' : 'icon-ic-arrow-right')
+                    'report-form__content report-form__date-wrapper ' +
+                    (!datesOpen ? 'report-form__content--hidden' : '')
                   }
-                  onClick={e => this.toggleOpen(e, !this.state.datesOpen)}
-                />
-              </div>
-              <hr />
-              <div
-                className={
-                  'report-view__form__content ' +
-                  (!datesOpen ? 'report-view__form__content--hidden' : '')
-                }
-              >
-                <p>Start</p>
-                <input type="date" name="" id="" />
-                <p>End</p>
-                <input type="date" name="" id="" />
-              </div>
-              <div className={'report-view__option-title'}>
-                <p>Data</p>
-                <i
-                  id="dataOpen"
+                >
+                  <p className={'report-form__date-text'}>Start</p>
+                  <input
+                    type="date"
+                    name=""
+                    id=""
+                    value={this.state.startDate}
+                    onChange={e => this.setState({ startDate: e.target.value })}
+                  />
+                  <p className={'report-form__date-text'}>End</p>
+                  <input
+                    type="date"
+                    name=""
+                    id=""
+                    value={this.state.endDate}
+                    onChange={e => this.setState({ endDate: e.target.value })}
+                  />
+                </div>
+                {/* -DATA */}
+                <div className={'report-form__option-title'}>
+                  <p>Data</p>
+                  <i
+                    id="dataOpen"
+                    className={
+                      'report-form__arrow ' +
+                      (dataOpen ? 'icon-ic-arrow-down' : 'icon-ic-arrow-right')
+                    }
+                    onClick={e => this.toggleOpen(e, !this.state.dataOpen)}
+                  />
+                </div>
+                <hr />
+                <div
                   className={
-                    'report-view__arrow ' +
-                    (dataOpen ? 'icon-ic-arrow-down' : 'icon-ic-arrow-right')
+                    'report-form__content ' +
+                    (!dataOpen ? 'report-form__content--hidden' : '')
                   }
-                  onClick={e => this.toggleOpen(e, !this.state.dataOpen)}
-                />
-              </div>
-              <hr />
-              <div
-                className={
-                  'report-view__form__content ' +
-                  (!dataOpen ? 'report-view__form__content--hidden' : '')
-                }
-              >
-                {displayOptions(dataOptions, 'dataOptions')}
-              </div>
-              <div className={'report-view__option-title'}>
-                <p>Stations</p>
-                <i
-                  id="stationsOpen"
+                >
+                  {displayOptions(dataOptions, 'dataOptions')}
+                </div>
+                {/* -STATIONS */}
+                <div className={'report-form__option-title'}>
+                  <p>Stations</p>
+                  <i
+                    id="stationsOpen"
+                    className={
+                      'report-form__arrow ' +
+                      (stationsOpen
+                        ? 'icon-ic-arrow-down'
+                        : 'icon-ic-arrow-right')
+                    }
+                    onClick={e => this.toggleOpen(e, !this.state.stationsOpen)}
+                  />
+                </div>
+                <hr />
+                <div
                   className={
-                    'report-view__arrow ' +
-                    (stationsOpen
-                      ? 'icon-ic-arrow-down'
-                      : 'icon-ic-arrow-right')
+                    'report-form__content ' +
+                    (!stationsOpen ? 'report-form__content--hidden' : '')
                   }
-                  onClick={e => this.toggleOpen(e, !this.state.stationsOpen)}
-                />
-              </div>
-              <hr />
-              <div
-                className={
-                  'report-view__form__content ' +
-                  (!stationsOpen ? 'report-view__form__content--hidden' : '')
-                }
-              >
-                {displayOptions(stationOptions, 'stationOptions')}
-              </div>
-              <div className={'report-view__option-title'}>
-                <p>Riders</p>
-                <i
-                  id="ridersOpen"
+                >
+                  {displayOptions(stationOptions, 'stationOptions')}
+                </div>
+                {/* -RIDERS */}
+                <div className={'report-form__option-title'}>
+                  <p>Riders</p>
+                  <i
+                    id="ridersOpen"
+                    className={
+                      'report-form__arrow ' +
+                      (ridersOpen
+                        ? 'icon-ic-arrow-down'
+                        : 'icon-ic-arrow-right')
+                    }
+                    onClick={e => this.toggleOpen(e, !this.state.ridersOpen)}
+                  />
+                </div>
+                <hr />
+                <div
                   className={
-                    'report-view__arrow ' +
-                    (ridersOpen ? 'icon-ic-arrow-down' : 'icon-ic-arrow-right')
+                    'report-form__content ' +
+                    (!ridersOpen ? 'report-form__content--hidden' : '')
                   }
-                  onClick={e => this.toggleOpen(e, !this.state.ridersOpen)}
-                />
+                >
+                  {displayOptions(riderOptions, 'riderOptions')}
+                </div>
+              </form>
+              {/* BUTTONS */}
+              <div className={'report-view__btn-wrapper'}>
+                <button className={'report-view__btn btn--primary'}>
+                  Print Report
+                </button>
+                <button
+                  className={
+                    'report-view__btn btn--secondary report-view__no-mobile'
+                  }
+                >
+                  Download Report
+                </button>
+                <button
+                  className={
+                    'report-view__btn btn--secondary report-view__mobile-only'
+                  }
+                >
+                  Close
+                </button>
+                <a href="" className={'report-view__no-mobile'}>
+                  Close
+                </a>
               </div>
-              <hr />
-              <div
-                className={
-                  'report-view__form__content ' +
-                  (!ridersOpen ? 'report-view__form__content--hidden' : '')
-                }
-              >
-                {displayOptions(riderOptions, 'riderOptions')}
-              </div>
-            </form>
-            <div className={'report-view__btn-wrapper'}>
-              <button className={'report-view__btn btn--primary'}>
-                Print Report
-              </button>
-              <button className={'report-view__btn btn--secondary'}>
-                Close
-              </button>
             </div>
           </div>
         </div>
-      </div>
+      </>
     );
   }
 }

@@ -2,30 +2,96 @@
 @import '../../scss/util/variables';
 
 .report-view {
-  &__form {
-    box-sizing: border-box;
+  // Header styles
+
+  &__header {
+    display: grid;
     width: 299px;
-    height: 713px;
+    margin: 24px auto 0 auto;
+    p {
+      margin: 0;
+      opacity: 0.6;
+      text-transform: uppercase;
+    }
+    h3 {
+      margin-bottom: 12px;
+    }
+    margin-bottom: 24px;
+  }
+  &__header__links {
+    p {
+      opacity: 1;
+      text-transform: none;
+    }
+    margin-top: 12px;
+    display: grid;
+    grid-auto-flow: column;
+    justify-content: space-between;
+    color: $text-nav;
+  }
+
+  // Chart container styles
+
+  &__table {
+    width: 592px;
+    height: 336px;
     border-radius: 5px;
     box-shadow: 0 2px 15px -7px rgba(0, 0, 0, 0.5);
-    padding: 24px 12px;
-    margin: auto;
-    overflow: scroll;
-    hr {
-      border: 0;
-      border-top: 1px solid $text-disabled;
-      margin: 16px 0;
-    }
-    h4 {
-      color: $text-nav;
-      font-size: 16px;
-      font-weight: bold;
-      margin-top: 0;
-    }
     p {
-      font-weight: bold;
+      margin-left: 20px;
     }
   }
+
+  // Additional component styles
+
+  &__btn-wrapper {
+    width: 299px;
+    display: grid;
+    grid-auto-flow: column;
+    justify-content: space-between;
+    margin: 24px auto;
+    a {
+      line-height: 40px;
+      color: $btn-green;
+    }
+  }
+  &__btn {
+    width: 142px;
+    height: 40px;
+  }
+  &__no-mobile {
+    display: none;
+  }
+}
+
+// Form styles
+
+.report-form {
+  box-sizing: border-box;
+  width: 299px;
+  height: 713px;
+  border-radius: 5px;
+  box-shadow: 0 2px 15px -7px rgba(0, 0, 0, 0.5);
+  padding: 24px 12px;
+  margin: auto;
+  overflow: scroll;
+  hr {
+    border: 0;
+    border-top: 1px solid $text-disabled;
+    margin: 16px 0;
+  }
+  h4 {
+    color: $text-nav;
+    width: max-content;
+    font-size: 16px;
+    font-weight: bold;
+    margin-top: 0;
+    cursor: pointer;
+  }
+  p {
+    font-weight: bold;
+  }
+
   &__option-title {
     display: flex;
     justify-content: space-between;
@@ -35,28 +101,37 @@
   &__arrow {
     font-size: 14px;
     color: $icon-primary-active;
+    cursor: pointer;
   }
-  &__form__content {
-    // margin-bottom: 16px;
+  &__content {
     &--hidden {
       display: none;
     }
+    input[type='date'] {
+      width: 275px;
+      height: 40px;
+      border-style: none;
+      border-radius: 5px;
+      box-shadow: 0 2px 15px -7px rgba(0, 0, 0, 0.5);
+    }
   }
-  &__btn-wrapper {
-    width: 299px;
-    display: grid;
-    grid-auto-flow: column;
-    justify-content: space-between;
-    margin: 24px auto;
+  &__date-wrapper {
+    margin-bottom: 15px;
   }
-  &__btn {
-    width: 142px;
-    height: 44px;
+  .report-view__form__date-text {
+    opacity: 0.6;
+    font-weight: normal;
+    text-transform: uppercase;
   }
 }
 
+// Custom checkbox styles
+
 .form-checkbox-row {
   display: flex;
+  p {
+    margin: 0;
+  }
 }
 
 .form-checkbox {
@@ -74,11 +149,11 @@
     height: 18px;
     top: 0;
     left: 0;
-    // background: white;
-    border: solid 2px #4a5357;
+    background: $white;
+    border: solid 2px $gunmetal;
     border-radius: 2px;
     &--checked {
-      // background-color: $btn-green;
+      background-color: $btn-green;
       border: none;
     }
   }
@@ -90,7 +165,7 @@
     height: 5px;
     top: 4px;
     left: 3px;
-    border: 2px solid white;
+    border: 2px solid $white;
     border-top: none;
     border-right: none;
     transform: rotate(-45deg);
@@ -100,9 +175,40 @@
   }
 }
 
-// @media screen and (min-width: $tablet-break) {
-//   .report-view {
-//     &__form {
-//     }
-//   }
-// }
+@media screen and (min-width: $tablet-break) {
+  .report-view {
+    justify-items: center;
+    margin-left: 70px;
+
+    // Header styles
+
+    &__header {
+      width: 100%;
+    }
+
+    // Additional component styles
+
+    &__btn-wrapper {
+      width: auto;
+      justify-content: flex-start;
+    }
+    &__btn {
+      margin-right: 12px;
+    }
+    &__no-mobile {
+      display: inline-block;
+    }
+
+    &__mobile-only {
+      display: none;
+    }
+  }
+
+  // Form styles
+
+  .report-form {
+    margin: 0 0 24px 9px;
+    margin-bottom: 24px;
+    float: right;
+  }
+}

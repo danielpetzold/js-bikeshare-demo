@@ -2,18 +2,29 @@ import './NavBar.scss';
 import { Component } from 'react';
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { toggleNoAccess } from '../../actions/general';
 
 type State = {
   isOpen: boolean;
 };
 
-class NavBar extends Component<any, any> {
+interface NavBarProps {
+  toggleNoAccess: () => void;
+}
+
+class NavBar extends Component<NavBarProps, any> {
   readonly state: State = {
     isOpen: false
   };
 
   toggleMenu = () => {
     this.setState({ isOpen: !this.state.isOpen });
+  };
+
+  toggleNoAccess = (event: any) => {
+    event.preventDefault();
+    this.props.toggleNoAccess();
   };
 
   render() {
@@ -46,7 +57,11 @@ class NavBar extends Component<any, any> {
               </a>
             </li>
             <li className="nav-bar__item">
-              <a className="nav-bar__link" href="#">
+              <a
+                className="nav-bar__link"
+                href="#"
+                onClick={this.toggleNoAccess}
+              >
                 <i className="icon-ic-people-outline nav-bar__icon " />
                 <span className="nav-bar__text">Roles and Permissions</span>
               </a>
@@ -60,13 +75,21 @@ class NavBar extends Component<any, any> {
           </ul>
           <ul className="nav-bar__bottom-menu">
             <li className="nav-bar__item">
-              <a className="nav-bar__link" href="#">
+              <a
+                className="nav-bar__link"
+                href="#"
+                onClick={this.toggleNoAccess}
+              >
                 <i className="icon-ic-notifications nav-bar__icon " />
                 <span className="nav-bar__text">Notifications</span>
               </a>
             </li>
             <li className="nav-bar__item">
-              <a className="nav-bar__link" href="#">
+              <a
+                className="nav-bar__link"
+                href="#"
+                onClick={this.toggleNoAccess}
+              >
                 <i className="icon-ic-settings nav-bar__icon " />
                 <span className="nav-bar__text">Settings</span>
               </a>
@@ -87,4 +110,7 @@ class NavBar extends Component<any, any> {
   }
 }
 
-export default NavBar;
+export default connect(
+  null,
+  { toggleNoAccess }
+)(NavBar);
