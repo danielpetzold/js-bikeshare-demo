@@ -1,4 +1,5 @@
 @import '../../scss/util/colors';
+@import '../../scss/util/variables';
 
 .report-view {
   &__form {
@@ -8,7 +9,8 @@
     border-radius: 5px;
     box-shadow: 0 2px 15px -7px rgba(0, 0, 0, 0.5);
     padding: 24px 12px;
-    margin-bottom: 24px;
+    margin: auto;
+    overflow: scroll;
     hr {
       border: 0;
       border-top: 1px solid $text-disabled;
@@ -35,7 +37,7 @@
     color: $icon-primary-active;
   }
   &__form__content {
-    margin-bottom: 16px;
+    // margin-bottom: 16px;
     &--hidden {
       display: none;
     }
@@ -45,9 +47,62 @@
     display: grid;
     grid-auto-flow: column;
     justify-content: space-between;
+    margin: 24px auto;
   }
   &__btn {
     width: 142px;
     height: 44px;
   }
 }
+
+.form-checkbox-row {
+  display: flex;
+}
+
+.form-checkbox {
+  width: 18px;
+  height: 18px;
+  position: relative;
+  box-sizing: border-box;
+  margin: 0 15px 15px 0;
+
+  .form-checkbox__check {
+    box-sizing: border-box;
+    cursor: pointer;
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    top: 0;
+    left: 0;
+    // background: white;
+    border: solid 2px #4a5357;
+    border-radius: 2px;
+    &--checked {
+      // background-color: $btn-green;
+      border: none;
+    }
+  }
+  .form-checkbox__check:after {
+    opacity: 0;
+    content: '';
+    position: absolute;
+    width: 10px;
+    height: 5px;
+    top: 4px;
+    left: 3px;
+    border: 2px solid white;
+    border-top: none;
+    border-right: none;
+    transform: rotate(-45deg);
+  }
+  input[type='checkbox']:checked + .form-checkbox__check:after {
+    opacity: 1;
+  }
+}
+
+// @media screen and (min-width: $tablet-break) {
+//   .report-view {
+//     &__form {
+//     }
+//   }
+// }

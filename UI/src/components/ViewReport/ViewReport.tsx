@@ -4,9 +4,9 @@ import './ViewReport.scss';
 interface State {
   startDate: string;
   endDate: string;
-  dataOptions: string[];
-  stationOptions: string[];
-  riderOptions: string[];
+  dataOptions: object;
+  stationOptions: object;
+  riderOptions: object;
   datesOpen: boolean;
   dataOpen: boolean;
   stationsOpen: boolean;
@@ -17,38 +17,94 @@ class ViewReport extends Component<{}, State> {
   state = {
     startDate: '',
     endDate: '',
-    dataOptions: ['1', '2', '3', '4'],
-    stationOptions: [],
-    riderOptions: [],
+    dataOptions: { '1': false, '2': false, '3': false, '4': false },
+    stationOptions: { '5': false, '6': false, '7': false, '8': false },
+    riderOptions: { '9': false, '10': false, '11': false, '12': false },
     datesOpen: false,
-    dataOpen: false,
+    dataOpen: true,
     stationsOpen: false,
     ridersOpen: false
   };
 
   toggleOpen = (e: any, open: boolean) => {
     const { id }: any = e.target;
-    console.log('id: ', id);
     this.setState({
       [id]: open
     } as Pick<State, keyof State>);
   };
 
+  toggleChecked = (name: any, key: any, checked: boolean) => {
+    let newState: any = { ...this.state };
+    newState[name][key] = checked;
+
+    this.setState(newState);
+  };
+
+  clearForm = () => {
+    // console.log(this.initialState);
+  };
+
   render() {
-    const { datesOpen, dataOpen, stationsOpen, ridersOpen } = this.state;
+    const {
+      datesOpen,
+      dataOpen,
+      stationsOpen,
+      ridersOpen,
+      dataOptions,
+      stationOptions,
+      riderOptions
+    } = this.state;
+
+    const displayOptions = (options: any, name: string) => {
+      let arr = [];
+      let i = 0;
+      for (let key in options) {
+        i++;
+        arr.push(
+          <div className={'form-checkbox-row'} key={i}>
+            <div
+              id={key}
+              className={'form-checkbox '}
+              onClick={() => this.toggleChecked(name, key, !options[key])}
+            >
+              <input
+                type="checkbox"
+                name={key}
+                checked={options[key]}
+                id={key}
+                onChange={() => this.toggleChecked(name, key, !options[key])}
+              />
+              <label
+                htmlFor={key}
+                className={
+                  'form-checkbox__check ' +
+                  (options[key] ? 'form-checkbox__check--checked' : '')
+                }
+              />
+            </div>
+            <label htmlFor={key}>{key}</label>
+          </div>
+        );
+      }
+      return arr;
+    };
+
     return (
       <div className={'grid report-view'}>
         <div className={'grid__row'}>
           <div className={'grid__column-12 grid__column-m-4'}>
-            <h3>Ops & Costs</h3>
-            <p>Quarter 1</p>
-            <p>January 1, 2018 - March 31, 2018</p>
-            <div>
-              <p>Modify Report</p>
-              <p>Filter</p>
-            </div>
+            <header>
+              <h3>Ops & Costs</h3>
+              <p>Quarter 1</p>
+              <p>January 1, 2018 - March 31, 2018</p>
+              <div>
+                <p>Modify Report</p>
+                <p>Filter</p>
+              </div>
+            </header>
             <form className={'report-view__form'}>
-              <h4>Clear All</h4>
+              {/* <input type="reset" value="Clear All" /> */}
+              <h4 onClick={this.clearForm}>Clear All</h4>
               <div className={'report-view__option-title'}>
                 <p>Dates</p>
                 <i
@@ -90,7 +146,7 @@ class ViewReport extends Component<{}, State> {
                   (!dataOpen ? 'report-view__form__content--hidden' : '')
                 }
               >
-                Data content
+                {displayOptions(dataOptions, 'dataOptions')}
               </div>
               <div className={'report-view__option-title'}>
                 <p>Stations</p>
@@ -112,7 +168,7 @@ class ViewReport extends Component<{}, State> {
                   (!stationsOpen ? 'report-view__form__content--hidden' : '')
                 }
               >
-                Stations content
+                {displayOptions(stationOptions, 'stationOptions')}
               </div>
               <div className={'report-view__option-title'}>
                 <p>Riders</p>
@@ -132,7 +188,7 @@ class ViewReport extends Component<{}, State> {
                   (!ridersOpen ? 'report-view__form__content--hidden' : '')
                 }
               >
-                Riders content
+                {displayOptions(riderOptions, 'riderOptions')}
               </div>
             </form>
             <div className={'report-view__btn-wrapper'}>
