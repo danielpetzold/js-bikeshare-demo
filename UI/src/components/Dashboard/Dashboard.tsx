@@ -65,6 +65,8 @@ const filterData = {
 };
 
 class Dashboard extends React.Component<DashboardProps, State> {
+  visualize: any;
+
   constructor(props: DashboardProps) {
     super(props);
     // Set initial state for filter to first two options in data
@@ -74,6 +76,87 @@ class Dashboard extends React.Component<DashboardProps, State> {
       timeframe: filterData.testTimeframe[0]
     };
   }
+
+  componentDidMount() {
+    // @ts-ignore
+    visualize(
+      {
+        baseUrl:
+          'http://jrs-bikes-elasticl-1k5yhf91vrjuo-1806919984.us-east-2.elb.amazonaws.com/jasperserver-pro',
+        server:
+          'http://jrs-bikes-elasticl-1k5yhf91vrjuo-1806919984.us-east-2.elb.amazonaws.com/jasperserver-pro',
+        scripts: 'optimized-scripts',
+        auth: {
+          loginFn: (properties: any, request: any) => {
+            return request({
+              url:
+                'http://jrs-bikes-elasticl-1k5yhf91vrjuo-1806919984.us-east-2.elb.amazonaws.com/jasperserver-pro',
+              headers: {
+                pp:
+                  'bWdWZj9YcmF2YEhsQDw1PA==imowONsj9ir2SxJ+wmptd2WHRc3wa7Uw4RuAdmOaqYY='
+              }
+            });
+          }
+        }
+        // auth: {
+        //   name: 'COO1',
+        //   password: 'B1keShareDemoPwd*8',
+        //   organization: 'bikeshare'
+        // }
+      },
+      (v: any) => {
+        const report = v.report({
+          container: '#report',
+          resource: '/public/Bikeshare_demo/Reports/Regions_by_Franchise',
+          success: () => {
+            console.log('success');
+          },
+          error: (err: any) => {
+            console.log(err);
+          }
+        });
+      },
+      (err: any) => {
+        console.log('full', err);
+      }
+    );
+  }
+
+  // componentWillMount() {
+  //   const jrsUrl = "http://jrs-bikes-elasticl-1k5yhf91vrjuo-1806919984.us-east-2.elb.amazonaws.com/jasperserver-pro";
+  //
+  //   // @ts-ignore
+  //   visualize.config({
+  //     server : jrsUrl,
+  //     scripts : "optimized-scripts",
+  //     auth: {
+  //       loginFn: (properties: any, request: any) => {
+  //         return request({
+  //           "url": "http://jrs-bikes-elasticl-1k5yhf91vrjuo-1806919984.us-east-2.elb.amazonaws.com/jasperserver-pro",
+  //           "headers": {
+  //             "ticket": "bWdWZj9YcmF2YEhsQDw1PA==imowONsj9ir2SxJ+wmptd2WHRc3wa7Uw4RuAdmOaqYY="
+  //           }
+  //         })
+  //       }
+  //     }
+  //   });
+  // }
+  //
+  // componentDidMount() {
+  //   // @ts-ignore
+  //   visualize((v) => {
+  //     const report = v.report({
+  //       container: '#report',
+  //       resource: '/public/Bikeshare_demo/Reports/Regions_by_Franchise',
+  //       success: () => {
+  //         console.log('success');
+  //       },
+  //       error: (err: any) => {
+  //         console.log(err);
+  //       }
+  //     })
+  //   })
+  // }
 
   closeFilter = () => {
     this.setState({ isFilterOpen: false });
@@ -129,7 +212,9 @@ class Dashboard extends React.Component<DashboardProps, State> {
             </div>
             <div className={'grid dashboard__body'}>
               <div className={'grid__row'}>
-                <div className={'grid__column-12 grid__column-m-4'} />
+                <div className={'grid__column-12 grid__column-m-4'}>
+                  <div id={'report'}>Test</div>
+                </div>
               </div>
             </div>
           </div>
