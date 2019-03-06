@@ -1,3 +1,7 @@
+import java.sql.Date;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -25,6 +29,7 @@ public class Generator {
 		System.out.println("username: " + tBuilder.getUserName());
 		System.out.println("roles: " + tBuilder.getRoles().toString());
 		System.out.println("orgs: " + tBuilder.getOrganizations().toString());
+		System.out.println("orgs: " + tBuilder.getExpiration());
 		System.out.println("Token is valid: " + isValid);
 		System.out.println("");
 		
@@ -52,10 +57,20 @@ public class Generator {
 			System.out.println(map.get(kv[0]));		   
 		}		
 		
-	    tokenBuilder
-	          .setUserName(map.get("u"))
-	          .setRoles(Arrays.asList(map.get("r").split(",")))
-	          .setOrganizations(Arrays.asList(map.get("o").split(",")));
+		
+	    try {
+	    	
+			tokenBuilder
+			      .setUserName(map.get("u"))
+			      .setRoles(Arrays.asList(map.get("r").split(",")))
+			      .setOrganizations(Arrays.asList(map.get("o").split(",")))
+			      .setExpiration(new SimpleDateFormat("MM/dd/yyyy").parse(map.get("e")));
+			
+		} catch (ParseException e) {
+			
+			e.printStackTrace();
+		}
+	    
 		
 		return tokenBuilder;
 	}

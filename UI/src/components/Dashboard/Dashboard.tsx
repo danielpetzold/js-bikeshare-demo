@@ -78,26 +78,29 @@ class Dashboard extends React.Component<DashboardProps, State> {
   }
 
   componentWillMount() {
-    const jrsUrl =
-      'http://jrs-bikes-elasticl-1k5yhf91vrjuo-1806919984.us-east-2.elb.amazonaws.com/jasperserver-pro';
+    const jrsUrl = 'http://localhost:8080/jasperserver-pro';
 
     // @ts-ignore
     visualize.config({
       server: jrsUrl,
       scripts: 'optimized-scripts',
       auth: {
-        name: 'COO1',
-        password: 'B1keShareDemoPwd*8',
-        organization: 'bikeshare'
+        preAuth: true,
+        loginFn: (properties: any, request: any) => {
+          return request({
+            url: 'http://localhost:8080/jasperserver-pro',
+            headers: {
+              pp:
+                'WXQ9SzJkZE4xT19EXDYwcQ==mLdLkeHDirq7yQHSjBjuDrYDvoIfRE2+kRjEUU0ATK1Obry2FlaAJBzcg8Rv3SMxljx6FHq2BFdV2n9Q2ojtZg=='
+            }
+          });
+        }
       }
     });
   }
 
   componentDidMount() {
-    this.renderReport(
-      '#report',
-      '/public/Bikeshare_demo/Reports/Regions_by_Franchise'
-    )
+    this.renderReport('#report', '/public/Bikeshare_demo/Reports/Test_Report')
       .then(success => {
         console.log('this is a success', success);
       })
