@@ -1,4 +1,4 @@
-import { TOGGLE_NO_ACCESS } from '../types/general';
+import { TOGGLE_NO_ACCESS } from './general.types';
 
 export const toggleNoAccess = () => {
   return {
