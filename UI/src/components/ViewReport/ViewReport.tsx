@@ -1,255 +1,217 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { setFilters } from '../../reducers/Reports/reports.actions';
 import './ViewReport.scss';
 import filterIcon from '../../fonts/icons/filter-icon.svg';
 import NavBar from '../NavBar/NavBar';
+import ExportModal from '../ExportModal/ExportModal';
+import ReportFilter from '../ReportFilter/ReportFilter';
+import Dropdown from '../Dropdown/Dropdown';
 
 interface State {
-  startDate: string;
-  endDate: string;
-  dataOptions: object;
-  stationOptions: object;
-  riderOptions: object;
-  datesOpen: boolean;
-  dataOpen: boolean;
-  stationsOpen: boolean;
-  ridersOpen: boolean;
+  filterOpen: boolean;
+  exportModalOpen: boolean;
+  actionsOpen: boolean;
+  reportsOpen: boolean;
+  reportOptions: string[];
+  selectedReport: string;
+  mounted: boolean;
 }
 
-class ViewReport extends Component<{}, State> {
+class ViewReport extends Component<any, State> {
   state = {
-    startDate: '',
-    endDate: '',
-    dataOptions: { '1': false, '2': false, '3': false, '4': false },
-    stationOptions: { '5': false, '6': false, '7': false, '8': false },
-    riderOptions: { '9': false, '10': false, '11': false, '12': false },
-    datesOpen: true,
-    dataOpen: false,
-    stationsOpen: false,
-    ridersOpen: false
+    mounted: false,
+    filterOpen: false,
+    exportModalOpen: false,
+    reportsOpen: false,
+    actionsOpen: false,
+    reportOptions: [
+      'Station Report',
+      'Rider Utilization',
+      'Driver Efficiency',
+      'Bike Inventory',
+      'Trip Report'
+    ],
+    selectedReport: 'Station Report'
   };
 
-  toggleOpen = (e: any, open: boolean) => {
-    const { id }: any = e.target;
+  componentDidMount() {
+    this.setState({ mounted: true });
+    this.props.setFilters([
+      {
+        name: 'Region',
+        altName: 'region',
+        selected: '',
+        options: ['1', '2', '3']
+      },
+      {
+        name: 'Station',
+        altName: 'station',
+        selected: '',
+        options: ['4', '5', '6']
+      },
+      {
+        name: 'Franchise',
+        altName: 'franchise',
+        selected: '',
+        options: ['7', '8', '9']
+      },
+      {
+        name: 'On Site Kiosk',
+        altName: 'osk',
+        selected: '',
+        options: ['10', '11', '12']
+      }
+    ]);
+  }
+
+  toggleExportModal = () => {
     this.setState({
-      [id]: open
-    } as Pick<State, keyof State>);
+      exportModalOpen: !this.state.exportModalOpen
+    });
   };
 
-  toggleChecked = (name: any, key: any, checked: boolean) => {
-    let newState: any = { ...this.state };
-    newState[name][key] = checked;
-
-    this.setState(newState);
-  };
-
-  clearForm = () => {
+  toggleActions = () => {
     this.setState({
-      startDate: '',
-      endDate: '',
-      dataOptions: { '1': false, '2': false, '3': false, '4': false },
-      stationOptions: { '5': false, '6': false, '7': false, '8': false },
-      riderOptions: { '9': false, '10': false, '11': false, '12': false }
+      actionsOpen: !this.state.actionsOpen
+    });
+  };
+  toggleReports = () => {
+    this.setState({
+      reportsOpen: !this.state.reportsOpen
+    });
+  };
+
+  setReport = (option: string) => {
+    this.setState({
+      selectedReport: option
     });
   };
 
   render() {
     const {
-      datesOpen,
-      dataOpen,
-      stationsOpen,
-      ridersOpen,
-      dataOptions,
-      stationOptions,
-      riderOptions
+      filterOpen,
+      exportModalOpen,
+      actionsOpen,
+      reportsOpen,
+      mounted,
+      reportOptions,
+      selectedReport
     } = this.state;
-
-    const displayOptions = (options: any, name: string) => {
-      let arr = [];
-      let i = 0;
-      for (let key in options) {
-        i++;
-        arr.push(
-          <div className={'form-checkbox-row'} key={i}>
-            <label htmlFor={key} className={'form-checkbox '}>
-              <input
-                type="checkbox"
-                name={key}
-                checked={options[key]}
-                id={key}
-                onChange={() => this.toggleChecked(name, key, !options[key])}
-              />
-              <label
-                htmlFor={key}
-                className={
-                  'form-checkbox__check ' +
-                  (options[key] ? 'form-checkbox__check--checked' : '')
-                }
-              />
-            </label>
-            <p>{key}</p>
-          </div>
-        );
-      }
-      return arr;
-    };
 
     return (
       <>
         <NavBar />
         <div className={'grid'}>
-          <div className={'grid__row report-view'}>
+          <div className={'grid__row'}>
             <div className={'grid__column-12 grid__column-m-4'}>
-              {/* HEADER */}
-              <header className={'report-view__header'}>
-                <h3>Ops & Costs</h3>
-                <p>Quarter 1</p>
-                <p>January 1, 2018 - March 31, 2018</p>
-                <div className={'report-view__header__links'}>
-                  <p>Modify Report</p>
-                  <img src={filterIcon} alt="filter" />
+              <div className={'report-view'}>
+                <div className={'report-view__header-wrap'}>
+                  {/* HEADER */}
+                  <header className={'report-view__header'}>
+                    {/* Top Header Row */}
+                    <div className={'report-view__header__top'}>
+                      <h3>Reports</h3>
+                      <div
+                        className={'report-view__header__select'}
+                        onClick={this.toggleReports}
+                      >
+                        <h5>{selectedReport}</h5>
+                        <div className={'report-view__header__select-arrows'}>
+                          <i
+                            className={
+                              'icon-ic-arrow-down export-modal__custom-select__arrow-flip'
+                            }
+                          />
+                          <i className={'icon-ic-arrow-down'} />
+                        </div>
+                      </div>
+                      <div className={'report-view__header__dropdown'}>
+                        {reportsOpen && (
+                          <Dropdown
+                            setSelected={this.setReport}
+                            toggleDropdown={this.toggleReports}
+                            options={reportOptions}
+                            dropdownWidth="195px"
+                          />
+                        )}
+                      </div>
+                    </div>
+                    {/* Bottom Header Row */}
+                    <div className={'report-view__header__links'}>
+                      <div className={'report-view__header__buttons'}>
+                        <button
+                          className={'report-view__btn--create btn--primary'}
+                        >
+                          Create Report
+                        </button>
+                        <a
+                          className={'report-view__btn--actions btn--secondary'}
+                          onClick={this.toggleActions}
+                        >
+                          <p>Modify</p>
+                          <i
+                            className={
+                              'report-view__actions icon-ic-arrow-down'
+                            }
+                          />
+                        </a>
+                        {actionsOpen && (
+                          <div
+                            className={'report-view__actions-dropdown'}
+                            onClick={this.toggleActions}
+                          >
+                            <a href="">
+                              <div>Modify</div>
+                            </a>
+                            <div onClick={this.toggleExportModal}>Export</div>
+                            <div
+                              onClick={() =>
+                                setTimeout(() => window.print(), 100)
+                              }
+                            >
+                              Print
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                      <img
+                        src={filterIcon}
+                        alt="filter"
+                        onClick={() =>
+                          this.setState({ filterOpen: !filterOpen })
+                        }
+                      />
+                    </div>
+                  </header>
+                  {/* FILTER */}
+                  {mounted && (
+                    <div
+                      className={
+                        filterOpen
+                          ? 'report-view__show-filter'
+                          : 'report-view__hide-filter'
+                      }
+                    >
+                      <ReportFilter />
+                    </div>
+                  )}
                 </div>
-              </header>
-              {/* CHART */}
-              <div className={'report-view__table report-view__no-mobile'}>
-                <p>Operational Performance</p>
-                {/* content */}
-              </div>
-              {/* FORM */}
-              <form className={'report-form'}>
-                <h4 onClick={this.clearForm}>Clear All</h4>
-                {/* -DATES */}
-                <div className={'report-form__option-title'}>
-                  <p>Dates</p>
-                  <i
-                    id="datesOpen"
-                    className={
-                      'report-form__arrow ' +
-                      (datesOpen ? 'icon-ic-arrow-down' : 'icon-ic-arrow-right')
-                    }
-                    onClick={e => this.toggleOpen(e, !this.state.datesOpen)}
-                  />
+                {/* REPORT */}
+                <div className={'report-view__table'}>
+                  {/* report to be passed in */}
                 </div>
-                <hr />
-                <div
-                  className={
-                    'report-form__content report-form__date-wrapper ' +
-                    (!datesOpen ? 'report-form__content--hidden' : '')
-                  }
-                >
-                  <p className={'report-form__date-text'}>Start</p>
-                  <input
-                    type="date"
-                    name=""
-                    id=""
-                    value={this.state.startDate}
-                    onChange={e => this.setState({ startDate: e.target.value })}
-                  />
-                  <p className={'report-form__date-text'}>End</p>
-                  <input
-                    type="date"
-                    name=""
-                    id=""
-                    value={this.state.endDate}
-                    onChange={e => this.setState({ endDate: e.target.value })}
-                  />
-                </div>
-                {/* -DATA */}
-                <div className={'report-form__option-title'}>
-                  <p>Data</p>
-                  <i
-                    id="dataOpen"
-                    className={
-                      'report-form__arrow ' +
-                      (dataOpen ? 'icon-ic-arrow-down' : 'icon-ic-arrow-right')
-                    }
-                    onClick={e => this.toggleOpen(e, !this.state.dataOpen)}
-                  />
-                </div>
-                <hr />
-                <div
-                  className={
-                    'report-form__content ' +
-                    (!dataOpen ? 'report-form__content--hidden' : '')
-                  }
-                >
-                  {displayOptions(dataOptions, 'dataOptions')}
-                </div>
-                {/* -STATIONS */}
-                <div className={'report-form__option-title'}>
-                  <p>Stations</p>
-                  <i
-                    id="stationsOpen"
-                    className={
-                      'report-form__arrow ' +
-                      (stationsOpen
-                        ? 'icon-ic-arrow-down'
-                        : 'icon-ic-arrow-right')
-                    }
-                    onClick={e => this.toggleOpen(e, !this.state.stationsOpen)}
-                  />
-                </div>
-                <hr />
-                <div
-                  className={
-                    'report-form__content ' +
-                    (!stationsOpen ? 'report-form__content--hidden' : '')
-                  }
-                >
-                  {displayOptions(stationOptions, 'stationOptions')}
-                </div>
-                {/* -RIDERS */}
-                <div className={'report-form__option-title'}>
-                  <p>Riders</p>
-                  <i
-                    id="ridersOpen"
-                    className={
-                      'report-form__arrow ' +
-                      (ridersOpen
-                        ? 'icon-ic-arrow-down'
-                        : 'icon-ic-arrow-right')
-                    }
-                    onClick={e => this.toggleOpen(e, !this.state.ridersOpen)}
-                  />
-                </div>
-                <hr />
-                <div
-                  className={
-                    'report-form__content ' +
-                    (!ridersOpen ? 'report-form__content--hidden' : '')
-                  }
-                >
-                  {displayOptions(riderOptions, 'riderOptions')}
-                </div>
-              </form>
-              {/* BUTTONS */}
-              <div className={'report-view__btn-wrapper'}>
-                <button className={'report-view__btn btn--primary'}>
-                  Print Report
-                </button>
-                <button
-                  className={
-                    'report-view__btn btn--secondary report-view__no-mobile'
-                  }
-                >
-                  Download Report
-                </button>
-                <button
-                  className={
-                    'report-view__btn btn--secondary report-view__mobile-only'
-                  }
-                >
-                  Close
-                </button>
-                <a href="" className={'report-view__no-mobile'}>
-                  Close
-                </a>
               </div>
             </div>
           </div>
         </div>
+        {exportModalOpen && <ExportModal closeModal={this.toggleExportModal} />}
       </>
     );
   }
 }
 
-export default ViewReport;
+export default connect(
+  (state: any) => state.reports,
+  { setFilters }
+)(ViewReport);

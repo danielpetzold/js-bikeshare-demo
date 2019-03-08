@@ -1,12 +1,25 @@
 export interface ReportsState {
-  categories: object[];
+  filters: object[];
 }
 
-export const SET_CATEGORIES = 'set categories';
+export const SET_FILTERS = 'set filters';
+export const SELECT_OPTION = 'select option';
+export const CLEAR_FILTERS = 'clear filters';
 
-interface SetCategories {
-  type: typeof SET_CATEGORIES;
-  payload: any;
+interface SetFilters {
+  type: typeof SET_FILTERS;
+  payload: object[];
+}
+interface SelectOption {
+  type: typeof SELECT_OPTION;
+  payload: {
+    index: number;
+    option: string;
+  };
+}
+interface ClearFilters {
+  type: typeof CLEAR_FILTERS;
+  payload: object[];
 }
 
-export type ReportsActionTypes = SetCategories;
+export type ReportsActionTypes = SetFilters | SelectOption | ClearFilters;

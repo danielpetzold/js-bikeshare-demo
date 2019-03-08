@@ -1,0 +1,82 @@
+@import '../../scss/util/colors';
+
+.report-filter {
+  box-sizing: border-box;
+  width: 299px;
+  max-height: 713px;
+  border-radius: 5px;
+  box-shadow: 0 2px 15px -7px rgba(0, 0, 0, 0.5);
+  padding: 24px 12px;
+  background: $white;
+  overflow: scroll;
+  position: absolute;
+  top: 100%;
+  right: 0;
+  z-index: 5;
+  hr {
+    border: 0;
+    border-top: 1px solid $text-disabled;
+    margin: 0;
+  }
+  p {
+    font-weight: bold;
+  }
+  &__title {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    font-size: 14px;
+    p {
+      font-weight: normal;
+    }
+    h4 {
+      color: $text-nav;
+      width: max-content;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    * {
+      margin-top: 0;
+    }
+  }
+
+  &__option-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 17px;
+    cursor: pointer;
+    padding: 24px 0 16px 0;
+    p {
+      pointer-events: none;
+    }
+  }
+  &__arrow {
+    font-size: 14px;
+    color: $icon-primary-active;
+    cursor: pointer;
+    pointer-events: none;
+  }
+  &__content {
+    margin-top: 15px;
+    box-shadow: 0 2px 15px -7px rgba(0, 0, 0, 0.5);
+    border-radius: 5px;
+    overflow: hidden;
+    &--hidden {
+      display: none;
+    }
+  }
+  &__options {
+    line-height: 32px;
+    padding: 0 12px;
+  }
+  &__options:hover {
+    background: $btn-teal;
+    color: $white;
+  }
+  &__option--active,
+  &__option--active:hover {
+    background-color: $jade;
+    color: $white;
+  }
+}

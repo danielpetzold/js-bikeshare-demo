@@ -1,11 +1,13 @@
 import {
   ReportsState,
   ReportsActionTypes,
-  SET_CATEGORIES
+  SET_FILTERS,
+  SELECT_OPTION,
+  CLEAR_FILTERS
 } from './reports.types';
 
 const initialState: ReportsState = {
-  categories: []
+  filters: []
 };
 
 const reportsReducer = (
@@ -13,10 +15,22 @@ const reportsReducer = (
   action: ReportsActionTypes
 ): ReportsState => {
   switch (action.type) {
-    case SET_CATEGORIES:
+    case SET_FILTERS:
       return {
         ...state,
-        categories: action.payload
+        filters: action.payload
+      };
+    case SELECT_OPTION:
+      let copyFilters: any = [...state.filters];
+      copyFilters[action.payload.index].selected = action.payload.option;
+      return {
+        ...state,
+        filters: copyFilters
+      };
+    case CLEAR_FILTERS:
+      return {
+        ...state,
+        filters: action.payload
       };
     default:
       return state;
