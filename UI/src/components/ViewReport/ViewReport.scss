@@ -29,7 +29,6 @@
     position: relative;
   }
   &__header__select {
-    width: 200px;
     display: flex;
     align-items: center;
     justify-content: flex-end;
@@ -122,7 +121,7 @@
   &__btn--actions {
     box-sizing: border-box;
     width: 116px;
-    margin-left: 12px;
+    margin: 0 12px;
     padding: 0;
     display: flex;
     justify-content: space-evenly;
