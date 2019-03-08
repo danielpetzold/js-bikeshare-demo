@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import moodBad from '../../assets/ic-mood-bad.svg';
 import './NoAccess.scss';
-import { toggleNoAccess } from '../../actions/general';
+import { toggleNoAccess } from '../../reducers/General/general.actions';
 
 interface Props {
   toggleNoAccess: () => void;
