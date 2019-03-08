@@ -22,7 +22,7 @@
              tokenInRequestParam=true - principalParameter is read from request url parameters only.
              If tokenInRequestParam is not specified, the authentication token is looked up in request header
              and, then, if not found, in request params -->
-        <property name="tokenInRequestParam" value="false"/>
+          <property name="tokenInRequestParam" value="false"/>
 
         <!-- Check if there's a new token in the request -->
         <property name="checkForPrincipalChanges" value="true"/>
@@ -30,7 +30,8 @@
         <!-- DevelopmentPlainTextNonCipher works with the plain-text tokens by default.  It should be used in the development phase only.-->
         <!-- In prod., substitute with your token decryption implementation of com.jaspersoft.jasperserver.api.common.crypto.CipherI interface -->
         <property name="tokenDecryptor">
-            <bean class="customtokenauth.bikesharecipher.BikeShareCipher"/>
+	  <!-- <bean class="com.jaspersoft.jasperserver.api.common.crypto.DevelopmentPlainTextNonCipher"/>-->
+             <bean class="customtokenauth.bikesharecipher.BikeShareCipher"/> 
         </property>
 
         <property name="externalDataSynchronizer">
@@ -66,8 +67,8 @@
                                     <entry key="username" value="u" />
                                     <entry key="roles" value="r" />
                                     <entry key="orgId" value="o" />
-                                  <!--   <entry key="expireTime" value="exp" />
-                                    <entry key="profile.attribs" >
+                                    <entry key="expireTime" value="exp" />
+                                   <!-- <entry key="profile.attribs" >
                                         <map>
                                             <entry key="profileAttrib1" value="pa1" />
                                             <entry key="profileAttrib2" value="pa2" />
@@ -90,7 +91,7 @@
             <list>
                 <ref local="externalTenantSetupProcessor"/>  <!-- REQUIRED processor -->
                 <ref local="mtExternalUserSetupProcessor"/>  <!-- REQUIRED processor -->
-                <ref local="externalProfileAttributeProcessor"/>  <!-- OPTIONAL processor: comment out if no profile attributes are expected -->
+               <!-- <ref local="externalProfileAttributeProcessor"/> --> <!-- OPTIONAL processor: comment out if no profile attributes are expected -->
                 <!-- Example processor for creating user folder.
                 Other custom processors can be created and
                 added to the list.-->
@@ -114,30 +115,23 @@
 
         <property name="organizationRoleMap">
             <map>
-                <!-- Example of mapping customer roles to JRS roles -->
-                <!--<entry>
-                    <key>
-                        <value>ADMIN_EXTERNAL_ORGANIZATION</value>
-                    </key>
-                    <value>ROLE_ADMINISTRATOR</value>
-                </entry>-->
-		<entry>
+                <entry>
                     <key>
                         <value>EXT_COO</value>
                     </key>
-                    <value>EXT_COO|*</value>
+                    <value>COO|*</value>
                 </entry>
 		<entry>
                     <key>
-                        <value>EXT_REGMGR</value>
+                        <value>EXT_FRANCHISEMGR</value>
                     </key>
-                    <value>EXT_REGMGR|*</value>
+                    <value>FRANCHISEMGR|*</value>
                 </entry>
 		<entry>
                     <key>
                         <value>EXT_DRIVER</value>
                     </key>
-                    <value>EXT_DRIVER|*</value>
+                    <value>DRIVER|*</value>
                 </entry>
             </map>
         </property>
@@ -152,9 +146,9 @@
             <list>
             <!-- Used to set regex's to limit what external roles are imported into Jasper Server.
                 By default, all roles are imported.
-                Examples of the regex's importing only roles starting with JRS_ and EXT_:
+                Examples of the regex's importing only roles starting with JRS_ and EXT_: -->
                 <value>JRS_.*</value>
- 	    -->
+ 	   
                 <value>EXT_.*</value>
            
             </list>

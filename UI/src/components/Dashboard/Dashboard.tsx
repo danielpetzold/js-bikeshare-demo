@@ -84,6 +84,7 @@ class Dashboard extends React.Component<DashboardProps, State> {
   componentWillMount() {
     visualizeHelper.login(constants.COO_TOKEN, constants.jasperServerUrl);
   }
+
   componentDidMount() {
     visualizeHelper.getReport(
       'report1',
