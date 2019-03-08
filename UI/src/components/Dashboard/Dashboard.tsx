@@ -2,6 +2,8 @@ import React from 'react';
 import './Dashboard.scss';
 import NavBar from '../NavBar/NavBar';
 import Filter from '../Filter/Filter';
+import { visualizeHelper } from '../../helpers/VisualizeHelper';
+import * as constants from '../../helpers/constants';
 
 interface DashboardProps {}
 
@@ -9,6 +11,7 @@ interface State {
   isFilterOpen: boolean;
   region: FilterData;
   timeframe: FilterData;
+  reportPath: string;
 }
 
 export interface FilterData {
@@ -73,55 +76,23 @@ class Dashboard extends React.Component<DashboardProps, State> {
     this.state = {
       isFilterOpen: false,
       region: filterData.testRegions[0],
-      timeframe: filterData.testTimeframe[0]
+      timeframe: filterData.testTimeframe[0],
+      reportPath: '/public/Bikeshare_demo/Reports/Regions_by_Franchise'
     };
   }
 
   componentWillMount() {
-    const jrsUrl =
-      'http://jrs-bikes-elasticl-1k5yhf91vrjuo-1806919984.us-east-2.elb.amazonaws.com/jasperserver-pro';
-
-    // @ts-ignore
-    visualize.config({
-      server: jrsUrl,
-      scripts: 'optimized-scripts',
-      auth: {
-        name: 'COO1',
-        password: 'B1keShareDemoPwd*8',
-        organization: 'bikeshare'
-      }
-    });
+    visualizeHelper.login(constants.COO_TOKEN, constants.jasperServerUrl);
   }
-
   componentDidMount() {
-    this.renderReport(
-      '#report',
+    visualizeHelper.getReport(
+      'report1',
       '/public/Bikeshare_demo/Reports/Regions_by_Franchise'
-    )
-      .then(success => {
-        console.log('this is a success', success);
-      })
-      .catch(err => {
-        console.log('error', err);
-      });
-  }
-
-  renderReport(containerId: string, reportUrl: string) {
-    return new Promise(resolve => {
-      // @ts-ignore
-      visualize(v => {
-        const report = v.report({
-          container: containerId,
-          resource: reportUrl,
-          success: () => {
-            resolve(report);
-          },
-          error: (err: any) => {
-            console.log(err);
-          }
-        });
-      });
-    });
+    );
+    visualizeHelper.getReport(
+      'report2',
+      '/public/Bikeshare_demo/Reports/Regions_by_Franchise'
+    );
   }
 
   closeFilter = () => {
@@ -178,8 +149,11 @@ class Dashboard extends React.Component<DashboardProps, State> {
             </div>
             <div className={'grid dashboard__body'}>
               <div className={'grid__row'}>
-                <div className={'grid__column-12 grid__column-m-4'}>
-                  <div id={'report'}>Test</div>
+                <div className={'grid__column-6 grid__column-m-4'}>
+                  <div id={'report1'} />
+                </div>
+                <div className={'grid__column-6 grid__column-m-4'}>
+                  <div id={'report2'} />
                 </div>
               </div>
             </div>
