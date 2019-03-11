@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio -->
+<jasperTemplate xmlns="http://jasperreports.sourceforge.net/jasperreports/template" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/template http://jasperreports.sourceforge.net/xsd/jaspertemplate.xsd">
+	<style name="BaseReportStyle" isDefault="true" mode="Opaque" forecolor="#4A5357" backcolor="#FFFFFF" hTextAlign="Left" vTextAlign="Top" isBlankWhenNull="true" fontName="Lato" fontSize="12" pdfFontName="" pdfEncoding="" isPdfEmbedded="true"/>
+	<style name="TitleStyle" style="BaseReportStyle" hTextAlign="Center" vTextAlign="Middle" fontSize="14" isPdfEmbedded="true"/>
+	<style name="EnhancedTitleStyle" style="TitleStyle" fontName="Lato" isBold="true"/>
+	<style name="SecondaryTitleStyle" style="TitleStyle" forecolor="#C9CCCD" hTextAlign="Center" vTextAlign="Middle"/>
+	<style name="MetricLabelStyle" style="BaseReportStyle" hTextAlign="Center" vTextAlign="Middle" fontName="Lato&#xD;&#xA;" fontSize="28" isBold="true" isItalic="false"/>
+	<style name="MapStyle" style="BaseReportStyle"/>
+	<style name="OneThirdCardStyle" style="BaseReportStyle" mode="Opaque" forecolor="#9C9C9C" backcolor="#FFFFFF" radius="5" hTextAlign="Center" hImageAlign="Center" vTextAlign="Middle" vImageAlign="Middle">
+		<box padding="0"/>
+	</style>
+	<style name="IconStyle" hImageAlign="Center" vImageAlign="Middle"/>
+	<style name="OneSixthCardStyle" style="BaseReportStyle" backcolor="#FFFFFF">
+		<box padding="0"/>
+	</style>
+	<style name="TwoThirdsCardStyle" style="BaseReportStyle"/>
+</jasperTemplate>

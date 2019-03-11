@@ -2,6 +2,8 @@ import React from 'react';
 import './Dashboard.scss';
 import NavBar from '../NavBar/NavBar';
 import Filter from '../Filter/Filter';
+import { visualizeHelper } from '../../helpers/VisualizeHelper';
+import * as constants from '../../helpers/constants';
 
 interface DashboardProps {}
 
@@ -65,6 +67,8 @@ const filterData = {
 };
 
 class Dashboard extends React.Component<DashboardProps, State> {
+  visualize: any;
+
   constructor(props: DashboardProps) {
     super(props);
     // Set initial state for filter to first two options in data
@@ -73,6 +77,21 @@ class Dashboard extends React.Component<DashboardProps, State> {
       region: filterData.testRegions[0],
       timeframe: filterData.testTimeframe[0]
     };
+  }
+
+  componentWillMount() {
+    visualizeHelper.login(constants.COO_TOKEN, constants.jasperServerUrl);
+  }
+
+  componentDidMount() {
+    visualizeHelper.getReport(
+      'report1',
+      '/public/Bikeshare_demo/Reports/AdHoc_Reports/Regions_by_Franchise'
+    );
+    visualizeHelper.getReport(
+      'report2',
+      '/public/Bikeshare_demo/Reports/AdHoc_Reports/Regions_by_Franchise'
+    );
   }
 
   closeFilter = () => {
@@ -129,7 +148,12 @@ class Dashboard extends React.Component<DashboardProps, State> {
             </div>
             <div className={'grid dashboard__body'}>
               <div className={'grid__row'}>
-                <div className={'grid__column-12 grid__column-m-4'} />
+                <div className={'grid__column-6 grid__column-m-4'}>
+                  <div id={'report1'} />
+                </div>
+                <div className={'grid__column-6 grid__column-m-4'}>
+                  <div id={'report2'} />
+                </div>
               </div>
             </div>
           </div>
