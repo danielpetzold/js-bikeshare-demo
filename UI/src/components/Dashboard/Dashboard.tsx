@@ -11,7 +11,6 @@ interface State {
   isFilterOpen: boolean;
   region: FilterData;
   timeframe: FilterData;
-  reportPath: string;
 }
 
 export interface FilterData {
@@ -76,8 +75,7 @@ class Dashboard extends React.Component<DashboardProps, State> {
     this.state = {
       isFilterOpen: false,
       region: filterData.testRegions[0],
-      timeframe: filterData.testTimeframe[0],
-      reportPath: '/public/Bikeshare_demo/Reports/Regions_by_Franchise'
+      timeframe: filterData.testTimeframe[0]
     };
   }
 
@@ -88,11 +86,11 @@ class Dashboard extends React.Component<DashboardProps, State> {
   componentDidMount() {
     visualizeHelper.getReport(
       'report1',
-      '/public/Bikeshare_demo/Reports/Regions_by_Franchise'
+      '/public/Bikeshare_demo/Reports/AdHoc_Reports/Regions_by_Franchise'
     );
     visualizeHelper.getReport(
       'report2',
-      '/public/Bikeshare_demo/Reports/Regions_by_Franchise'
+      '/public/Bikeshare_demo/Reports/AdHoc_Reports/Regions_by_Franchise'
     );
   }
 
