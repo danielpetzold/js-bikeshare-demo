@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import {
   selectOption,
   clearFilters
-} from '../../reducers/Reports/reports.actions';
+} from '../../store/Reports/reports.actions';
 import './ReportFilter.scss';
 
 interface State {}

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { setFilters } from '../../reducers/Reports/reports.actions';
+import { setFilters } from '../../store/Reports/reports.actions';
 import './ViewReport.scss';
 import filterIcon from '../../fonts/icons/filter-icon.svg';
 import NavBar from '../NavBar/NavBar';

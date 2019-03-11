@@ -3,7 +3,7 @@ import { Component } from 'react';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { toggleNoAccess } from '../../reducers/General/general.actions';
+import { toggleNoAccess } from '../../store/General/general.actions';
 
 type State = {
   isOpen: boolean;
