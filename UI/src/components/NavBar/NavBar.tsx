@@ -132,23 +132,18 @@ class NavBar extends Component<NavBarProps, State> {
               </a>
             </li>
           </ul>
-          {/* Close Toggle */}
-          <div
-            className={`nav-bar__close-button  ${
-              !isOpen ? `nav-bar--hideX` : ''
-            }`}
-            onClick={toggleMenu}
-          >
-            <i className="icon-ic-close " />
-          </div>
-          {/* Open Toggle */}
-          <div
-            className={`nav-bar__expand ${isOpen ? `nav-bar--hideX` : ''} `}
-            onClick={toggleMenu}
-          >
-            <i className="icon-ic-arrow-right" />
-          </div>
+          {/* Toggle */}
+          {isOpen ? (
+            <div className={`nav-bar__close-button`} onClick={toggleMenu}>
+              <i className="icon-ic-close " />
+            </div>
+          ) : (
+            <div className={`nav-bar__expand`} onClick={toggleMenu}>
+              <i className="icon-ic-arrow-right" />
+            </div>
+          )}
         </nav>
+        {/* Hamburger */}
         <div
           className={`nav-bar__hamburger ${isOpen ? `nav-bar--closed` : ''} `}
           onClick={toggleMenu}
