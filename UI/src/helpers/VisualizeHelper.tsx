@@ -15,18 +15,18 @@ class VisualizeHelper {
   private visualize = (window as any).visualize;
 
   /**
-   * SSO Login
+   * Token-Based Authentication Login
    * @param userToken
-   * @param url
+   * @param jaspersoftServerUrl
    */
-  login(userToken: string, url: string) {
+  login(userToken: string, jaspersoftServerUrl: string) {
     this.visualize.config({
-      server: constants.jasperServerUrl,
+      server: jaspersoftServerUrl,
       scripts: 'optimized-scripts',
       auth: {
         loginFn: (properties: any, request: any) => {
           return request({
-            url: url,
+            url: jaspersoftServerUrl,
             headers: {
               pp: userToken
             }
@@ -37,7 +37,7 @@ class VisualizeHelper {
   }
 
   /**
-   * SSO Logout
+   * Token-Based Authentication Logout
    */
   logOut() {
     this.visualize((v: any) => {
@@ -46,17 +46,17 @@ class VisualizeHelper {
   }
 
   /**
-   * Add report to page
-   * @param reportId
-   * @param reportUrl
+   * Get report
+   * @param uiContainer
+   * @param resourcePath
    * @param params
    */
-  getReport(reportId: string, reportUrl: string, params: any = {}) {
+  getReport(uiContainer: string, resourcePath: string, params: any = {}) {
     return new Promise((resolve, reject) => {
       this.visualize((v: any) => {
         v.report({
-          container: `#${reportId}`,
-          resource: reportUrl,
+          container: `#${uiContainer}`,
+          resource: resourcePath,
           params: params,
           success: () => {
             resolve();
@@ -71,17 +71,17 @@ class VisualizeHelper {
   }
 
   /**
-   * Add Input control
-   * @param reportId
-   * @param reportUrl
+   * Get Input control
+   * @param uiContainer
+   * @param resourcePath
    * @param params
    */
-  getInputControl(reportId: string, reportUrl: string, params: any = {}) {
+  getInputControl(uiContainer: string, resourcePath: string, params: any = {}) {
     return new Promise((resolve, reject) => {
       this.visualize((v: any) => {
         v.inputControls({
-          container: `#${reportId}`,
-          resource: reportUrl,
+          container: `#${uiContainer}`,
+          resource: resourcePath,
           params: params,
           success: () => {
             resolve();
