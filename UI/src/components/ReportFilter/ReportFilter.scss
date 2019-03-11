@@ -18,17 +18,11 @@
     border-top: 1px solid $text-disabled;
     margin: 0;
   }
-  p {
-    font-weight: bold;
-  }
   &__title {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
     font-size: 14px;
-    p {
-      font-weight: normal;
-    }
     h4 {
       color: $text-nav;
       width: max-content;
@@ -47,9 +41,15 @@
     height: 17px;
     cursor: pointer;
     padding: 24px 0 16px 0;
-    p {
+    div {
       pointer-events: none;
     }
+    p {
+      margin: 0;
+    }
+  }
+  &__option-title--filter {
+    font-weight: bold;
   }
   &__arrow {
     font-size: 14px;

@@ -37,7 +37,12 @@ class ReportFilter extends Component<any, State> {
     const { filters, selectOption } = this.props;
 
     // Creates a select option for each filter option passed in from displayCategories.
-    const displayOptions = (options: any, selected: string, index: number) => {
+    const displayOptions = (
+      options: any,
+      selected: string,
+      index: number,
+      open: string
+    ) => {
       let optionsList = options.map((option: string, i: number) => {
         return (
           <div
@@ -46,7 +51,12 @@ class ReportFilter extends Component<any, State> {
               (selected === option && 'report-filter__option--active')
             }
             key={i}
-            onClick={() => selectOption({ option, index })}
+            onClick={() => {
+              selectOption({ option, index });
+              this.setState({
+                [open]: false
+              });
+            }}
           >
             {option}
           </div>
@@ -64,7 +74,12 @@ class ReportFilter extends Component<any, State> {
             id={`${cat.altName}Open`}
             onClick={e => this.toggleOpen(e, !this.state[`${cat.altName}Open`])}
           >
-            <p>{cat.name}</p>
+            <div>
+              <p className={'report-filter__option-title--filter'}>
+                {cat.name}
+              </p>
+              <p>{cat.selected || `Select an option`}</p>
+            </div>
             <i className={'report-filter__arrow icon-ic-arrow-down'} />
           </div>
           <hr />
@@ -76,7 +91,7 @@ class ReportFilter extends Component<any, State> {
                 : '')
             }
           >
-            {displayOptions(cat.options, cat.selected, i)}
+            {displayOptions(cat.options, cat.selected, i, `${cat.altName}Open`)}
           </div>
         </div>
       );

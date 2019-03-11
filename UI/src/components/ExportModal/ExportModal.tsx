@@ -57,14 +57,7 @@ export default class ExportModal extends Component<Props, State> {
                   onClick={this.toggleDropdown}
                 >
                   <div>{selectedFormat ? selectedFormat : options[0]}</div>
-                  <div className={'export-modal__custom-select__select-arrows'}>
-                    <i
-                      className={
-                        'icon-ic-arrow-down export-modal__custom-select__arrow-flip'
-                      }
-                    />
-                    <i className={'icon-ic-arrow-down'} />
-                  </div>
+                  <i className={'icon-ic-unfold-more'} />
                 </div>
                 {openDropdown && (
                   <Dropdown

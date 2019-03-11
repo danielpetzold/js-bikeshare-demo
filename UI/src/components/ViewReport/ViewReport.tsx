@@ -42,25 +42,42 @@ class ViewReport extends Component<any, State> {
         name: 'Region',
         altName: 'region',
         selected: '',
-        options: ['1', '2', '3']
+        options: [
+          'Alameda County',
+          'Contra Costa County',
+          'Downtown San Francisco',
+          'San Francisco Bay Area',
+          'Santa Clara County'
+        ]
       },
       {
         name: 'Station',
         altName: 'station',
         selected: '',
-        options: ['4', '5', '6']
+        options: [
+          'Brooklyn Bridge',
+          '1028 Garfield Ave',
+          '83 Barbara St',
+          '405 Anchor St'
+        ]
       },
       {
         name: 'Franchise',
         altName: 'franchise',
         selected: '',
-        options: ['7', '8', '9']
+        options: [
+          'Van Ness',
+          'Geary',
+          'Hyde',
+          'Haight and Ashbury',
+          'Polk Street'
+        ]
       },
       {
         name: 'On Site Kiosk',
         altName: 'osk',
         selected: '',
-        options: ['10', '11', '12']
+        options: ['true', 'false']
       }
     ]);
   }
@@ -117,14 +134,7 @@ class ViewReport extends Component<any, State> {
                         onClick={this.toggleReports}
                       >
                         <h5>{selectedReport}</h5>
-                        <div className={'report-view__header__select-arrows'}>
-                          <i
-                            className={
-                              'icon-ic-arrow-down export-modal__custom-select__arrow-flip'
-                            }
-                          />
-                          <i className={'icon-ic-arrow-down'} />
-                        </div>
+                        <i className={'icon-ic-unfold-more'} />
                       </div>
                       <div className={'report-view__header__dropdown'}>
                         {reportsOpen && (

@@ -76,20 +76,10 @@
     margin-bottom: 12px;
     font-weight: bold;
     cursor: pointer;
-  }
-  &__select-arrows {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    color: #9c9c9c;
     i {
-      font-size: 12px;
-      font-weight: bold;
-      margin: 2px 0;
+      opacity: 0.6;
+      font-size: 20px;
     }
-  }
-  &__arrow-flip {
-    transform: scaleY(-1);
   }
 }
 
