@@ -119,103 +119,103 @@ class ViewReport extends Component<any, State> {
     return (
       <>
         <NavBar />
-        <div className={'grid'}>
-          <div className={'grid__row'}>
-            <div className={'grid__column-12 grid__column-m-4'}>
-              <div className={'report-view'}>
-                <div className={'report-view__header'}>
-                  {/* HEADER */}
-                  <header className={'report-header'}>
-                    {/* Top Header Row */}
-                    <div className={'report-header__top'}>
-                      <h3 className={'report-header__title'}>Reports</h3>
-                      <div
-                        className={'header-select'}
-                        onClick={this.toggleReports}
-                      >
-                        <h5>{selectedReport}</h5>
-                        <i className={'icon-ic-unfold-more'} />
-                      </div>
-                      <div className={'header-select__dropdown'}>
-                        {reportsOpen && (
-                          <Dropdown
-                            setSelected={this.setReport}
-                            toggleDropdown={this.toggleReports}
-                            options={reportOptions}
-                            dropdownWidth="195px"
-                          />
-                        )}
-                      </div>
+        <div className={'grid report-view'}>
+          {/* HEADER */}
+          <div className={'report-view__header'}>
+            <div className={'grid__row'}>
+              <div className={'grid__column-12 grid__column-m-4'}>
+                <header className={'report-header'}>
+                  {/* Top Header Row */}
+                  <div className={'report-header__top'}>
+                    <h3 className={'report-header__title'}>Reports</h3>
+                    <div
+                      className={'header-select'}
+                      onClick={this.toggleReports}
+                    >
+                      <h5>{selectedReport}</h5>
+                      <i className={'icon-ic-unfold-more'} />
                     </div>
-                    {/* Bottom Header Row */}
-                    <div className={'report-header__bottom'}>
-                      <div className={'report-header__buttons'}>
-                        <button
-                          className={'report-view__btn--create btn--primary'}
-                        >
-                          Create Report
-                        </button>
-                        <a
-                          className={'report-view__btn--actions btn--secondary'}
+                    <div className={'header-select__dropdown'}>
+                      {reportsOpen && (
+                        <Dropdown
+                          setSelected={this.setReport}
+                          toggleDropdown={this.toggleReports}
+                          options={reportOptions}
+                          dropdownWidth="195px"
+                        />
+                      )}
+                    </div>
+                  </div>
+                  {/* Bottom Header Row */}
+                  <div className={'report-header__bottom'}>
+                    <div className={'report-header__buttons'}>
+                      <button
+                        className={'report-view__btn--create btn--primary'}
+                      >
+                        Create Report
+                      </button>
+                      <a
+                        className={'report-view__btn--actions btn--secondary'}
+                        onClick={this.toggleActions}
+                      >
+                        <p>Modify</p>
+                        <i
+                          className={'report-view__actions icon-ic-arrow-down'}
+                        />
+                      </a>
+                      {actionsOpen && (
+                        <div
+                          className={'report-view__actions-dropdown'}
                           onClick={this.toggleActions}
                         >
-                          <p>Modify</p>
-                          <i
-                            className={
-                              'report-view__actions icon-ic-arrow-down'
-                            }
-                          />
-                        </a>
-                        {actionsOpen && (
+                          <a href="">
+                            <div className={'report-view__action-options'}>
+                              Modify
+                            </div>
+                          </a>
                           <div
-                            className={'report-view__actions-dropdown'}
-                            onClick={this.toggleActions}
+                            className={'report-view__action-options'}
+                            onClick={this.toggleExportModal}
                           >
-                            <a href="">
-                              <div className={'report-view__action-options'}>
-                                Modify
-                              </div>
-                            </a>
-                            <div
-                              className={'report-view__action-options'}
-                              onClick={this.toggleExportModal}
-                            >
-                              Export
-                            </div>
-                            <div
-                              className={'report-view__action-options'}
-                              onClick={() =>
-                                setTimeout(() => window.print(), 100)
-                              }
-                            >
-                              Print
-                            </div>
+                            Export
                           </div>
-                        )}
-                      </div>
-                      <img
-                        src={filterIcon}
-                        alt="filter"
-                        onClick={() =>
-                          this.setState({ filterOpen: !filterOpen })
-                        }
-                      />
+                          <div
+                            className={'report-view__action-options'}
+                            onClick={() =>
+                              setTimeout(() => window.print(), 100)
+                            }
+                          >
+                            Print
+                          </div>
+                        </div>
+                      )}
                     </div>
-                  </header>
-                  {/* FILTER */}
-                  {mounted && (
-                    <div
-                      className={
-                        filterOpen
-                          ? 'report-view__show-filter'
-                          : 'report-view__hide-filter'
-                      }
-                    >
-                      <ReportFilter />
-                    </div>
-                  )}
-                </div>
-                {/* REPORT */}
+                    <img
+                      src={filterIcon}
+                      alt="filter"
+                      onClick={() => this.setState({ filterOpen: !filterOpen })}
+                    />
+                  </div>
+                </header>
+                {/* FILTER */}
+                {mounted && (
+                  <div
+                    className={
+                      filterOpen
+                        ? 'report-view__show-filter'
+                        : 'report-view__hide-filter'
+                    }
+                  >
+                    <ReportFilter />
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+          {/* REPORT */}
+          <div className={'report-view__content'}>
+            <div className={'grid__row'}>
+              <div className={'grid__column-12 grid__column-m-4'}>
                 <div className={'report-view__table'}>
                   {/* report to be passed in */}
                 </div>

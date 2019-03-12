@@ -8,6 +8,7 @@
 
   &__header {
     position: relative;
+    margin-bottom: 24px;
   }
 
   &__actions-dropdown {
@@ -51,8 +52,9 @@
     line-height: 40px;
   }
 
-  // Table styles
+  // Content styles
 
+  // remove and replace with report
   &__table {
     height: 750px;
     background: rgba(grey, 0.7);
@@ -72,10 +74,6 @@
 // Header
 
 .report-header {
-  display: grid;
-  width: 100%;
-  margin: 0 auto 24px auto;
-
   &__title {
     margin-bottom: 12px;
   }
@@ -148,9 +146,6 @@
 
 @media screen and (min-width: $tablet-break) {
   .report-view {
-    box-sizing: border-box;
-    justify-items: center;
-    width: 100%;
-    padding-left: 70px;
+    padding-left: 94px;
   }
 }
