@@ -128,7 +128,7 @@ class ViewReport extends Component<any, State> {
                   <header className={'report-view__header'}>
                     {/* Top Header Row */}
                     <div className={'report-view__header__top'}>
-                      <h3>Reports</h3>
+                      <h3 className={'report-view__header-title'}>Reports</h3>
                       <div
                         className={'report-view__header__select'}
                         onClick={this.toggleReports}
@@ -172,10 +172,18 @@ class ViewReport extends Component<any, State> {
                             onClick={this.toggleActions}
                           >
                             <a href="">
-                              <div>Modify</div>
+                              <div className={'report-view__action-options'}>
+                                Modify
+                              </div>
                             </a>
-                            <div onClick={this.toggleExportModal}>Export</div>
                             <div
+                              className={'report-view__action-options'}
+                              onClick={this.toggleExportModal}
+                            >
+                              Export
+                            </div>
+                            <div
+                              className={'report-view__action-options'}
                               onClick={() =>
                                 setTimeout(() => window.print(), 100)
                               }

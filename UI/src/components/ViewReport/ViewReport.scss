@@ -14,14 +14,9 @@
     display: grid;
     width: 100%;
     margin: 0 auto 24px auto;
-    p {
-      margin: 0;
-      opacity: 0.6;
-      text-transform: uppercase;
-    }
-    h3 {
-      margin-bottom: 12px;
-    }
+  }
+  &__header-title {
+    margin-bottom: 12px;
   }
   &__header__top {
     display: flex;
@@ -29,57 +24,11 @@
     align-items: flex-end;
     position: relative;
   }
-  &__header__select {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    margin-bottom: 12px;
-    h5 {
-      font-size: 16px;
-      font-weight: normal;
-      line-height: 24px;
-      color: $jade;
-      margin: 0;
-      margin-right: 7px;
-    }
-    i {
-      opacity: 0.6;
-      font-size: 20px;
-    }
-  }
-  &__header__select-arrows {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    color: #9c9c9c;
-    i {
-      font-size: 8px;
-      font-weight: bold;
-      margin: 2px 0;
-    }
-  }
   &__header__dropdown {
     position: absolute;
     top: calc(100% + 4px);
     right: 0;
     z-index: 6;
-  }
-  &__header__links {
-    position: relative;
-    margin-top: 12px;
-    display: grid;
-    grid-auto-flow: column;
-    justify-content: space-between;
-    align-items: center;
-    color: $text-nav;
-    p {
-      opacity: 1;
-      text-transform: none;
-    }
-    img,
-    a {
-      cursor: pointer;
-    }
   }
   &__header__buttons {
     display: flex;
@@ -94,32 +43,21 @@
     border-radius: 5px;
     box-shadow: 0 2px 15px -7px rgba(0, 0, 0, 0.5);
     overflow: hidden;
-    div {
-      height: 32px;
-      line-height: 32px;
-      padding: 0 12px;
-      background-color: $white;
-      color: $gunmetal;
-    }
-    div:hover {
-      background-color: $jade;
-      color: $white;
-    }
+  }
+  &__action-options {
+    height: 32px;
+    line-height: 32px;
+    padding: 0 12px;
+    background-color: $white;
+    color: $gunmetal;
+  }
+  &__action-options:hover {
+    background-color: $jade;
+    color: $white;
   }
 
   // Button styles
 
-  &__btn-wrapper {
-    width: 299px;
-    display: grid;
-    grid-auto-flow: column;
-    justify-content: space-between;
-    margin: 24px auto;
-    a {
-      line-height: 40px;
-      color: $btn-green;
-    }
-  }
   &__btn--create {
     width: 125px;
   }
@@ -131,12 +69,7 @@
     display: flex;
     justify-content: space-evenly;
     align-items: center;
-    p {
-      line-height: 40px;
-    }
-  }
-  &__no-mobile {
-    display: none;
+    line-height: 40px;
   }
 
   // Table styles
@@ -155,6 +88,49 @@
     display: none;
   }
 }
+
+// Header report select
+
+.report-view__header__select {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin-bottom: 12px;
+  h5 {
+    font-size: 16px;
+    font-weight: normal;
+    line-height: 24px;
+    color: $jade;
+    margin: 0;
+    margin-right: 7px;
+  }
+  i {
+    opacity: 0.6;
+    font-size: 20px;
+  }
+}
+
+// Header buttons
+
+.report-view__header__links {
+  position: relative;
+  margin-top: 12px;
+  display: grid;
+  grid-auto-flow: column;
+  justify-content: space-between;
+  align-items: center;
+  color: $text-nav;
+  p {
+    opacity: 1;
+    text-transform: none;
+  }
+  img,
+  a {
+    cursor: pointer;
+  }
+}
+
+// Desktop changes
 
 @media screen and (min-width: $tablet-break) {
   .report-view {
