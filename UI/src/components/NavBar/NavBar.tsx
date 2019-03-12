@@ -52,7 +52,7 @@ class NavBar extends Component<NavBarProps, State> {
               <div className="nav-bar__user-name">Test Person</div>
               <div className="nav-bar__user-title">COO</div>
             </div>
-            <Link className="nav-bar__log-out" to="/Login">
+            <Link className="nav-bar__log-out" to="/">
               Log Out
             </Link>
           </div>
@@ -104,13 +104,11 @@ class NavBar extends Component<NavBarProps, State> {
                   : '')
               }
             >
-              <a className="nav-bar__link" href="#">
+              <Link className="nav-bar__link" to="/Reports">
                 <i className="icon-ic-assignment nav-bar__icon " />
                 <span className="nav-bar__text">Reports</span>
-              </a>
+              </Link>
             </li>
-          </ul>
-          <ul className="nav-bar__bottom-menu">
             <li className="nav-bar__item">
               <a
                 className="nav-bar__link"
@@ -133,13 +131,9 @@ class NavBar extends Component<NavBarProps, State> {
             </li>
           </ul>
           {/* Toggle */}
-          {isOpen ? (
+          {isOpen && (
             <div className={`nav-bar__close-button`} onClick={toggleMenu}>
               <i className="icon-ic-close " />
-            </div>
-          ) : (
-            <div className={`nav-bar__expand`} onClick={toggleMenu}>
-              <i className="icon-ic-arrow-right" />
             </div>
           )}
         </nav>
