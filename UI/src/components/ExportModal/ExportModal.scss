@@ -1,7 +1,7 @@
 @import '../../scss/util/colors';
 @import '../../scss/util/variables';
 
-.export-modal-wrapper {
+.modal-wrapper {
   padding: 0;
   position: fixed;
   top: 0;
@@ -27,7 +27,7 @@
   justify-content: flex-start;
   align-items: center;
 
-  &__btn {
+  &__submit-btn {
     position: absolute;
     bottom: 0;
     width: 100%;
@@ -45,7 +45,7 @@
   }
 }
 
-.export-modal__title-wrapper {
+.export-modal__title {
   margin: 28px 24px 24px 24px;
   display: flex;
   justify-content: space-between;
@@ -61,7 +61,7 @@
   }
 }
 
-.export-modal__custom-select__selected-box {
+.modal-select {
   box-sizing: border-box;
   border-style: none;
   border-radius: 5px;

@@ -43,17 +43,14 @@ export default class ExportModal extends Component<Props, State> {
     const { closeModal } = this.props;
 
     return (
-      <div className={'export-modal-wrapper'}>
+      <div className={'modal-wrapper'}>
         <div className={'export-modal'}>
-          <div className={'export-modal__title-wrapper'}>
+          <div className={'export-modal__title'}>
             <h2>Export Report</h2>
             <i className={'icon-ic-close'} onClick={closeModal} />
           </div>
-          <div className={'export-modal__custom-select'}>
-            <div
-              className={'export-modal__custom-select__selected-box'}
-              onClick={this.toggleDropdown}
-            >
+          <div className={'export-modal__select'}>
+            <div className={'modal-select'} onClick={this.toggleDropdown}>
               <div>{selectedFormat ? selectedFormat : options[0]}</div>
               <i className={'icon-ic-unfold-more'} />
             </div>
@@ -67,7 +64,7 @@ export default class ExportModal extends Component<Props, State> {
             )}
           </div>
           <button
-            className={'export-modal__btn'}
+            className={'export-modal__submit-btn'}
             disabled={selectedFormat === '' || selectedFormat === options[0]}
             onClick={this.exportSubmit}
           >

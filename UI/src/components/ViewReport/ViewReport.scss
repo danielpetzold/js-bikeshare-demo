@@ -6,34 +6,10 @@
   max-width: 900px;
   margin: 0 auto;
 
-  // Header styles
-  &__header-wrap {
-    position: relative;
-  }
   &__header {
-    display: grid;
-    width: 100%;
-    margin: 0 auto 24px auto;
-  }
-  &__header-title {
-    margin-bottom: 12px;
-  }
-  &__header__top {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
     position: relative;
   }
-  &__header__dropdown {
-    position: absolute;
-    top: calc(100% + 4px);
-    right: 0;
-    z-index: 6;
-  }
-  &__header__buttons {
-    display: flex;
-    position: relative;
-  }
+
   &__actions-dropdown {
     position: absolute;
     top: calc(100% + 12px);
@@ -44,6 +20,7 @@
     box-shadow: 0 2px 15px -7px rgba(0, 0, 0, 0.5);
     overflow: hidden;
   }
+
   &__action-options {
     height: 32px;
     line-height: 32px;
@@ -51,6 +28,7 @@
     background-color: $white;
     color: $gunmetal;
   }
+
   &__action-options:hover {
     background-color: $jade;
     color: $white;
@@ -61,6 +39,7 @@
   &__btn--create {
     width: 125px;
   }
+
   &__btn--actions {
     box-sizing: border-box;
     width: 116px;
@@ -84,18 +63,44 @@
   &__show-filter {
     display: inline;
   }
+
   &__hide-filter {
     display: none;
   }
 }
 
-// Header report select
+// Header
 
-.report-view__header__select {
+.report-header {
+  display: grid;
+  width: 100%;
+  margin: 0 auto 24px auto;
+
+  &__title {
+    margin-bottom: 12px;
+  }
+
+  &__top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    position: relative;
+  }
+
+  &__buttons {
+    display: flex;
+    position: relative;
+  }
+}
+
+// Header Select
+
+.header-select {
   display: flex;
   align-items: center;
   justify-content: flex-end;
   margin-bottom: 12px;
+
   h5 {
     font-size: 16px;
     font-weight: normal;
@@ -104,15 +109,22 @@
     margin: 0;
     margin-right: 7px;
   }
+
   i {
     opacity: 0.6;
     font-size: 20px;
   }
+  &__dropdown {
+    position: absolute;
+    top: calc(100% + 4px);
+    right: 0;
+    z-index: 6;
+  }
 }
 
-// Header buttons
+// Header bottom
 
-.report-view__header__links {
+.report-header__bottom {
   position: relative;
   margin-top: 12px;
   display: grid;
@@ -120,10 +132,12 @@
   justify-content: space-between;
   align-items: center;
   color: $text-nav;
+
   p {
     opacity: 1;
     text-transform: none;
   }
+
   img,
   a {
     cursor: pointer;

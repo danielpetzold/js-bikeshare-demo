@@ -123,20 +123,20 @@ class ViewReport extends Component<any, State> {
           <div className={'grid__row'}>
             <div className={'grid__column-12 grid__column-m-4'}>
               <div className={'report-view'}>
-                <div className={'report-view__header-wrap'}>
+                <div className={'report-view__header'}>
                   {/* HEADER */}
-                  <header className={'report-view__header'}>
+                  <header className={'report-header'}>
                     {/* Top Header Row */}
-                    <div className={'report-view__header__top'}>
-                      <h3 className={'report-view__header-title'}>Reports</h3>
+                    <div className={'report-header__top'}>
+                      <h3 className={'report-header__title'}>Reports</h3>
                       <div
-                        className={'report-view__header__select'}
+                        className={'header-select'}
                         onClick={this.toggleReports}
                       >
                         <h5>{selectedReport}</h5>
                         <i className={'icon-ic-unfold-more'} />
                       </div>
-                      <div className={'report-view__header__dropdown'}>
+                      <div className={'header-select__dropdown'}>
                         {reportsOpen && (
                           <Dropdown
                             setSelected={this.setReport}
@@ -148,8 +148,8 @@ class ViewReport extends Component<any, State> {
                       </div>
                     </div>
                     {/* Bottom Header Row */}
-                    <div className={'report-view__header__links'}>
-                      <div className={'report-view__header__buttons'}>
+                    <div className={'report-header__bottom'}>
+                      <div className={'report-header__buttons'}>
                         <button
                           className={'report-view__btn--create btn--primary'}
                         >
