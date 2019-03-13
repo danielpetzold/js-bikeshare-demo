@@ -3,7 +3,7 @@ import { Component } from 'react';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { toggleNoAccess } from '../../actions/general';
+import { toggleNoAccess } from '../../store/General/general.actions';
 
 type State = {
   isOpen: boolean;
@@ -67,10 +67,10 @@ class NavBar extends Component<NavBarProps, any> {
               </a>
             </li>
             <li className="nav-bar__item">
-              <a className="nav-bar__link" href="#">
+              <Link to="/Reports" className="nav-bar__link">
                 <i className="icon-ic-assignment nav-bar__icon " />
                 <span className="nav-bar__text">Reports</span>
-              </a>
+              </Link>
             </li>
           </ul>
           <ul className="nav-bar__bottom-menu">
