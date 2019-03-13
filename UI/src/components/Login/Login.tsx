@@ -1,12 +1,21 @@
 import React, { Component } from 'react';
 import './Login.scss';
 import logo from '../../assets/logo.svg';
+import {
+  COO_ROLE,
+  DRIVER_ROLE,
+  FRANCHISE_MANAGER_ROLE,
+  userData
+} from '../../helpers/userData';
+import { connect } from 'react-redux';
+import { loginUser } from '../../store/Login/login.actions';
+import { User } from '../../store/Login/login.types';
 
 interface State {
   selectedRole: string;
 }
 
-export default class Login extends Component<any, State> {
+class Login extends Component<any, State> {
   readonly state: State = {
     selectedRole: ''
   };
@@ -21,6 +30,10 @@ export default class Login extends Component<any, State> {
   };
 
   handleLogin = () => {
+    let user: User = userData.find((user: User) => {
+      return user.role === this.state.selectedRole;
+    }) as User;
+    this.props.loginUser(user);
     this.props.history.push('/dashboard');
   };
 
@@ -41,11 +54,11 @@ export default class Login extends Component<any, State> {
                   <div
                     className={
                       'user-options__role' +
-                      (selectedRole === 'COO'
+                      (selectedRole === COO_ROLE
                         ? ' user-options__role--active'
                         : '')
                     }
-                    id="COO"
+                    id={COO_ROLE}
                     onClick={e => this.selectRole(e)}
                   >
                     COO
@@ -53,24 +66,24 @@ export default class Login extends Component<any, State> {
                   <div
                     className={
                       'user-options__role user-options__role--mid' +
-                      (selectedRole === 'Regional'
+                      (selectedRole === FRANCHISE_MANAGER_ROLE
                         ? ' user-options__role--active'
                         : '')
                     }
-                    id="Regional"
-                    onClick={this.selectRole}
+                    id={FRANCHISE_MANAGER_ROLE}
+                    onClick={e => this.selectRole(e)}
                   >
                     Regional
                   </div>
                   <div
                     className={
                       'user-options__role' +
-                      (selectedRole === 'Driver'
+                      (selectedRole === DRIVER_ROLE
                         ? ' user-options__role--active'
                         : '')
                     }
-                    id="Driver"
-                    onClick={this.selectRole}
+                    id={DRIVER_ROLE}
+                    onClick={e => this.selectRole(e)}
                   >
                     Driver
                   </div>
@@ -91,3 +104,8 @@ export default class Login extends Component<any, State> {
     );
   }
 }
+
+export default connect(
+  null,
+  { loginUser }
+)(Login);
