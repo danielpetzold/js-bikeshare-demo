@@ -2,7 +2,7 @@ import {
   GeneralState,
   GeneralActionTypes,
   TOGGLE_NO_ACCESS
-} from '../types/general';
+} from './general.types';
 
 const initialState: GeneralState = {
   showNoAccess: false
