@@ -119,10 +119,10 @@ class ViewReport extends Component<any, State> {
     return (
       <>
         <NavBar />
-        <div className={'grid report-view'}>
-          {/* HEADER */}
-          <div className={'report-view__header'}>
-            <div className={'grid__row'}>
+        <div className={'report-container'}>
+          <div className={'grid report-view'}>
+            {/* HEADER */}
+            <div className={'grid__row '}>
               <div className={'grid__column-12 grid__column-m-4'}>
                 <header className={'report-header'}>
                   {/* Top Header Row */}
@@ -196,24 +196,23 @@ class ViewReport extends Component<any, State> {
                       onClick={() => this.setState({ filterOpen: !filterOpen })}
                     />
                   </div>
+                  {/* FILTER */}
+                  {mounted && (
+                    <div
+                      className={
+                        filterOpen
+                          ? 'report-view__show-filter'
+                          : 'report-view__hide-filter'
+                      }
+                    >
+                      <ReportFilter />
+                    </div>
+                  )}
                 </header>
-                {/* FILTER */}
-                {mounted && (
-                  <div
-                    className={
-                      filterOpen
-                        ? 'report-view__show-filter'
-                        : 'report-view__hide-filter'
-                    }
-                  >
-                    <ReportFilter />
-                  </div>
-                )}
               </div>
             </div>
-          </div>
-          {/* REPORT */}
-          <div className={'report-view__content'}>
+
+            {/* REPORT */}
             <div className={'grid__row'}>
               <div className={'grid__column-12 grid__column-m-4'}>
                 <div className={'report-view__table'}>
@@ -222,8 +221,10 @@ class ViewReport extends Component<any, State> {
               </div>
             </div>
           </div>
+          {exportModalOpen && (
+            <ExportModal closeModal={this.toggleExportModal} />
+          )}
         </div>
-        {exportModalOpen && <ExportModal closeModal={this.toggleExportModal} />}
       </>
     );
   }

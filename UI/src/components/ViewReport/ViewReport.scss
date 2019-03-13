@@ -1,15 +1,14 @@
 @import '../../scss/util/colors';
 @import '../../scss/util/variables';
 
+.report-container {
+  display: flex;
+  justify-content: center;
+}
+
 .report-view {
   width: 100%;
   max-width: 900px;
-  margin: 0 auto;
-
-  &__header {
-    position: relative;
-    margin-bottom: 24px;
-  }
 
   &__actions-dropdown {
     position: absolute;
@@ -53,8 +52,8 @@
   }
 
   // Content styles
-
   // remove and replace with report
+
   &__table {
     height: 750px;
     background: rgba(grey, 0.7);
@@ -74,6 +73,9 @@
 // Header
 
 .report-header {
+  position: relative;
+  margin-bottom: 24px;
+
   &__title {
     margin-bottom: 12px;
   }
