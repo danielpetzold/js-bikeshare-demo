@@ -109,6 +109,7 @@ class NavBar extends Component<NavBarProps, State> {
                 <span className="nav-bar__text">Reports</span>
               </Link>
             </li>
+            <div className="nav-bar__divider" />
             <li className="nav-bar__item">
               <a
                 className="nav-bar__link"
