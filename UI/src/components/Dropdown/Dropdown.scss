@@ -1,0 +1,20 @@
+@import '../../scss/util/colors';
+
+.dropdown {
+  cursor: pointer;
+  border-radius: 5px;
+  box-shadow: 0 2px 15px -7px rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+
+  &__option {
+    height: 32px;
+    line-height: 32px;
+    padding: 0 12px;
+    background-color: $white;
+    color: $gunmetal;
+  }
+  &__option:hover {
+    background-color: $jade;
+    color: $white;
+  }
+}

@@ -17,21 +17,16 @@ public class TokenBuilder {
     
     private String ExpirationFragment = "exp=%s|";
     
-    private String ClientIdFragment = "cId=%s|";    
-    
+
     private String _userName;
     
-    private String _expiration;
-    
-    private String _clientId;
-    
-    private String _userId;
+    private String _expiration;    
     
     private List<String> _roles = new ArrayList<String>();
     
     private List<String> _organizations = new ArrayList<String>();
     
-    private String datePattern = "yyyyMMddHHmmss";
+    private String datePattern = "yyyyMMddHHmmssZ";
     
     private DateFormat dateFormat = new SimpleDateFormat(datePattern);  
     
@@ -74,27 +69,7 @@ public class TokenBuilder {
     {
     	return this._expiration;
     }
-    
-    public final TokenBuilder setClientId(String clientId) {
-        this._clientId = clientId;
-        return this;
-    }
-    
-    public final String getClientId()
-    {
-    	return this._clientId;
-    }
-    
-    public final TokenBuilder setUserId(String userId) {
-        this._userId = userId;
-        return this;
-    }
-    
-    public final String getUserId()
-    {
-    	return this._userId;
-    }
-    
+         
     
     public final boolean isValid()
     {    	
@@ -109,7 +84,11 @@ public class TokenBuilder {
     	
     	if (this._roles.isEmpty()) {
     		return false;
-    	}    		
+    	}   
+    	
+    	if (StringUtils.isAllBlank(this._expiration)) {
+    		return false;
+    	}
     	
     	return true;
     }
@@ -133,10 +112,7 @@ public class TokenBuilder {
         if (!StringUtils.isAllBlank(this._expiration)) {
             builder.append(ExpirationFragment, this._expiration);
         }
-        
-        if (!StringUtils.isAllBlank(this._clientId)) {
-            builder.append(ClientIdFragment, this._clientId);
-        }                   
+                 
         
         if (!builder.isEmpty()) {
             builder.deleteCharAt(builder.length()-1);

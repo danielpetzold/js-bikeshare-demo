@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { history } from '../../configureStore';
 import './NavBar.scss';
-import { toggleNoAccess } from '../../actions/general';
+import { toggleNoAccess } from '../../store/General/general.actions';
 
 type State = {
   isOpen: boolean;

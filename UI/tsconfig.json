@@ -21,5 +21,6 @@
   },
   "include": [
     "src"
-  ]
+  ],
+  "exclude": ["src/visualize.js, src/helpers/VisualizeHelper.tsx"]
 }

@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 7.2.1.final using JasperReports Library version 6.6.0  -->
+<!-- 2019-03-08T15:11:08 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Lookups" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="cb1afd0d-7707-4dcc-80bd-e1cc2907bfe5">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="BikeShare-Adapter-Dev"/>
+	<property name="ireport.jasperserver.url" value="http://JRS-bikes-ElasticL-1K5YHF91VRJUO-1806919984.us-east-2.elb.amazonaws.com/jasperserver-pro/"/>
+	<property name="ireport.jasperserver.user" value="superuser"/>
+	<property name="ireport.jasperserver.reportUnit" value="/public/Bikeshare_demo/Reports/Lookups"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<parameter name="Franchise" class="java.lang.String">
+		<defaultValueExpression><![CDATA[$P{LoggedInUserTenantId}]]></defaultValueExpression>
+	</parameter>
+	<parameter name="Region" class="java.lang.String">
+		<defaultValueExpression><![CDATA["All"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select  system_information.system_id as "FranchiseId"
+, system_information.name as "FranchiseName"
+, system_regions.region_id as "RegionId"
+, system_regions.name as "RegionName"
+from system_information inner join system_regions on system_information.system_id = system_regions.system_id
+where (system_information.system_id = $P{Franchise} or $P{Franchise} = 'All') 
+and (system_regions.region_id = $P{Region} or $P{Region} = 'All')]]>
+	</queryString>
+	<field name="FranchiseId" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="FranchiseId"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="system_information"/>
+	</field>
+	<field name="FranchiseName" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="FranchiseName"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="system_information"/>
+	</field>
+	<field name="RegionId" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="RegionId"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="system_regions"/>
+	</field>
+	<field name="RegionName" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="RegionName"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="system_regions"/>
+	</field>
+	<columnHeader>
+		<band height="50">
+			<staticText>
+				<reportElement x="12" y="30" width="63" height="15" uuid="1fb1e816-ac7e-444a-8b20-bb7830856881"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Franchise Id]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="106" y="29" width="80" height="15" uuid="1dcd6ee2-ea39-4f2e-8855-db60c30997e7"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Franchise Name]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="267" y="29" width="63" height="15" uuid="9d0ea02f-8945-4c62-9904-35dfb8b19a2a"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Region Id]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="389" y="28" width="80" height="15" uuid="543a0cc0-aea7-4664-ada6-240389c80426"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Region Name]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="38">
+			<textField>
+				<reportElement x="12" y="9" width="60" height="24" uuid="4b035f90-b95d-4843-9c07-a7ef569e9e6a"/>
+				<textFieldExpression><![CDATA[$F{FranchiseId}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="106" y="9" width="125" height="24" uuid="5ff274dc-032b-4cd5-b201-3f831005fde2"/>
+				<textFieldExpression><![CDATA[$F{FranchiseName}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="265" y="9" width="100" height="24" uuid="bd74672a-f263-45d9-b8c1-ad838b3b7704"/>
+				<textFieldExpression><![CDATA[$F{RegionId}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="388" y="9" width="151" height="20" uuid="ed60451a-dd4e-4c56-9a76-7aae7d228138"/>
+				<textFieldExpression><![CDATA[$F{RegionName}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>
