@@ -21,7 +21,7 @@ export default class Login extends Component<any, State> {
   };
 
   handleLogin = () => {
-    this.props.history.push('/dashboard');
+    this.props.history.push('/Dashboard');
   };
 
   render() {

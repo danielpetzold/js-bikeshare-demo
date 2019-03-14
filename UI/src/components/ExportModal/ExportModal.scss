@@ -37,10 +37,10 @@
     background: $btn-green;
     color: $white;
   }
-  &__btn:hover {
+  &__submit-btn:hover {
     background-color: $btn-teal;
   }
-  &__btn:disabled {
+  &__submit-btn:disabled {
     background-color: $btn-grey;
   }
 }
