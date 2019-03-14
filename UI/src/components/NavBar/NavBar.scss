@@ -63,13 +63,21 @@
   // Navigation
   &__item {
     display: block;
-    height: 30px;
     margin-bottom: 24px;
+  }
+
+  &__link {
     box-sizing: border-box;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    cursor: pointer;
+    padding-left: 12px;
+    color: $icon-nav-inactive;
+    display: inline-flex;
+    align-items: center;
 
     &--active {
-      border-left: 5px solid $icon-nav-active;
-      width: calc(100% - 5px);
+      border-left-color: $icon-nav-active;
 
       & .nav-bar__icon {
         color: $icon-nav-active;
@@ -79,14 +87,6 @@
         color: $icon-nav-active;
       }
     }
-  }
-
-  &__link {
-    cursor: pointer;
-    padding-left: 12px;
-    color: $icon-nav-inactive;
-    display: inline-flex;
-    align-items: center;
   }
 
   &__text {

@@ -1,14 +1,12 @@
 import React from 'react';
 import { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { history } from '../../configureStore';
 import './NavBar.scss';
 import { toggleNoAccess } from '../../store/General/general.actions';
 
 type State = {
   isOpen: boolean;
-  activeRoute: string;
 };
 
 interface NavBarProps {
@@ -17,15 +15,8 @@ interface NavBarProps {
 
 class NavBar extends Component<NavBarProps, State> {
   readonly state: State = {
-    isOpen: false,
-    activeRoute: ''
+    isOpen: false
   };
-
-  componentDidMount() {
-    this.setState({
-      activeRoute: history.location.pathname
-    });
-  }
 
   toggleMenu = () => {
     this.setState({ isOpen: !this.state.isOpen });
@@ -38,7 +29,7 @@ class NavBar extends Component<NavBarProps, State> {
 
   render() {
     const { toggleMenu } = this;
-    const { isOpen, activeRoute } = this.state;
+    const { isOpen } = this.state;
     return (
       <div>
         <nav
@@ -57,36 +48,23 @@ class NavBar extends Component<NavBarProps, State> {
             </Link>
           </div>
           <ul className={'nav-bar__top-menu'}>
-            <li
-              className={
-                'nav-bar__item ' +
-                (activeRoute === '/Dashboard' || activeRoute === '/dashboard'
-                  ? 'nav-bar__item--active'
-                  : '')
-              }
-            >
-              <Link className="nav-bar__link" to="/Dashboard">
+            <li className={'nav-bar__item'}>
+              <NavLink
+                activeClassName="nav-bar__link--active"
+                className="nav-bar__link"
+                to="/Dashboard"
+              >
                 <i className="icon-ic-trending-up nav-bar__icon " />
                 <span className="nav-bar__text">Trends and Analytics</span>
-              </Link>
+              </NavLink>
             </li>
-            <li
-              className={
-                'nav-bar__item ' +
-                (activeRoute === 'Franchises' ? 'nav-bar__item--active' : '')
-              }
-            >
+            <li className={'nav-bar__item'}>
               <a className="nav-bar__link" href="#">
                 <i className="icon-ic-store-mall nav-bar__icon " />
                 <span className="nav-bar__text">Franchises</span>
               </a>
             </li>
-            <li
-              className={
-                'nav-bar__item ' +
-                (activeRoute === 'RaP' ? 'nav-bar__item--active' : '')
-              }
-            >
+            <li className={'nav-bar__item'}>
               <a
                 className="nav-bar__link"
                 href="#"
@@ -96,18 +74,15 @@ class NavBar extends Component<NavBarProps, State> {
                 <span className="nav-bar__text">Roles and Permissions</span>
               </a>
             </li>
-            <li
-              className={
-                'nav-bar__item ' +
-                (activeRoute === '/Reports' || activeRoute === '/reports'
-                  ? 'nav-bar__item--active'
-                  : '')
-              }
-            >
-              <Link className="nav-bar__link" to="/Reports">
+            <li className={'nav-bar__item'}>
+              <NavLink
+                activeClassName="nav-bar__link--active"
+                className="nav-bar__link"
+                to="/Reports"
+              >
                 <i className="icon-ic-assignment nav-bar__icon " />
                 <span className="nav-bar__text">Reports</span>
-              </Link>
+              </NavLink>
             </li>
             <div className="nav-bar__divider" />
             <li className="nav-bar__item">
