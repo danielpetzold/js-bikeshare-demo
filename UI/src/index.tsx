@@ -4,7 +4,6 @@ import ReactDOM from 'react-dom';
 import './index.scss';
 import App from './App';
 import configureStore, { history } from './configureStore';
-import { visualizeHelper } from './helpers/VisualizeHelper';
 
 const store = configureStore();
 const render = () => {

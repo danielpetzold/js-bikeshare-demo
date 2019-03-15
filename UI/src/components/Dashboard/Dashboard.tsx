@@ -3,11 +3,17 @@ import './Dashboard.scss';
 import NavBar from '../NavBar/NavBar';
 import Filter from '../Filter/Filter';
 import { visualizeHelper } from '../../helpers/VisualizeHelper';
-import * as constants from '../../helpers/constants';
+import { connect } from 'react-redux';
+import { filterData, jasperServerUrl } from '../../helpers/constants';
+import { State } from '../../store';
+import { User } from '../../store/Login/login.types';
+import { loginUser } from '../../store/Login/login.actions';
 
-interface DashboardProps {}
+interface DashboardProps {
+  user: User;
+}
 
-interface State {
+interface DashboardState {
   isFilterOpen: boolean;
   region: FilterData;
   timeframe: FilterData;
@@ -18,55 +24,7 @@ export interface FilterData {
   id: string;
 }
 
-// Stub data. Best guess of data contract until input control is created.
-const filterData = {
-  testRegions: [
-    {
-      name: 'San Francisco Bay Area',
-      id: 'san_francisco_bay_area'
-    },
-    {
-      name: 'Downtown San Francisco',
-      id: 'downtown_san_francisco'
-    },
-    {
-      name: 'South San Mateo County',
-      id: 'south_san_mateo_county'
-    },
-    {
-      name: 'Santa Clara County',
-      id: 'santa_clara_county'
-    }
-  ],
-  testTimeframe: [
-    {
-      name: 'Annual',
-      id: 'annual'
-    },
-    {
-      name: 'Last Quarter',
-      id: 'last_quarter'
-    },
-    {
-      name: 'Last Month',
-      id: 'last_month'
-    },
-    {
-      name: 'Last Week',
-      id: 'last_week'
-    },
-    {
-      name: 'Last 24 Hours',
-      id: 'last_24_hours'
-    },
-    {
-      name: 'Last 6 Hours',
-      id: 'last_6_hours'
-    }
-  ]
-};
-
-class Dashboard extends React.Component<DashboardProps, State> {
+class Dashboard extends React.Component<DashboardProps, DashboardState> {
   visualize: any;
 
   constructor(props: DashboardProps) {
@@ -79,9 +37,10 @@ class Dashboard extends React.Component<DashboardProps, State> {
     };
   }
 
-  componentWillMount() {
-    visualizeHelper.login(constants.COO_TOKEN, constants.jasperServerUrl);
-  }
+  componentWillMount = () => {
+    console.log('will mount', this.props.user);
+    visualizeHelper.login(this.props.user.token, jasperServerUrl);
+  };
 
   componentDidMount() {
     visualizeHelper.getReport(
@@ -163,4 +122,8 @@ class Dashboard extends React.Component<DashboardProps, State> {
   }
 }
 
-export default Dashboard;
+const mapStateToProps = (state: State) => ({
+  user: state.user
+});
+
+export default connect(mapStateToProps)(Dashboard);
