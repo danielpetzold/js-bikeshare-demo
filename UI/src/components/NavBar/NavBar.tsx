@@ -1,9 +1,11 @@
 import React from 'react';
 import { Component } from 'react';
-import { Link, NavLink } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
 import './NavBar.scss';
 import { toggleNoAccess } from '../../store/General/general.actions';
+import { logOutUser } from '../../store/Login/login.actions';
+import { User } from '../../helpers/userData';
 
 type State = {
   isOpen: boolean;
@@ -11,9 +13,11 @@ type State = {
 
 interface NavBarProps {
   toggleNoAccess: () => void;
+  logOutUser: () => void;
+  user: User;
 }
 
-class NavBar extends Component<NavBarProps, State> {
+class NavBar extends Component<any, State> {
   readonly state: State = {
     isOpen: false
   };
@@ -25,6 +29,11 @@ class NavBar extends Component<NavBarProps, State> {
   toggleNoAccess = (event: any) => {
     event.preventDefault();
     this.props.toggleNoAccess();
+  };
+
+  handleLogout = (event: any) => {
+    event.preventDefault();
+    this.props.logOutUser();
   };
 
   render() {
@@ -40,12 +49,14 @@ class NavBar extends Component<NavBarProps, State> {
           <div className={'nav-bar__user'}>
             <div className="nav-bar__user-image" />
             <div className="nav-bar__user-info">
-              <div className="nav-bar__user-name">Test Person</div>
-              <div className="nav-bar__user-title">COO</div>
+              <div className="nav-bar__user-name">
+                {this.props.user.userName}
+              </div>
+              <div className="nav-bar__user-title">{this.props.user.title}</div>
             </div>
-            <Link className="nav-bar__log-out" to="/">
+            <a className="nav-bar__log-out" onClick={e => this.handleLogout(e)}>
               Log Out
-            </Link>
+            </a>
           </div>
           <ul className={'nav-bar__top-menu'}>
             <li className={'nav-bar__item'}>
@@ -126,6 +137,6 @@ class NavBar extends Component<NavBarProps, State> {
 }
 
 export default connect(
-  null,
-  { toggleNoAccess }
+  (state: any) => state.login,
+  { toggleNoAccess, logOutUser }
 )(NavBar);

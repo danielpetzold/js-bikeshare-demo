@@ -5,18 +5,22 @@ import generalReducer from './General/general.reducer';
 import { GeneralState } from './General/general.types';
 import reportsReducer from './Reports/reports.reducer';
 import { ReportsState } from './Reports/reports.types';
+import loginReducer from './Login/login.reducer';
+import { LoginState } from './Login/login.types';
 
 const createRootReducer = (history: History) =>
   combineReducers({
     router: connectRouter(history),
     general: generalReducer,
-    reports: reportsReducer
+    reports: reportsReducer,
+    login: loginReducer
   });
 
 export interface State {
   router: RouterState;
   general: GeneralState;
   reports: ReportsState;
+  login: LoginState;
 }
 
 export default createRootReducer;
