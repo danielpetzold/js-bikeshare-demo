@@ -5,6 +5,11 @@ import { Dispatch } from 'redux';
 import { SET_USER_LOGGED_IN, SET_USER_LOGGED_OUT } from './login.types';
 import { history } from '../../configureStore';
 
+// === Thunk action creators === //
+/**
+ * Fetch user info and add to local storage and redux store.
+ * @param role
+ */
 export const loginUser = (role: String) => {
   return async (dispatch: Dispatch) => {
     try {
@@ -25,14 +30,19 @@ export const loginUser = (role: String) => {
   };
 };
 
+/**
+ * Log user out of visualize.js, clear user info
+ */
 export const logOutUser = () => {
   return async (dispatch: Dispatch) => {
-    visualizeHelper.logOut();
+    await visualizeHelper.logOut();
     dispatch(setUserLoggedOut());
     localStorage.clear();
     history.push('/');
   };
 };
+
+// === Redux Actions === //
 
 export const setUserLoggedIn = (user: User) => {
   return {

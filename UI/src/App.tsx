@@ -15,6 +15,7 @@ interface AppProps {
 
 class App extends React.Component<any> {
   componentWillMount() {
+    // Logs in user if refreshed while still logged in
     let user = JSON.parse(localStorage.getItem('user') as string);
     if (user && user.token) {
       this.props.loginUser(user.role);
