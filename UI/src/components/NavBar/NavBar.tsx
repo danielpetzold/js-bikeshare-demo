@@ -36,10 +36,6 @@ class NavBar extends Component<any, State> {
     this.props.logOutUser();
   };
 
-  getUserImage = () => {
-    return '/assets/' + this.props.user.userName.replace(/ /g, '_') + '.jpg';
-  };
-
   render() {
     const { toggleMenu } = this;
     const { isOpen } = this.state;
