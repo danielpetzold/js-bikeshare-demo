@@ -36,9 +36,19 @@ class NavBar extends Component<any, State> {
     this.props.logOutUser();
   };
 
+  getUserImage = () => {
+    return '/assets/' + this.props.user.userName.replace(/ /g, '_') + '.jpg';
+  };
+
   render() {
     const { toggleMenu } = this;
     const { isOpen } = this.state;
+    const userImage = this.props.user.userName
+      ? require(`../../assets/users/${this.props.user.userName.replace(
+          / /g,
+          '_'
+        )}.jpg`)
+      : '';
     return (
       <div>
         <nav
@@ -47,7 +57,7 @@ class NavBar extends Component<any, State> {
           }`}
         >
           <div className={'nav-bar__user'}>
-            <div className="nav-bar__user-image" />
+            <img className="nav-bar__user-image" src={userImage} />
             <div className="nav-bar__user-info">
               <div className="nav-bar__user-name">
                 {this.props.user.userName}
