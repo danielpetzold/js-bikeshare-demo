@@ -78,8 +78,6 @@ class Dashboard extends React.Component<DashboardProps, State> {
     };
   }
 
-  componentWillMount() {}
-
   componentDidMount() {
     visualizeHelper.getReport(
       'report1',
