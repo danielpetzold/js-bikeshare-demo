@@ -2,7 +2,17 @@ import React from 'react';
 import './AdHoc.scss';
 import NavBar from '../NavBar/NavBar';
 
-const AdHoc = () => {
+interface Props {
+  match: {
+    params: {
+      path: string;
+    };
+  };
+}
+
+const AdHoc = (props: Props) => {
+  const appendPath = props.match.params.path;
+
   return (
     <>
       <NavBar />
