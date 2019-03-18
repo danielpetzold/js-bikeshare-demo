@@ -1,9 +1,9 @@
-import './NavBar.scss';
-import { Component } from 'react';
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Component } from 'react';
+import { Link, NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { toggleNoAccess } from '../../actions/general';
+import './NavBar.scss';
+import { toggleNoAccess } from '../../store/General/general.actions';
 
 type State = {
   isOpen: boolean;
@@ -13,7 +13,7 @@ interface NavBarProps {
   toggleNoAccess: () => void;
 }
 
-class NavBar extends Component<NavBarProps, any> {
+class NavBar extends Component<NavBarProps, State> {
   readonly state: State = {
     isOpen: false
   };
@@ -32,31 +32,39 @@ class NavBar extends Component<NavBarProps, any> {
     const { isOpen } = this.state;
     return (
       <div>
-        <nav className={`nav-bar ${!isOpen ? `nav-bar--closed` : ``} `}>
+        <nav
+          className={`nav-bar ${
+            !isOpen ? `nav-bar--closed` : `nav-bar--expanded`
+          }`}
+        >
           <div className={'nav-bar__user'}>
             <div className="nav-bar__user-image" />
             <div className="nav-bar__user-info">
               <div className="nav-bar__user-name">Test Person</div>
               <div className="nav-bar__user-title">COO</div>
             </div>
-            <Link className="nav-bar__log-out" to="/Login">
+            <Link className="nav-bar__log-out" to="/">
               Log Out
             </Link>
           </div>
           <ul className={'nav-bar__top-menu'}>
-            <li className="nav-bar__item nav-bar__item--active">
-              <Link className="nav-bar__link" to="/Dashboard">
+            <li className={'nav-bar__item'}>
+              <NavLink
+                activeClassName="nav-bar__link--active"
+                className="nav-bar__link"
+                to="/Dashboard"
+              >
                 <i className="icon-ic-trending-up nav-bar__icon " />
                 <span className="nav-bar__text">Trends and Analytics</span>
-              </Link>
+              </NavLink>
             </li>
-            <li className="nav-bar__item">
+            <li className={'nav-bar__item'}>
               <a className="nav-bar__link" href="#">
                 <i className="icon-ic-store-mall nav-bar__icon " />
                 <span className="nav-bar__text">Franchises</span>
               </a>
             </li>
-            <li className="nav-bar__item">
+            <li className={'nav-bar__item'}>
               <a
                 className="nav-bar__link"
                 href="#"
@@ -66,14 +74,17 @@ class NavBar extends Component<NavBarProps, any> {
                 <span className="nav-bar__text">Roles and Permissions</span>
               </a>
             </li>
-            <li className="nav-bar__item">
-              <a className="nav-bar__link" href="#">
+            <li className={'nav-bar__item'}>
+              <NavLink
+                activeClassName="nav-bar__link--active"
+                className="nav-bar__link"
+                to="/Reports"
+              >
                 <i className="icon-ic-assignment nav-bar__icon " />
                 <span className="nav-bar__text">Reports</span>
-              </a>
+              </NavLink>
             </li>
-          </ul>
-          <ul className="nav-bar__bottom-menu">
+            <div className="nav-bar__divider" />
             <li className="nav-bar__item">
               <a
                 className="nav-bar__link"
@@ -95,12 +106,16 @@ class NavBar extends Component<NavBarProps, any> {
               </a>
             </li>
           </ul>
-          <div className="nav-bar__close-button" onClick={toggleMenu}>
-            <i className="icon-ic-close " />
-          </div>
+          {/* Toggle */}
+          {isOpen && (
+            <div className={`nav-bar__close-button`} onClick={toggleMenu}>
+              <i className="icon-ic-close " />
+            </div>
+          )}
         </nav>
+        {/* Hamburger */}
         <div
-          className={`nav-bar__hamburger ${isOpen ? `nav-bar--closed` : ``} `}
+          className={`nav-bar__hamburger ${isOpen ? `nav-bar--closed` : ''} `}
           onClick={toggleMenu}
         >
           <i className="icon-ic-menu" />
