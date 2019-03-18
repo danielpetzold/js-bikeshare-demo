@@ -11,8 +11,6 @@ interface Props {
 }
 
 const AdHoc = (props: Props) => {
-  const appendPath = props.match.params.path;
-
   return (
     <>
       <NavBar />

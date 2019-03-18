@@ -3,7 +3,6 @@ import './Dashboard.scss';
 import NavBar from '../NavBar/NavBar';
 import Filter from '../Filter/Filter';
 import { visualizeHelper } from '../../helpers/VisualizeHelper';
-import * as constants from '../../helpers/constants';
 
 interface DashboardProps {}
 
@@ -79,18 +78,10 @@ class Dashboard extends React.Component<DashboardProps, State> {
     };
   }
 
-  componentWillMount() {
-    visualizeHelper.login(constants.COO_TOKEN, constants.jasperServerUrl);
-  }
-
   componentDidMount() {
     visualizeHelper.getReport(
       'report1',
-      '/public/Bikeshare_demo/Reports/AdHoc_Reports/Regions_by_Franchise'
-    );
-    visualizeHelper.getReport(
-      'report2',
-      '/public/Bikeshare_demo/Reports/AdHoc_Reports/Regions_by_Franchise'
+      '/public/Bikeshare_demo/Reports/AdHoc_Reports/Station_Capacity_Report'
     );
   }
 

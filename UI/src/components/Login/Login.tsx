@@ -1,13 +1,21 @@
 import React, { Component } from 'react';
 import './Login.scss';
 import logo from '../../assets/logo.svg';
+import {
+  COO_ROLE,
+  DRIVER_ROLE,
+  FRANCHISE_MANAGER_ROLE
+} from '../../helpers/userData';
+import { loginUser } from '../../store/Login/login.actions';
+import { connect } from 'react-redux';
+import { State } from '../../store';
 
-interface State {
+interface LoginState {
   selectedRole: string;
 }
 
-export default class Login extends Component<any, State> {
-  readonly state: State = {
+class Login extends Component<any, LoginState> {
+  readonly state: LoginState = {
     selectedRole: ''
   };
 
@@ -21,6 +29,7 @@ export default class Login extends Component<any, State> {
   };
 
   handleLogin = () => {
+    this.props.loginUser(this.state.selectedRole);
     this.props.history.push('/Dashboard');
   };
 
@@ -41,11 +50,11 @@ export default class Login extends Component<any, State> {
                   <div
                     className={
                       'user-options__role' +
-                      (selectedRole === 'COO'
+                      (selectedRole === COO_ROLE
                         ? ' user-options__role--active'
                         : '')
                     }
-                    id="COO"
+                    id={COO_ROLE}
                     onClick={e => this.selectRole(e)}
                   >
                     COO
@@ -53,11 +62,11 @@ export default class Login extends Component<any, State> {
                   <div
                     className={
                       'user-options__role user-options__role--mid' +
-                      (selectedRole === 'Regional'
+                      (selectedRole === FRANCHISE_MANAGER_ROLE
                         ? ' user-options__role--active'
                         : '')
                     }
-                    id="Regional"
+                    id={FRANCHISE_MANAGER_ROLE}
                     onClick={this.selectRole}
                   >
                     Regional
@@ -65,11 +74,11 @@ export default class Login extends Component<any, State> {
                   <div
                     className={
                       'user-options__role' +
-                      (selectedRole === 'Driver'
+                      (selectedRole === DRIVER_ROLE
                         ? ' user-options__role--active'
                         : '')
                     }
-                    id="Driver"
+                    id={DRIVER_ROLE}
                     onClick={this.selectRole}
                   >
                     Driver
@@ -91,3 +100,8 @@ export default class Login extends Component<any, State> {
     );
   }
 }
+
+export default connect(
+  (state: State) => state.login,
+  { loginUser }
+)(Login);
