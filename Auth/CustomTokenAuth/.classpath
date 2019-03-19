@@ -34,6 +34,5 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/Rachael.Ross/OneDrive - projekt202/Source/Repos/js-bikeshare-demo/Auth/customtokenauth/jasperserver-api-common-7.1.0.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
