@@ -8,33 +8,51 @@ import NavBar from '../NavBar/NavBar';
 import ExportModal from '../ExportModal/ExportModal';
 import ReportFilter from '../ReportFilter/ReportFilter';
 import Dropdown from '../Dropdown/Dropdown';
+import { visualizeHelper } from '../../helpers/VisualizeHelper';
 
-interface State {
+interface ReportsState {
   filterOpen: boolean;
   exportModalOpen: boolean;
   actionsOpen: boolean;
   reportsOpen: boolean;
-  reportOptions: string[];
+  reportOptions: ReportOption[] | void;
   selectedReport: string;
   mounted: boolean;
 }
 
-class ViewReport extends Component<any, State> {
-  state = {
-    mounted: false,
-    filterOpen: false,
-    exportModalOpen: false,
-    reportsOpen: false,
-    actionsOpen: false,
-    reportOptions: [
-      'Station Report',
-      'Rider Utilization',
-      'Driver Efficiency',
-      'Bike Inventory',
-      'Trip Report'
-    ],
-    selectedReport: 'Station Report'
-  };
+interface Report {
+  creationDate: string;
+  description: string;
+  label: string;
+  permissionMask: number;
+  resourceType: string;
+  updateDate: string;
+  uri: string;
+  version: string;
+}
+
+interface ReportOption {
+  name: string;
+  value: string;
+}
+
+class ViewReport extends Component<any, ReportsState> {
+  constructor(props: any) {
+    super(props);
+    this.state = {
+      mounted: false,
+      filterOpen: false,
+      exportModalOpen: false,
+      reportsOpen: false,
+      actionsOpen: false,
+      reportOptions: [],
+      selectedReport: 'Test Value'
+    };
+  }
+
+  componentWillMount() {
+    this.getReports();
+  }
 
   componentDidMount() {
     this.setState({ mounted: true });
@@ -83,6 +101,20 @@ class ViewReport extends Component<any, State> {
     ]);
   }
 
+  getReports() {
+    visualizeHelper
+      .getReportList('/public/Bikeshare_demo/Reports/AdHoc_Reports', {})
+      .then((reports: any) => {
+        let reportMap = reports.map((report: Report) => {
+          return {
+            name: report.label,
+            value: report.uri
+          };
+        });
+        this.setState({ reportOptions: reportMap });
+      });
+  }
+
   toggleExportModal = () => {
     this.setState({
       exportModalOpen: !this.state.exportModalOpen
@@ -94,6 +126,7 @@ class ViewReport extends Component<any, State> {
       actionsOpen: !this.state.actionsOpen
     });
   };
+
   toggleReports = () => {
     this.setState({
       reportsOpen: !this.state.reportsOpen
@@ -116,7 +149,6 @@ class ViewReport extends Component<any, State> {
       reportOptions,
       selectedReport
     } = this.state;
-
     return (
       <>
         <NavBar />
@@ -136,16 +168,16 @@ class ViewReport extends Component<any, State> {
                       <h5>{selectedReport}</h5>
                       <i className={'icon-ic-unfold-more'} />
                     </div>
-                    <div className={'header-select__dropdown'}>
-                      {reportsOpen && (
-                        <Dropdown
-                          setSelected={this.setReport}
-                          toggleDropdown={this.toggleReports}
-                          options={reportOptions}
-                          dropdownWidth="195px"
-                        />
-                      )}
-                    </div>
+                    {/*<div className={'header-select__dropdown'}>*/}
+                    {/*{reportsOpen && (*/}
+                    {/*<Dropdown*/}
+                    {/*setSelected={this.setReport}*/}
+                    {/*toggleDropdown={this.toggleReports}*/}
+                    {/*options={reportOptions}*/}
+                    {/*dropdownWidth="195px"*/}
+                    {/*/>*/}
+                    {/*)}*/}
+                    {/*</div>*/}
                   </div>
                   {/* Bottom Header Row */}
                   <div className={'report-header__bottom'}>

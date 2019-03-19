@@ -108,7 +108,7 @@ class VisualizeHelper {
         v.resourcesSearch({
           folderUri: folderUrl,
           recursive: true,
-          types: [reportTypes],
+          // types: [reportTypes],
           success: function(repo: any) {
             resolve(repo);
           },
