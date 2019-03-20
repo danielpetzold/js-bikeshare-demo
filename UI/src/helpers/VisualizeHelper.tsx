@@ -60,8 +60,8 @@ class VisualizeHelper {
           container: `#${uiContainer}`,
           resource: resourcePath,
           params: params,
-          success: () => {
-            resolve();
+          success: (success: any) => {
+            resolve(success);
           },
           error: (err: any) => {
             console.log('getReport', err);
@@ -78,15 +78,14 @@ class VisualizeHelper {
    * @param resourcePath
    * @param params
    */
-  getInputControl(uiContainer: string, resourcePath: string, params: any = {}) {
+  getInputControl(uiContainer: string | null, resourcePath: string, params: any = {}) {
     return new Promise((resolve, reject) => {
       this.visualize((v: any) => {
         v.inputControls({
-          container: `#${uiContainer}`,
           resource: resourcePath,
           params: params,
-          success: () => {
-            resolve();
+          success: (success: any) => {
+            resolve(success);
           },
           error: (err: any) => {
             console.log('getReport', err);

@@ -22,6 +22,10 @@ export const loginUser = (role: String) => {
 
       // Login user to global Visualize JS instance ()
       await visualizeHelper.login(user.token, jasperServerUrl);
+      await visualizeHelper.getInputControl('', '/public/Bikeshare_demo/Reports/Lookups', {})
+        .then((data: any) => {
+          console.log('This is the user data', data);
+        });
 
       dispatch(setUserLoggedIn(user));
     } catch (error) {
@@ -50,6 +54,20 @@ export const setUserLoggedIn = (user: User) => {
     user: user
   };
 };
+
+export const setUserRegion = (region: string) => {
+  return {
+    type: 'SET_USER_REGION',
+    region
+  }
+};
+
+export const setUserFranchise = (franchise: string) => {
+  return {
+    type: 'SET_USER_FRANCHISE',
+    franchise
+  }
+}
 
 export const setUserLoggedOut = () => {
   return {

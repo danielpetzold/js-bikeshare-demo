@@ -7,16 +7,17 @@ import filterIcon from '../../fonts/icons/filter-icon.svg';
 import NavBar from '../NavBar/NavBar';
 import ExportModal from '../ExportModal/ExportModal';
 import ReportFilter from '../ReportFilter/ReportFilter';
-import Dropdown from '../Dropdown/Dropdown';
+import Dropdown, { Option } from "../Dropdown/Dropdown";
 import { visualizeHelper } from '../../helpers/VisualizeHelper';
 
 interface ReportsState {
   filterOpen: boolean;
   exportModalOpen: boolean;
   actionsOpen: boolean;
-  reportsOpen: boolean;
-  reportOptions: ReportOption[] | void;
-  selectedReport: string;
+  isReportSelectOpen: boolean;
+  reportOptions: Option[];
+  selectedReportName: string;
+  selectedReportValue: string;
   mounted: boolean;
 }
 
@@ -31,11 +32,6 @@ interface Report {
   version: string;
 }
 
-interface ReportOption {
-  name: string;
-  value: string;
-}
-
 class ViewReport extends Component<any, ReportsState> {
   constructor(props: any) {
     super(props);
@@ -43,67 +39,25 @@ class ViewReport extends Component<any, ReportsState> {
       mounted: false,
       filterOpen: false,
       exportModalOpen: false,
-      reportsOpen: false,
+      isReportSelectOpen: false,
       actionsOpen: false,
       reportOptions: [],
-      selectedReport: 'Test Value'
-    };
+      selectedReportName: 'test',
+      selectedReportValue: ''
+    }
   }
 
   componentWillMount() {
     this.getReports();
+    this.getFilters();
   }
 
   componentDidMount() {
     this.setState({ mounted: true });
-    this.props.setFilters([
-      {
-        name: 'Region',
-        altName: 'region',
-        selected: '',
-        options: [
-          'Alameda County',
-          'Contra Costa County',
-          'Downtown San Francisco',
-          'San Francisco Bay Area',
-          'Santa Clara County'
-        ]
-      },
-      {
-        name: 'Station',
-        altName: 'station',
-        selected: '',
-        options: [
-          'Brooklyn Bridge',
-          '1028 Garfield Ave',
-          '83 Barbara St',
-          '405 Anchor St'
-        ]
-      },
-      {
-        name: 'Franchise',
-        altName: 'franchise',
-        selected: '',
-        options: [
-          'Van Ness',
-          'Geary',
-          'Hyde',
-          'Haight and Ashbury',
-          'Polk Street'
-        ]
-      },
-      {
-        name: 'On Site Kiosk',
-        altName: 'osk',
-        selected: '',
-        options: ['true', 'false']
-      }
-    ]);
   }
 
   getReports() {
-    visualizeHelper
-      .getReportList('/public/Bikeshare_demo/Reports/AdHoc_Reports', {})
+    visualizeHelper.getReportList('/public/Bikeshare_demo/Reports/AdHoc_Reports', {Franchise: ['BA']})
       .then((reports: any) => {
         let reportMap = reports.map((report: Report) => {
           return {
@@ -112,7 +66,31 @@ class ViewReport extends Component<any, ReportsState> {
           };
         });
         this.setState({ reportOptions: reportMap });
+
+        // If no report is selected, load the first report in the list
+        if (!this.state.selectedReportValue) {
+          this.setReport(this.state.reportOptions[0]);
+        }
       });
+  }
+
+  getFilters() {
+    if (this.state.selectedReportValue) {
+      visualizeHelper.getInputControl('inputControl', this.state.selectedReportValue)
+        .then((inputControl: any) => {
+          console.log(inputControl);
+          inputControl.pop();
+        })
+    }
+  }
+
+  showReport() {
+    if (this.state.selectedReportValue) {
+      visualizeHelper.getReport('report', this.state.selectedReportValue,  {Franchise: ['BA']})
+        .then(success => {
+          console.log('success');
+        })
+    }
   }
 
   toggleExportModal = () => {
@@ -129,127 +107,100 @@ class ViewReport extends Component<any, ReportsState> {
 
   toggleReports = () => {
     this.setState({
-      reportsOpen: !this.state.reportsOpen
+      isReportSelectOpen: !this.state.isReportSelectOpen
     });
   };
 
-  setReport = (option: string) => {
-    this.setState({
-      selectedReport: option
+  setReport = (option: Option) => {
+    this.setState({ selectedReportName: option.name, selectedReportValue: option.value }, () => {
+      this.showReport();
+      this.getFilters();
     });
   };
+
+
 
   render() {
     const {
       filterOpen,
       exportModalOpen,
       actionsOpen,
-      reportsOpen,
+      isReportSelectOpen,
       mounted,
       reportOptions,
-      selectedReport
+      selectedReportName,
+      selectedReportValue
     } = this.state;
+
     return (
       <>
         <NavBar />
         <div className={'report-container'}>
           <div className={'grid report-view'}>
-            {/* HEADER */}
-            <div className={'grid__row '}>
+            <div className={'grid__row report-header'}>
               <div className={'grid__column-12 grid__column-m-4'}>
-                <header className={'report-header'}>
-                  {/* Top Header Row */}
-                  <div className={'report-header__top'}>
-                    <h3 className={'report-header__title'}>Reports</h3>
-                    <div
-                      className={'header-select'}
-                      onClick={this.toggleReports}
-                    >
-                      <h5>{selectedReport}</h5>
-                      <i className={'icon-ic-unfold-more'} />
-                    </div>
-                    {/*<div className={'header-select__dropdown'}>*/}
-                    {/*{reportsOpen && (*/}
-                    {/*<Dropdown*/}
-                    {/*setSelected={this.setReport}*/}
-                    {/*toggleDropdown={this.toggleReports}*/}
-                    {/*options={reportOptions}*/}
-                    {/*dropdownWidth="195px"*/}
-                    {/*/>*/}
-                    {/*)}*/}
-                    {/*</div>*/}
+                <div className={'report-header__top'}>
+                  <h3 className={'report-header__title'}>Reports</h3>
+                  <div className={'header-select'} onClick={this.toggleReports}>
+                    <h5>{selectedReportName}</h5>
+                    <i className={'icon-ic-unfold-more'} />
                   </div>
+                    <div className={'header-select__dropdown'}>
+                    { isReportSelectOpen && (
+                      <Dropdown
+                        setSelected={this.setReport}
+                        toggleDropdown={this.toggleReports}
+                        options={reportOptions}
+                        dropdownWidth="195px"/>)
+                    }
+                    </div>
+                  </div>
+
                   {/* Bottom Header Row */}
                   <div className={'report-header__bottom'}>
                     <div className={'report-header__buttons'}>
-                      <button
-                        className={'report-view__btn--create btn--primary'}
-                      >
+                      <button className={'report-view__btn--create btn--primary'}>
                         Create Report
                       </button>
-                      <a
-                        className={'report-view__btn--actions btn--secondary'}
-                        onClick={this.toggleActions}
-                      >
+                      <a className={'report-view__btn--actions btn--secondary'} onClick={this.toggleActions}>
                         <p>Modify</p>
-                        <i
-                          className={'report-view__actions icon-ic-arrow-down'}
-                        />
+                        <i className={'report-view__actions icon-ic-arrow-down'}/>
                       </a>
                       {actionsOpen && (
-                        <div
-                          className={'report-view__actions-dropdown'}
-                          onClick={this.toggleActions}
-                        >
+                        <div className={'report-view__actions-dropdown'} onClick={this.toggleActions} >
                           {/* replace selected report with the report url */}
-                          <Link to={`/editReport/${selectedReport}`}>
+                          <Link to={`/editReport/${selectedReportName}`}>
                             <div className={'report-view__action-options'}>
                               Modify
                             </div>
                           </Link>
-                          <div
-                            className={'report-view__action-options'}
-                            onClick={this.toggleExportModal}
-                          >
-                            Export
+
+                          <div className={'report-view__action-options'} onClick={this.toggleExportModal}>Export
                           </div>
-                          <div
-                            className={'report-view__action-options'}
-                            onClick={() =>
-                              setTimeout(() => window.print(), 100)
-                            }
-                          >
-                            Print
+                          <div className={'report-view__action-options'}
+                               onClick={() => setTimeout(() => window.print(), 100)}>Print
                           </div>
                         </div>
                       )}
                     </div>
-                    <img
-                      src={filterIcon}
-                      alt="filter"
-                      onClick={() => this.setState({ filterOpen: !filterOpen })}
-                    />
+                    <img src={filterIcon} alt="filter" onClick={() => this.setState({ filterOpen: !filterOpen })}/>
                   </div>
-                  {/* FILTER */}
+
                   {mounted && (
-                    <div
-                      className={
-                        filterOpen
-                          ? 'report-view__show-filter'
-                          : 'report-view__hide-filter'
-                      }
-                    >
+                    <div className={filterOpen ? 'report-view__show-filter' : 'report-view__hide-filter'}>
                       <ReportFilter />
                     </div>
                   )}
-                </header>
+
               </div>
             </div>
 
             {/* REPORT */}
             <div className={'grid__row'}>
               <div className={'grid__column-12 grid__column-m-4'}>
-                <div className={'report-view__table'}>
+                <div id='inputControl'>
+                </div>
+                <div id='report' className={'report-view__table'}>
                   {/* report to be passed in */}
                 </div>
               </div>
