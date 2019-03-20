@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 7.2.1.final using JasperReports Library version 6.6.0  -->
-<!-- 2019-03-18T13:39:42 -->
+<!-- 2019-03-19T14:49:32 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="FM_Dashboard_KPIS" printOrder="Horizontal" pageWidth="900" pageHeight="146" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="900" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="5347bef6-468e-4022-865e-bd6933f0fa4b">
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="BikeShare-Adapter-Dev"/>
@@ -34,12 +34,23 @@
 	</parameter>
 	<parameter name="Start_Date" class="java.lang.String" isForPrompting="false">
 		<parameterDescription><![CDATA[Determined by examining the Timeframe parameter value.]]></parameterDescription>
-		<defaultValueExpression><![CDATA["03012019"]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA[Objects.equals($P{Timeframe}, "current") ? "02022019" :
+	Objects.equals($P{Timeframe}, "last24") ? "02012019" :
+		Objects.equals($P{Timeframe}, "lastweek") ? "02012019" :
+			Objects.equals($P{Timeframe}, "lastmonth") ? "02012019" :
+				Objects.equals($P{Timeframe}, "lastquarter") ? "01012019" :
+					 "01012019"]]></defaultValueExpression>
 	</parameter>
 	<parameter name="End_Date" class="java.lang.String" isForPrompting="false">
 		<parameterDescription><![CDATA[Determined by examining the Timeframe parameter value.]]></parameterDescription>
-		<defaultValueExpression><![CDATA["03082019"]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA[Objects.equals($P{Timeframe}, "current") ? "02022019" :
+	Objects.equals($P{Timeframe}, "last24") ? "02012019" :
+		Objects.equals($P{Timeframe}, "lastweek") ? "02012019" :
+			Objects.equals($P{Timeframe}, "lastmonth") ? "02012019" :
+				Objects.equals($P{Timeframe}, "lastquarter") ? "01012019" :
+					 "01012019"]]></defaultValueExpression>
 	</parameter>
+	<parameter name="Session_ID" class="java.lang.String"/>
 	<queryString language="SQL">
 		<![CDATA[SELECT 5 AS "stations_in_need",
 	(SELECT SUM("sum_value") FROM 
