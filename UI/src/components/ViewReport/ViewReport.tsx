@@ -43,7 +43,7 @@ class ViewReport extends Component<any, ReportsState> {
       isReportSelectOpen: false,
       actionsOpen: false,
       reportOptions: [],
-      selectedReportName: 'test',
+      selectedReportName: '',
       selectedReportValue: '',
       reportFilters: []
     }
@@ -181,8 +181,7 @@ class ViewReport extends Component<any, ReportsState> {
                       </a>
                       {actionsOpen && (
                         <div className={'report-view__actions-dropdown'} onClick={this.toggleActions} >
-                          {/* replace selected report with the report url */}
-                          <Link to={`/editReport/${selectedReportName}`}>
+                          <Link to={`/editReport/${this.state.selectedReportName}`}>
                             <div className={'report-view__action-options'}>
                               Modify
                             </div>
