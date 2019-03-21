@@ -14,28 +14,10 @@ and therefore, will not display the new components correctly.
 
 */
 
-/* NOT WORKING */
-@font-face {
-  font-family: 'Lato';
-  font-style: normal;
-  /* font-display: swap; */
-  font-weight: 400;
-  src: url('fonts/Lato-Regular.ttf') format('truetype');
-}
-
-/* lato-700normal - latin */
-/* @font-face {
-  font-family: "Lato";
-  font-style: normal;
-  font-display: swap;
-  font-weight: 700;
-  src: url("fonts/Lato-Bold.ttf") format("truetype");
-} */
-
 /* BUTTONS */
 
 * {
-  font-family: 'Lato', sans-serif, Verdana, Arial, Helvetica;
+  font-family: sans-serif, Verdana, Arial, Helvetica;
 }
 
 #globalSearch .button.search {
