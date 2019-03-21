@@ -8,7 +8,14 @@ import './ReportFilter.scss';
 
 interface State {}
 
-class ReportFilter extends Component<any, State> {
+interface ReportFilterProps {
+  filterUpdated: () => void;
+  filters: any;
+  clearFilters: (filters: any) => void;
+  selectOption: (option: any) => void;
+}
+
+class ReportFilter extends Component<ReportFilterProps, any> {
   state: any = {};
 
   componentDidMount() {
@@ -31,39 +38,46 @@ class ReportFilter extends Component<any, State> {
   clearFilter = () => {
     this.props.clearFilters(this.props.filters);
     this.forceUpdate();
+    this.props.filterUpdated();
+  };
+
+  updateFilter = (value: any) => {
+    this.props.selectOption(value);
+    this.props.filterUpdated();
   };
 
   render() {
-    const { filters, selectOption } = this.props;
+    const { filters } = this.props;
 
     // Creates a select option for each filter option passed in from displayCategories.
     const displayOptions = (
       options: any,
-      selected: string,
+      selected: any,
       index: number,
       open: string
     ) => {
-      let optionsList = options.map((option: string, i: number) => {
+      let optionsList = options.map((option: any, i: number) => {
         return (
           <div
             className={
               'report-filter__options ' +
-              (selected === option && 'report-filter__option--active')
+              (selected.value === option.value && 'report-filter__option--active')
             }
             key={i}
             onClick={() => {
-              selectOption({ option, index });
+              this.updateFilter({ option, index });
               this.setState({
                 [open]: false
               });
             }}
           >
-            {option}
+            {option.label}
           </div>
         );
       });
       return optionsList;
     };
+
 
     // Created a select for each filter type from props.
     const displayCategories = filters.map((cat: any, i: number) => {
@@ -78,7 +92,7 @@ class ReportFilter extends Component<any, State> {
               <p className={'report-filter__option-title--filter'}>
                 {cat.name}
               </p>
-              <p>{cat.selected || `Select an option`}</p>
+              <p>{cat.selected.label || `Select an option`}</p>
             </div>
             <i className={'report-filter__arrow icon-ic-arrow-down'} />
           </div>
@@ -109,7 +123,14 @@ class ReportFilter extends Component<any, State> {
   }
 }
 
+const mapStateToProps = (state: any, ownProps: any) => {
+  return {
+    filters: state.reports.filters,
+    filterUpdated: ownProps.filterUpdated
+  }
+};
+
 export default connect(
-  (state: any) => state.reports,
+  mapStateToProps,
   { selectOption, clearFilters }
 )(ReportFilter);

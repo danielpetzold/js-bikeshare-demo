@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { setFilters } from '../../store/Reports/reports.actions';
+import { clearFilters, setFilters } from "../../store/Reports/reports.actions";
 import './ViewReport.scss';
 import filterIcon from '../../fonts/icons/filter-icon.svg';
 import NavBar from '../NavBar/NavBar';
@@ -19,6 +19,7 @@ interface ReportsState {
   selectedReportName: string;
   selectedReportValue: string;
   mounted: boolean;
+  reportFilters: any[]
 }
 
 interface Report {
@@ -43,7 +44,8 @@ class ViewReport extends Component<any, ReportsState> {
       actionsOpen: false,
       reportOptions: [],
       selectedReportName: 'test',
-      selectedReportValue: ''
+      selectedReportValue: '',
+      reportFilters: []
     }
   }
 
@@ -57,7 +59,7 @@ class ViewReport extends Component<any, ReportsState> {
   }
 
   getReports() {
-    visualizeHelper.getReportList('/public/Bikeshare_demo/Reports/AdHoc_Reports', {Franchise: ['BA']})
+    visualizeHelper.getReportList('/public/Bikeshare_demo/Reports/AdHoc_Reports', {})
       .then((reports: any) => {
         let reportMap = reports.map((report: Report) => {
           return {
@@ -78,18 +80,26 @@ class ViewReport extends Component<any, ReportsState> {
     if (this.state.selectedReportValue) {
       visualizeHelper.getInputControl('inputControl', this.state.selectedReportValue)
         .then((inputControl: any) => {
-          console.log(inputControl);
-          inputControl.pop();
+          let reportFilters = inputControl.map((control: any) => {
+            return {
+              altName: control.id,
+              name: control.label,
+              selected: '',
+              options: control.state.options
+            }
+          });
+          this.props.setFilters(reportFilters);
         })
     }
   }
 
   showReport() {
     if (this.state.selectedReportValue) {
-      visualizeHelper.getReport('report', this.state.selectedReportValue,  {Franchise: ['BA']})
-        .then(success => {
-          console.log('success');
-        })
+      let params: any = {};
+      this.props.filters.forEach((filter: any) => {
+        params[filter.altName] = [filter.selected.value];
+      });
+      visualizeHelper.getReport('report', this.state.selectedReportValue, params);
     }
   }
 
@@ -115,10 +125,13 @@ class ViewReport extends Component<any, ReportsState> {
     this.setState({ selectedReportName: option.name, selectedReportValue: option.value }, () => {
       this.showReport();
       this.getFilters();
+      this.props.clearFilters(this.props.filters);
     });
   };
 
-
+  reportUpdated = () => {
+    this.showReport();
+  };
 
   render() {
     const {
@@ -188,7 +201,7 @@ class ViewReport extends Component<any, ReportsState> {
 
                   {mounted && (
                     <div className={filterOpen ? 'report-view__show-filter' : 'report-view__hide-filter'}>
-                      <ReportFilter />
+                      <ReportFilter filterUpdated={this.reportUpdated}/>
                     </div>
                   )}
 
@@ -217,5 +230,5 @@ class ViewReport extends Component<any, ReportsState> {
 
 export default connect(
   (state: any) => state.reports,
-  { setFilters }
+  { setFilters, clearFilters }
 )(ViewReport);
