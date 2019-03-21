@@ -169,8 +169,8 @@ class ViewReport extends Component<any, State> {
                           className={'report-view__actions-dropdown'}
                           onClick={this.toggleActions}
                         >
-                          {/* replace selected report with the report url */}
-                          <Link to={`/editReport/${selectedReport}`}>
+                          {/* replace empty string with the report url */}
+                          <Link to={`/editReport/${'test'}`}>
                             <div className={'report-view__action-options'}>
                               Modify
                             </div>

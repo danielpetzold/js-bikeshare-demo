@@ -1,0 +1,350 @@
+/*
+.overrides_custom css
+
+Place styles for simple UI customization in this file.
+
+This file is loaded after all other CSS, so selectors here will win in case of conflict with default rules.
+
+Using this file to customize is the method most likely to conserve your customizations even if markup changes in future product releases.
+
+Extensive customizations may be easier to implement by replacing one or more of the standard theme files in your custom theme folder.
+
+However, if future product releases place styles for new markup components into the files you have replaced, your theme will not have these new styles,
+and therefore, will not display the new components correctly.
+
+*/
+
+/* NOT WORKING */
+@font-face {
+  font-family: 'Lato';
+  font-style: normal;
+  /* font-display: swap; */
+  font-weight: 400;
+  src: url('fonts/Lato-Regular.ttf') format('truetype');
+}
+
+/* lato-700normal - latin */
+/* @font-face {
+  font-family: "Lato";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 700;
+  src: url("fonts/Lato-Bold.ttf") format("truetype");
+} */
+
+/* BUTTONS */
+
+* {
+  font-family: 'Lato', sans-serif, Verdana, Arial, Helvetica;
+}
+
+#globalSearch .button.search {
+  border-left: 2px solid #4a5357;
+}
+
+.action.jumbo.up.pressed {
+  background: none repeat scroll 0 0 #ffffff;
+  border: 1px solid #60ba98;
+}
+
+.action.primary {
+  background-image: none;
+  background-color: #60ba98;
+}
+
+/* CONTAINERS */
+
+.banner {
+  background-color: #4a5357;
+}
+
+column.decorated {
+  border: 1px solid #4a5357;
+}
+
+#frameFooter {
+  background-color: #1c9d6c;
+}
+
+.panel.tooltip .message.label {
+  color: #60ba98;
+  margin-bottom: 0;
+}
+
+.menu.vertical li > .wrap.over {
+  background-color: #1c9d6c;
+  /* background-color: #ff9f03; */
+}
+
+.menu.vertical li > .wrap.pressed {
+  background-color: #60ba98;
+  /* background-color: #e27114; */
+}
+
+#systemMessage {
+  color: #60ba98;
+  font-weight: bold;
+  text-align: center;
+}
+
+/* CONTROLS */
+
+#globalSearch.searchLockup > .wrap {
+  border: 1px solid #4a5357;
+}
+
+/* LISTS */
+/* SELECT LIST CONTROLS */
+
+.list > li > .wrap.pressed,
+.list > li.selected > .wrap,
+.list > li.selected > .wrap.over,
+.sList li.selected,
+.mSelect-svList > .selected .mSelect-svList-button,
+.list.filters > li > .wrap.over,
+.list.filters > li > .wrap.pressed {
+  background-color: #60ba98;
+}
+
+.sList li.active.selected,
+.mSelect-svList > .active.selected .mSelect-svList-button {
+  background-color: #1c9d6c;
+}
+
+.collapsible > li > .wrap > .icon,
+.filters > li > .wrap > .icon,
+.stepIndicator .icon {
+  background-image: url('images/lists_sprite.png');
+}
+
+/* THEME */
+
+/* sky */
+.palette09,
+.button.action.jumbo,
+.homeSidebar-title,
+.workflow-title,
+.resourceBlock a:link,
+.resourceBlock a:visited,
+.resourceBlock a:hover,
+.resourceBlock a:active,
+.workflow-description a:hover {
+  color: #60ba98;
+}
+
+.button.action.primary.disabled,
+.button.action.primary[disabled],
+.tabSet.buttons.vertical [disabled] {
+  color: #dcdcdc;
+}
+
+.palette10,
+#metaLinks a:active,
+a#about:active {
+  color: #8dceb5;
+}
+
+/* dark blue in gradient */
+.palette11,
+.column.decorated.minimized .vtitle,
+.tabSet.horizontal.buttons .selected > .button > .wrap,
+#filter-container .filterName,
+#expression-container .filterName,
+#scheduler_editor #stepDisplay > fieldset > legend,
+.textAccent02,
+.tabSet.text .selected.tab > .wrap,
+.tabSet.text .selected.tab > .wrap.over,
+.tabSet.text .selected.tab > .wrap.pressed,
+.list.filters > li.selected > .wrap,
+.list.stepIndicator .selected > .wrap,
+.panel.info.system .message,
+.resourceName,
+.fsection,
+#reportContainer a,
+.plusminus .node > .wrap > .jrbookmark,
+.filterManagerDialog .addNewFilter {
+  color: #60ba98;
+}
+
+/* green */
+.palette13,
+.textAccent,
+.button.action.jumbo.over,
+#needHelp {
+  color: #1c9d6c;
+}
+
+/* .green2 */
+.palette14,
+#needHelp:active,
+.button.action.jumbo.pressed {
+  color: #60ba98;
+}
+
+/* orange3 */
+.palette15,
+.button.capsule.down {
+  color: #532a0a;
+}
+
+/* orange4 */
+.palette16,
+.button.capsule.down.disabled,
+.button.capsule.down[disabled],
+.resourcePath {
+  color: #9f481d;
+}
+
+.wrap.dragging,
+.overlay.col.dragging,
+.overlay.group.dragging,
+.overlay.xtab.gr.dragging,
+.overlay.xtab.m.dragging,
+.overlay.legend.dragging,
+.dragMultiple.dragging .wrap {
+  /* an object being dragged gets the .dragging class applied */
+  background-color: #60ba98 !important;
+}
+
+#frameFooter #about a,
+#frameFooter #about a:link,
+#frameFooter #about a:visited,
+#frameFooter #about a:hover,
+#frameFooter #about a:active,
+#frameFooter #copyright {
+  color: #ffffff;
+  color: #ffffff; /* IE8 and IE9 */
+}
+
+a.emphasis,
+a.emphasis:link,
+a.emphasis:visited,
+a.emphasis:hover,
+a.emphasis:active {
+  color: inherit;
+}
+
+.palette09_bkgd {
+  background-color: #60ba98;
+}
+.palette10_bkgd {
+  background-color: #8dceb5;
+}
+.palette11_bkgd {
+  background-color: #60ba98;
+}
+.palette13_bkgd {
+  background-color: #1c9d6c;
+}
+.palette14_bkgd {
+  background-color: #60ba98;
+}
+.palette15_bkgd {
+  background-color: #532a0a;
+}
+.palette16_bkgd {
+  background-color: #9f481d;
+}
+
+/* PAGE SPECIFIC */
+
+#loginPage #frame {
+  background-color: #fff;
+}
+
+#loginPage #welcome {
+  background-color: #1c9d6c;
+  height: 80px;
+}
+
+#loginPage #copy {
+  background-color: #60ba98;
+}
+
+#loginPage .info > .content {
+  background-color: #60ba98;
+}
+
+#resultsList li.selected > div.wrap > div.resourceType,
+#resultsList li.pressed > div.wrap > div.resourceType {
+  background: #60ba98 !important;
+}
+
+.authorityPicker .selected,
+.authorityPicker .highlighted.selected {
+  background-color: #60ba98;
+}
+
+.workflow-buttonContainer .button {
+  color: #1c9d6c;
+}
+
+/* JIVE */
+
+.jive_dialog .dialogHeader {
+  color: #60ba98 !important;
+}
+
+#jive_dialog .button.action {
+  background: url('images/button_action_sprite.png') repeat-x scroll 0 0 #d8dad7 !important;
+}
+
+#jive_dialog .button.action.primary {
+  background: url('images/button_action_primary_sprite.png') repeat-x scroll 0 0
+    #2881bb !important;
+}
+
+.jive_inputbutton {
+  background-image: url('images/dialog_button_sprite.png') !important;
+}
+
+.jive_inputbutton.plain {
+  background: none repeat scroll 0 0 transparent !important;
+}
+
+/* EXTRA */
+
+.dimension > .levels > .level,
+#designer #availableFields .dimension .header,
+li.level.dimenzion,
+.dragging.dimension,
+#designer #availableFields .measure .header,
+#filter-container .header,
+#expression-container .header {
+  background-color: #8dceb5;
+}
+
+.content .header > .title {
+  color: #1c9d6c;
+}
+
+#designer #availableFields * .header > .title,
+#filter-container .filterName,
+#expression-container .filterName,
+.resourceBlock-title {
+  color: #4a5357;
+}
+
+.action.primary.over {
+  background-color: #1c9d6c;
+}
+
+.menu.primaryNav .wrap,
+#metaLinks li {
+  color: #dcdcdc;
+}
+
+.menu.primaryNav .wrap.over,
+.menu.primaryNav .wrap.pressed,
+.button.capsule.down.over {
+  background-color: #69caa4;
+}
+
+.button.capsule.up.over,
+.button.capsule.down {
+  background-color: #1c9d6c;
+}
+
+.resourceBlock a:link {
+  color: #1c9d6c;
+}

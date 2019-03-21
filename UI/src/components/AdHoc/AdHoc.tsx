@@ -21,7 +21,7 @@ const AdHoc = (props: Props) => {
             <div className={'grid__column-12 grid__column-m-4'}>
               <iframe
                 className={'adhoc-frame'}
-                src={`${jasperServerUrl}/flow.html?_flowId=adhocFlow&resource=/public/Bikeshare_demo/Ad_hoc/Initial_Bikeshare_Ad_Hoc_View`}
+                src={`${jasperServerUrl}/flow.html?_flowId=adhocFlow&theme=bike_share&resource=/public/Bikeshare_demo/Ad_hoc/Initial_Bikeshare_Ad_Hoc_View`}
               />
             </div>
           </div>
