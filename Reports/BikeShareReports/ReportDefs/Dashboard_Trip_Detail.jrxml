@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 7.2.1.final using JasperReports Library version 6.6.0  -->
-<!-- 2019-03-18T15:42:34 -->
+<!-- 2019-03-20T16:11:04 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Dashboard_Trip_Detail" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="e10eeb15-bdef-4f8d-8e81-93f3dc60bf1f">
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="BikeShare-Adapter-Dev"/>
@@ -13,7 +13,7 @@
 , sr.name as "region_name"
 , rkt.value as "daily_total"
 , rkt.today_adj_date 
-From region_kpis_today as "rkt" 
+From region_kpi_today as "rkt" 
 inner join system_regions as "sr" 
 on sr.region_id = rkt.region_id 
 Where rkt.system_id = 'BA' 
@@ -24,11 +24,11 @@ order by "region_name", rkt.value, rkt.today_adj_date]]>
 	</queryString>
 	<field name="system_id" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.label" value="system_id"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="region_kpis_today"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="region_kpi_today"/>
 	</field>
 	<field name="region_id" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.label" value="region_id"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="region_kpis_today"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="region_kpi_today"/>
 	</field>
 	<field name="region_name" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.label" value="region_name"/>
@@ -36,11 +36,11 @@ order by "region_name", rkt.value, rkt.today_adj_date]]>
 	</field>
 	<field name="daily_total" class="java.lang.Integer">
 		<property name="com.jaspersoft.studio.field.label" value="daily_total"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="region_kpis_today"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="region_kpi_today"/>
 	</field>
 	<field name="today_adj_date" class="java.sql.Timestamp">
 		<property name="com.jaspersoft.studio.field.label" value="today_adj_date"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="region_kpis_today"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="region_kpi_today"/>
 	</field>
 	<sortField name="region_name" order="Descending"/>
 	<background>

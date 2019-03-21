@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 7.2.1.final using JasperReports Library version 6.6.0  -->
-<!-- 2019-03-19T14:49:32 -->
+<!-- 2019-03-21T09:12:21 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="FM_Dashboard_KPIS" printOrder="Horizontal" pageWidth="900" pageHeight="146" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="900" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="5347bef6-468e-4022-865e-bd6933f0fa4b">
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="BikeShare-Adapter-Dev"/>
@@ -16,7 +16,9 @@
 	<property name="net.sf.jasperreports.export.html.size.unit" value="px"/>
 	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w1" value="524"/>
 	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w2" value="469"/>
-	<import value="org.apache.commons.lang.time.DateUtils"/>
+	<property name="ireport.jasperserver.report.resource" value="/public/Bikeshare_demo/Reports/Dashboard_Reports/FM_Dashboard_KPIS_files/main_jrxml"/>
+	<import value="java.time.LocalDate"/>
+	<import value="java.time.format.DateTimeFormatter"/>
 	<template><![CDATA["ReportDefs/StyleTemplates/BikeShare_Style.jrtx"]]></template>
 	<parameter name="Debug" class="java.lang.Boolean">
 		<parameterDescription><![CDATA[During development, may set to true to view parameter values passed into report.]]></parameterDescription>
@@ -34,51 +36,46 @@
 	</parameter>
 	<parameter name="Start_Date" class="java.lang.String" isForPrompting="false">
 		<parameterDescription><![CDATA[Determined by examining the Timeframe parameter value.]]></parameterDescription>
-		<defaultValueExpression><![CDATA[Objects.equals($P{Timeframe}, "current") ? "02022019" :
-	Objects.equals($P{Timeframe}, "last24") ? "02012019" :
-		Objects.equals($P{Timeframe}, "lastweek") ? "02012019" :
-			Objects.equals($P{Timeframe}, "lastmonth") ? "02012019" :
-				Objects.equals($P{Timeframe}, "lastquarter") ? "01012019" :
-					 "01012019"]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA[	Objects.equals($P{Timeframe}, "current") ? LocalDate.now().minusDays(1).format(DateTimeFormatter.ofPattern("MMdduuuu")) :
+	Objects.equals($P{Timeframe}, "last24") ? LocalDate.now().minusDays(2).format(DateTimeFormatter.ofPattern("MMdduuuu")) :
+		Objects.equals($P{Timeframe}, "lastweek") ? LocalDate.now().minusWeeks(1).format(DateTimeFormatter.ofPattern("MMdduuuu")) :
+			Objects.equals($P{Timeframe}, "lastmonth") ? LocalDate.now().minusMonths(1).format(DateTimeFormatter.ofPattern("MMdduuuu")) :
+				Objects.equals($P{Timeframe}, "lastquarter") ? LocalDate.now().minusMonths(3).format(DateTimeFormatter.ofPattern("MMdduuuu")) :
+					 LocalDate.now().minusYears(1).format(DateTimeFormatter.ofPattern("MMdduuuu"))]]></defaultValueExpression>
 	</parameter>
 	<parameter name="End_Date" class="java.lang.String" isForPrompting="false">
 		<parameterDescription><![CDATA[Determined by examining the Timeframe parameter value.]]></parameterDescription>
-		<defaultValueExpression><![CDATA[Objects.equals($P{Timeframe}, "current") ? "02022019" :
-	Objects.equals($P{Timeframe}, "last24") ? "02012019" :
-		Objects.equals($P{Timeframe}, "lastweek") ? "02012019" :
-			Objects.equals($P{Timeframe}, "lastmonth") ? "02012019" :
-				Objects.equals($P{Timeframe}, "lastquarter") ? "01012019" :
-					 "01012019"]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA[	Objects.equals($P{Timeframe}, "current") ? LocalDate.now().plusDays(1).format(DateTimeFormatter.ofPattern("MMdduuuu")) : LocalDate.now().format(DateTimeFormatter.ofPattern("MMdduuuu"))]]></defaultValueExpression>
 	</parameter>
 	<parameter name="Session_ID" class="java.lang.String"/>
 	<queryString language="SQL">
 		<![CDATA[SELECT 5 AS "stations_in_need",
 	(SELECT SUM("sum_value") FROM 
-		(SELECT SUM("region_kpis_today"."value") as "sum_value", "region_kpis_today"."kpi_type"
-			FROM "region_kpis_today"
+		(SELECT SUM("region_kpi_today"."value") as "sum_value", "region_kpi_today"."kpi_type"
+			FROM "region_kpi_today"
 			WHERE ("system_id" =  $P{Franchise} ) AND "today_adj_date" >  to_date($P{Start_Date}, 'MMDDYYYY')  AND "today_adj_date" <  to_date($P{End_Date}, 'MMDDYYYY')
 			GROUP BY  "kpi_type") as "kpi_table" WHERE kpi_type = 'driven_routes_count' ) AS "driven_routes",
 	(SELECT SUM("sum_value") FROM 
-		(SELECT SUM("region_kpis_today"."value") as "sum_value", "region_kpis_today"."kpi_type"
-			FROM "region_kpis_today"
+		(SELECT SUM("region_kpi_today"."value") as "sum_value", "region_kpi_today"."kpi_type"
+			FROM "region_kpi_today"
 			WHERE ("system_id" = $P{Franchise}) AND "today_adj_date" > to_date($P{Start_Date}, 'MMDDYYYY') AND "today_adj_date" < to_date($P{End_Date}, 'MMDDYYYY')
 			GROUP BY  "kpi_type") as "kpi_table" WHERE kpi_type = 'fixed_bikes_count') AS "fixed_bikes",
 	(SELECT SUM("sum_value") FROM 
-		(SELECT SUM("region_kpis_today"."value") as "sum_value", "region_kpis_today"."kpi_type"
-			FROM "region_kpis_today"
+		(SELECT SUM("region_kpi_today"."value") as "sum_value", "region_kpi_today"."kpi_type"
+			FROM "region_kpi_today"
 			WHERE ("system_id" = $P{Franchise}) AND "today_adj_date" > to_date($P{Start_Date}, 'MMDDYYYY') AND "today_adj_date" < to_date($P{End_Date}, 'MMDDYYYY')
 			GROUP BY  "kpi_type") as "kpi_table" WHERE kpi_type = 'lost_bikes_count') AS "lost_bikes",
 	(SELECT SUM("sum_value") FROM 
-		(SELECT SUM("region_kpis_today"."value") as "sum_value", "region_kpis_today"."kpi_type"
-			FROM "region_kpis_today"
+		(SELECT SUM("region_kpi_today"."value") as "sum_value", "region_kpi_today"."kpi_type"
+			FROM "region_kpi_today"
 			WHERE ("system_id" = $P{Franchise}) AND "today_adj_date" > to_date($P{Start_Date}, 'MMDDYYYY') AND "today_adj_date" < to_date($P{End_Date}, 'MMDDYYYY')
 			GROUP BY  "kpi_type") as "kpi_table" WHERE kpi_type = 'transported_bikes_count') AS "transported_bikes",
 	(SELECT SUM("sum_value") FROM 
-		(SELECT SUM("region_kpis_today"."value") as "sum_value", "region_kpis_today"."kpi_type"
-			FROM "region_kpis_today"
+		(SELECT SUM("region_kpi_today"."value") as "sum_value", "region_kpi_today"."kpi_type"
+			FROM "region_kpi_today"
 			WHERE ("system_id" = $P{Franchise}) AND "today_adj_date" > to_date($P{Start_Date}, 'MMDDYYYY') AND "today_adj_date" < to_date($P{End_Date}, 'MMDDYYYY')
 			GROUP BY  "kpi_type") as "kpi_table" WHERE kpi_type = 'total_trips_count') AS "total_trips"		
-FROM "region_kpis_today" FETCH FIRST 1 ROW ONLY]]>
+FROM "region_kpi_today" FETCH FIRST 1 ROW ONLY]]>
 	</queryString>
 	<field name="stations_in_need" class="java.lang.Integer">
 		<property name="com.jaspersoft.studio.field.label" value="stations_in_need"/>
@@ -112,16 +109,6 @@ FROM "region_kpis_today" FETCH FIRST 1 ROW ONLY]]>
 	<detail>
 		<band height="145">
 			<rectangle radius="6">
-				<reportElement x="154" y="0" width="130" height="144" uuid="9dc30979-647c-419e-9159-ee077c0670ce">
-					<property name="com.jaspersoft.studio.unit.width" value="px"/>
-					<property name="com.jaspersoft.studio.unit.height" value="px"/>
-					<property name="com.jaspersoft.studio.unit.x" value="px"/>
-				</reportElement>
-				<graphicElement>
-					<pen lineColor="#FFFFFF"/>
-				</graphicElement>
-			</rectangle>
-			<rectangle radius="6">
 				<reportElement x="0" y="0" width="130" height="144" uuid="102b1e9d-4bc4-43d0-9d70-8a732cf7335e">
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
@@ -132,7 +119,7 @@ FROM "region_kpis_today" FETCH FIRST 1 ROW ONLY]]>
 				</graphicElement>
 			</rectangle>
 			<rectangle radius="6">
-				<reportElement x="308" y="0" width="130" height="144" uuid="c0d89d3a-d23e-4abc-b980-198335148b83">
+				<reportElement style="BaseReportStyle" x="154" y="0" width="130" height="144" uuid="9dc30979-647c-419e-9159-ee077c0670ce">
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.x" value="px"/>
@@ -142,7 +129,7 @@ FROM "region_kpis_today" FETCH FIRST 1 ROW ONLY]]>
 				</graphicElement>
 			</rectangle>
 			<rectangle radius="6">
-				<reportElement x="462" y="0" width="130" height="144" uuid="a085817b-15e4-49b8-9aab-512db0ae0361">
+				<reportElement style="BaseReportStyle" x="308" y="0" width="130" height="144" uuid="c0d89d3a-d23e-4abc-b980-198335148b83">
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.x" value="px"/>
@@ -152,7 +139,7 @@ FROM "region_kpis_today" FETCH FIRST 1 ROW ONLY]]>
 				</graphicElement>
 			</rectangle>
 			<rectangle radius="6">
-				<reportElement x="616" y="0" width="130" height="144" uuid="01179293-6896-4626-8316-f26b2e0a45ff">
+				<reportElement style="BaseReportStyle" x="462" y="0" width="130" height="144" uuid="a085817b-15e4-49b8-9aab-512db0ae0361">
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.x" value="px"/>
@@ -162,7 +149,17 @@ FROM "region_kpis_today" FETCH FIRST 1 ROW ONLY]]>
 				</graphicElement>
 			</rectangle>
 			<rectangle radius="6">
-				<reportElement x="770" y="0" width="130" height="144" uuid="226cb856-6759-4d20-b51c-d4b59d9fab81">
+				<reportElement style="BaseReportStyle" x="616" y="0" width="130" height="144" uuid="01179293-6896-4626-8316-f26b2e0a45ff">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+				</reportElement>
+				<graphicElement>
+					<pen lineColor="#FFFFFF"/>
+				</graphicElement>
+			</rectangle>
+			<rectangle radius="6">
+				<reportElement style="BaseReportStyle" x="770" y="0" width="130" height="144" uuid="226cb856-6759-4d20-b51c-d4b59d9fab81">
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.x" value="px"/>
@@ -287,6 +284,15 @@ FROM "region_kpis_today" FETCH FIRST 1 ROW ONLY]]>
 				</textElement>
 				<text><![CDATA[Bikes Transported]]></text>
 			</staticText>
+			<textField>
+				<reportElement mode="Transparent" x="15" y="3" width="100" height="64" uuid="b9f56a98-168f-4b28-b640-9845ccc13f2f">
+					<printWhenExpression><![CDATA[$P{Debug} == true]]></printWhenExpression>
+				</reportElement>
+				<textElement>
+					<font fontName="SansSerif" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Timeframe: " + $P{Timeframe} + "; Franchise: " + $P{Franchise} + "; Region: " + $P{Region} + "; Start_Date: " + $P{Start_Date} + "; End_Date: " + $P{End_Date}]]></textFieldExpression>
+			</textField>
 		</band>
 	</detail>
 </jasperReport>
