@@ -18,6 +18,7 @@ interface ReportsState {
   reportOptions: Option[];
   selectedReportName: string;
   selectedReportValue: string;
+  selectedReportId: string;
   mounted: boolean;
   reportFilters: any[]
 }
@@ -45,6 +46,7 @@ class ViewReport extends Component<any, ReportsState> {
       reportOptions: [],
       selectedReportName: '',
       selectedReportValue: '',
+      selectedReportId: '',
       reportFilters: []
     }
   }
@@ -64,7 +66,8 @@ class ViewReport extends Component<any, ReportsState> {
         let reportMap = reports.map((report: Report) => {
           return {
             name: report.label,
-            value: report.uri
+            value: report.uri,
+            id: report.uri.split('/').pop()
           };
         });
         this.setState({ reportOptions: reportMap });
@@ -122,7 +125,7 @@ class ViewReport extends Component<any, ReportsState> {
   };
 
   setReport = (option: Option) => {
-    this.setState({ selectedReportName: option.name, selectedReportValue: option.value }, () => {
+    this.setState({ selectedReportName: option.name, selectedReportValue: option.value, selectedReportId: option.id }, () => {
       this.showReport();
       this.getFilters();
       this.props.clearFilters(this.props.filters);
@@ -131,6 +134,13 @@ class ViewReport extends Component<any, ReportsState> {
 
   reportUpdated = () => {
     this.showReport();
+  };
+
+  modifyReport = (e: any) => {
+    e.preventDefault();
+    this.props.history.push({
+      pathname: `/reports/edit/${this.state.selectedReportId}`
+    })
   };
 
   render() {
@@ -172,7 +182,7 @@ class ViewReport extends Component<any, ReportsState> {
                   {/* Bottom Header Row */}
                   <div className={'report-header__bottom'}>
                     <div className={'report-header__buttons'}>
-                      <button className={'report-view__btn--create btn--primary'}>
+                      <button className={'report-view__btn--create btn--primary'} onClick={this.modifyReport}>
                         Create Report
                       </button>
                       <a className={'report-view__btn--actions btn--secondary'} onClick={this.toggleActions}>
@@ -181,11 +191,11 @@ class ViewReport extends Component<any, ReportsState> {
                       </a>
                       {actionsOpen && (
                         <div className={'report-view__actions-dropdown'} onClick={this.toggleActions} >
-                          <Link to={`/editReport/${this.state.selectedReportName}`}>
+                          <div onClick={this.modifyReport}>
                             <div className={'report-view__action-options'}>
                               Modify
                             </div>
-                          </Link>
+                          </div>
 
                           <div className={'report-view__action-options'} onClick={this.toggleExportModal}>Export
                           </div>

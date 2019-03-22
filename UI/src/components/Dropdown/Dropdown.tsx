@@ -4,6 +4,7 @@ import './Dropdown.scss';
 export interface Option {
   name: string;
   value: string;
+  id: string;
 }
 
 interface Props {
