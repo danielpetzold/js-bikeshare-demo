@@ -41,7 +41,9 @@ class VisualizeHelper {
    */
   logOut() {
     this.visualize((v: any) => {
-      return v.logout();
+      return async () => {
+        await v.logout();
+      };
     });
   }
 

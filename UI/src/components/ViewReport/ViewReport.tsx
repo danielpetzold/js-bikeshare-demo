@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { setFilters } from '../../store/Reports/reports.actions';
 import './ViewReport.scss';
 import filterIcon from '../../fonts/icons/filter-icon.svg';
@@ -168,11 +169,12 @@ class ViewReport extends Component<any, State> {
                           className={'report-view__actions-dropdown'}
                           onClick={this.toggleActions}
                         >
-                          <a href="">
+                          {/* replace empty string with the report url */}
+                          <Link to={`/editReport/${'test'}`}>
                             <div className={'report-view__action-options'}>
                               Modify
                             </div>
-                          </a>
+                          </Link>
                           <div
                             className={'report-view__action-options'}
                             onClick={this.toggleExportModal}
