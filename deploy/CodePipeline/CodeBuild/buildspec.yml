@@ -21,18 +21,21 @@ phases:
       # - command
   build:
     commands:
+      # make sure we have the latest
+      - git checkout develop
       - ls -lsa
-      # the default branch for the project is develop, so no need to switch
-      #- git checkout develop
+      - mkdir nodeBuild
       - cd UI
       - npm install
       - npm run build
       - ls -lsa build
-      - cd ..
-      - mkdir nodeBuild
-      - zip -r nodeBuild/bikeshare-node.zip UI/build/*
-      - zip –u nodeBuild/bikeshare-node.zip deployment/Docker/*
-      - zip –u nodeBuild/bikeshare-node.zip deployment/ElasticBeanstalk/*
+      - zip -r ../nodeBuild/bikeshare-node.zip build/*
+      - cd ../deploy/Docker
+      - zip ../../nodeBuild/bikeshare-node.zip *
+      - cd ../ElasticBeanstalk
+      - zip ../../nodeBuild/bikeshare-node.zip *
+      - cd ../../nodeBuild
+      - zipinfo -1 bikeshare-node.zip
       # - command
     #finally:
       #echo Build finished on `date`
