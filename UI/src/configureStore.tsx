@@ -4,7 +4,9 @@ import { routerMiddleware } from 'connected-react-router';
 import createRootReducer from './store';
 import thunk from 'redux-thunk';
 
-export const history = createBrowserHistory();
+export const history = createBrowserHistory({
+  basename: process.env.PUBLIC_URL
+});
 
 const enhancers = [];
 const middleware = [thunk, routerMiddleware(history)];

@@ -170,7 +170,7 @@ class ViewReport extends Component<any, State> {
                           onClick={this.toggleActions}
                         >
                           {/* replace empty string with the report url */}
-                          <Link to={`/editReport/${'test'}`}>
+                          <Link to={`editReport/${'test'}`}>
                             <div className={'report-view__action-options'}>
                               Modify
                             </div>

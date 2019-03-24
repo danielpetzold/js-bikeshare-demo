@@ -69,7 +69,7 @@ class NavBar extends Component<any, State> {
               <NavLink
                 activeClassName="nav-bar__link--active"
                 className="nav-bar__link"
-                to="/Dashboard"
+                to="./Dashboard"
               >
                 <i className="icon-ic-trending-up nav-bar__icon " />
                 <span className="nav-bar__text">Trends and Analytics</span>
@@ -95,7 +95,7 @@ class NavBar extends Component<any, State> {
               <NavLink
                 activeClassName="nav-bar__link--active"
                 className="nav-bar__link"
-                to="/Reports"
+                to="./Reports"
               >
                 <i className="icon-ic-assignment nav-bar__icon " />
                 <span className="nav-bar__text">Reports</span>
