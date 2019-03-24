@@ -1,0 +1,52 @@
+version: 0.2
+
+#env:
+  #variables:
+     # key: "value"
+     # key: "value"
+  #parameter-store:
+     # key: "value"
+     # key: "value"
+
+phases:
+  install:
+    commands:
+      #- apt-get update -y
+      # zip is in the image
+      #- apt-get install -y zip
+      # git-all 
+  #pre_build:
+    #commands:
+      # - command
+      # - command
+  build:
+    commands:
+      - ls -lsa
+      # the default branch for the project is develop, so no need to switch
+      #- git checkout develop
+      - cd UI
+      - npm install
+      - npm run build
+      - ls -lsa build
+      - cd ..
+      - mkdir nodeBuild
+      - zip -r nodeBuild/bikeshare-node.zip UI/build/*
+      - zip –u nodeBuild/bikeshare-node.zip deployment/Docker/*
+      - zip –u nodeBuild/bikeshare-node.zip deployment/ElasticBeanstalk/*
+      # - command
+    #finally:
+      #echo Build finished on `date`
+  #post_build:
+    #commands:
+      # - command
+      # - command
+artifacts:
+  files:
+    - nodeBuild/bikeshare-node.zip
+    # - location
+  #name: $(date +%Y-%m-%d)
+  discard-paths: yes
+  #base-directory: location
+#cache:
+  #paths:
+    # - paths
