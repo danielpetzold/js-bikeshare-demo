@@ -29,9 +29,13 @@ phases:
       - npm install
       - npm run build
       - ls -lsa build
-      # add other artifacts to the build directory
-      - cp -R ../deploy/Docker/* build
-      - cp -R ../deploy/ElasticBeanstalk/* build
+      # create and fill the deployment directory
+      - cd ..
+      - mkdir target
+      - mkdir target/build
+      - cp -R UI/build/* target/build
+      - cp -R deploy/Docker/* target
+      - cp -R deploy/ElasticBeanstalk/* target
       # original approach of building a Beanstalk zip
       #- zip -r ../nodeBuild/bikeshare-node.zip build/*
       #- cd ../deploy/Docker
@@ -51,7 +55,7 @@ artifacts:
   files:
     - '**/*'
     #- nodeBuild/bikeshare-node.zip
-  base-directory: 'UI/build'
+  base-directory: 'target'
     # - location
   #name: $(date +%Y-%m-%d)
   #discard-paths: yes
