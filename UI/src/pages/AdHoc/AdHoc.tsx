@@ -1,6 +1,6 @@
 import React from 'react';
 import './AdHoc.scss';
-import NavBar from '../NavBar/NavBar';
+import NavBar from '../../components/NavBar/NavBar';
 import { jasperServerUrl } from '../../helpers/constants';
 
 interface Props {
