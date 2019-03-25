@@ -22,7 +22,7 @@ phases:
   build:
     commands:
       # make sure we have the latest
-      - git checkout develop
+      #- git checkout develop: not needed?
       - ls -lsa
       - mkdir nodeBuild
       - cd UI
