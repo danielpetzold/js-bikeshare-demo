@@ -61,7 +61,7 @@ class ViewReport extends Component<any, ReportsState> {
   }
 
   getReports() {
-    visualizeHelper.getReportList('/public/Bikeshare_demo/Reports/AdHoc_Reports', {})
+    visualizeHelper.getReportList('/public/Bikeshare_demo/Ad_hoc/App_Report_List', {})
       .then((reports: any) => {
         let reportMap = reports.map((report: Report) => {
           return {
@@ -174,7 +174,7 @@ class ViewReport extends Component<any, ReportsState> {
                         setSelected={this.setReport}
                         toggleDropdown={this.toggleReports}
                         options={reportOptions}
-                        dropdownWidth="195px"/>)
+                        dropdownWidth="100%"/>)
                     }
                     </div>
                   </div>
@@ -190,12 +190,16 @@ class ViewReport extends Component<any, ReportsState> {
                         <i className={'report-view__actions icon-ic-arrow-down'}/>
                       </a>
                       {actionsOpen && (
-                        <div className={'report-view__actions-dropdown'} onClick={this.toggleActions} >
-                          <div onClick={this.modifyReport}>
+                        <div
+                          className={'report-view__actions-dropdown'}
+                          onClick={this.toggleActions}
+                        >
+                          {/* replace empty string with the report url */}
+                          <Link to={`editReport/${'test'}`}>
                             <div className={'report-view__action-options'}>
                               Modify
                             </div>
-                          </div>
+                          </Link>
 
                           <div className={'report-view__action-options'} onClick={this.toggleExportModal}>Export
                           </div>

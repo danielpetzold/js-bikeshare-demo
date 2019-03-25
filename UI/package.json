@@ -1,5 +1,6 @@
 {
-  "name": "js-bikeshare-demo",
+  "homepage": "/bikeshare/",
+  "name": "TIBCO-Jaspersoft-bikeshare-demonstration",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

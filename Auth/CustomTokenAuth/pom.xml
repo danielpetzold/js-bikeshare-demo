@@ -18,9 +18,9 @@
   		<scope>test</scope>
   	</dependency>
   	<dependency>
-  		<groupId>jaspersoft</groupId>
-  		<artifactId>jaspersoft</artifactId>
-  		<version>7.1</version>
+	    <groupId>com.jaspersoft.jasperserver.api.common</groupId>
+	    <artifactId>jasperserver-api-common</artifactId>
+        <version>7.1.0</version>
   	</dependency>
   </dependencies>
 </project>
