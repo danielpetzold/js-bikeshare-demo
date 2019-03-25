@@ -4,10 +4,10 @@ import { Link } from 'react-router-dom';
 import { clearFilters, setFilters } from "../../store/Reports/reports.actions";
 import './ViewReport.scss';
 import filterIcon from '../../fonts/icons/filter-icon.svg';
-import NavBar from '../NavBar/NavBar';
-import ExportModal from '../ExportModal/ExportModal';
-import ReportFilter from '../ReportFilter/ReportFilter';
-import Dropdown, { Option } from "../Dropdown/Dropdown";
+import NavBar from '../../components/NavBar/NavBar';
+import ExportModal from '../../components/ExportModal/ExportModal';
+import ReportFilter from '../../components/ReportFilter/ReportFilter';
+import Dropdown, { Option } from "../../components/Dropdown/Dropdown";
 import { visualizeHelper } from '../../helpers/VisualizeHelper';
 
 interface ReportsState {
@@ -195,7 +195,7 @@ class ViewReport extends Component<any, ReportsState> {
                           onClick={this.toggleActions}
                         >
                           {/* replace empty string with the report url */}
-                          <Link to={`editReport/${'test'}`}>
+                          <Link to={`report/edit/${'test'}`}>
                             <div className={'report-view__action-options'}>
                               Modify
                             </div>

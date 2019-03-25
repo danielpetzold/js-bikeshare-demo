@@ -1,7 +1,7 @@
 import React from 'react';
 import './Dashboard.scss';
-import NavBar from '../NavBar/NavBar';
-import Filter from '../Filter/Filter';
+import NavBar from '../../components/NavBar/NavBar';
+import Filter from '../../components/Filter/Filter';
 import { visualizeHelper } from '../../helpers/VisualizeHelper';
 
 interface DashboardProps {}

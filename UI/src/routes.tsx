@@ -1,9 +1,9 @@
 import React from 'react';
 import { Redirect, Route, Switch } from 'react-router';
-import Login from './components/Login/Login';
-import Dashboard from './components/Dashboard/Dashboard';
-import ViewReport from './components/ViewReport/ViewReport';
-import AdHoc from './components/AdHoc/AdHoc';
+import Login from './pages/Login/Login';
+import Dashboard from './pages/Dashboard/Dashboard';
+import ViewReport from './pages/ViewReport/ViewReport';
+import AdHoc from './pages/AdHoc/AdHoc';
 
 // @ts-ignore
 // Allows access to route only if token exists
