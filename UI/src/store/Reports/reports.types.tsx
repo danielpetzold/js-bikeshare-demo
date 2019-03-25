@@ -14,7 +14,7 @@ interface SelectOption {
   type: typeof SELECT_OPTION;
   payload: {
     index: number;
-    option: string;
+    option: any;
   };
 }
 interface ClearFilters {

@@ -79,10 +79,10 @@ class Dashboard extends React.Component<DashboardProps, State> {
   }
 
   componentDidMount() {
-    visualizeHelper.getReport(
-      'report1',
-      '/public/Bikeshare_demo/Reports/AdHoc_Reports/Station_Capacity_Report'
-    );
+    // visualizeHelper.getReport(
+    //   'report1',
+    //   '/public/Bikeshare_demo/Reports/AdHoc_Reports/Station_Capacity_Report'
+    // );
   }
 
   closeFilter = () => {

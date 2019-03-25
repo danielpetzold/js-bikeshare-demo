@@ -1,86 +1,109 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { setFilters } from '../../store/Reports/reports.actions';
+import { clearFilters, setFilters } from "../../store/Reports/reports.actions";
 import './ViewReport.scss';
 import filterIcon from '../../fonts/icons/filter-icon.svg';
 import NavBar from '../NavBar/NavBar';
 import ExportModal from '../ExportModal/ExportModal';
 import ReportFilter from '../ReportFilter/ReportFilter';
-import Dropdown from '../Dropdown/Dropdown';
+import Dropdown, { Option } from "../Dropdown/Dropdown";
+import { visualizeHelper } from '../../helpers/VisualizeHelper';
 
-interface State {
+interface ReportsState {
   filterOpen: boolean;
   exportModalOpen: boolean;
   actionsOpen: boolean;
-  reportsOpen: boolean;
-  reportOptions: string[];
-  selectedReport: string;
+  isReportSelectOpen: boolean;
+  reportOptions: Option[];
+  selectedReportName: string;
+  selectedReportValue: string;
+  selectedReportId: string;
   mounted: boolean;
+  reportFilters: any[]
 }
 
-class ViewReport extends Component<any, State> {
-  state = {
-    mounted: false,
-    filterOpen: false,
-    exportModalOpen: false,
-    reportsOpen: false,
-    actionsOpen: false,
-    reportOptions: [
-      'Station Report',
-      'Rider Utilization',
-      'Driver Efficiency',
-      'Bike Inventory',
-      'Trip Report'
-    ],
-    selectedReport: 'Station Report'
-  };
+interface Report {
+  creationDate: string;
+  description: string;
+  label: string;
+  permissionMask: number;
+  resourceType: string;
+  updateDate: string;
+  uri: string;
+  version: string;
+}
+
+class ViewReport extends Component<any, ReportsState> {
+  constructor(props: any) {
+    super(props);
+    this.state = {
+      mounted: false,
+      filterOpen: false,
+      exportModalOpen: false,
+      isReportSelectOpen: false,
+      actionsOpen: false,
+      reportOptions: [],
+      selectedReportName: '',
+      selectedReportValue: '',
+      selectedReportId: '',
+      reportFilters: []
+    }
+  }
+
+  componentWillMount() {
+    this.getReports();
+    this.getFilters();
+  }
 
   componentDidMount() {
     this.setState({ mounted: true });
-    this.props.setFilters([
-      {
-        name: 'Region',
-        altName: 'region',
-        selected: '',
-        options: [
-          'Alameda County',
-          'Contra Costa County',
-          'Downtown San Francisco',
-          'San Francisco Bay Area',
-          'Santa Clara County'
-        ]
-      },
-      {
-        name: 'Station',
-        altName: 'station',
-        selected: '',
-        options: [
-          'Brooklyn Bridge',
-          '1028 Garfield Ave',
-          '83 Barbara St',
-          '405 Anchor St'
-        ]
-      },
-      {
-        name: 'Franchise',
-        altName: 'franchise',
-        selected: '',
-        options: [
-          'Van Ness',
-          'Geary',
-          'Hyde',
-          'Haight and Ashbury',
-          'Polk Street'
-        ]
-      },
-      {
-        name: 'On Site Kiosk',
-        altName: 'osk',
-        selected: '',
-        options: ['true', 'false']
-      }
-    ]);
+  }
+
+  getReports() {
+    visualizeHelper.getReportList('/public/Bikeshare_demo/Ad_hoc/App_Report_List', {})
+      .then((reports: any) => {
+        let reportMap = reports.map((report: Report) => {
+          return {
+            name: report.label,
+            value: report.uri,
+            id: report.uri.split('/').pop()
+          };
+        });
+        this.setState({ reportOptions: reportMap });
+
+        // If no report is selected, load the first report in the list
+        if (!this.state.selectedReportValue) {
+          this.setReport(this.state.reportOptions[0]);
+        }
+      });
+  }
+
+  getFilters() {
+    if (this.state.selectedReportValue) {
+      visualizeHelper.getInputControl('inputControl', this.state.selectedReportValue)
+        .then((inputControl: any) => {
+          let reportFilters = inputControl.map((control: any) => {
+            return {
+              altName: control.id,
+              name: control.label,
+              selected: '',
+              options: control.state.options
+            }
+          });
+          this.props.setFilters(reportFilters);
+        })
+    }
+  }
+
+  showReport() {
+    if (this.state.selectedReportValue) {
+      let params: any = {};
+      this.props.filters.forEach((filter: any) => {
+        params[filter.altName] = [filter.selected.value];
+      });
+      visualizeHelper.getReport('report', this.state.selectedReportValue, params);
+    }
   }
 
   toggleExportModal = () => {
@@ -94,16 +117,30 @@ class ViewReport extends Component<any, State> {
       actionsOpen: !this.state.actionsOpen
     });
   };
+
   toggleReports = () => {
     this.setState({
-      reportsOpen: !this.state.reportsOpen
+      isReportSelectOpen: !this.state.isReportSelectOpen
     });
   };
 
-  setReport = (option: string) => {
-    this.setState({
-      selectedReport: option
+  setReport = (option: Option) => {
+    this.setState({ selectedReportName: option.name, selectedReportValue: option.value, selectedReportId: option.id }, () => {
+      this.showReport();
+      this.getFilters();
+      this.props.clearFilters(this.props.filters);
     });
+  };
+
+  reportUpdated = () => {
+    this.showReport();
+  };
+
+  modifyReport = (e: any) => {
+    e.preventDefault();
+    this.props.history.push({
+      pathname: `/reports/edit/${this.state.selectedReportId}`
+    })
   };
 
   render() {
@@ -111,10 +148,11 @@ class ViewReport extends Component<any, State> {
       filterOpen,
       exportModalOpen,
       actionsOpen,
-      reportsOpen,
+      isReportSelectOpen,
       mounted,
       reportOptions,
-      selectedReport
+      selectedReportName,
+      selectedReportValue
     } = this.state;
 
     return (
@@ -122,47 +160,34 @@ class ViewReport extends Component<any, State> {
         <NavBar />
         <div className={'report-container'}>
           <div className={'grid report-view'}>
-            {/* HEADER */}
-            <div className={'grid__row '}>
+            <div className={'grid__row report-header'}>
               <div className={'grid__column-12 grid__column-m-4'}>
-                <header className={'report-header'}>
-                  {/* Top Header Row */}
-                  <div className={'report-header__top'}>
-                    <h3 className={'report-header__title'}>Reports</h3>
-                    <div
-                      className={'header-select'}
-                      onClick={this.toggleReports}
-                    >
-                      <h5>{selectedReport}</h5>
-                      <i className={'icon-ic-unfold-more'} />
-                    </div>
+                <div className={'report-header__top'}>
+                  <h3 className={'report-header__title'}>Reports</h3>
+                  <div className={'header-select'} onClick={this.toggleReports}>
+                    <h5>{selectedReportName}</h5>
+                    <i className={'icon-ic-unfold-more'} />
+                  </div>
                     <div className={'header-select__dropdown'}>
-                      {reportsOpen && (
-                        <Dropdown
-                          setSelected={this.setReport}
-                          toggleDropdown={this.toggleReports}
-                          options={reportOptions}
-                          dropdownWidth="195px"
-                        />
-                      )}
+                    { isReportSelectOpen && (
+                      <Dropdown
+                        setSelected={this.setReport}
+                        toggleDropdown={this.toggleReports}
+                        options={reportOptions}
+                        dropdownWidth="100%"/>)
+                    }
                     </div>
                   </div>
+
                   {/* Bottom Header Row */}
                   <div className={'report-header__bottom'}>
                     <div className={'report-header__buttons'}>
-                      <button
-                        className={'report-view__btn--create btn--primary'}
-                      >
+                      <button className={'report-view__btn--create btn--primary'} onClick={this.modifyReport}>
                         Create Report
                       </button>
-                      <a
-                        className={'report-view__btn--actions btn--secondary'}
-                        onClick={this.toggleActions}
-                      >
+                      <a className={'report-view__btn--actions btn--secondary'} onClick={this.toggleActions}>
                         <p>Modify</p>
-                        <i
-                          className={'report-view__actions icon-ic-arrow-down'}
-                        />
+                        <i className={'report-view__actions icon-ic-arrow-down'}/>
                       </a>
                       {actionsOpen && (
                         <div
@@ -175,49 +200,33 @@ class ViewReport extends Component<any, State> {
                               Modify
                             </div>
                           </Link>
-                          <div
-                            className={'report-view__action-options'}
-                            onClick={this.toggleExportModal}
-                          >
-                            Export
+
+                          <div className={'report-view__action-options'} onClick={this.toggleExportModal}>Export
                           </div>
-                          <div
-                            className={'report-view__action-options'}
-                            onClick={() =>
-                              setTimeout(() => window.print(), 100)
-                            }
-                          >
-                            Print
+                          <div className={'report-view__action-options'}
+                               onClick={() => setTimeout(() => window.print(), 100)}>Print
                           </div>
                         </div>
                       )}
                     </div>
-                    <img
-                      src={filterIcon}
-                      alt="filter"
-                      onClick={() => this.setState({ filterOpen: !filterOpen })}
-                    />
+                    <img src={filterIcon} alt="filter" onClick={() => this.setState({ filterOpen: !filterOpen })}/>
                   </div>
-                  {/* FILTER */}
+
                   {mounted && (
-                    <div
-                      className={
-                        filterOpen
-                          ? 'report-view__show-filter'
-                          : 'report-view__hide-filter'
-                      }
-                    >
-                      <ReportFilter />
+                    <div className={filterOpen ? 'report-view__show-filter' : 'report-view__hide-filter'}>
+                      <ReportFilter filterUpdated={this.reportUpdated}/>
                     </div>
                   )}
-                </header>
+
               </div>
             </div>
 
             {/* REPORT */}
             <div className={'grid__row'}>
               <div className={'grid__column-12 grid__column-m-4'}>
-                <div className={'report-view__table'}>
+                <div id='inputControl'>
+                </div>
+                <div id='report' className={'report-view__table'}>
                   {/* report to be passed in */}
                 </div>
               </div>
@@ -234,5 +243,5 @@ class ViewReport extends Component<any, State> {
 
 export default connect(
   (state: any) => state.reports,
-  { setFilters }
+  { setFilters, clearFilters }
 )(ViewReport);
