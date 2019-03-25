@@ -33,7 +33,7 @@ const routes = (
     <Route exact path="/" component={Login} />
     <PrivateRoute path="/dashboard" component={Dashboard} />
     <PrivateRoute path="/reports" component={ViewReport} />
-    <PrivateRoute path="/editReport/:path" component={AdHoc} />
+    <PrivateRoute path="/reports/edit/:path" component={AdHoc} />
   </Switch>
 );
 

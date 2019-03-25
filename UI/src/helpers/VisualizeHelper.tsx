@@ -12,7 +12,7 @@ class VisualizeHelper {
   /**
    * Type definitions do not yet exist for Visualize.js. Casting as any, for now.
    */
-  private visualize = (window as any).visualize;
+  private viz = (window as any).visualize;
 
   /**
    * Token-Based Authentication Login
@@ -20,7 +20,7 @@ class VisualizeHelper {
    * @param jaspersoftServerUrl
    */
   login(userToken: string, jaspersoftServerUrl: string) {
-    this.visualize.config({
+    this.viz.config({
       server: jaspersoftServerUrl,
       scripts: 'optimized-scripts',
       auth: {
@@ -40,9 +40,10 @@ class VisualizeHelper {
    * Token-Based Authentication Logout
    */
   logOut() {
-    this.visualize((v: any) => {
+    this.viz((v: any) => {
       return async () => {
         await v.logout();
+
       };
     });
   }
@@ -55,13 +56,13 @@ class VisualizeHelper {
    */
   getReport(uiContainer: string, resourcePath: string, params: any = {}) {
     return new Promise((resolve, reject) => {
-      this.visualize((v: any) => {
+      this.viz((v: any) => {
         v.report({
           container: `#${uiContainer}`,
           resource: resourcePath,
           params: params,
-          success: () => {
-            resolve();
+          success: (success: any) => {
+            resolve(success);
           },
           error: (err: any) => {
             console.log('getReport', err);
@@ -78,15 +79,14 @@ class VisualizeHelper {
    * @param resourcePath
    * @param params
    */
-  getInputControl(uiContainer: string, resourcePath: string, params: any = {}) {
+  getInputControl(uiContainer: string | null, resourcePath: string, params: any = {}) {
     return new Promise((resolve, reject) => {
-      this.visualize((v: any) => {
+      this.viz((v: any) => {
         v.inputControls({
-          container: `#${uiContainer}`,
           resource: resourcePath,
           params: params,
-          success: () => {
-            resolve();
+          success: (success: any) => {
+            resolve(success);
           },
           error: (err: any) => {
             console.log('getReport', err);
@@ -104,11 +104,11 @@ class VisualizeHelper {
    */
   getReportList(folderUrl: string, reportTypes: any) {
     return new Promise((resolve, reject) => {
-      this.visualize((v: any) => {
+      this.viz((v: any) => {
         v.resourcesSearch({
           folderUri: folderUrl,
           recursive: true,
-          types: [reportTypes],
+          // types: [reportTypes],
           success: function(repo: any) {
             resolve(repo);
           },
