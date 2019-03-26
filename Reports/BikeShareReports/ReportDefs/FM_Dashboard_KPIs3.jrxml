@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 7.2.1.final using JasperReports Library version 6.6.0  -->
-<!-- 2019-03-21T14:55:04 -->
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="FM_Dashboard_KPIS" printOrder="Horizontal" pageWidth="900" pageHeight="146" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="900" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="5347bef6-468e-4022-865e-bd6933f0fa4b">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="FM_Dashboard_KPIS" printOrder="Horizontal" pageWidth="900" pageHeight="146" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="900" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" isFloatColumnFooter="true" uuid="5347bef6-468e-4022-865e-bd6933f0fa4b">
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
-	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="BikeShare-Adapter-Dev"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Bikeshare demo DS on AWS"/>
 	<property name="com.jaspersoft.studio.report.description" value=""/>
-	<property name="ireport.jasperserver.url" value="http://JRS-bikes-ElasticL-1K5YHF91VRJUO-1806919984.us-east-2.elb.amazonaws.com/jasperserver-pro/"/>
+	<property name="ireport.jasperserver.url" value="http://jrs-bikes-elasticl-1k5yhf91vrjuo-1806919984.us-east-2.elb.amazonaws.com/jasperserver-pro/"/>
 	<property name="ireport.jasperserver.user" value="superuser"/>
 	<property name="ireport.jasperserver.reportUnit" value="/public/Bikeshare_demo/Reports/Dashboard_Reports/FM_Dashboard_KPIS"/>
 	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="280"/>
@@ -14,11 +13,12 @@
 	<property name="net.sf.jasperreports.export.html.header" value=""/>
 	<property name="net.sf.jasperreports.export.html.remove.emtpy.space.between.rows" value="true"/>
 	<property name="net.sf.jasperreports.export.html.size.unit" value="px"/>
-	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w1" value="524"/>
-	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w2" value="469"/>
+	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w1" value="596"/>
+	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w2" value="391"/>
+	<property name="ireport.jasperserver.report.resource" value="/public/Bikeshare_demo/Reports/Dashboard_Reports/FM_Dashboard_KPIS_files/main_jrxml"/>
 	<import value="java.time.LocalDate"/>
 	<import value="java.time.format.DateTimeFormatter"/>
-	<template><![CDATA["ReportDefs/StyleTemplates/BikeShare_Style.jrtx"]]></template>
+	<template><![CDATA["repo:BikeShare_Style.jrtx"]]></template>
 	<parameter name="Debug" class="java.lang.Boolean">
 		<parameterDescription><![CDATA[During development, may set to true to view parameter values passed into report.]]></parameterDescription>
 		<defaultValueExpression><![CDATA[FALSE( )]]></defaultValueExpression>
@@ -47,32 +47,48 @@
 		<defaultValueExpression><![CDATA[Objects.equals($P{Timeframe}, "current") ? LocalDate.now().plusDays(1).format(DateTimeFormatter.ofPattern("MMdduuuu")) : LocalDate.now().format(DateTimeFormatter.ofPattern("MMdduuuu"))]]></defaultValueExpression>
 	</parameter>
 	<parameter name="Session_ID" class="java.lang.String"/>
+	<parameter name="regionExpression" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[$P{Region} != null && !$P{Region}.isEmpty() ? " and region_id = '" + $P{Region}.trim() + "' " : ""]]></defaultValueExpression>
+	</parameter>
 	<queryString language="SQL">
-		<![CDATA[SELECT 5 AS "stations_in_need",
+		<![CDATA[SELECT (
+	select count(*)
+	from station_status cStat
+	join (
+		select system_id, station_id,
+		max(last_reported) as maxStatusTime
+		from station_status
+		where system_id = $P{Franchise} $P!{regionExpression}
+		and (session_id is null or session_id = $P{Session_ID})
+		group by system_id, station_id) as  mStat
+	on mStat.system_id = cStat.system_id and mStat.station_id = cStat.station_id and mStat.maxStatusTime = cStat.last_reported
+	where cStat.num_bikes_available = 0  or cStat.num_bikes_disabled > 5
+	group by cStat.system_id
+         ) AS "stations_in_need",
 	(SELECT SUM("sum_value") FROM 
 		(SELECT SUM("region_kpi_today"."value") as "sum_value", "region_kpi_today"."kpi_type"
 			FROM "region_kpi_today"
-			WHERE ("system_id" =  $P{Franchise} ) AND "today_adj_date" >  to_date($P{Start_Date}, 'MMDDYYYY')  AND "today_adj_date" <  to_date($P{End_Date}, 'MMDDYYYY')
+			WHERE ("system_id" =  $P{Franchise} ) $P!{regionExpression} AND "today_adj_date" >  to_date($P{Start_Date}, 'MMDDYYYY')  AND "today_adj_date" <  to_date($P{End_Date}, 'MMDDYYYY')
 			GROUP BY  "kpi_type") as "kpi_table" WHERE kpi_type = 'driven_routes_count' ) AS "driven_routes",
 	(SELECT SUM("sum_value") FROM 
 		(SELECT SUM("region_kpi_today"."value") as "sum_value", "region_kpi_today"."kpi_type"
 			FROM "region_kpi_today"
-			WHERE ("system_id" = $P{Franchise}) AND "today_adj_date" > to_date($P{Start_Date}, 'MMDDYYYY') AND "today_adj_date" < to_date($P{End_Date}, 'MMDDYYYY')
+			WHERE ("system_id" = $P{Franchise}) $P!{regionExpression} AND "today_adj_date" > to_date($P{Start_Date}, 'MMDDYYYY') AND "today_adj_date" < to_date($P{End_Date}, 'MMDDYYYY')
 			GROUP BY  "kpi_type") as "kpi_table" WHERE kpi_type = 'fixed_bikes_count') AS "fixed_bikes",
 	(SELECT SUM("sum_value") FROM 
 		(SELECT SUM("region_kpi_today"."value") as "sum_value", "region_kpi_today"."kpi_type"
 			FROM "region_kpi_today"
-			WHERE ("system_id" = $P{Franchise}) AND "today_adj_date" > to_date($P{Start_Date}, 'MMDDYYYY') AND "today_adj_date" < to_date($P{End_Date}, 'MMDDYYYY')
+			WHERE ("system_id" = $P{Franchise}) $P!{regionExpression} AND "today_adj_date" > to_date($P{Start_Date}, 'MMDDYYYY') AND "today_adj_date" < to_date($P{End_Date}, 'MMDDYYYY')
 			GROUP BY  "kpi_type") as "kpi_table" WHERE kpi_type = 'lost_bikes_count') AS "lost_bikes",
 	(SELECT SUM("sum_value") FROM 
 		(SELECT SUM("region_kpi_today"."value") as "sum_value", "region_kpi_today"."kpi_type"
 			FROM "region_kpi_today"
-			WHERE ("system_id" = $P{Franchise}) AND "today_adj_date" > to_date($P{Start_Date}, 'MMDDYYYY') AND "today_adj_date" < to_date($P{End_Date}, 'MMDDYYYY')
+			WHERE ("system_id" = $P{Franchise}) $P!{regionExpression} AND "today_adj_date" > to_date($P{Start_Date}, 'MMDDYYYY') AND "today_adj_date" < to_date($P{End_Date}, 'MMDDYYYY')
 			GROUP BY  "kpi_type") as "kpi_table" WHERE kpi_type = 'transported_bikes_count') AS "transported_bikes",
 	(SELECT SUM("sum_value") FROM 
 		(SELECT SUM("region_kpi_today"."value") as "sum_value", "region_kpi_today"."kpi_type"
 			FROM "region_kpi_today"
-			WHERE ("system_id" = $P{Franchise}) AND "today_adj_date" > to_date($P{Start_Date}, 'MMDDYYYY') AND "today_adj_date" < to_date($P{End_Date}, 'MMDDYYYY')
+			WHERE ("system_id" = $P{Franchise}) $P!{regionExpression} AND "today_adj_date" > to_date($P{Start_Date}, 'MMDDYYYY') AND "today_adj_date" < to_date($P{End_Date}, 'MMDDYYYY')
 			GROUP BY  "kpi_type") as "kpi_table" WHERE kpi_type = 'total_trips_count') AS "total_trips"		
 FROM "region_kpi_today" FETCH FIRST 1 ROW ONLY]]>
 	</queryString>
@@ -118,7 +134,7 @@ FROM "region_kpi_today" FETCH FIRST 1 ROW ONLY]]>
 				</graphicElement>
 			</rectangle>
 			<rectangle radius="6">
-				<reportElement style="BaseReportStyle" x="154" y="0" width="130" height="144" uuid="9dc30979-647c-419e-9159-ee077c0670ce">
+				<reportElement x="154" y="0" width="130" height="144" uuid="9dc30979-647c-419e-9159-ee077c0670ce">
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.x" value="px"/>
@@ -128,7 +144,7 @@ FROM "region_kpi_today" FETCH FIRST 1 ROW ONLY]]>
 				</graphicElement>
 			</rectangle>
 			<rectangle radius="6">
-				<reportElement style="BaseReportStyle" x="308" y="0" width="130" height="144" uuid="c0d89d3a-d23e-4abc-b980-198335148b83">
+				<reportElement x="308" y="0" width="130" height="144" uuid="c0d89d3a-d23e-4abc-b980-198335148b83">
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.x" value="px"/>
@@ -138,7 +154,7 @@ FROM "region_kpi_today" FETCH FIRST 1 ROW ONLY]]>
 				</graphicElement>
 			</rectangle>
 			<rectangle radius="6">
-				<reportElement style="BaseReportStyle" x="462" y="0" width="130" height="144" uuid="a085817b-15e4-49b8-9aab-512db0ae0361">
+				<reportElement x="462" y="0" width="130" height="144" uuid="a085817b-15e4-49b8-9aab-512db0ae0361">
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.x" value="px"/>
@@ -148,7 +164,7 @@ FROM "region_kpi_today" FETCH FIRST 1 ROW ONLY]]>
 				</graphicElement>
 			</rectangle>
 			<rectangle radius="6">
-				<reportElement style="BaseReportStyle" x="616" y="0" width="130" height="144" uuid="01179293-6896-4626-8316-f26b2e0a45ff">
+				<reportElement x="616" y="0" width="130" height="144" uuid="01179293-6896-4626-8316-f26b2e0a45ff">
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.x" value="px"/>
@@ -158,7 +174,7 @@ FROM "region_kpi_today" FETCH FIRST 1 ROW ONLY]]>
 				</graphicElement>
 			</rectangle>
 			<rectangle radius="6">
-				<reportElement style="BaseReportStyle" x="770" y="0" width="130" height="144" uuid="226cb856-6759-4d20-b51c-d4b59d9fab81">
+				<reportElement x="770" y="0" width="130" height="144" uuid="226cb856-6759-4d20-b51c-d4b59d9fab81">
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.x" value="px"/>
