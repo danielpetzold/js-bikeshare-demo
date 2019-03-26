@@ -1,7 +1,6 @@
 import React from 'react';
 import './AdHoc.scss';
 import NavBar from '../../components/NavBar/NavBar';
-import { jasperServerUrl } from '../../helpers/constants';
 
 interface Props {
   match: {
@@ -13,7 +12,7 @@ interface Props {
 }
 
 const AdHoc = (props: Props) => {
-  const url = `${jasperServerUrl}/flow.html?_flowId=viewReportFlow&theme=bike_share&reportUnit=/public/Bikeshare_demo/Reports/AdHoc_Reports/${props.match.params.path}`;
+  const url = `${process.env.REACT_APP_JASPERSERVER_URL}/flow.html?_flowId=viewReportFlow&theme=bike_share&reportUnit=/public/Bikeshare_demo/Reports/AdHoc_Reports/${props.match.params.path}`;
   return (
     <>
       <NavBar />

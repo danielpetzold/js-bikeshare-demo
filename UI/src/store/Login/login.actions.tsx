@@ -1,6 +1,5 @@
 import { visualizeHelper } from '../../helpers/VisualizeHelper';
 import { User, userData } from '../../helpers/userData';
-import { jasperServerUrl } from '../../helpers/constants';
 import { Dispatch } from 'redux';
 import { SET_USER_LOGGED_IN, SET_USER_LOGGED_OUT, SET_USER_FRANCHISES, SET_USER_REGIONS } from './login.types';
 import { history } from '../../configureStore';
@@ -21,13 +20,7 @@ export const loginUser = (role: String) => {
       localStorage.setItem('user', JSON.stringify(user));
 
       // Login user to global Visualize JS instance ()
-      await visualizeHelper.login(user.token, jasperServerUrl);
-      // await visualizeHelper.getInputControl('', '/public/Bikeshare_demo/Reports/Lookups')
-      //   .then((data: any) => {
-      //     //TODO: Setup for franchises only. Assumes single franchise is returned.
-      //     dispatch(setUserFranchises(data[0].state.options));
-      //     dispatch(setUserRegions(data[1].state.options));
-      //   });
+      await visualizeHelper.login(user.token, `${process.env.REACT_APP_JASPERSERVER_URL}` );
 
       dispatch(setUserLoggedIn(user));
     } catch (error) {

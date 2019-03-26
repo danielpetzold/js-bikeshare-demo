@@ -1,4 +1,3 @@
-import * as constants from './constants';
 /**
  * Helper functions for interfacing with Visualizer.js global instance.
  */
