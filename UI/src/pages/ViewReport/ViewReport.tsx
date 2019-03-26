@@ -198,11 +198,11 @@ class ViewReport extends Component<any, ReportsState> {
                           onClick={this.toggleActions}
                         >
                           {/* replace empty string with the report url */}
-                          <Link to={`report/edit/${'test'}`}>
+                          <a href="#" onClick={this.modifyReport}>
                             <div className={'report-view__action-options'}>
                               Modify
                             </div>
-                          </Link>
+                          </a>
 
                           <div className={'report-view__action-options'} onClick={this.toggleExportModal}>Export
                           </div>
