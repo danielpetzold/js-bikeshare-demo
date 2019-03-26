@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 7.2.1.final using JasperReports Library version 6.6.0  -->
-<!-- 2019-03-21T09:12:21 -->
+<!-- 2019-03-21T14:55:04 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="FM_Dashboard_KPIS" printOrder="Horizontal" pageWidth="900" pageHeight="146" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="900" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="5347bef6-468e-4022-865e-bd6933f0fa4b">
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="BikeShare-Adapter-Dev"/>
@@ -16,7 +16,6 @@
 	<property name="net.sf.jasperreports.export.html.size.unit" value="px"/>
 	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w1" value="524"/>
 	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w2" value="469"/>
-	<property name="ireport.jasperserver.report.resource" value="/public/Bikeshare_demo/Reports/Dashboard_Reports/FM_Dashboard_KPIS_files/main_jrxml"/>
 	<import value="java.time.LocalDate"/>
 	<import value="java.time.format.DateTimeFormatter"/>
 	<template><![CDATA["ReportDefs/StyleTemplates/BikeShare_Style.jrtx"]]></template>
@@ -36,7 +35,7 @@
 	</parameter>
 	<parameter name="Start_Date" class="java.lang.String" isForPrompting="false">
 		<parameterDescription><![CDATA[Determined by examining the Timeframe parameter value.]]></parameterDescription>
-		<defaultValueExpression><![CDATA[	Objects.equals($P{Timeframe}, "current") ? LocalDate.now().minusDays(1).format(DateTimeFormatter.ofPattern("MMdduuuu")) :
+		<defaultValueExpression><![CDATA[Objects.equals($P{Timeframe}, "current") ? LocalDate.now().minusDays(1).format(DateTimeFormatter.ofPattern("MMdduuuu")) :
 	Objects.equals($P{Timeframe}, "last24") ? LocalDate.now().minusDays(2).format(DateTimeFormatter.ofPattern("MMdduuuu")) :
 		Objects.equals($P{Timeframe}, "lastweek") ? LocalDate.now().minusWeeks(1).format(DateTimeFormatter.ofPattern("MMdduuuu")) :
 			Objects.equals($P{Timeframe}, "lastmonth") ? LocalDate.now().minusMonths(1).format(DateTimeFormatter.ofPattern("MMdduuuu")) :
@@ -45,7 +44,7 @@
 	</parameter>
 	<parameter name="End_Date" class="java.lang.String" isForPrompting="false">
 		<parameterDescription><![CDATA[Determined by examining the Timeframe parameter value.]]></parameterDescription>
-		<defaultValueExpression><![CDATA[	Objects.equals($P{Timeframe}, "current") ? LocalDate.now().plusDays(1).format(DateTimeFormatter.ofPattern("MMdduuuu")) : LocalDate.now().format(DateTimeFormatter.ofPattern("MMdduuuu"))]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA[Objects.equals($P{Timeframe}, "current") ? LocalDate.now().plusDays(1).format(DateTimeFormatter.ofPattern("MMdduuuu")) : LocalDate.now().format(DateTimeFormatter.ofPattern("MMdduuuu"))]]></defaultValueExpression>
 	</parameter>
 	<parameter name="Session_ID" class="java.lang.String"/>
 	<queryString language="SQL">
