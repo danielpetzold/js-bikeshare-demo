@@ -54,14 +54,14 @@ export default class ExportModal extends Component<Props, State> {
               <div>{selectedFormat ? selectedFormat : options[0]}</div>
               <i className={'icon-ic-unfold-more'} />
             </div>
-            {openDropdown && (
-              <Dropdown
-                setSelected={this.setSelected}
-                toggleDropdown={this.toggleDropdown}
-                options={options}
-                dropdownWidth="234px"
-              />
-            )}
+            {/*{openDropdown && (*/}
+              {/*<Dropdown*/}
+                {/*setSelected={this.setSelected}*/}
+                {/*toggleDropdown={this.toggleDropdown}*/}
+                {/*options={options}*/}
+                {/*dropdownWidth="234px"*/}
+              {/*/>*/}
+            {/*)}*/}
           </div>
           <button
             className={'export-modal__submit-btn'}

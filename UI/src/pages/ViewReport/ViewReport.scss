@@ -19,6 +19,7 @@
     border-radius: 5px;
     box-shadow: 0 2px 15px -7px rgba(0, 0, 0, 0.5);
     overflow: hidden;
+    z-index: 6;
   }
 
   &__action-options {
@@ -100,6 +101,7 @@
   align-items: center;
   justify-content: flex-end;
   margin-bottom: 12px;
+  cursor: pointer;
 
   h5 {
     font-size: 16px;

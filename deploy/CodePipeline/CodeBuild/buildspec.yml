@@ -22,20 +22,28 @@ phases:
   build:
     commands:
       # make sure we have the latest
-      - git checkout develop
+      #- git checkout develop: not needed?
       - ls -lsa
       - mkdir nodeBuild
       - cd UI
       - npm install
       - npm run build
       - ls -lsa build
-      - zip -r ../nodeBuild/bikeshare-node.zip build/*
-      - cd ../deploy/Docker
-      - zip ../../nodeBuild/bikeshare-node.zip *
-      - cd ../ElasticBeanstalk
-      - zip ../../nodeBuild/bikeshare-node.zip *
-      - cd ../../nodeBuild
-      - zipinfo -1 bikeshare-node.zip
+      # create and fill the deployment directory
+      - cd ..
+      - mkdir target
+      - mkdir target/build
+      - cp -R UI/build/* target/build
+      - cp -R deploy/Docker/* target
+      - cp -R deploy/ElasticBeanstalk/* target
+      # original approach of building a Beanstalk zip
+      #- zip -r ../nodeBuild/bikeshare-node.zip build/*
+      #- cd ../deploy/Docker
+      #- zip ../../nodeBuild/bikeshare-node.zip *
+      #- cd ../ElasticBeanstalk
+      #- zip ../../nodeBuild/bikeshare-node.zip *
+      #- cd ../../nodeBuild
+      #- zipinfo -1 bikeshare-node.zip
       # - command
     #finally:
       #echo Build finished on `date`
@@ -45,11 +53,12 @@ phases:
       # - command
 artifacts:
   files:
-    - nodeBuild/bikeshare-node.zip
+    - '**/*'
+    #- nodeBuild/bikeshare-node.zip
+  base-directory: 'target'
     # - location
   #name: $(date +%Y-%m-%d)
-  discard-paths: yes
-  #base-directory: location
+  #discard-paths: yes
 #cache:
   #paths:
     # - paths

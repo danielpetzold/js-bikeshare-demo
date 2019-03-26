@@ -1,6 +1,6 @@
 import React from 'react';
 import './AdHoc.scss';
-import NavBar from '../NavBar/NavBar';
+import NavBar from '../../components/NavBar/NavBar';
 import { jasperServerUrl } from '../../helpers/constants';
 
 interface Props {
@@ -9,9 +9,11 @@ interface Props {
       path: string;
     };
   };
+  location: any;
 }
 
 const AdHoc = (props: Props) => {
+  const url = `${jasperServerUrl}/flow.html?_flowId=viewReportFlow&theme=bike_share&reportUnit=/public/Bikeshare_demo/Reports/AdHoc_Reports/${props.match.params.path}`;
   return (
     <>
       <NavBar />
@@ -21,7 +23,7 @@ const AdHoc = (props: Props) => {
             <div className={'grid__column-12 grid__column-m-4'}>
               <iframe
                 className={'adhoc-frame'}
-                src={`${jasperServerUrl}/flow.html?_flowId=adhocFlow&theme=bike_share&resource=/public/Bikeshare_demo/Ad_hoc/Initial_Bikeshare_Ad_Hoc_View`}
+                src={url}
               />
             </div>
           </div>

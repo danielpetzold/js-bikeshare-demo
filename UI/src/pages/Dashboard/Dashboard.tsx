@@ -1,7 +1,7 @@
 import React from 'react';
 import './Dashboard.scss';
-import NavBar from '../NavBar/NavBar';
-import Filter from '../Filter/Filter';
+import NavBar from '../../components/NavBar/NavBar';
+import Filter from '../../components/Filter/Filter';
 import { visualizeHelper } from '../../helpers/VisualizeHelper';
 
 interface DashboardProps {}
@@ -79,10 +79,10 @@ class Dashboard extends React.Component<DashboardProps, State> {
   }
 
   componentDidMount() {
-    visualizeHelper.getReport(
-      'report1',
-      '/public/Bikeshare_demo/Reports/AdHoc_Reports/Station_Capacity_Report'
-    );
+    // visualizeHelper.getReport(
+    //   'report1',
+    //   '/public/Bikeshare_demo/Reports/AdHoc_Reports/Station_Capacity_Report'
+    // );
   }
 
   closeFilter = () => {

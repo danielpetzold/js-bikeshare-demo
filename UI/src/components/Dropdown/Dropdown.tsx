@@ -1,9 +1,15 @@
 import React from 'react';
 import './Dropdown.scss';
 
+export interface Option {
+  name: string;
+  value: string;
+  id: string;
+}
+
 interface Props {
-  options: string[];
-  setSelected: (option: string) => void;
+  options: Option[];
+  setSelected: (option: Option) => void;
   toggleDropdown: () => void;
   dropdownWidth: string;
 }
@@ -11,26 +17,22 @@ interface Props {
 export default function Dropdown(props: Props) {
   const { options, dropdownWidth } = props;
 
-  const handleSelect = (option: string) => {
+  const handleSelect = (value: Option) => {
     props.toggleDropdown();
-    props.setSelected(option);
+    props.setSelected(value);
   };
 
-  const optionList = options.map((option, i) => {
-    return (
-      <div
-        key={i}
-        className={'dropdown__option'}
-        onClick={() => handleSelect(option)}
-      >
-        {option}
-      </div>
-    );
+  const items = options.map((item, key) => {
+    return <div className="dropdown__option"
+         key={key}
+         onClick={() => handleSelect(item)}>
+      {item.name}
+    </div>
   });
 
   return (
-    <div className={'dropdown'} style={{ width: dropdownWidth }}>
-      {optionList}
+    <div className='dropdown' style={{ width: dropdownWidth }}>
+      {items}
     </div>
   );
 }
