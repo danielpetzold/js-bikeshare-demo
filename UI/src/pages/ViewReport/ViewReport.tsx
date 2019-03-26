@@ -102,7 +102,10 @@ class ViewReport extends Component<any, ReportsState> {
       this.props.filters.forEach((filter: any) => {
         params[filter.altName] = [filter.selected.value];
       });
-      visualizeHelper.getReport('report', this.state.selectedReportValue, params);
+      visualizeHelper.getAdHocView('report', this.state.selectedReportValue, params)
+        .then((success: any) => {
+          console.log('success', success);
+        });
     }
   }
 
