@@ -4,6 +4,7 @@ import Login from './components/Login/Login';
 import Dashboard from './components/Dashboard/Dashboard';
 import ViewReport from './components/ViewReport/ViewReport';
 import AdHoc from './components/AdHoc/AdHoc';
+import DriverDashboard from './components/DriverDashboard/DriverDashboard';
 
 // @ts-ignore
 // Allows access to route only if token exists
@@ -34,6 +35,7 @@ const routes = (
     <PrivateRoute path="/dashboard" component={Dashboard} />
     <PrivateRoute path="/reports" component={ViewReport} />
     <PrivateRoute path="/editReport/:path" component={AdHoc} />
+    <PrivateRoute path="/driverDashboard" component={DriverDashboard} />
   </Switch>
 );
 
