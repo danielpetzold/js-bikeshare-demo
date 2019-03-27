@@ -1,4 +1,3 @@
-import * as constants from './constants';
 /**
  * Helper functions for interfacing with Visualizer.js global instance.
  */
@@ -23,6 +22,9 @@ class VisualizeHelper {
     this.viz.config({
       server: jaspersoftServerUrl,
       scripts: 'optimized-scripts',
+      theme: {
+        href: 'css/jasper/default'
+      },
       auth: {
         loginFn: (properties: any, request: any) => {
           return request({
@@ -71,6 +73,25 @@ class VisualizeHelper {
         });
       });
     });
+  }
+
+  getAdHocView(uiContainer: string, resourcePath: string, params: any = {}) {
+    return new Promise((resolve, reject) => {
+      this.viz((v: any) => {
+        v.adhocView({
+          container: `#${uiContainer}`,
+          resource: resourcePath,
+          params: params,
+          success: (success: any) => {
+            resolve(success);
+          },
+          error: (err: any) => {
+            console.log('getAdHocView', err);
+            reject(err);
+          }
+        });
+      })
+    })
   }
 
   /**
