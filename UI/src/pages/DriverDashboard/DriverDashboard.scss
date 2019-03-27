@@ -1,0 +1,181 @@
+@import "../../scss/util/colors";
+@import "../../scss/util/variables";
+
+.report-container {
+  display: flex;
+  justify-content: center;
+}
+
+.driver-dash {
+  width: 100%;
+  height: 100vh;
+  position: relative;
+  padding: 0;
+  margin: 0;
+}
+
+.map-view {
+  height: calc(100vh - 28px);
+  width: 100%;
+  background-color: $light-grey;
+}
+
+.schedule {
+  width: 100%;
+
+  &--open {
+    top: 0;
+    height: 100vh;
+    background-color: $light-grey;
+  }
+
+  &__arrow {
+    height: 28px;
+    width: 100%;
+    background-color: $white;
+    color: $light-grey;
+    display: flex;
+    justify-content: center;
+    i {
+      line-height: 28px;
+      transform: rotate(-180deg);
+    }
+  }
+}
+
+.maintenance-schedule {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: $white;
+
+  &__title {
+    font-weight: normal;
+  }
+
+  &__table {
+    height: 276px;
+    width: 100%;
+    background-color: $white;
+    box-shadow: 0 2px 15px -7px rgba(0, 0, 0, 0.5);
+  }
+}
+
+.stations-panel {
+  &__option-icons {
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+    box-sizing: border-box;
+    font-size: 24px;
+    padding: 36px 6px 19px 0;
+  }
+
+  &__station-reports {
+    box-sizing: border-box;
+    height: 400px;
+    width: calc(100% - 12px);
+    margin: 0 6px 6px 6px;
+    border: solid 1px $gunmetal;
+    border-radius: 5px;
+  }
+}
+
+.options__icon-left {
+  margin-right: 24px;
+}
+
+.hide-mobile {
+  display: none;
+}
+
+@media screen and (min-width: $tablet-break) {
+  .hide-mobile {
+    display: inline-block;
+  }
+
+  .driver-dash {
+    box-sizing: border-box;
+    padding-left: 70px;
+  }
+
+  .dash-header {
+    height: 120px;
+    width: 100%;
+    background-color: $white;
+    padding: 0 24px;
+    box-sizing: border-box;
+
+    p {
+      opacity: 0.6;
+      margin-bottom: 10px;
+    }
+
+    h3 {
+      font-weight: normal;
+      margin: 0;
+    }
+  }
+
+  .map-view {
+    height: 504px;
+  }
+
+  .schedule {
+    box-sizing: border-box;
+    position: relative;
+    background-color: $background-alt;
+    height: max-content;
+    padding: 0 24px 24px 24px;
+
+    &__arrow {
+      display: none;
+    }
+
+    &__content {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+  }
+
+  .maintenance-schedule {
+    background-color: transparent;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    &__title {
+      margin: 26px 0 41px 0;
+    }
+
+    &__table {
+      width: 284px;
+      height: 318px;
+      box-shadow: none;
+      border-radius: 5px;
+      border: solid 1px $light-grey;
+    }
+  }
+
+  .stations-panel {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+
+    &__option-icons {
+      padding: 0;
+      margin: 26px 0 41px 0;
+
+      i {
+        line-height: 29px;
+      }
+    }
+
+    &__station-reports {
+      width: 592px;
+      margin: 0;
+    }
+  }
+}
