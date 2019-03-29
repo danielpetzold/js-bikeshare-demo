@@ -31,6 +31,10 @@
       grid-template-columns: repeat(12, 1fr);
       grid-column-gap: 24px;
       grid-row-gap: 24px;
+
+      &--full-width {
+        padding: 24px 0px;
+      }
     }
 
     @for $i from 1 through 12 {

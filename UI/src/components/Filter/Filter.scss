@@ -55,6 +55,17 @@
       color: white;
       background-color: $mobile-sub-nav;
     }
+
+    &-divider {
+      &::after {
+        height: 100%;
+        width: 2px;
+        background-color: $cool-grey-two;
+        content: '';
+        position: relative;
+        right: -35px;
+      }
+    }
   }
 
   &__save {

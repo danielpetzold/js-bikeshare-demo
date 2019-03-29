@@ -4,35 +4,41 @@ import { FilterData } from '../../pages/Dashboard/Dashboard';
 
 interface FilterProps {
   close: () => void;
-  save: (region: FilterData, timeframe: FilterData) => void;
-  data: any[];
-  region: {
-    name: string;
-    id: string;
-  };
-  timeframe: {
-    name: string;
-    id: string;
-  };
+  save: (state: any) => void;
+  selectedFilters: any;
+  data: any;
 }
 
-interface State {
-  regionFilter: FilterData;
-  timeframeFilter: FilterData;
-}
+class Filter extends Component<FilterProps> {
+  state: any;
+  franchiseFilter: any;
+  regionFilter: any;
+  timeframeFilter: any;
 
-class Filter extends Component<FilterProps, State> {
   constructor(props: FilterProps) {
     super(props);
+
+    //TODO: Refactor
+    this.franchiseFilter = this.props.data['Franchise'];
+    this.regionFilter = this.props.data['Region'];
+    this.timeframeFilter = this.props.data['Timeframe'];
+
     this.state = {
-      regionFilter: props.region,
-      timeframeFilter: props.timeframe
+      Region: this.props.selectedFilters['Region'],
+      Franchise: this.props.selectedFilters['Franchise'],
+      Timeframe: this.props.selectedFilters['Timeframe']
     };
   }
 
   saveFilter = () => {
-    this.props.save(this.state.regionFilter, this.state.timeframeFilter);
+    this.props.save(this.state);
     this.props.close();
+  };
+
+  setFilter = (id: string, option: FilterData) => {
+    this.setState({
+      [id]: option
+    });
   };
 
   closeFilter = (event: any) => {
@@ -40,77 +46,60 @@ class Filter extends Component<FilterProps, State> {
     this.props.close();
   };
 
-  getFilterOptions = (item: any) => {
-    return (
-      <div className={'grid__column-2 grid__column-m-2 '} key={item.value}>
-        <div
-          className={
-            'filter__option ' +
-            `${
-              item.value === this.state.regionFilter.id
-                ? 'filter__option--selected'
-                : ''
-              }`
-          }
-          onClick={() => this.setState({ regionFilter: item })}
-        >
-          {item.label}
-        </div>
-      </div>
+  createFilterOptions(filterList: any) {
+    return  filterList.options.map((item: FilterData) => {
+      if (item.value !== '~NOTHING~') {
+        return (
+          <React.Fragment key={item.value + '_item'}>
+            <div className={'grid__column-2 grid__column-m-2 '}>
+              <div className={'filter__option ' + `${item.value === this.state[filterList.id].value ? 'filter__option--selected' : ''}`}
+                   onClick={() => this.setFilter(filterList.id, item)}>
+                {item.label}
+              </div>
+            </div>
+          </React.Fragment>
+        )}
+      }
     )
-  };
+  }
 
   render() {
-    const filterLists = this.props.data.forEach((filterList: any) => {
-      return (
-        <>
-          <div className={'grid__row'}>
-            <div className={'grid__column-12 grid__column-m-4 filter__title'}>
-              <div className={'title'}>Select a ${filterList.label}</div>
-            </div>
-          </div>
-          <div className={'grid__row filter__select'}>{this.getFilterOptions(filterList.options)}</div>
-        </>
-      )
-    });
-
     return (
-      <div>
+      <>
         <div className={'filter filter__active'}>
           <div className={'filter__container grid'}>
+
             <div className={'grid__row'}>
               <div className={'grid__column-12 grid__column-m-4'}>
                 <h1>Show data from...</h1>
               </div>
             </div>
-            {this.props.data.map((filterList: any) => {
-              return (
-                <div>
-                  {filterList.label}
+
+            <div className={'grid__row'} >
+              <div className={'grid__column-12 grid__column-m-4 filter__title'}>
+                <div className={'title'}>Select An Area</div>
+              </div>
+            </div>
+
+            <div className={'grid__row filter__select'}>
+              <div className={'grid__column-2 grid__column-m-2 '}>
+                <div className={`filter__option filter__option-divider filter__option--selected`}>
+                  {this.franchiseFilter.options[0].label}
                 </div>
-              )
-            }
-          )}
-            {/*{this.props.data ? this.props.data.forEach((filterList: any) =>*/}
-              {/*<>*/}
-                {/*<div className={'grid__row'}>*/}
-                  {/*<div className={'grid__column-12 grid__column-m-4 filter__title'}>*/}
-                    {/*<div className={'title'}>Select a ${filterList.label}</div>*/}
-                    {/*{console.log(filterList)};*/}
-                  {/*</div>*/}
-                {/*</div>*/}
-                {/*<div className={'grid__row filter__select'}>*/}
-                  {/*{filterList.options.forEach((item: any) =>*/}
-                    {/*<div className={'grid__column-2 grid__column-m-2 '} key={item.value}>*/}
-                      {/*<div className={'filter__option ' + `${item.value === this.state.regionFilter.id ? 'filter__option--selected' : ''}`}*/}
-                        {/*onClick={() => this.setState({ regionFilter: item })}>*/}
-                        {/*{item.label}*/}
-                      {/*</div>*/}
-                    {/*</div>*/}
-                  {/*)}*/}
-                {/*</div>*/}
-              {/*</>*/}
-            {/*) : ''}*/}
+              </div>
+              {this.createFilterOptions(this.regionFilter)}
+            </div>
+
+            <div className={'grid__row'} >
+              <div className={'grid__column-12 grid__column-m-4 filter__title'}>
+                <div className={'title'}>Select A Timeframe</div>
+              </div>
+            </div>
+
+            <div className={'grid__row filter__select'}>
+              {this.createFilterOptions(this.timeframeFilter)}
+            </div>
+
             <div className={'grid__row filter__save'}>
               <div className={'grid__column-2 grid__column-m-2'}>
                 <button onClick={this.saveFilter} className={'btn--primary'}>
@@ -126,7 +115,7 @@ class Filter extends Component<FilterProps, State> {
           </div>
         </div>
         <div className={'filter__shadow filter__active'} />
-      </div>
+      </>
     );
   }
 }
