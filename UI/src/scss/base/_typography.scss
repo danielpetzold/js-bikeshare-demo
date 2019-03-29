@@ -1,6 +1,6 @@
-@import "../util/fonts";
-@import "../util/colors";
-@import "../util/variables";
+@import '../util/fonts';
+@import '../util/colors';
+@import '../util/variables';
 
 a {
   text-decoration: none;
@@ -47,10 +47,10 @@ h3 {
   color: #c9cccd;
 }
 
-[class^="icon-"],
-[class*=" icon-"] {
+[class^='icon-'],
+[class*=' icon-'] {
   /* use !important to prevent issues with browser extensions that change fonts */
-  font-family: "icomoon" !important;
+  font-family: 'icomoon' !important;
   speak: none;
   font-style: normal;
   font-weight: normal;
@@ -64,50 +64,50 @@ h3 {
 }
 
 .icon-ic-server:before {
-  content: "\e900";
+  content: '\e900';
 }
 .icon-ic-printer:before {
-  content: "\e90e";
+  content: '\e90e';
 }
 .icon-ic-download:before {
-  content: "\e90c";
+  content: '\e90c';
 }
 .icon-ic-unfold-more:before {
-  content: "\e90d";
+  content: '\e90d';
 }
 .icon-ic-menu:before {
-  content: "\e90b";
+  content: '\e90b';
 }
 .icon-ic-close:before {
-  content: "\e90a";
+  content: '\e90a';
 }
 .icon-ic-assignment:before {
-  content: "\e901";
+  content: '\e901';
 }
 .icon-ic-arrow-down:before {
-  content: "\e902";
+  content: '\e902';
 }
 .icon-ic-arrow-left:before {
-  content: "\e903";
+  content: '\e903';
 }
 .icon-ic-arrow-right:before {
-  content: "\e904";
+  content: '\e904';
 }
 .icon-ic-notifications:before {
-  content: "\e905";
+  content: '\e905';
 }
 .icon-ic-people-outline:before {
-  content: "\e906";
+  content: '\e906';
 }
 .icon-ic-settings:before {
-  content: "\e907";
+  content: '\e907';
 }
 .icon-ic-store-mall:before {
-  content: "\e908";
+  content: '\e908';
 }
 .icon-ic-trending-up:before {
-  content: "\e909";
+  content: '\e909';
 }
 .icon-ic-kabob:before {
-  content: "\e90f";
+  content: '\e90f';
 }

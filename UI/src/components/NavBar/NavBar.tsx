@@ -1,11 +1,11 @@
-import React from "react";
-import { Component } from "react";
-import { NavLink } from "react-router-dom";
-import { connect } from "react-redux";
-import "./NavBar.scss";
-import { toggleNoAccess } from "../../store/General/general.actions";
-import { logOutUser } from "../../store/Login/login.actions";
-import { User } from "../../helpers/userData";
+import React from 'react';
+import { Component } from 'react';
+import { NavLink } from 'react-router-dom';
+import { connect } from 'react-redux';
+import './NavBar.scss';
+import { toggleNoAccess } from '../../store/General/general.actions';
+import { logOutUser } from '../../store/Login/login.actions';
+import { User } from '../../helpers/userData';
 
 type State = {
   isOpen: boolean;
@@ -42,8 +42,8 @@ class NavBar extends Component<any, State> {
     const { altHamburger } = this.props;
     const { userName, title } = this.props.user;
     const userImage = userName
-      ? require(`../../assets/users/${userName.replace(/ /g, "_")}.jpg`)
-      : "";
+      ? require(`../../assets/users/${userName.replace(/ /g, '_')}.jpg`)
+      : '';
     return (
       <div>
         <nav
@@ -51,7 +51,7 @@ class NavBar extends Component<any, State> {
             !isOpen ? `nav-bar--closed` : `nav-bar--expanded`
           }`}
         >
-          <div className={"nav-bar__user"}>
+          <div className={'nav-bar__user'}>
             <img className="nav-bar__user-image" src={userImage} />
             <div className="nav-bar__user-info">
               <div className="nav-bar__user-name">{userName}</div>
@@ -61,12 +61,12 @@ class NavBar extends Component<any, State> {
               Log Out
             </a>
           </div>
-          <ul className={"nav-bar__top-menu"}>
-            <li className={"nav-bar__item"}>
+          <ul className={'nav-bar__top-menu'}>
+            <li className={'nav-bar__item'}>
               <NavLink
                 activeClassName="nav-bar__link--active"
                 className="nav-bar__link"
-                to={title === "Driver" ? "/driverDashboard" : "/dashboard"}
+                to={title === 'Driver' ? '/driverDashboard' : '/dashboard'}
               >
                 <i className="icon-ic-trending-up nav-bar__icon " />
                 <span className="nav-bar__text">Trends and Analytics</span>
@@ -74,15 +74,15 @@ class NavBar extends Component<any, State> {
             </li>
 
             {/* Hides icons for driver view */}
-            {title !== "Driver" && (
+            {title !== 'Driver' && (
               <>
-                <li className={"nav-bar__item"}>
+                <li className={'nav-bar__item'}>
                   <a className="nav-bar__link" href="#">
                     <i className="icon-ic-store-mall nav-bar__icon " />
                     <span className="nav-bar__text">Franchises</span>
                   </a>
                 </li>
-                <li className={"nav-bar__item"}>
+                <li className={'nav-bar__item'}>
                   <a
                     className="nav-bar__link"
                     href="#"
@@ -92,7 +92,7 @@ class NavBar extends Component<any, State> {
                     <span className="nav-bar__text">Roles and Permissions</span>
                   </a>
                 </li>
-                <li className={"nav-bar__item"}>
+                <li className={'nav-bar__item'}>
                   <NavLink
                     activeClassName="nav-bar__link--active"
                     className="nav-bar__link"
@@ -135,8 +135,8 @@ class NavBar extends Component<any, State> {
         </nav>
         {/* Hamburger */}
         <div
-          className={`nav-bar__hamburger ${isOpen ? `nav-bar--closed` : ""} ${
-            altHamburger ? "nav-bar__hamburger--alt" : ""
+          className={`nav-bar__hamburger ${isOpen ? `nav-bar--closed` : ''} ${
+            altHamburger ? 'nav-bar__hamburger--alt' : ''
           }`}
           onClick={toggleMenu}
         >
