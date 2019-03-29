@@ -4,6 +4,5 @@ For each user, specify command line parameters:
 -o:orgname[,orgname...]
 -u:userName
 -r:rolename[,rolename...]
+-e:expirationDate
 
-We're omitting the expiration here for the sake of having a static token that never expires (for the demo). 
-You'd never use this in any "real" production environment elsewhere.

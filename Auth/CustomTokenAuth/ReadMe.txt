@@ -1,1 +1,1 @@
-This Maven project packages a custom bean (.jar) to plug into 
+This Maven project packages a custom bean (.jar) to plug into Jasper Reports Server for decrypting tokens for the Bikeshare demo app.
