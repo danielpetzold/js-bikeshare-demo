@@ -20,7 +20,7 @@ class DriverDashboard extends Component {
             <div className={"grid__row map-view"}>
               <div className={"grid__column-12 grid__column-m-4"} />
             </div>
-            {/* SCHEDULE */}
+            {/* REPORTS */}
             <div className={`grid__row schedule`}>
               <div className={"grid__column-12 grid__column-m-4"}>
                 <div className={`schedule__arrow`}>
@@ -32,17 +32,15 @@ class DriverDashboard extends Component {
                     <h3 className={"maintenance-schedule__title"}>
                       Maintenance Schedule
                     </h3>
-                    <div className={"maintenance-schedule__table"}>
-                      {"table goes here"}
-                    </div>
+                    <div className={"maintenance-schedule__table"}>{""}</div>
                   </div>
                   <div className={"stations-panel"}>
                     <div className={"stations-panel__option-icons"}>
-                      <i className={"icon-ic-assignment options__icon-left"} />
-                      <i className={"icon-ic-assignment"} />
+                      <i className={"icon-ic-server options__icon-left"} />
+                      <i className={"icon-ic-printer"} />
                     </div>
                     <div className={"stations-panel__station-reports"}>
-                      Station Reports
+                      {""}
                     </div>
                   </div>
                 </div>

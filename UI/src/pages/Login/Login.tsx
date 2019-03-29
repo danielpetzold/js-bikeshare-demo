@@ -1,14 +1,15 @@
-import React, { Component } from 'react';
-import './Login.scss';
-import logo from '../../assets/logo.svg';
+import React, { Component } from "react";
+import "./Login.scss";
+import logo from "../../assets/logo.svg";
 import {
   COO_ROLE,
   DRIVER_ROLE,
   FRANCHISE_MANAGER_ROLE
-} from '../../helpers/userData';
-import { loginUser } from '../../store/Login/login.actions';
-import { connect } from 'react-redux';
-import { State } from '../../store';
+} from "../../helpers/userData";
+import { loginUser } from "../../store/Login/login.actions";
+import { connect } from "react-redux";
+import { State } from "../../store";
+import { async } from "q";
 
 interface LoginState {
   selectedRole: string;
@@ -16,7 +17,7 @@ interface LoginState {
 
 class Login extends Component<any, LoginState> {
   readonly state: LoginState = {
-    selectedRole: ''
+    selectedRole: ""
   };
 
   selectRole = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -28,31 +29,33 @@ class Login extends Component<any, LoginState> {
     });
   };
 
-  handleLogin = () => {
-    this.props.loginUser(this.state.selectedRole);
-    this.props.history.push('/Dashboard');
+  handleLogin = async () => {
+    await this.props.loginUser(this.state.selectedRole);
+    this.props.user.role === "DRIVER_ROLE"
+      ? this.props.history.push("/DriverDashboard")
+      : this.props.history.push("/Dashboard");
   };
 
   render() {
     const { selectedRole } = this.state;
     return (
-      <div className={'grid login'}>
-        <div className={'grid__row'}>
-          <div className={'grid__column-4 grid__column-m-4'}>
-            <div className={'login__wrapper'}>
-              <img src={logo} alt="logo" className={'login__logo'} />
-              <div className={'login__content'}>
-                <div className={'login__welcome'}>
+      <div className={"grid login"}>
+        <div className={"grid__row"}>
+          <div className={"grid__column-4 grid__column-m-4"}>
+            <div className={"login__wrapper"}>
+              <img src={logo} alt="logo" className={"login__logo"} />
+              <div className={"login__content"}>
+                <div className={"login__welcome"}>
                   <h2>Welcome back</h2>
                   <p>Sign in to continue</p>
                 </div>
-                <div className={'user-options'}>
+                <div className={"user-options"}>
                   <div
                     className={
-                      'user-options__role' +
+                      "user-options__role" +
                       (selectedRole === COO_ROLE
-                        ? ' user-options__role--active'
-                        : '')
+                        ? " user-options__role--active"
+                        : "")
                     }
                     id={COO_ROLE}
                     onClick={e => this.selectRole(e)}
@@ -61,10 +64,10 @@ class Login extends Component<any, LoginState> {
                   </div>
                   <div
                     className={
-                      'user-options__role user-options__role--mid' +
+                      "user-options__role user-options__role--mid" +
                       (selectedRole === FRANCHISE_MANAGER_ROLE
-                        ? ' user-options__role--active'
-                        : '')
+                        ? " user-options__role--active"
+                        : "")
                     }
                     id={FRANCHISE_MANAGER_ROLE}
                     onClick={this.selectRole}
@@ -73,10 +76,10 @@ class Login extends Component<any, LoginState> {
                   </div>
                   <div
                     className={
-                      'user-options__role' +
+                      "user-options__role" +
                       (selectedRole === DRIVER_ROLE
-                        ? ' user-options__role--active'
-                        : '')
+                        ? " user-options__role--active"
+                        : "")
                     }
                     id={DRIVER_ROLE}
                     onClick={this.selectRole}
@@ -85,7 +88,7 @@ class Login extends Component<any, LoginState> {
                   </div>
                 </div>
                 <button
-                  className={'login__button btn--primary'}
+                  className={"login__button btn--primary"}
                   disabled={!selectedRole}
                   onClick={this.handleLogin}
                 >
