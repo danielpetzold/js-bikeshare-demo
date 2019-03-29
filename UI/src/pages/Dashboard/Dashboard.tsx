@@ -86,11 +86,11 @@ class Dashboard extends React.Component<DashboardProps, State> {
     for (let key in this.state.selectedFilters) {
       params[key] = [this.state.selectedFilters[key].value]
     }
-    visualizeHelper.getReport(
-      'kpi-report',
-      '/public/Bikeshare_demo/Reports/Dashboard_Reports/FM_Dashboard_KPIS',
-      params
-    );
+    // visualizeHelper.getReport(
+    //   'kpi-report',
+    //   '/public/Bikeshare_demo/Reports/Dashboard_Reports/FM_Dashboard_KPIS',
+    //   params
+    // );
   }
 
 
@@ -129,62 +129,46 @@ class Dashboard extends React.Component<DashboardProps, State> {
 
   render() {
     return (
-      <div>
+      <>
         <NavBar />
-        {this.state.isFilterOpen ? (
+        { this.state.isFilterOpen ? (
           <Filter
             close={this.closeFilter}
             save={this.setFilter}
             selectedFilters={this.state.selectedFilters}
             data={this.filters}
           />
-        ) : null}
+        ) : null }
         <div className={'main'}>
-          <div className={'main__content dashboard'}>
-            <div className={'grid dashboard__header'}>
+          <div className={'main__content'}>
+
+            <div className={'grid dashboard__header '}>
               <div className={'grid__row'}>
-                <div
-                  className={
-                    'grid__column-12 grid__column-m-4 dashboard__title'
-                  }>
-                  Trends and Analytics
-                </div>
-              </div>
-              <div className={'grid__row'}>
-                <div className={'grid__column-12 grid__column-m-4'}>
-                  <div
-                    className={'dashboard__region-filter'}
-                    onClick={() => this.setState({ isFilterOpen: true })}>
+                <div className={'grid__column-4 grid__column-m-4'}>
+                  <div className='dashboard__title'> Trends and Analytics</div>
+                  <div className={'dashboard__region-filter'} onClick={() => this.setState({ isFilterOpen: true })}>
                     {this.state.selectedFilters['Region'] ? this.state.selectedFilters['Region'].label : "Please select Region"}
                     <i className="icon-ic-arrow-down dashboard__down-arrow-icon" />
                   </div>
-                  <div className={'dashboard__region-time-frame'}
-                       onClick={() => this.setState({ isFilterOpen: true })}>
-                    {this.state.selectedFilters['Timeframe'] ? this.state.selectedFilters['Timeframe'].label : "Please select Timeframe"}
-                    <i className="icon-ic-unfold-more dashboard__unfold-icon" />
+                </div>
+                <div className={'grid__column-4 grid__column-m-4'}></div>
+                <div className={'grid__column-4 grid__column-m-4'}>
+                  <div className={'dashboard__region-time-frame'} onClick={() => this.setState({ isFilterOpen: true })}>
+                      {this.state.selectedFilters['Timeframe'] ? this.state.selectedFilters['Timeframe'].label : "Please select Timeframe"}
+                      <i className="icon-ic-unfold-more dashboard__unfold-icon" />
                   </div>
                 </div>
               </div>
             </div>
+
+            <div className={'dashboard__map'}>
+              <div className={'dashboard__map-toggle'}>
+              </div>
+              <div className={'dashboard__map-container'}>
+              </div>
+            </div>
+
             <div className={'grid dashboard__body'}>
-              <div className={'grid__row dashboard__map'}>
-                {/*<div className={'grid__column-12 grid__column-m-4'}>*/}
-                  {/*<div id={'report1'} />*/}
-                {/*</div>*/}
-                {/*<div className={'grid__column-12 grid__column-m-4'}>*/}
-                  {/*<div id={'report2'} />*/}
-                {/*</div>*/}
-              </div>
-              <div className={'grid__row dashboard__report-filters grid__row--full-width'}>
-                <div className={'grid__column-12 grid__column-m-4'}>
-                  <div className={'dashboard__map-toggle'}>
-
-                  </div>
-                  <div className={'dashboard__map-container'}>
-
-                  </div>
-                </div>
-              </div>
               <div className={'grid__row dashboard__KPI'}>
                 <div className={'grid__column-12 grid__column-m-4'}>
                   <div id={'kpi-report'} />
@@ -212,7 +196,7 @@ class Dashboard extends React.Component<DashboardProps, State> {
             </div>
           </div>
         </div>
-      </div>
+      </>
     );
   }
 }

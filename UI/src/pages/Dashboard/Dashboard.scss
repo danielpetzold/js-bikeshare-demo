@@ -9,6 +9,8 @@
   &__content {
     width: 100%;
     margin-left: 0;
+    box-sizing: content-box;
+    background-color: $background-alt;
   }
 
   @media screen and (min-width: $tablet-break) {
@@ -63,19 +65,19 @@
 
   &__body {
     margin-top: 168px;
-    background-color: $background-alt;
     height: calc(100vh - 168px);
   }
 
   @media screen and (min-width: $tablet-break) {
     &__header {
       height: 120px;
-      width: 900px;
       background: $white;
+      position: relative;
+      width: 100%;
     }
 
     &__body {
-      margin-top: 120px;
+      margin-top: 0;
     }
 
     &__title {
@@ -96,7 +98,7 @@
       color: $mobile-sub-nav;
       display: inline-block;
       float: right;
-      margin: 4px 0 0 0;
+      margin: 20px 0 0 0;
     }
 
     &__unfold-icon {
@@ -109,9 +111,18 @@
     }
   }
 
-  &__map-container {
-    width: 100%;
+  &__map {
+    position: absolute;
+    width: 100vw;
     height: 362px;
-    background-color: $gunmetal;
+    left: 0;
+
+    &-container {
+      height: 100%;
+      width: 100%;
+      background-color: $gunmetal;
+    }
   }
+
+
 }
