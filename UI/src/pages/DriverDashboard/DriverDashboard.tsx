@@ -7,7 +7,7 @@ class DriverDashboard extends Component {
     return (
       <div>
         <NavBar altHamburger={true} />
-        <div className={'driverDash-container'}>
+        <div className={'dash-container'}>
           <div className={'grid driver-dash'}>
             {/* HEADER */}
             <div className={'grid__row dash-header hide-mobile'}>
@@ -21,29 +21,25 @@ class DriverDashboard extends Component {
               <div className={'grid__column-12 grid__column-m-4'} />
             </div>
             {/* REPORTS */}
-            <div className={`grid__row schedule`}>
+            <div className={`grid__row`}>
               <div className={'grid__column-12 grid__column-m-4'}>
-                <div className={`schedule__arrow`}>
+                <div className={`schedule-arrow`}>
                   <i className={'icon-ic-arrow-down'} />
                 </div>
+              </div>
+            </div>
+            <div className="grid__row maintenance">
+              <div className="grid__column-4 grid__column-m-4">
+                <h3 className={'maintenance__title'}>Maintenance Schedule</h3>
+                <div className={'maintenance__table'}>{''}</div>
+              </div>
 
-                <div className={'schedule__content'}>
-                  <div className={'maintenance-schedule'}>
-                    <h3 className={'maintenance-schedule__title'}>
-                      Maintenance Schedule
-                    </h3>
-                    <div className={'maintenance-schedule__table'}>{''}</div>
-                  </div>
-                  <div className={'stations-panel'}>
-                    <div className={'stations-panel__option-icons'}>
-                      <i className={'icon-ic-server options__icon-left'} />
-                      <i className={'icon-ic-printer'} />
-                    </div>
-                    <div className={'stations-panel__station-reports'}>
-                      {''}
-                    </div>
-                  </div>
+              <div className="grid__column-8 grid__column-m-4">
+                <div className={'maintenance__option-icons'}>
+                  <i className={'icon-ic-server maintenance__icon-left'} />
+                  <i className={'icon-ic-printer'} />
                 </div>
+                <div className={'maintenance__reports'}>{''}</div>
               </div>
             </div>
           </div>
