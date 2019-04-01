@@ -1,29 +1,44 @@
 @import '../../scss/util/variables';
 @import '../../scss/util/colors';
 
-.main {
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
+$content-width: 900px;
+$header-height: 120;
+$header-height-mobile: 168;
 
-  &__content {
+.dashboard {
+  width: calc(100vw - 70px);
+  margin: 0;
+
+  &__body {
+    background-color: $pale-grey;
+    min-height: calc(100vh - 168px);
+  }
+
+  &__map {
+    height: 423px;
+  }
+
+  &__map-controls {
+    height: 61px;
+  }
+
+  &__placeholder-map {
     width: 100%;
-    margin-left: 0;
-    box-sizing: content-box;
-    background-color: $background-alt;
+    height: 100%;
+    background-color: $gunmetal;
   }
 
   @media screen and (min-width: $tablet-break) {
     margin-left: 70px;
 
-    &__content {
-      width: 900px;
+    &__body {
+      min-height: calc(100vh - 120px);
     }
   }
 }
 
-.dashboard {
-  &__header {
+.page-header {
+  &__content {
     height: 168px;
     position: fixed;
     width: 100vw;
@@ -63,21 +78,19 @@
     color: $white;
   }
 
-  &__body {
-    margin-top: 168px;
-    height: calc(100vh - 168px);
+  &__spacer {
+    display: none;
   }
 
   @media screen and (min-width: $tablet-break) {
-    &__header {
-      height: 120px;
-      background: $white;
-      position: relative;
-      width: 100%;
-    }
+    display: flex;
+    justify-content: center;
 
-    &__body {
-      margin-top: 0;
+    &__content {
+      height: 120px;
+      width: $content-width;
+      position: relative;
+      background: $white;
     }
 
     &__title {
@@ -94,35 +107,157 @@
       display: inline-block;
     }
 
+    &__down-arrow-icon {
+      font-size: 12px;
+      margin-left: 4px;
+      opacity: 1;
+      color: $text-primary;
+    }
+
     &__region-time-frame {
       color: $mobile-sub-nav;
       display: inline-block;
       float: right;
       margin: 20px 0 0 0;
+      display: flex;
+      align-items: center;
     }
 
     &__unfold-icon {
       color: $text-primary;
+      margin-left: 4px;
     }
 
-    &__down-arrow-icon {
-      opacity: 1;
-      color: $text-primary;
-    }
-  }
-
-  &__map {
-    position: absolute;
-    width: 100vw;
-    height: 362px;
-    left: 0;
-
-    &-container {
-      height: 100%;
-      width: 100%;
-      background-color: $gunmetal;
+    &__spacer {
+      display: block;
     }
   }
-
-
 }
+
+//.main {
+//  min-height: 100vh;
+//  display: flex;
+//  justify-content: center;
+//
+//  &__content {
+//    width: 100%;
+//    margin-left: 0;
+//    box-sizing: content-box;
+//    background-color: $background-alt;
+//  }
+//
+//  @media screen and (min-width: $tablet-break) {
+//    margin-left: 70px;
+//
+//    &__content {
+//      width: 900px;
+//    }
+//  }
+//}
+//
+//.dashboard {
+//  &__header {
+//    height: 168px;
+//    position: fixed;
+//    width: 100vw;
+//    box-sizing: border-box;
+//    background: linear-gradient(to bottom, #3ccca5 0%, #1c9786 100%);
+//  }
+//
+//  &__title {
+//    color: $white;
+//    text-transform: capitalize;
+//    margin: 18px 0 0 56px;
+//  }
+//
+//  &__down-arrow-icon {
+//    opacity: 0.5;
+//    color: $white;
+//    font-size: 12px;
+//    margin-left: 4px;
+//  }
+//
+//  &__region-filter {
+//    color: $white;
+//    font-size: 24px;
+//    margin-top: 28px;
+//    cursor: pointer;
+//  }
+//
+//  &__region-time-frame {
+//    font-size: 16px;
+//    color: $white;
+//    margin-top: 13px;
+//    cursor: pointer;
+//  }
+//
+//  &__unfold-icon {
+//    opacity: 0.5;
+//    color: $white;
+//  }
+//
+//  &__body {
+//    margin-top: 168px;
+//    height: calc(100vh - 168px);
+//  }
+//
+//  @media screen and (min-width: $tablet-break) {
+//    &__header {
+//      height: 120px;
+//      background: $white;
+//      position: relative;
+//      width: 100%;
+//    }
+//
+//    &__body {
+//      margin-top: 0;
+//    }
+//
+//    &__title {
+//      font-size: 14px;
+//      text-transform: uppercase;
+//      letter-spacing: 0.5px;
+//      color: #c9cccd;
+//      margin: 0;
+//    }
+//
+//    &__region-filter {
+//      color: $mobile-sub-nav;
+//      margin: 4px 0 0 0;
+//      display: inline-block;
+//    }
+//
+//    &__region-time-frame {
+//      color: $mobile-sub-nav;
+//      display: inline-block;
+//      float: right;
+//      margin: 20px 0 0 0;
+//    }
+//
+//    &__unfold-icon {
+//      color: $text-primary;
+//    }
+//
+//    &__down-arrow-icon {
+//      opacity: 1;
+//      color: $text-primary;
+//    }
+//  }
+//
+//  &__map {
+//    position: absolute;
+//    width: 100vw;
+//    height: 362px;
+//    left: 0;
+//
+//    &-container {
+//      height: 100%;
+//      width: 100%;
+//      background-color: $gunmetal;
+//    }
+//
+//    &-toggle {
+//      height: 60px;
+//    }
+//  }
+//}
