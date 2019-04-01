@@ -25,7 +25,7 @@
 
   // Tablet & Desktop
   @media screen and (min-width: $tablet-break) {
-    padding: 24px;
+    padding: 24px 0;
 
     &__row {
       grid-template-columns: repeat(12, 1fr);

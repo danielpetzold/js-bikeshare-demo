@@ -13,6 +13,7 @@ interface SelectedFilters {
 interface State {
   isFilterOpen: boolean;
   selectedFilters: SelectedFilters;
+  isMapOpen: boolean;
 }
 
 export interface FilterData {
@@ -72,7 +73,8 @@ class Dashboard extends React.Component<DashboardProps, State> {
         Region: emptyFilter,
         Franchise: emptyFilter,
         Timeframe: emptyFilter
-      }
+      },
+      isMapOpen: true
     };
   }
 
@@ -86,11 +88,11 @@ class Dashboard extends React.Component<DashboardProps, State> {
     for (let key in this.state.selectedFilters) {
       params[key] = [this.state.selectedFilters[key].value]
     }
-    // visualizeHelper.getReport(
-    //   'kpi-report',
-    //   '/public/Bikeshare_demo/Reports/Dashboard_Reports/FM_Dashboard_KPIS',
-    //   params
-    // );
+    visualizeHelper.getReport(
+      'kpi-report',
+      '/public/Bikeshare_demo/Reports/Dashboard_Reports/FM_Dashboard_KPIS',
+      params
+    );
   }
 
 
@@ -127,6 +129,10 @@ class Dashboard extends React.Component<DashboardProps, State> {
     });
   };
 
+  toggleMap = () => {
+    this.setState({isMapOpen: !this.state.isMapOpen});
+  };
+
   render() {
     return (
       <>
@@ -141,123 +147,78 @@ class Dashboard extends React.Component<DashboardProps, State> {
         ) : null }
         <div className={'dashboard'}>
 
-          <header className={'page-header'}>
-            <div className={'page-header__content grid'}>
+          <header className={'dashboard-header'}>
+            <div className={'dashboard-header__content grid'}>
               <div className={'grid__row'}>
-                <div className={'grid__column-4 grid__column-m-4'}>
-                  <div className='page-header__title'> Trends and Analytics</div>
-                  <div className={'page-header__region-filter'} onClick={() => this.setState({ isFilterOpen: true })}>
+                <div className={'grid__column-8 grid__column-m-4'}>
+                  <div className='dashboard-header__title'> Trends and Analytics</div>
+                  <div className={'dashboard-header__region-filter'} onClick={() => this.setState({ isFilterOpen: true })}>
                     {this.state.selectedFilters['Region'] ? this.state.selectedFilters['Region'].label : "Please select Region"}
-                    <i className="icon-ic-arrow-down page-header__down-arrow-icon" />
+                    <i className="icon-ic-arrow-down dashboard-header__down-arrow-icon" />
                   </div>
                 </div>
-                <div className={'grid__column-4 page-header__spacer'}></div>
                 <div className={'grid__column-4 grid__column-m-4'}>
-                  <div className={'page-header__region-time-frame'} onClick={() => this.setState({ isFilterOpen: true })}>
+                  <div className={'dashboard-header__region-time-frame'} onClick={() => this.setState({ isFilterOpen: true })}>
                     {this.state.selectedFilters['Timeframe'] ? this.state.selectedFilters['Timeframe'].label : "Please select Timeframe"}
-                    <i className="icon-ic-unfold-more page-header__unfold-icon" />
+                    <i className="icon-ic-unfold-more dashboard-header__unfold-icon" />
                   </div>
                 </div>
               </div>
             </div>
           </header>
 
-          <div className={'dashboard__body'}>
-
-            <div className={'dashboard__map'}>
-              <div className={'dashboard__map-controls'}>
-                <div className={'dashboard__toggle-map'}>
-
+          <div className={`dashboard-map dashboard-map--mobile`}>
+            <div className={'dashboard-map__controls'}>
+              <div className={'dashboard-map__control-content'}>
+                <div className={'dashboard-map__toggle'} onClick={this.toggleMap}>
+                  {this.state.isMapOpen ? 'Close' : 'Open'} Map
+                  <i className={`dashboard-map__arrow icon-ic-arrow-down ${this.state.isMapOpen ? 'dashboard-map__arrow-up' : ''}`} />
                 </div>
               </div>
-              <div className={'dashboard__placeholder-map'}></div>
             </div>
+            <div className={`dashboard-map__container ${!this.state.isMapOpen ? 'dashboard-map__container--closed' : ''}`}>
+              <div className={'dashboard-map__placeholder-map'}></div>
+            </div>
+          </div>
 
-            <div className={'dashboard__centered grid'}>
+          <div className={'dashboard-body'}>
+            <div className={'dashboard-body-content grid'}>
+
+              <div className={'dashboard-body__report-select grid__row'}>
+                <div className={'grid__column-12'}>
+                  <div className={'dashboard-body__report-title'}>Operational Performance Metrics</div>
+                </div>
+              </div>
               <div className={'grid__row dashboard__KPI'}>
                 <div className={'grid__column-12 grid__column-m-4'}>
                   <div id={'kpi-report'} />
                 </div>
               </div>
-            </div>
-            <div className={'grid__row'}>
-              <div className={'grid__column-8 grid__column-m-4'}>
-                <div id={'in-need-report'} />
+
+              <div className={'grid__row'}>
+                <div className={'grid__column-8 grid__column-m-4'}>
+                  <div id={'in-need-report'} />
+                </div>
+                <div className={'grid__column-4 grid__column-m-4'}>
+                  <div id={'active-times-report'} />
+                </div>
               </div>
-              <div className={'grid__column-4 grid__column-m-4'}>
-                <div id={'active-times-report'} />
+
+              <div className={'grid__row'}>
+                <div className={'grid__column-4 grid__column-m-4'}>
+                  <div id={'active-times-report'} />
+                </div>
+                <div className={'grid__column-4 grid__column-m-4'}>
+                  <div id={'active-times-report'} />
+                </div>
+                <div className={'grid__column-4 grid__column-m-4'}>
+                  <div id={'active-times-report'} />
+                </div>
               </div>
-            </div>
-            <div className={'grid__row'}>
-              <div className={'grid__column-4 grid__column-m-4'}>
-                <div id={'active-times-report'} />
-              </div>
-              <div className={'grid__column-4 grid__column-m-4'}>
-                <div id={'active-times-report'} />
-              </div>
-              <div className={'grid__column-4 grid__column-m-4'}>
-                <div id={'active-times-report'} />
-              </div>
+
             </div>
           </div>
-
         </div>
-        {/*<div className={'main'}>*/}
-          {/*<div className={'main__content'}>*/}
-            {/*<div className={'grid dashboard__header '}>*/}
-              {/*<div className={'grid__row'}>*/}
-                {/*<div className={'grid__column-4 grid__column-m-4'}>*/}
-                  {/*<div className='dashboard__title'> Trends and Analytics</div>*/}
-                  {/*<div className={'dashboard__region-filter'} onClick={() => this.setState({ isFilterOpen: true })}>*/}
-                    {/*{this.state.selectedFilters['Region'] ? this.state.selectedFilters['Region'].label : "Please select Region"}*/}
-                    {/*<i className="icon-ic-arrow-down dashboard__down-arrow-icon" />*/}
-                  {/*</div>*/}
-                {/*</div>*/}
-                {/*<div className={'grid__column-4 grid__column-m-4'}></div>*/}
-                {/*<div className={'grid__column-4 grid__column-m-4'}>*/}
-                  {/*<div className={'dashboard__region-time-frame'} onClick={() => this.setState({ isFilterOpen: true })}>*/}
-                      {/*{this.state.selectedFilters['Timeframe'] ? this.state.selectedFilters['Timeframe'].label : "Please select Timeframe"}*/}
-                      {/*<i className="icon-ic-unfold-more dashboard__unfold-icon" />*/}
-                  {/*</div>*/}
-                {/*</div>*/}
-              {/*</div>*/}
-            {/*</div>*/}
-
-            {/*<div className={'dashboard__map'}>*/}
-              {/*<div className={'dashboard__map-toggle'}>*/}
-              {/*</div>*/}
-              {/*<div className={'dashboard__map-container'}>*/}
-              {/*</div>*/}
-            {/*</div>*/}
-
-            {/*<div className={'grid dashboard__body'}>*/}
-              {/*<div className={'grid__row dashboard__KPI'}>*/}
-                {/*<div className={'grid__column-12 grid__column-m-4'}>*/}
-                  {/*<div id={'kpi-report'} />*/}
-                {/*</div>*/}
-              {/*</div>*/}
-              {/*<div className={'grid__row'}>*/}
-                {/*<div className={'grid__column-8 grid__column-m-4'}>*/}
-                  {/*<div id={'in-need-report'} />*/}
-                {/*</div>*/}
-                {/*<div className={'grid__column-4 grid__column-m-4'}>*/}
-                  {/*<div id={'active-times-report'} />*/}
-                {/*</div>*/}
-              {/*</div>*/}
-              {/*<div className={'grid__row'}>*/}
-                {/*<div className={'grid__column-4 grid__column-m-4'}>*/}
-                  {/*<div id={'active-times-report'} />*/}
-                {/*</div>*/}
-                {/*<div className={'grid__column-4 grid__column-m-4'}>*/}
-                  {/*<div id={'active-times-report'} />*/}
-                {/*</div>*/}
-                {/*<div className={'grid__column-4 grid__column-m-4'}>*/}
-                  {/*<div id={'active-times-report'} />*/}
-                {/*</div>*/}
-              {/*</div>*/}
-            {/*</div>*/}
-          {/*</div>*/}
-        {/*</div>*/}
       </>
     );
   }
