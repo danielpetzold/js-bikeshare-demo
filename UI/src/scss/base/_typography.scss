@@ -63,42 +63,51 @@ h3 {
   -moz-osx-font-smoothing: grayscale;
 }
 
-.icon-ic-menu:before {
-  content: '\e90b';
+.icon-ic-server:before {
+  content: '\e900';
+}
+.icon-ic-printer:before {
+  content: '\e90e';
+}
+.icon-ic-download:before {
+  content: '\e90c';
 }
 .icon-ic-unfold-more:before {
   content: '\e90d';
+}
+.icon-ic-menu:before {
+  content: '\e90b';
 }
 .icon-ic-close:before {
   content: '\e90a';
 }
 .icon-ic-assignment:before {
-  content: '\e900';
-}
-.icon-ic-arrow-down:before {
   content: '\e901';
 }
-.icon-ic-arrow-left:before {
+.icon-ic-arrow-down:before {
   content: '\e902';
 }
-.icon-ic-arrow-right:before {
+.icon-ic-arrow-left:before {
   content: '\e903';
 }
-.icon-ic-notifications:before {
+.icon-ic-arrow-right:before {
   content: '\e904';
 }
-.icon-ic-people-outline:before {
+.icon-ic-notifications:before {
   content: '\e905';
 }
-.icon-ic-settings:before {
+.icon-ic-people-outline:before {
   content: '\e906';
 }
-.icon-ic-store-mall:before {
+.icon-ic-settings:before {
   content: '\e907';
 }
-.icon-ic-trending-up:before {
+.icon-ic-store-mall:before {
   content: '\e908';
 }
-.icon-ic-kabob:before {
+.icon-ic-trending-up:before {
   content: '\e909';
+}
+.icon-ic-kabob:before {
+  content: '\e90f';
 }

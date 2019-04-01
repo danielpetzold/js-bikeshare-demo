@@ -36,12 +36,18 @@
     border-style: none;
     background: $btn-green;
     color: $white;
+    display: flex;
+    justify-content: center;
   }
   &__submit-btn:hover {
     background-color: $btn-teal;
   }
   &__submit-btn:disabled {
     background-color: $btn-grey;
+  }
+  &__export-icon {
+    margin-right: 20px;
+    font-size: 17px;
   }
 }
 

@@ -1,0 +1,170 @@
+@import '../../scss/util/colors';
+@import '../../scss/util/variables';
+
+.dash-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.driver-header-grid,
+.driver-map-grid,
+.driver-reports-grid {
+  width: 100%;
+  position: relative;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: $pale-grey;
+}
+
+.driver-header-grid {
+  background-color: $white;
+}
+
+.map-view {
+  height: calc(100vh - 28px);
+  width: 100%;
+  background-color: $light-grey;
+}
+
+.arrow {
+  width: 100%;
+}
+
+.schedule-arrow {
+  height: 28px;
+  width: 100%;
+  background-color: $white;
+  color: $light-grey;
+  display: flex;
+  justify-content: center;
+  i {
+    line-height: 28px;
+    transform: rotate(-180deg);
+  }
+}
+
+.maintenance {
+  width: 100%;
+  padding: 0 10px;
+
+  &__table {
+    height: 276px;
+    width: 100%;
+    background-color: $white;
+    box-shadow: 0 2px 15px -7px rgba(0, 0, 0, 0.5);
+  }
+
+  &__title {
+    font-weight: normal;
+    text-align: center;
+    margin: 0;
+    padding: 24px 0;
+    background-color: $white;
+  }
+
+  &__option-icons {
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+    box-sizing: border-box;
+    font-size: 24px;
+    padding: 36px 6px 19px 0;
+    i {
+      cursor: pointer;
+    }
+  }
+
+  &__reports {
+    box-sizing: border-box;
+    height: 400px;
+    width: calc(100% - 12px);
+    margin: 0 6px 6px 6px;
+    border: solid 1px $gunmetal;
+    border-radius: 5px;
+  }
+
+  &__icon-left {
+    margin-right: 24px;
+  }
+}
+
+.hide-mobile {
+  display: none;
+}
+
+@media screen and (min-width: $tablet-break) {
+  .hide-mobile {
+    display: inline-block;
+  }
+
+  .driver-header-grid,
+  .driver-map-grid,
+  .driver-reports-grid {
+    box-sizing: border-box;
+    padding-left: 70px;
+  }
+
+  .dash-header {
+    width: 900px;
+    height: 120px;
+    background-color: $white;
+    box-sizing: border-box;
+
+    p {
+      opacity: 0.6;
+      margin-bottom: 10px;
+    }
+
+    h3 {
+      font-weight: normal;
+      margin: 0;
+    }
+  }
+
+  .map-view {
+    height: 504px;
+  }
+
+  .schedule-arrow {
+    display: none;
+  }
+
+  .maintenance {
+    padding: 0;
+    width: 900px;
+    margin-bottom: 24px;
+
+    &__title {
+      padding: 0;
+      margin: 26px 0 41px 0;
+      text-align: left;
+      background-color: transparent;
+    }
+
+    &__table {
+      width: 284px;
+      height: 318px;
+      box-shadow: none;
+      border-radius: 5px;
+      border: solid 1px $light-grey;
+    }
+
+    &__option-icons {
+      padding: 0;
+      margin: 26px 0 41px 0;
+
+      i {
+        line-height: 29px;
+      }
+    }
+
+    &__reports {
+      width: 592px;
+      margin: 0;
+    }
+  }
+}
