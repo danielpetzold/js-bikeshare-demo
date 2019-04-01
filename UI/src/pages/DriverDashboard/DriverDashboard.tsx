@@ -8,7 +8,7 @@ class DriverDashboard extends Component {
       <div>
         <NavBar altHamburger={true} />
         <div className={'dash-container'}>
-          <div className={'grid driver-dash'}>
+          <div className={'grid driver-header-grid'}>
             {/* HEADER */}
             <div className={'grid__row dash-header hide-mobile'}>
               <div className={'grid__column-12 grid__column-m-4'}>
@@ -16,12 +16,16 @@ class DriverDashboard extends Component {
                 <h3>Downtown San Francisco</h3>
               </div>
             </div>
-            {/* MAP */}
+          </div>
+          {/* MAP */}
+          <div className={'grid driver-map-grid'}>
             <div className={'grid__row map-view'}>
               <div className={'grid__column-12 grid__column-m-4'} />
             </div>
-            {/* REPORTS */}
-            <div className={`grid__row`}>
+          </div>
+          {/* REPORTS */}
+          <div className={'grid driver-reports-grid'}>
+            <div className={`grid__row arrow`}>
               <div className={'grid__column-12 grid__column-m-4'}>
                 <div className={`schedule-arrow`}>
                   <i className={'icon-ic-arrow-down'} />
