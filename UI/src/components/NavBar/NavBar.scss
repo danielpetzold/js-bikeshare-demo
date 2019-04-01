@@ -18,6 +18,17 @@
     position: fixed;
     color: $white;
     z-index: 2;
+
+    &--alt {
+      height: 40px;
+      width: 40px;
+      text-align: center;
+      line-height: 40px;
+      color: black;
+      background-color: $white;
+      border-radius: 5px;
+      box-shadow: 0 2px 15px -7px rgba(0, 0, 0, 0.5);
+    }
   }
 
   // User Info section

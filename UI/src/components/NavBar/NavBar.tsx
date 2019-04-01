@@ -39,11 +39,10 @@ class NavBar extends Component<any, State> {
   render() {
     const { toggleMenu } = this;
     const { isOpen } = this.state;
-    const userImage = this.props.user.userName
-      ? require(`../../assets/users/${this.props.user.userName.replace(
-          / /g,
-          '_'
-        )}.jpg`)
+    const { altHamburger } = this.props;
+    const { userName, title } = this.props.user;
+    const userImage = userName
+      ? require(`../../assets/users/${userName.replace(/ /g, '_')}.jpg`)
       : '';
     return (
       <div>
@@ -55,10 +54,8 @@ class NavBar extends Component<any, State> {
           <div className={'nav-bar__user'}>
             <img className="nav-bar__user-image" src={userImage} />
             <div className="nav-bar__user-info">
-              <div className="nav-bar__user-name">
-                {this.props.user.userName}
-              </div>
-              <div className="nav-bar__user-title">{this.props.user.title}</div>
+              <div className="nav-bar__user-name">{userName}</div>
+              <div className="nav-bar__user-title">{title}</div>
             </div>
             <a className="nav-bar__log-out" onClick={e => this.handleLogout(e)}>
               Log Out
@@ -69,38 +66,44 @@ class NavBar extends Component<any, State> {
               <NavLink
                 activeClassName="nav-bar__link--active"
                 className="nav-bar__link"
-                to="/dashboard"
+                to={title === 'Driver' ? '/driverDashboard' : '/dashboard'}
               >
                 <i className="icon-ic-trending-up nav-bar__icon " />
                 <span className="nav-bar__text">Trends and Analytics</span>
               </NavLink>
             </li>
-            <li className={'nav-bar__item'}>
-              <a className="nav-bar__link" href="#">
-                <i className="icon-ic-store-mall nav-bar__icon " />
-                <span className="nav-bar__text">Franchises</span>
-              </a>
-            </li>
-            <li className={'nav-bar__item'}>
-              <a
-                className="nav-bar__link"
-                href="#"
-                onClick={this.toggleNoAccess}
-              >
-                <i className="icon-ic-people-outline nav-bar__icon " />
-                <span className="nav-bar__text">Roles and Permissions</span>
-              </a>
-            </li>
-            <li className={'nav-bar__item'}>
-              <NavLink
-                activeClassName="nav-bar__link--active"
-                className="nav-bar__link"
-                to="/reports"
-              >
-                <i className="icon-ic-assignment nav-bar__icon " />
-                <span className="nav-bar__text">Reports</span>
-              </NavLink>
-            </li>
+
+            {/* Hides icons for driver view */}
+            {title !== 'Driver' && (
+              <>
+                <li className={'nav-bar__item'}>
+                  <a className="nav-bar__link" href="#">
+                    <i className="icon-ic-store-mall nav-bar__icon " />
+                    <span className="nav-bar__text">Franchises</span>
+                  </a>
+                </li>
+                <li className={'nav-bar__item'}>
+                  <a
+                    className="nav-bar__link"
+                    href="#"
+                    onClick={this.toggleNoAccess}
+                  >
+                    <i className="icon-ic-people-outline nav-bar__icon " />
+                    <span className="nav-bar__text">Roles and Permissions</span>
+                  </a>
+                </li>
+                <li className={'nav-bar__item'}>
+                  <NavLink
+                    activeClassName="nav-bar__link--active"
+                    className="nav-bar__link"
+                    to="/reports"
+                  >
+                    <i className="icon-ic-assignment nav-bar__icon " />
+                    <span className="nav-bar__text">Reports</span>
+                  </NavLink>
+                </li>
+              </>
+            )}
             <div className="nav-bar__divider" />
             <li className="nav-bar__item">
               <a
@@ -132,7 +135,9 @@ class NavBar extends Component<any, State> {
         </nav>
         {/* Hamburger */}
         <div
-          className={`nav-bar__hamburger ${isOpen ? `nav-bar--closed` : ''} `}
+          className={`nav-bar__hamburger ${isOpen ? `nav-bar--closed` : ''} ${
+            altHamburger ? 'nav-bar__hamburger--alt' : ''
+          }`}
           onClick={toggleMenu}
         >
           <i className="icon-ic-menu" />
@@ -142,7 +147,14 @@ class NavBar extends Component<any, State> {
   }
 }
 
+const mapStateToProps = (state: any, ownProps: any) => {
+  return {
+    ...state.login,
+    ...ownProps.altHamburger
+  };
+};
+
 export default connect(
-  (state: any) => state.login,
+  mapStateToProps,
   { toggleNoAccess, logOutUser }
 )(NavBar);
