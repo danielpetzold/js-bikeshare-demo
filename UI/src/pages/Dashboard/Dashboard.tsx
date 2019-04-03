@@ -93,6 +93,16 @@ class Dashboard extends React.Component<DashboardProps, State> {
       '/public/Bikeshare_demo/Reports/Dashboard_Reports/FM_Dashboard_KPIS',
       params
     );
+    visualizeHelper.getReport(
+      'in-need-report',
+      '/public/Bikeshare_demo/Reports/Dashboard_Reports/Dashboard_Stations_InNeed_Detail',
+      params
+    );
+    visualizeHelper.getReport(
+      'trip-detail-report',
+      '/public/Bikeshare_demo/Reports/Dashboard_Reports/Dashboard_Trip_Detail',
+      params
+    );
   }
 
 
@@ -189,6 +199,7 @@ class Dashboard extends React.Component<DashboardProps, State> {
                   <div className={'dashboard-body__report-title'}>Operational Performance Metrics</div>
                 </div>
               </div>
+
               <div className={'grid__row dashboard__KPI'}>
                 <div className={'grid__column-12 grid__column-m-4'}>
                   <div id={'kpi-report'} />
@@ -200,23 +211,11 @@ class Dashboard extends React.Component<DashboardProps, State> {
                   <div id={'in-need-report'} />
                 </div>
                 <div className={'grid__column-4 grid__column-m-4'}>
-                  <div id={'active-times-report'} />
+                  <div id={'trip-detail-report'} />
                 </div>
               </div>
-
-              <div className={'grid__row'}>
-                <div className={'grid__column-4 grid__column-m-4'}>
-                  <div id={'active-times-report'} />
-                </div>
-                <div className={'grid__column-4 grid__column-m-4'}>
-                  <div id={'active-times-report'} />
-                </div>
-                <div className={'grid__column-4 grid__column-m-4'}>
-                  <div id={'active-times-report'} />
-                </div>
-              </div>
-
             </div>
+
           </div>
         </div>
       </>
