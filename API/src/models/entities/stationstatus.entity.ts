@@ -1,20 +1,24 @@
-import {Column, Entity, PrimaryColumn} from "typeorm";
+import {Column, Entity, PrimaryColumn, PrimaryGeneratedColumn} from "typeorm";
 import IStationStatus from "../interfaces/stationstatus.interface";
 
 @Entity("station_status", {schema: "public" } )
 export class StationStatus implements IStationStatus {
 
-    @PrimaryColumn("character varying", {
+    @PrimaryGeneratedColumn({
+        type: "bigint",
+        name: "id"
+    })
+    public id: string;
+
+    @Column("character varying", {
         nullable: false,
-        primary: true,
         length: 50,
         name: "system_id"
         })
     public systemId: string;
 
-    @PrimaryColumn("character varying", {
+    @Column("character varying", {
         nullable: false,
-        primary: true,
         length: 20,
         name: "station_id"
         })
@@ -68,9 +72,8 @@ export class StationStatus implements IStationStatus {
         })
     public isReturning: boolean | null;
 
-    @PrimaryColumn("timestamp with time zone", {
+    @Column("timestamp with time zone", {
         nullable: false,
-        primary: true,
         name: "last_reported"
         })
     public lastReported: Date;

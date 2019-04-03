@@ -1,4 +1,5 @@
 interface IStationStatus {
+    id: string;
     systemId: string;
     stationId: string;
     bikesAvailable: number | null;
