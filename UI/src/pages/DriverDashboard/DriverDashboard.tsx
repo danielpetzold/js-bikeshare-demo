@@ -9,7 +9,7 @@ interface State {
 
 class DriverDashboard extends Component<any, State> {
   state: State = {
-    isCheckInOpen: true
+    isCheckInOpen: false
   };
 
   render() {
