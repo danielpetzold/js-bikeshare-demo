@@ -105,7 +105,7 @@ export default class CheckInModal extends Component<Props, State> {
     finishedReport.bikesAvailable = bikesSeen - bikesPickedUp + bikesDroppedOff;
     finishedReport.bikesDisabled = finishedReport.bikesDisabled - bikesRepaired;
 
-    console.log('finishedReport: ', finishedReport);
+    // console.log('finishedReport: ', finishedReport);
     this.props.closeModal();
   };
 
