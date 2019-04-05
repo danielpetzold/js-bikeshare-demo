@@ -1,7 +1,7 @@
 import React from 'react';
 import './Dashboard.scss';
 import NavBar from '../../components/NavBar/NavBar';
-import Filter from '../../components/Filter/Filter';
+import Filter, { timeFrameFilter } from "../../components/Filter/Filter";
 import { visualizeHelper } from '../../helpers/VisualizeHelper';
 
 interface DashboardProps {}
@@ -14,6 +14,13 @@ interface State {
   isFilterOpen: boolean;
   selectedFilters: SelectedFilters;
   isMapOpen: boolean;
+  kpiDetailReport: string;
+}
+
+interface Report {
+  container: string;
+  name: string;
+  params: any[]
 }
 
 export interface FilterData {
@@ -21,46 +28,16 @@ export interface FilterData {
   value: string;
 }
 
-// Timeframe Filter Options.
-const timeFrameFilter = {
-  title: 'Timeframe',
-  id: 'Timeframe',
-  options: [
-    {
-      label: 'Current',
-      value: 'current'
-    },
-    {
-      label: 'Last 24 Hours',
-      value: 'last24'
-    },
-    {
-      label: 'Last Week',
-      value: 'lastweek'
-    },
-    {
-      label: 'Last Month',
-      value: 'lastmonth'
-    },
-    {
-      label: 'Last Quarter',
-      value: 'lastquarter'
-    },
-    {
-      label: 'Annual',
-      value: 'annual'
-    }
-  ]
-};
+
 
 class Dashboard extends React.Component<DashboardProps, State> {
   filterDataICUri = '/public/Bikeshare_demo/Reports/Lookups';
   visualize: any;
   filters: any = [];
+  private detailsRef = React.createRef<HTMLDivElement>();
 
   constructor(props: DashboardProps) {
     super(props);
-
     let emptyFilter: FilterData = {
       label: '',
       value: ''
@@ -74,7 +51,8 @@ class Dashboard extends React.Component<DashboardProps, State> {
         Franchise: emptyFilter,
         Timeframe: emptyFilter
       },
-      isMapOpen: true
+      isMapOpen: true,
+      kpiDetailReport: 'Dashboard_Stations_InNeed_Detail'
     };
   }
 
@@ -84,26 +62,36 @@ class Dashboard extends React.Component<DashboardProps, State> {
 
   getReports() {
     // Create params object from selected filters
+    let params: any = this.getParams();
+    this.displayReport(
+      'kpi-report',
+      'FM_Dashboard_KPIS',
+      params,
+      {
+        events: {
+          "click": this.changeDetailsReport
+        }
+      }
+    );
+    this.displayReport('in-need-report', this.state.kpiDetailReport, params);
+  }
+
+  displayReport(containerId: string, reportName: string, params: any, linkOptions: any = {}) {
+    visualizeHelper.getReport(
+      containerId,
+      `/public/Bikeshare_demo/Reports/Dashboard_Reports/${reportName}`,
+      params,
+      linkOptions
+    );
+  }
+
+  getParams = () => {
     let params: any = {};
     for (let key in this.state.selectedFilters) {
       params[key] = [this.state.selectedFilters[key].value]
     }
-    visualizeHelper.getReport(
-      'kpi-report',
-      '/public/Bikeshare_demo/Reports/Dashboard_Reports/FM_Dashboard_KPIS',
-      params
-    );
-    visualizeHelper.getReport(
-      'in-need-report',
-      '/public/Bikeshare_demo/Reports/Dashboard_Reports/Dashboard_Stations_InNeed_Detail',
-      params
-    );
-    visualizeHelper.getReport(
-      'trip-detail-report',
-      '/public/Bikeshare_demo/Reports/Dashboard_Reports/Dashboard_Trip_Detail',
-      params
-    );
-  }
+    return params;
+  };
 
 
   getFilterData = () => {
@@ -120,11 +108,10 @@ class Dashboard extends React.Component<DashboardProps, State> {
             }
           )}
         )));
-        this.filters['Timeframe'] = timeFrameFilter;
         this.setFilter({
-          Region: this.filters['Region'].options[1],
+          Region: this.filters['Region'].options[0],
           Franchise: this.filters['Franchise'].options[0],
-          Timeframe: this.filters['Timeframe'].options[0]
+          Timeframe: timeFrameFilter.options[0]
         })
       })
   };
@@ -141,6 +128,13 @@ class Dashboard extends React.Component<DashboardProps, State> {
 
   toggleMap = () => {
     this.setState({isMapOpen: !this.state.isMapOpen});
+  };
+
+  changeDetailsReport = (e: any, link: any) => {
+    e.preventDefault();
+    this.detailsRef.current ? this.detailsRef.current.innerHTML = '': null;
+    this.displayReport('in-need-report', link.href, this.getParams());
+    this.setState({kpiDetailReport: link.href});
   };
 
   render() {
@@ -163,7 +157,8 @@ class Dashboard extends React.Component<DashboardProps, State> {
                 <div className={'grid__column-8 grid__column-m-4'}>
                   <div className='dashboard-header__title'> Trends and Analytics</div>
                   <div className={'dashboard-header__region-filter'} onClick={() => this.setState({ isFilterOpen: true })}>
-                    {this.state.selectedFilters['Region'] ? this.state.selectedFilters['Region'].label : "Please select Region"}
+                    {this.state.selectedFilters['Region'] && this.state.selectedFilters['Region'].value !== "~NOTHING~" ?
+                      this.state.selectedFilters['Region'].label : this.state.selectedFilters['Franchise'].label }
                     <i className="icon-ic-arrow-down dashboard-header__down-arrow-icon" />
                   </div>
                 </div>
@@ -192,7 +187,7 @@ class Dashboard extends React.Component<DashboardProps, State> {
           </div>
 
           <div className={'dashboard-body'}>
-            <div className={'dashboard-body-content grid'}>
+            <div className={'dashboard-body__content grid'}>
 
               <div className={'dashboard-body__report-select grid__row'}>
                 <div className={'grid__column-12'}>
@@ -207,8 +202,8 @@ class Dashboard extends React.Component<DashboardProps, State> {
               </div>
 
               <div className={'grid__row'}>
-                <div className={'grid__column-8 grid__column-m-4'}>
-                  <div id={'in-need-report'} />
+                <div className={'grid__column-8 grid__column-m-4'} >
+                  <div id={'in-need-report'} ref={this.detailsRef}/>
                 </div>
                 <div className={'grid__column-4 grid__column-m-4'}>
                   <div id={'trip-detail-report'} />

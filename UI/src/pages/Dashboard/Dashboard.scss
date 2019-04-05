@@ -25,7 +25,7 @@ $header-height-mobile: 168px;
   overflow: hidden;
 
   &__content {
-    width: 900px;
+    width: 100%;
   }
 
   &__report-title {
@@ -36,6 +36,9 @@ $header-height-mobile: 168px;
 
   @media screen and (min-width: $tablet-break) {
     min-height: calc(100vh - 120px);
+    &__content {
+      width: 900px;
+    }
   }
 }
 
@@ -192,4 +195,9 @@ $header-height-mobile: 168px;
       display: block;
     }
   }
+}
+
+// Override for Visualize.js anchor
+.kpi-card {
+  cursor: pointer !important;
 }

@@ -9,6 +9,45 @@ interface FilterProps {
   data: any;
 }
 
+// Timeframe Filter Options.
+export const timeFrameFilter = {
+  title: 'Timeframe',
+  id: 'Timeframe',
+  options: [
+    {
+      label: 'Current',
+      value: 'current'
+    },
+    {
+      label: 'Last 24 Hours',
+      value: 'last24'
+    },
+    {
+      label: 'Last Week',
+      value: 'lastweek'
+    },
+    {
+      label: 'Last Month',
+      value: 'lastmonth'
+    },
+    {
+      label: 'Last Quarter',
+      value: 'lastquarter'
+    },
+    {
+      label: 'Annual',
+      value: 'annual'
+    }
+  ]
+};
+
+// Default state with nothing selected
+const nothingOption = {
+  label: "---",
+  selected: true,
+  value: "~NOTHING~"
+};
+
 class Filter extends Component<FilterProps> {
   state: any;
   franchiseFilter: any;
@@ -21,7 +60,7 @@ class Filter extends Component<FilterProps> {
     //TODO: Refactor
     this.franchiseFilter = this.props.data['Franchise'];
     this.regionFilter = this.props.data['Region'];
-    this.timeframeFilter = this.props.data['Timeframe'];
+    this.timeframeFilter = timeFrameFilter;
 
     this.state = {
       Region: this.props.selectedFilters['Region'],
@@ -37,7 +76,7 @@ class Filter extends Component<FilterProps> {
 
   setFilter = (id: string, option: FilterData) => {
     this.setState({
-      [id]: option
+      [id]: this.state[id].value === option.value ? nothingOption : option
     });
   };
 
@@ -114,7 +153,7 @@ class Filter extends Component<FilterProps> {
             </div>
           </div>
         </div>
-        <div className={'filter__shadow filter__active'} />
+        {/*<div className={'filter__shadow filter__active'} />*/}
       </>
     );
   }
