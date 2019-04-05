@@ -33,8 +33,7 @@ interface Step {
   icon: string;
   text: string;
   count: number;
-  minus: () => void;
-  plus: () => void;
+  stateName: any;
 }
 
 export default class CheckInModal extends Component<Props, State> {
@@ -126,65 +125,25 @@ export default class CheckInModal extends Component<Props, State> {
         icon: 'bicycle-2',
         text: 'How many bikes did you see at the station?',
         count: bikesSeen,
-        minus: () => {
-          bikesSeen > 0 &&
-            this.setState({
-              bikesSeen: bikesSeen - 1
-            });
-        },
-        plus: () => {
-          this.setState({
-            bikesSeen: bikesSeen + 1
-          });
-        }
+        stateName: 'bikesSeen'
       },
       {
         icon: 'box-upload',
         text: 'How many bikes did you pick up for transport?',
         count: bikesPickedUp,
-        minus: () => {
-          bikesPickedUp > 0 &&
-            this.setState({
-              bikesPickedUp: bikesPickedUp - 1
-            });
-        },
-        plus: () => {
-          this.setState({
-            bikesPickedUp: bikesPickedUp + 1
-          });
-        }
+        stateName: 'bikesPickedUp'
       },
       {
         icon: 'box-download',
         text: 'How many bikes did you drop-off?',
         count: bikesDroppedOff,
-        minus: () => {
-          bikesDroppedOff > 0 &&
-            this.setState({
-              bikesDroppedOff: bikesDroppedOff - 1
-            });
-        },
-        plus: () => {
-          this.setState({
-            bikesDroppedOff: bikesDroppedOff + 1
-          });
-        }
+        stateName: 'bikesDroppedOff'
       },
       {
         icon: 'wrench-screwdriver',
         text: 'How many bikes did you repair on-site?',
         count: bikesRepaired,
-        minus: () => {
-          bikesRepaired > 0 &&
-            this.setState({
-              bikesRepaired: bikesRepaired - 1
-            });
-        },
-        plus: () => {
-          this.setState({
-            bikesRepaired: bikesRepaired + 1
-          });
-        }
+        stateName: 'bikesRepaired'
       }
     ];
 
@@ -215,45 +174,44 @@ export default class CheckInModal extends Component<Props, State> {
                 />
                 <h3 className={'checkin-content__text'}>{steps[step].text}</h3>
                 <div className={'checkin-content__counter'}>
-                  <i className={`icon-ic-minus`} onClick={steps[step].minus} />
-                  <input
-                    type="number"
-                    value={steps[step].count}
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                      this.setState({ bikesSeen: +e.target.value })
-                    }
+                  <i
+                    className={`icon-ic-minus`}
+                    onClick={() => {
+                      let { count, stateName } = steps[step];
+                      count > 0 &&
+                        this.setState({
+                          [stateName]: count - 1
+                        } as Pick<State, keyof State>);
+                    }}
                   />
-                  <i className={`icon-ic-add`} onClick={steps[step].plus} />
+                  <input
+                    className={'checkin-content__number-input'}
+                    type="string"
+                    readOnly
+                    value={steps[step].count}
+                  />
+                  <i
+                    className={`icon-ic-add`}
+                    onClick={() => {
+                      let { count, stateName } = steps[step];
+                      this.setState({
+                        [stateName]: count + 1
+                      } as Pick<State, keyof State>);
+                    }}
+                  />
                 </div>
               </div>
               {/* FOOTER */}
               <div className={'checkin-modal__footer checkin-footer'}>
                 <div className={'checkin-footer__tracker'}>
-                  <div
-                    className={`checkin-footer__dot ${
-                      step === 0 ? 'checkin-footer__dot--active' : ''
-                    }`}
-                  />
-                  <div
-                    className={`checkin-footer__dot ${
-                      step === 1 ? 'checkin-footer__dot--active' : ''
-                    }`}
-                  />
-                  <div
-                    className={`checkin-footer__dot ${
-                      step === 2 ? 'checkin-footer__dot--active' : ''
-                    }`}
-                  />
-                  <div
-                    className={`checkin-footer__dot ${
-                      step === 3 ? 'checkin-footer__dot--active' : ''
-                    }`}
-                  />
-                  <div
-                    className={`checkin-footer__dot ${
-                      step === 4 ? 'checkin-footer__dot--active' : ''
-                    }`}
-                  />
+                  {[0, 1, 2, 3, 4].map(num => (
+                    <div
+                      key={num}
+                      className={`checkin-footer__dot ${
+                        step === num ? 'checkin-footer__dot--active' : ''
+                      }`}
+                    />
+                  ))}
                 </div>
                 <div
                   className={'checkin-footer__button'}
@@ -273,6 +231,7 @@ export default class CheckInModal extends Component<Props, State> {
               <textarea
                 className={'checkin-final__notes'}
                 name=""
+                placeholder="(Optional) Write something here…"
                 value={notes}
                 onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
                   this.setState({ notes: e.target.value })
