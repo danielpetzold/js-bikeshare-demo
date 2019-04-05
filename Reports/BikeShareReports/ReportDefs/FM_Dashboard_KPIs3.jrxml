@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 7.2.1.final using JasperReports Library version 6.6.0  -->
-<!-- 2019-04-05T10:31:10 -->
+<!-- 2019-04-05T10:44:40 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="FM_Dashboard_KPIS" printOrder="Horizontal" pageWidth="900" pageHeight="144" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="900" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="5347bef6-468e-4022-865e-bd6933f0fa4b">
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="BikeShare-Adapter-Dev"/>
@@ -10,7 +10,6 @@
 	<property name="ireport.jasperserver.reportUnit" value="/public/Bikeshare_demo/Reports/Dashboard_Reports/FM_Dashboard_KPIS"/>
 	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="280"/>
 	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="715"/>
-	<property name="net.sf.jasperreports.export.html.class" value="kpi-card"/>
 	<property name="net.sf.jasperreports.export.html.header" value=""/>
 	<property name="net.sf.jasperreports.export.html.remove.emtpy.space.between.rows" value="true"/>
 	<property name="net.sf.jasperreports.export.html.size.unit" value="px"/>
@@ -190,6 +189,7 @@ FROM "region_kpi_today" FETCH FIRST 1 ROW ONLY]]>
 			<textField hyperlinkType="Reference" hyperlinkTarget="Top">
 				<reportElement style="SecondaryTitleStyle" x="5" y="99" width="120" height="38" uuid="7db82294-fab0-4b06-a9c1-d774ba7d7a6a">
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="net.sf.jasperreports.export.html.class" value="kpi-card"/>
 				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="10"/>
@@ -202,7 +202,6 @@ FROM "region_kpi_today" FETCH FIRST 1 ROW ONLY]]>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.x" value="px"/>
 					<property name="net.sf.jasperreports.export.html.class" value="kpi-card"/>
-					<property name="net.sf.jasperreports.export.html.id" value="kpiStations"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
 				<textFieldExpression><![CDATA[$F{stations_in_need} == null ? 0 : $F{stations_in_need} > 999999 ? $F{stations_in_need} / 1000000.0 : ($F{stations_in_need} > 999 ?  $F{stations_in_need} / 1000.0 	: $F{stations_in_need})]]></textFieldExpression>
@@ -213,6 +212,7 @@ FROM "region_kpi_today" FETCH FIRST 1 ROW ONLY]]>
 				<reportElement x="46" y="17" width="40" height="40" uuid="1b74ca47-61e6-42b7-86e1-b1f016f8c93a">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="net.sf.jasperreports.export.html.class" value="kpi-card"/>
 				</reportElement>
 				<imageExpression><![CDATA["repo:/public/Bikeshare_demo/Resources/Images/station_in_need_icon.png"]]></imageExpression>
 				<hyperlinkReferenceExpression><![CDATA["Dashboard_Stations_InNeed_Detail"]]></hyperlinkReferenceExpression>
@@ -222,6 +222,7 @@ FROM "region_kpi_today" FETCH FIRST 1 ROW ONLY]]>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<property name="net.sf.jasperreports.export.html.class" value="kpi-card"/>
 				</reportElement>
 				<imageExpression><![CDATA["repo:/public/Bikeshare_demo/Resources/Images/total_trips_icon.png"]]></imageExpression>
 				<hyperlinkReferenceExpression><![CDATA["Dashboard_Trip_Detail"]]></hyperlinkReferenceExpression>
@@ -243,6 +244,7 @@ FROM "region_kpi_today" FETCH FIRST 1 ROW ONLY]]>
 					<property name="com.jaspersoft.studio.unit.x" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<property name="net.sf.jasperreports.export.html.class" value="kpi-card"/>
 				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="10"/>
@@ -311,6 +313,7 @@ FROM "region_kpi_today" FETCH FIRST 1 ROW ONLY]]>
 					<property name="com.jaspersoft.studio.unit.y" value="px"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="net.sf.jasperreports.export.html.class" value="kpi-card"/>
 				</reportElement>
 				<imageExpression><![CDATA["repo:/public/Bikeshare_demo/Resources/Images/bikes_fixed_icon.png"]]></imageExpression>
 				<hyperlinkReferenceExpression><![CDATA["Dashboard_Bikes_Fixed_Detail"]]></hyperlinkReferenceExpression>
@@ -331,6 +334,7 @@ FROM "region_kpi_today" FETCH FIRST 1 ROW ONLY]]>
 				<reportElement style="SecondaryTitleStyle" x="313" y="99" width="120" height="38" uuid="6f7376f7-b5f4-47be-a78e-66923401ae44">
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="net.sf.jasperreports.export.html.class" value="kpi-card"/>
 				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="10"/>
