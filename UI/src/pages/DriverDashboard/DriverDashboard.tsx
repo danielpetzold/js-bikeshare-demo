@@ -1,11 +1,20 @@
 import React, { Component } from 'react';
 import './DriverDashboard.scss';
 import NavBar from '../../components/NavBar/NavBar';
+import CheckInModal from '../../components/CheckInModal/CheckInModal';
 
-class DriverDashboard extends Component {
+interface State {
+  isCheckInOpen: boolean;
+}
+
+class DriverDashboard extends Component<any, State> {
+  state: State = {
+    isCheckInOpen: false
+  };
+
   render() {
     return (
-      <div>
+      <>
         <NavBar altHamburger={true} />
         <div className={'dash-container'}>
           <div className={'grid driver-header-grid'}>
@@ -23,6 +32,13 @@ class DriverDashboard extends Component {
               <div className={'grid__column-12 grid__column-m-4'} />
             </div>
           </div>
+          {/* Remove this once reports are in. */}
+          <button
+            onClick={() => this.setState({ isCheckInOpen: true })}
+            className={'btn--primary'}
+          >
+            Check In
+          </button>
           {/* REPORTS */}
           <div className={'grid driver-reports-grid'}>
             <div className={`grid__row arrow`}>
@@ -48,7 +64,12 @@ class DriverDashboard extends Component {
             </div>
           </div>
         </div>
-      </div>
+        {this.state.isCheckInOpen && (
+          <CheckInModal
+            closeModal={() => this.setState({ isCheckInOpen: false })}
+          />
+        )}
+      </>
     );
   }
 }
