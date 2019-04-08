@@ -1,58 +1,76 @@
 import React, { Component } from 'react';
 import './Filter.scss';
-import { FilterData } from '../../pages/Dashboard/Dashboard';
+import { FilterOption, SelectedFilters } from "../../pages/Dashboard/Dashboard";
 
 interface FilterProps {
   close: () => void;
   save: (state: any) => void;
-  selectedFilters: any;
+  selectedFilters: SelectedFilters;
   data: any;
 }
 
+interface FilterData {
+  title: string,
+  id: string,
+  options: FilterOption[]
+}
+
 // Timeframe Filter Options.
-export const timeFrameFilter = {
+export const timeFrameFilter: FilterData = {
   title: 'Timeframe',
   id: 'Timeframe',
   options: [
     {
       label: 'Current',
-      value: 'current'
+      value: 'current',
+      selected: false
     },
     {
       label: 'Last 24 Hours',
-      value: 'last24'
+      value: 'last24',
+      selected: false
     },
     {
       label: 'Last Week',
-      value: 'lastweek'
+      value: 'lastweek',
+      selected: false
     },
     {
       label: 'Last Month',
-      value: 'lastmonth'
+      value: 'lastmonth',
+      selected: false
     },
     {
       label: 'Last Quarter',
-      value: 'lastquarter'
+      value: 'lastquarter',
+      selected: false
     },
     {
       label: 'Annual',
-      value: 'annual'
+      value: 'annual',
+      selected: false
     }
   ]
 };
 
 // Default state with nothing selected
-const nothingOption = {
+const nothingOption: FilterOption = {
   label: "---",
   selected: true,
   value: "~NOTHING~"
 };
 
+interface FilterState {
+  Region: FilterOption,
+  Franchise: FilterOption,
+  Timeframe: FilterOption
+}
+
 class Filter extends Component<FilterProps> {
   state: any;
-  franchiseFilter: any;
-  regionFilter: any;
-  timeframeFilter: any;
+  franchiseFilter: FilterData;
+  regionFilter: FilterData;
+  timeframeFilter: FilterData;
 
   constructor(props: FilterProps) {
     super(props);
@@ -69,12 +87,13 @@ class Filter extends Component<FilterProps> {
     };
   }
 
-  saveFilter = () => {
+  saveFilter = (e: any) => {
+    e.preventDefault();
     this.props.save(this.state);
     this.props.close();
   };
 
-  setFilter = (id: string, option: FilterData) => {
+  setFilter = (id: string, option: FilterOption) => {
     this.setState({
       [id]: this.state[id].value === option.value ? nothingOption : option
     });
@@ -86,7 +105,7 @@ class Filter extends Component<FilterProps> {
   };
 
   createFilterOptions(filterList: any) {
-    return  filterList.options.map((item: FilterData) => {
+    return  filterList.options.map((item: FilterOption) => {
       if (item.value !== '~NOTHING~') {
         return (
           <React.Fragment key={item.value + '_item'}>
@@ -141,19 +160,18 @@ class Filter extends Component<FilterProps> {
 
             <div className={'grid__row filter__save'}>
               <div className={'grid__column-2 grid__column-m-2'}>
-                <button onClick={this.saveFilter} className={'btn--primary'}>
+                <button onClick={(e) => {this.saveFilter(e)}} className={'btn--primary'}>
                   Save and Update
                 </button>
               </div>
               <div className={'grid__column-1 grid__column-m-2'}>
-                <a href={'#'} onClick={this.closeFilter}>
+                <a className={'filter__close-filter'} href={'#'} onClick={this.closeFilter}>
                   Cancel
                 </a>
               </div>
             </div>
           </div>
         </div>
-        {/*<div className={'filter__shadow filter__active'} />*/}
       </>
     );
   }

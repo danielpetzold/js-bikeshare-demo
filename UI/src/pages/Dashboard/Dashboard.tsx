@@ -6,10 +6,6 @@ import { visualizeHelper } from '../../helpers/VisualizeHelper';
 
 interface DashboardProps {}
 
-interface SelectedFilters {
-  [index:string]: FilterData;
-}
-
 interface State {
   isFilterOpen: boolean;
   selectedFilters: SelectedFilters;
@@ -17,30 +13,31 @@ interface State {
   kpiDetailReport: string;
 }
 
-interface Report {
-  container: string;
-  name: string;
-  params: any[]
+export interface SelectedFilters {
+  [index:string]: FilterOption;
 }
 
-export interface FilterData {
+export interface FilterOption {
   label: string;
   value: string;
+  selected: boolean;
 }
 
-
+export interface ReportParams {
+  [index:string]: string[];
+}
 
 class Dashboard extends React.Component<DashboardProps, State> {
   filterDataICUri = '/public/Bikeshare_demo/Reports/Lookups';
-  visualize: any;
   filters: any = [];
   private detailsRef = React.createRef<HTMLDivElement>();
 
   constructor(props: DashboardProps) {
     super(props);
-    let emptyFilter: FilterData = {
+    let emptyFilter: FilterOption = {
       label: '',
-      value: ''
+      value: '',
+      selected: false
     };
 
     // Set initial state for filter to first two options in data
@@ -86,13 +83,12 @@ class Dashboard extends React.Component<DashboardProps, State> {
   }
 
   getParams = () => {
-    let params: any = {};
+    let params: ReportParams = {};
     for (let key in this.state.selectedFilters) {
       params[key] = [this.state.selectedFilters[key].value]
     }
     return params;
   };
-
 
   getFilterData = () => {
     visualizeHelper.getInputControl('', this.filterDataICUri)
@@ -197,16 +193,16 @@ class Dashboard extends React.Component<DashboardProps, State> {
 
               <div className={'grid__row dashboard__KPI'}>
                 <div className={'grid__column-12 grid__column-m-4'}>
-                  <div id={'kpi-report'} />
+                  <div id={'kpi-report'} className={'dashboard__report-container'}></div>
                 </div>
               </div>
 
               <div className={'grid__row'}>
                 <div className={'grid__column-8 grid__column-m-4'} >
-                  <div id={'in-need-report'} ref={this.detailsRef}/>
+                  <div id={'in-need-report'} ref={this.detailsRef} className={'dashboard__report-container'}></div>
                 </div>
                 <div className={'grid__column-4 grid__column-m-4'}>
-                  <div id={'trip-detail-report'} />
+                  <div id={'trip-detail-report'} className={'dashboard__report-container'}></div>
                 </div>
               </div>
             </div>
