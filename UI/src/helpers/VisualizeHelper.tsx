@@ -55,14 +55,16 @@ class VisualizeHelper {
    * @param uiContainer
    * @param resourcePath
    * @param params
+   * @param linkOptions
    */
-  getReport(uiContainer: string, resourcePath: string, params: any = {}) {
+  getReport(uiContainer: string, resourcePath: string, params: any = {}, linkOptions: any = {}) {
     return new Promise((resolve, reject) => {
       this.viz((v: any) => {
         v.report({
           container: `#${uiContainer}`,
           resource: resourcePath,
           params: params,
+          linkOptions: linkOptions,
           success: (success: any) => {
             resolve(success);
           },
