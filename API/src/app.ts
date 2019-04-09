@@ -1,4 +1,5 @@
 import express from "express";
+import session from "express-session";
 import ErrorMiddleware from "./middleware/error.middleware";
 
 /**
@@ -34,7 +35,11 @@ class App {
         this.app.use(express.urlencoded({ extended: true }));
         this.app.use(express.json());
         this.app.use(ErrorMiddleware);
-        // todo: Need to add session-related middleware
+        this.app.use( session( {
+            resave: true,
+            saveUninitialized: true,
+            secret: process.env.SESSION_SECRET
+        } ) );
     }
 
     /**
@@ -42,6 +47,24 @@ class App {
      * @param controllers
      */
     private initializeControllers(controllers) {
+        // all verbs need access to request with session id
+
+        this.app.get("/", (req, res) => {
+            // tests the persistence of session cookie
+            if (req.session.page_views) {
+                req.session.page_views++;
+                res.send("You visited this page " + req.session.page_views +
+                    " times. Your session Id: " + req.sessionID);
+            } else {
+                req.session.page_views = 1;
+                res.send("Welcome to this page for the first time! Your session Id: " + req.sessionID);
+            }
+        });
+
+        this.app.post("/", (req, res) => { });
+        this.app.put("/", (req, res) => { });
+        this.app.patch("/", (req, res) => { });
+
         controllers.forEach((controller) => {
             this.app.use("/", controller.router);
         });

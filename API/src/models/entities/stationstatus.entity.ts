@@ -1,84 +1,94 @@
-import {Column, Entity, PrimaryColumn} from "typeorm";
+import {Column, Entity, ManyToMany, PrimaryGeneratedColumn} from "typeorm";
 import IStationStatus from "../interfaces/stationstatus.interface";
+import {RouteStop} from "./routestop.entity";
 
 @Entity("station_status", {schema: "public" } )
 export class StationStatus implements IStationStatus {
 
-    @PrimaryColumn("character varying", {
+    @PrimaryGeneratedColumn({
+        type: "bigint",
+        name: "id"
+    })
+    public id: string;
+
+    @Column("character varying", {
         nullable: false,
-        primary: true,
         length: 50,
         name: "system_id"
         })
-    public systemId: string;
+    public system_id: string;
 
-    @PrimaryColumn("character varying", {
+    @Column("character varying", {
         nullable: false,
-        primary: true,
         length: 20,
         name: "station_id"
         })
-    public stationId: string;
+    public station_id: string;
 
     @Column("integer", {
         nullable: true,
         name: "num_bikes_available"
         })
-    public bikesAvailable: number | null;
+    public num_bikes_available: number | null;
 
     @Column("integer", {
         nullable: true,
         name: "num_ebikes_available"
         })
-    public eBikesAvailable: number | null;
+    public num_ebikes_available: number | null;
 
     @Column("integer", {
         nullable: true,
         name: "num_bikes_disabled"
         })
-    public bikesDisabled: number | null;
+    public num_bikes_disabled: number | null;
 
     @Column("integer", {
         nullable: true,
         name: "num_docks_available"
         })
-    public docksAvailable: number | null;
+    public num_docks_available: number | null;
 
     @Column("integer", {
         nullable: true,
         name: "num_docks_disabled"
         })
-    public docksDisabled: number | null;
+    public num_docks_disabled: number | null;
 
     @Column("boolean", {
         nullable: true,
         name: "is_renting"
         })
-    public isRenting: boolean | null;
+    public is_renting: boolean | null;
 
     @Column("boolean", {
         nullable: true,
         name: "is_installed"
         })
-    public isInstalled: boolean | null;
+    public is_installed: boolean | null;
 
     @Column("boolean", {
         nullable: true,
         name: "is_returning"
         })
-    public isReturning: boolean | null;
+    public is_returning: boolean | null;
 
-    @PrimaryColumn("timestamp with time zone", {
+    @Column("timestamp with time zone", {
         nullable: false,
-        primary: true,
         name: "last_reported"
         })
-    public lastReported: Date;
+    public last_reported: Date;
 
     @Column("character", {
         nullable: true,
         length: 32,
         name: "session_id"
         })
-    public sessionId: string | null;
+    public session_id: string | null;
+
+    // not mapped
+    public name: string | null;
+    //
+    // @ManyToMany((type) => RouteStop)
+    // public routeStops: RouteStop[] | null;
 }
