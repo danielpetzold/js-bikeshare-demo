@@ -2,10 +2,15 @@ import "dotenv/config";
 import "reflect-metadata";
 import { createConnection } from "typeorm";
 import App from "./app";
+import RouteStopController from "./controllers/RouteStopController";
 import SessionController from "./controllers/SessionController";
 import StationStatusController from "./controllers/StationStatusController";
+
 import config from "./ormconfig";
 
+process.on("uncaughtException", (err) => {
+    console.log(err);
+});
 /**
  * Entry point into application
  */
@@ -21,7 +26,8 @@ try {
 const app = new App(
     [
         new StationStatusController(),
-        new SessionController()
+        new SessionController(),
+        new RouteStopController()
     ],
     process.env.API_PORT
 );
