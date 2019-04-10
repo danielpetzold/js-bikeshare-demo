@@ -30,7 +30,6 @@ export interface ReportParams {
 class Dashboard extends React.Component<DashboardProps, State> {
   filterDataICUri = '/public/Bikeshare_demo/Reports/Lookups';
   filters: any = [];
-  private detailsRef = React.createRef<HTMLDivElement>();
 
   constructor(props: DashboardProps) {
     super(props);
@@ -53,10 +52,55 @@ class Dashboard extends React.Component<DashboardProps, State> {
     };
   }
 
+  componentWillMount() {
+  }
+
   componentDidMount() {
     this.getFilterData();
   }
 
+  getMap() {
+    let geo = (window as any).T;
+    let mapContainer = geo.DomUtil.get('dashboard-map');
+    let map = new geo.Map(
+      mapContainer,
+      {
+        zoom: 10,
+        center: new geo.LatLng(48.875521, 2.302537)
+      }
+    );
+
+    //Add the navigation control
+    let tibcoLayerStandard = new geo.TibcoLayer({name: "TibcoLayer 1"});
+
+    map.addLayer(tibcoLayerStandard);
+    //Add the navigation control
+
+    let navigationControl = new geo.NavigationControl({
+      offset: [10, 10],
+      panControl: true,
+      zoomControl: true,
+      zoomRailHeight: 120,
+      titles: {
+        panUp: "Pan up",
+        panDown: "Pan down",
+        panLeft: "Pan left",
+        panRight: "Pan right",
+        reset: "Reset map",
+        zoomIn: "Zoom in",
+        zoomOut: "Zoom out"
+      }
+    });
+    map.addControl(navigationControl);
+
+    //Add the marker
+    let markersLayer = new geo.MarkersLayer();
+    map.addLayer(markersLayer);
+
+    let marker = new geo.ImageMarker( new geo.LatLng(46.87, 2.3356),
+      "http://geoanalytics.tibco.com/api/rest/assets/images/pin.png");
+    markersLayer.addMarker(marker);
+  }
   getReports() {
     // Create params object from selected filters
     let params: any = this.getParams();
@@ -80,6 +124,7 @@ class Dashboard extends React.Component<DashboardProps, State> {
       params,
       linkOptions
     );
+    this.getMap();
   }
 
   getParams = () => {
@@ -128,7 +173,6 @@ class Dashboard extends React.Component<DashboardProps, State> {
 
   changeDetailsReport = (e: any, link: any) => {
     e.preventDefault();
-    this.detailsRef.current ? this.detailsRef.current.innerHTML = '': null;
     this.displayReport('in-need-report', link.href, this.getParams());
     this.setState({kpiDetailReport: link.href});
   };
@@ -146,7 +190,6 @@ class Dashboard extends React.Component<DashboardProps, State> {
           />
         ) : null }
         <div className={'dashboard'}>
-
           <header className={'dashboard-header'}>
             <div className={'dashboard-header__content grid'}>
               <div className={'grid__row'}>
@@ -178,7 +221,7 @@ class Dashboard extends React.Component<DashboardProps, State> {
               </div>
             </div>
             <div className={`dashboard-map__container ${!this.state.isMapOpen ? 'dashboard-map__container--closed' : ''}`}>
-              <div className={'dashboard-map__placeholder-map'}></div>
+              <div id='dashboard-map' className={'dashboard-map__map'}></div>
             </div>
           </div>
 
@@ -199,7 +242,7 @@ class Dashboard extends React.Component<DashboardProps, State> {
 
               <div className={'grid__row'}>
                 <div className={'grid__column-8 grid__column-m-4'} >
-                  <div id={'in-need-report'} ref={this.detailsRef} className={'dashboard__report-container'}></div>
+                  <div id={'in-need-report'} className={'dashboard__report-container'}></div>
                 </div>
                 <div className={'grid__column-4 grid__column-m-4'}>
                   <div id={'trip-detail-report'} className={'dashboard__report-container'}></div>

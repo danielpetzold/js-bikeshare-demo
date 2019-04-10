@@ -57,6 +57,7 @@ class ViewReport extends Component<any, ReportsState> {
   }
 
   componentDidMount() {
+    this.props.clearFilters(this.props.filters);
     this.setState({ mounted: true });
   }
 
