@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './Filter.scss';
-import { FilterOption, SelectedFilters } from "../../pages/Dashboard/Dashboard";
+import { FilterOption, SelectedFilters } from "../../pages/Dashboard/Dashboard.types";
 
 interface FilterProps {
   close: () => void;
