@@ -32,7 +32,7 @@ phases:
       # build API
       - cd ../API
       - npm install
-      - tslint -c tslint.json -p tsconfig.json --fix
+      #- tslint -c tslint.json -p tsconfig.json --fix
       - tsc
       # create and fill the deployment directory
       - cd ..
