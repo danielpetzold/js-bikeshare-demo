@@ -31,7 +31,9 @@ phases:
       - npm run build
       # build API
       - cd ../API
+      #- npm install typescript -g
       - npm install
+      - npm run build
       #- tslint -c tslint.json -p tsconfig.json --fix
       - tsc
       # create and fill the deployment directory
