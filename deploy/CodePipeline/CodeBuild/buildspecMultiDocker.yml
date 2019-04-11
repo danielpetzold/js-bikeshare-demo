@@ -1,0 +1,64 @@
+version: 0.2
+
+#env:
+  #variables:
+     # key: "value"
+     # key: "value"
+  #parameter-store:
+     # key: "value"
+     # key: "value"
+
+phases:
+  install:
+    commands:
+      #- apt-get update -y
+      # zip is in the image
+      #- apt-get install -y zip
+      # git-all 
+  #pre_build:
+    #commands:
+      # - command
+      # - command
+  build:
+    commands:
+      # make sure we have the latest
+      #- git checkout develop: not needed
+      #
+      # build React UI app
+      - ls -lsa
+      - cd UI
+      - npm install
+      - npm run build
+      # build API
+      - cd ../API
+      - npm install
+      - tslint -c tslint.json -p tsconfig.json --fix
+      - tsc
+      # create and fill the deployment directory
+      - cd ..
+      - mkdir target
+      - mkdir target/UI
+      - mkdir target/API
+      - cp -R UI/build/* target/UI/www
+      - cp deploy/UI/Docker/nginx.conf target/UI
+      - cp -R API/* target/API
+      # EBS config in S3. Merged via CodePipeline
+      # - cp -R deploy/ElasticBeanstalk/* target
+      # - command
+    #finally:
+      #echo Build finished on `date`
+  #post_build:
+    #commands:
+      # - command
+      # - command
+artifacts:
+  files:
+    - '**/*'
+    #- nodeBuild/bikeshare-node.zip
+  base-directory: 'target'
+    # - location
+  #name: $(date +%Y-%m-%d)
+  #discard-paths: yes
+#cache:
+  #paths:
+    # - paths
