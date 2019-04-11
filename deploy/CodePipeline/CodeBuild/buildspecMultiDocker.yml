@@ -40,6 +40,7 @@ phases:
       - cd ..
       - mkdir target
       - mkdir target/UI
+      - mkdir target/UI/www
       - mkdir target/API
       - cp -R UI/build/* target/UI/www
       - cp deploy/UI/Docker/nginx.conf target/UI
