@@ -30,23 +30,21 @@ phases:
       - npm install
       - npm run build
       # build API
-      - cd ../API
-      #- npm install typescript -g
-      - npm install
-      - npm run build
-      #- tslint -c tslint.json -p tsconfig.json --fix
-      #- tsc
+      # the Node Beanstalk engine does install
+      #- cd ../API
+      #- npm install
+      #- npm run build
       # create and fill the deployment directory
       - cd ..
       - mkdir target
-      - mkdir target/UI
-      - mkdir target/UI/www
-      - mkdir target/API
-      - cp -R UI/build/* target/UI/www
-      - cp deploy/UI/Docker/nginx.conf target/UI
-      - cp -R API/* target/API
+      - cp -R API/* target
+      
+      - mkdir target/www
+      - cp -R UI/build/* target/www
+      
+      - mkdir target/.ebextensions
+      - cp -R deploy/ElasticBeanstalk/.ebextensions/* target/.ebextensions
       # EBS config in S3. Merged via CodePipeline
-      # - cp -R deploy/ElasticBeanstalk/* target
       # - command
     #finally:
       #echo Build finished on `date`
