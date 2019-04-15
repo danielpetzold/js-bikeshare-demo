@@ -1,34 +1,13 @@
 import React from 'react';
 import './Dashboard.scss';
 import NavBar from '../../components/NavBar/NavBar';
-import Filter, { timeFrameFilter } from "../../components/Filter/Filter";
+import Filter, { timeFrameFilter } from '../../components/Filter/Filter';
 import { visualizeHelper } from '../../helpers/VisualizeHelper';
+import { DashboardProps, DashboardState, FilterOption, ReportParams } from './Dashboard.types';
 
-interface DashboardProps {}
+const filterDataICUri = '/public/Bikeshare_demo/Reports/Lookups';
 
-interface State {
-  isFilterOpen: boolean;
-  selectedFilters: SelectedFilters;
-  isMapOpen: boolean;
-  kpiDetailReport: string;
-}
-
-export interface SelectedFilters {
-  [index:string]: FilterOption;
-}
-
-export interface FilterOption {
-  label: string;
-  value: string;
-  selected: boolean;
-}
-
-export interface ReportParams {
-  [index:string]: string[];
-}
-
-class Dashboard extends React.Component<DashboardProps, State> {
-  filterDataICUri = '/public/Bikeshare_demo/Reports/Lookups';
+class Dashboard extends React.Component<DashboardProps, DashboardState> {
   filters: any = [];
 
   constructor(props: DashboardProps) {
@@ -56,7 +35,40 @@ class Dashboard extends React.Component<DashboardProps, State> {
   }
 
   componentDidMount() {
-    this.getFilterData();
+    // Load Filters, Reports, and Maps in order
+    this.getFilterData()
+      .then((success: any) => {
+        // Set Filters
+        this.setFilters(success);
+        // Load Reports
+        return this.getReports();
+      })
+      .then((success: any) => {
+        // Load Maps
+      });
+  }
+
+  setFilters(success: any) {
+    this.filters = Object.assign({}, ...(success.map((item: any) => {
+        return (
+          {
+            [item.id]: {
+              title: item.label,
+              id: item.id,
+              options: item.state.options
+            }
+          }
+        );
+      }
+    )));
+
+    this.setState({
+      selectedFilters: {
+        Region: this.filters['Region'].options[0],
+        Franchise: this.filters['Franchise'].options[0],
+        Timeframe: timeFrameFilter.options[0]
+      }
+    });
   }
 
   getMap() {
@@ -102,23 +114,31 @@ class Dashboard extends React.Component<DashboardProps, State> {
     markersLayer.addMarker(marker);
   }
   getReports() {
+    let promiseArray = [];
+
     // Create params object from selected filters
     let params: any = this.getParams();
-    this.displayReport(
+
+    // KPI Report
+    promiseArray.push(this.displayReport(
       'kpi-report',
       'FM_Dashboard_KPIS',
       params,
       {
         events: {
-          "click": this.changeDetailsReport
+          'click': this.changeDetailsReport
         }
       }
-    );
-    this.displayReport('in-need-report', this.state.kpiDetailReport, params);
+    ));
+
+    // KPI Details Report
+    promiseArray.push(this.displayReport('in-need-report', this.state.kpiDetailReport, params));
+
+    return Promise.all(promiseArray);
   }
 
   displayReport(containerId: string, reportName: string, params: any, linkOptions: any = {}) {
-    visualizeHelper.getReport(
+    return visualizeHelper.getReport(
       containerId,
       `/public/Bikeshare_demo/Reports/Dashboard_Reports/${reportName}`,
       params,
@@ -130,31 +150,13 @@ class Dashboard extends React.Component<DashboardProps, State> {
   getParams = () => {
     let params: ReportParams = {};
     for (let key in this.state.selectedFilters) {
-      params[key] = [this.state.selectedFilters[key].value]
+      params[key] = [this.state.selectedFilters[key].value];
     }
     return params;
   };
 
   getFilterData = () => {
-    visualizeHelper.getInputControl('', this.filterDataICUri)
-      .then((success: any) => {
-        this.filters = Object.assign({}, ...(success.map((item: any) => {
-          return (
-            {
-              [item.id]: {
-                title: item.label,
-                id: item.id,
-                options: item.state.options
-              }
-            }
-          )}
-        )));
-        this.setFilter({
-          Region: this.filters['Region'].options[0],
-          Franchise: this.filters['Franchise'].options[0],
-          Timeframe: timeFrameFilter.options[0]
-        })
-      })
+    return visualizeHelper.getInputControl('', filterDataICUri);
   };
 
   closeFilter = () => {
@@ -168,43 +170,45 @@ class Dashboard extends React.Component<DashboardProps, State> {
   };
 
   toggleMap = () => {
-    this.setState({isMapOpen: !this.state.isMapOpen});
+    this.setState({ isMapOpen: !this.state.isMapOpen });
   };
 
   changeDetailsReport = (e: any, link: any) => {
     e.preventDefault();
     this.displayReport('in-need-report', link.href, this.getParams());
-    this.setState({kpiDetailReport: link.href});
+    this.setState({ kpiDetailReport: link.href });
   };
 
   render() {
     return (
       <>
-        <NavBar />
-        { this.state.isFilterOpen ? (
+        <NavBar/>
+        {this.state.isFilterOpen ? (
           <Filter
             close={this.closeFilter}
             save={this.setFilter}
             selectedFilters={this.state.selectedFilters}
             data={this.filters}
           />
-        ) : null }
+        ) : null}
         <div className={'dashboard'}>
           <header className={'dashboard-header'}>
             <div className={'dashboard-header__content grid'}>
               <div className={'grid__row'}>
                 <div className={'grid__column-8 grid__column-m-4'}>
                   <div className='dashboard-header__title'> Trends and Analytics</div>
-                  <div className={'dashboard-header__region-filter'} onClick={() => this.setState({ isFilterOpen: true })}>
-                    {this.state.selectedFilters['Region'] && this.state.selectedFilters['Region'].value !== "~NOTHING~" ?
-                      this.state.selectedFilters['Region'].label : this.state.selectedFilters['Franchise'].label }
-                    <i className="icon-ic-arrow-down dashboard-header__down-arrow-icon" />
+                  <div className={'dashboard-header__region-filter'}
+                       onClick={() => this.setState({ isFilterOpen: true })}>
+                    {this.state.selectedFilters['Region'] && this.state.selectedFilters['Region'].value !== '~NOTHING~' ?
+                      this.state.selectedFilters['Region'].label : this.state.selectedFilters['Franchise'].label}
+                    <i className='icon-ic-arrow-down dashboard-header__down-arrow-icon'/>
                   </div>
                 </div>
                 <div className={'grid__column-4 grid__column-m-4'}>
-                  <div className={'dashboard-header__region-time-frame'} onClick={() => this.setState({ isFilterOpen: true })}>
-                    {this.state.selectedFilters['Timeframe'] ? this.state.selectedFilters['Timeframe'].label : "Please select Timeframe"}
-                    <i className="icon-ic-unfold-more dashboard-header__unfold-icon" />
+                  <div className={'dashboard-header__region-time-frame'}
+                       onClick={() => this.setState({ isFilterOpen: true })}>
+                    {this.state.selectedFilters['Timeframe'] ? this.state.selectedFilters['Timeframe'].label : 'Please select Timeframe'}
+                    <i className='icon-ic-unfold-more dashboard-header__unfold-icon'/>
                   </div>
                 </div>
               </div>
@@ -216,7 +220,8 @@ class Dashboard extends React.Component<DashboardProps, State> {
               <div className={'dashboard-map__control-content'}>
                 <div className={'dashboard-map__toggle'} onClick={this.toggleMap}>
                   {this.state.isMapOpen ? 'Close' : 'Open'} Map
-                  <i className={`dashboard-map__arrow icon-ic-arrow-down ${this.state.isMapOpen ? 'dashboard-map__arrow-up' : ''}`} />
+                  <i
+                    className={`dashboard-map__arrow icon-ic-arrow-down ${this.state.isMapOpen ? 'dashboard-map__arrow-up' : ''}`}/>
                 </div>
               </div>
             </div>

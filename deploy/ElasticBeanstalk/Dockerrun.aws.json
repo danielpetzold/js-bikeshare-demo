@@ -1,8 +1,100 @@
 {
-  "AWSEBDockerrunVersion": "1",
-  "Ports": [
+  "AWSEBDockerrunVersion": 2,
+  "volumes": [
     {
-      "ContainerPort": "80"
+      "name": "bikeshare-api-vol",
+      "host": {
+        "sourcePath": "/var/app/current/API"
+      }
+    },
+    {
+      "name": "nginx-bikeshare-ui-vol",
+      "host": {
+        "sourcePath": "/var/app/current/UI/www"
+      }
+    },
+    {
+      "name": "nginx-bikeshare-ui-conf",
+      "host": {
+        "sourcePath": "/var/app/current/UI/nginx.conf"
+      }
+    }  
+  ],
+  "containerDefinitions": [
+    {
+      "name": "bikeshare-api",
+      "image": "node:10-alpine",
+      "environment": [
+        {
+          "name": "JASPERSERVER_URL",
+          "value": "JRS URL- not used?"
+        },
+        {
+          "name": "POSTGRES_HOST",
+          "value": "POSTGRES_HOST"
+        },
+        {
+          "name": "POSTGRES_PORT",
+          "value": "POSTGRES_PORT"
+        },
+        {
+          "name": "POSTGRES_USER",
+          "value": "POSTGRES_USER"
+        },
+        {
+          "name": "POSTGRES_PASSWORD",
+          "value": "POSTGRES_PASSWORD"
+        },
+        {
+          "name": "POSTGRES_DB",
+          "value": "POSTGRES_DB"
+        },
+        {
+          "name": "API_PORT",
+          "value": "API_PORT"
+        },
+        {
+          "name": "SESSION_SECRET",
+          "value": "SESSION_SECRET!"
+        }
+      ],
+      "essential": true,
+      "memory": 128,
+      "mountPoints": [
+        {
+          "sourceVolume": "bikeshare-api-vol",
+          "containerPath": "/var/www/html",
+          "readOnly": true
+        }
+      ]
+    },
+    {
+      "name": "nginx-bikeshare-ui",
+      "image": "nginx:1.15.2-alpine",
+      "essential": true,
+      "memory": 128,
+      "portMappings": [
+        {
+          "hostPort": 80,
+          "containerPort": 80
+        }
+      ],
+      "mountPoints": [
+        {
+          "sourceVolume": "nginx-bikeshare-ui-vol",
+          "containerPath": "/var/www/bikeshare",
+          "readOnly": true
+        },
+        {
+          "sourceVolume": "nginx-bikeshare-ui-conf",
+          "containerPath": "/etc/nginx/conf.d",
+          "readOnly": true
+        },
+        {
+          "sourceVolume": "awseb-logs-nginx-bikeshare-ui",
+          "containerPath": "/var/log/nginx"
+        }
+      ]
     }
   ]
 }
