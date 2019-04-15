@@ -1,3 +1,4 @@
+import cors from "cors";
 import express from "express";
 import session from "express-session";
 import ErrorMiddleware from "./middleware/error.middleware";
@@ -18,7 +19,7 @@ class App {
     constructor(controllers, port) {
         this.app = express();
         this.port = port;
-        this.api_path = process.env.API_PATH || '/';
+        this.api_path = process.env.API_PATH || "/";
 
         this.initializeMiddleware();
         this.initializeControllers(controllers);
@@ -34,6 +35,8 @@ class App {
      */
     private initializeMiddleware() {
         // Opt into Middleware Services
+        this.app.use(cors());
+        this.app.options("*", cors());
         this.app.use(express.urlencoded({ extended: true }));
         this.app.use(express.json());
         this.app.use(ErrorMiddleware);
@@ -66,7 +69,7 @@ class App {
         this.app.post("/", (req, res) => { });
         this.app.put("/", (req, res) => { });
         this.app.patch("/", (req, res) => { });
-        if (this.api_path !== '/') {
+        if (this.api_path !== "/") {
             this.app.get("/", (req, res) => { });
         }
 

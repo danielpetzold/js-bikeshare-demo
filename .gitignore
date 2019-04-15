@@ -4,3 +4,4 @@ API/.env
 .idea/
 Reports/.metadata/
 Reports/BikeShareReports/public/
+Reports/BikeShareReports/.settings/
