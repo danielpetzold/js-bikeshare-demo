@@ -1,63 +1,11 @@
 {
 	"info": {
-		"_postman_id": "8a68de8a-8fff-4fe8-84ec-c516e22dc25f",
+		"_postman_id": "f49547b1-cdd3-45f0-8e3b-ba9f9b2c2dd7",
 		"name": "Bikeshare API",
 		"description": "Bikeshare Node API EndPoint Tests",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
-		{
-			"name": "Get Station Status",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": ""
-				},
-				"url": {
-					"raw": "http://{{HostName}}:{{Port}}/station-status/266",
-					"protocol": "http",
-					"host": [
-						"{{HostName}}"
-					],
-					"port": "{{Port}}",
-					"path": [
-						"station-status",
-						"266"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Save Station Status",
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/json"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"id\": \"266\",\n    \"system_id\": \"BA\",\n    \"station_id\": \"299\",\n    \"num_bikes_available\": 13,\n    \"num_ebikes_available\": 0,\n    \"num_bikes_disabled\": 1,\n    \"num_docks_available\": 0,\n    \"num_docks_disabled\": 3,\n    \"is_renting\": true,\n    \"is_installed\": null,\n    \"is_returning\": true,\n    \"last_reported\": \"2018-10-16T03:45:37.000Z\",\n    \"session_id\": null\n}\n\n    "
-				},
-				"url": {
-					"raw": "http://{{HostName}}:{{Port}}/station-status",
-					"protocol": "http",
-					"host": [
-						"{{HostName}}"
-					],
-					"port": "{{Port}}",
-					"path": [
-						"station-status"
-					]
-				}
-			},
-			"response": []
-		},
 		{
 			"name": "Get Session Token",
 			"request": {
@@ -68,12 +16,10 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "http://{{HostName}}:{{Port}}/session",
-					"protocol": "http",
+					"raw": "{{HostName}}/session",
 					"host": [
 						"{{HostName}}"
 					],
-					"port": "{{Port}}",
 					"path": [
 						"session"
 					]
@@ -98,12 +44,10 @@
 					"raw": "{ \"stationId\" : \"299\", \"routeId\" : \"SJ06\", \"highPri\" : 1}"
 				},
 				"url": {
-					"raw": "http://{{HostName}}:{{Port}}/route-stop",
-					"protocol": "http",
+					"raw": "{{HostName}}/route-stop",
 					"host": [
 						"{{HostName}}"
 					],
-					"port": "{{Port}}",
 					"path": [
 						"route-stop"
 					]
@@ -121,15 +65,61 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "http://{{HostName}}:{{Port}}/route-stop/50",
-					"protocol": "http",
+					"raw": "{{HostName}}/route-stop/558",
 					"host": [
 						"{{HostName}}"
 					],
-					"port": "{{Port}}",
 					"path": [
 						"route-stop",
-						"50"
+						"558"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Station Status",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{HostName}}/station-status/266",
+					"host": [
+						"{{HostName}}"
+					],
+					"path": [
+						"station-status",
+						"266"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Save Station Status",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\": \"266\",\n    \"system_id\": \"BA\",\n    \"station_id\": \"299\",\n    \"num_bikes_available\": 10,\n    \"num_ebikes_available\": 0,\n    \"num_bikes_disabled\": 0,\n    \"num_docks_available\": 14,\n    \"num_docks_disabled\": 0,\n    \"is_renting\": true,\n    \"is_installed\": null,\n    \"is_returning\": true,\n    \"last_reported\": \"2018-10-16T03:45:37.000Z\",\n    \"session_id\": null\n}"
+				},
+				"url": {
+					"raw": "{{HostName}}/station-status",
+					"host": [
+						"{{HostName}}"
+					],
+					"path": [
+						"station-status"
 					]
 				}
 			},
