@@ -35,21 +35,29 @@ class StationStatusController {
     public createSessionStatus =
         async (request: express.Request, response: express.Response, next: express.NextFunction) => {
 
-           // update fields of posted session status
+            // update fields of posted session status
             const dto: IStationStatus = request.body;
             dto.id = null;
             dto.last_reported = new Date();
             dto.session_id = request.sessionID;
 
             // get corresponding route stop and update fields
-            const latestRouteStop: IRouteStop = (await this.rStopRepo.find(
+            let latestRouteStop: IRouteStop = (await this.rStopRepo.find(
                 {
-                    where: { station_id: dto.station_id, system_id: dto.system_id, session_id : request.sessionID },
-                    order: { last_updated: "DESC" },
+                    where: {station_id: dto.station_id, system_id: dto.system_id},
+                    order: {last_updated: "DESC"},
                     take: 1
                 }
             ))[0];
 
+            if (!latestRouteStop) {
+                next(new HttpException(404, "Corresponding route stop not found."));
+            }
+
+            if (latestRouteStop.session_id == null)
+            {
+                latestRouteStop = new RouteStop();
+            }
             // console.log(latestRouteStop);
             latestRouteStop.is_completed = true;
             latestRouteStop.last_updated = new Date();
