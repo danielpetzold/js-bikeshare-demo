@@ -1,11 +1,11 @@
-import React from "react";
-import "./Dashboard.scss";
-import NavBar from "../../components/NavBar/NavBar";
-import Filter, { timeFrameFilter } from "../../components/Filter/Filter";
-import { visualizeHelper } from "../../helpers/VisualizeHelper";
-import { DashboardProps, DashboardState, FilterOption, ReportParams } from "./Dashboard.types";
+import React from 'react';
+import './Dashboard.scss';
+import NavBar from '../../components/NavBar/NavBar';
+import Filter, { timeFrameFilter } from '../../components/Filter/Filter';
+import { visualizeHelper } from '../../helpers/VisualizeHelper';
+import { DashboardProps, DashboardState, FilterOption, ReportParams } from './Dashboard.types';
 
-const filterDataICUri = "/public/Bikeshare_demo/Reports/Lookups";
+const filterDataICUri = '/public/Bikeshare_demo/Reports/Lookups';
 
 class Dashboard extends React.Component<DashboardProps, DashboardState> {
   filters: any = [];
@@ -27,7 +27,7 @@ class Dashboard extends React.Component<DashboardProps, DashboardState> {
         Timeframe: emptyFilter
       },
       isMapOpen: true,
-      kpiDetailReport: "Dashboard_Stations_InNeed_Detail"
+      kpiDetailReport: 'Dashboard_Stations_InNeed_Detail'
     };
   }
 
@@ -61,8 +61,8 @@ class Dashboard extends React.Component<DashboardProps, DashboardState> {
 
     this.setState({
       selectedFilters: {
-        Region: this.filters["Region"].options[0],
-        Franchise: this.filters["Franchise"].options[0],
+        Region: this.filters['Region'].options[0],
+        Franchise: this.filters['Franchise'].options[0],
         Timeframe: timeFrameFilter.options[0]
       }
     });
@@ -76,18 +76,18 @@ class Dashboard extends React.Component<DashboardProps, DashboardState> {
 
     // KPI Report
     promiseArray.push(this.displayReport(
-      "kpi-report",
-      "FM_Dashboard_KPIS",
+      'kpi-report',
+      'FM_Dashboard_KPIS',
       params,
       {
         events: {
-          "click": this.changeDetailsReport
+          'click': this.changeDetailsReport
         }
       }
     ));
 
     // KPI Details Report
-    promiseArray.push(this.displayReport("in-need-report", this.state.kpiDetailReport, params));
+    promiseArray.push(this.displayReport('in-need-report', this.state.kpiDetailReport, params));
 
     return Promise.all(promiseArray);
   }
@@ -110,7 +110,7 @@ class Dashboard extends React.Component<DashboardProps, DashboardState> {
   };
 
   getFilterData = () => {
-    return visualizeHelper.getInputControl("", filterDataICUri);
+    return visualizeHelper.getInputControl('', filterDataICUri);
   };
 
   closeFilter = () => {
@@ -129,7 +129,7 @@ class Dashboard extends React.Component<DashboardProps, DashboardState> {
 
   changeDetailsReport = (e: any, link: any) => {
     e.preventDefault();
-    this.displayReport("in-need-report", link.href, this.getParams());
+    this.displayReport('in-need-report', link.href, this.getParams());
     this.setState({ kpiDetailReport: link.href });
   };
 
@@ -145,25 +145,25 @@ class Dashboard extends React.Component<DashboardProps, DashboardState> {
             data={this.filters}
           />
         ) : null}
-        <div className={"dashboard"}>
+        <div className={'dashboard'}>
 
-          <header className={"dashboard-header"}>
-            <div className={"dashboard-header__content grid"}>
-              <div className={"grid__row"}>
-                <div className={"grid__column-8 grid__column-m-4"}>
+          <header className={'dashboard-header'}>
+            <div className={'dashboard-header__content grid'}>
+              <div className={'grid__row'}>
+                <div className={'grid__column-8 grid__column-m-4'}>
                   <div className='dashboard-header__title'> Trends and Analytics</div>
-                  <div className={"dashboard-header__region-filter"}
+                  <div className={'dashboard-header__region-filter'}
                        onClick={() => this.setState({ isFilterOpen: true })}>
-                    {this.state.selectedFilters["Region"] && this.state.selectedFilters["Region"].value !== "~NOTHING~" ?
-                      this.state.selectedFilters["Region"].label : this.state.selectedFilters["Franchise"].label}
-                    <i className="icon-ic-arrow-down dashboard-header__down-arrow-icon"/>
+                    {this.state.selectedFilters['Region'] && this.state.selectedFilters['Region'].value !== '~NOTHING~' ?
+                      this.state.selectedFilters['Region'].label : this.state.selectedFilters['Franchise'].label}
+                    <i className='icon-ic-arrow-down dashboard-header__down-arrow-icon'/>
                   </div>
                 </div>
-                <div className={"grid__column-4 grid__column-m-4"}>
-                  <div className={"dashboard-header__region-time-frame"}
+                <div className={'grid__column-4 grid__column-m-4'}>
+                  <div className={'dashboard-header__region-time-frame'}
                        onClick={() => this.setState({ isFilterOpen: true })}>
-                    {this.state.selectedFilters["Timeframe"] ? this.state.selectedFilters["Timeframe"].label : "Please select Timeframe"}
-                    <i className="icon-ic-unfold-more dashboard-header__unfold-icon"/>
+                    {this.state.selectedFilters['Timeframe'] ? this.state.selectedFilters['Timeframe'].label : 'Please select Timeframe'}
+                    <i className='icon-ic-unfold-more dashboard-header__unfold-icon'/>
                   </div>
                 </div>
               </div>
@@ -171,42 +171,42 @@ class Dashboard extends React.Component<DashboardProps, DashboardState> {
           </header>
 
           <div className={`dashboard-map dashboard-map--mobile`}>
-            <div className={"dashboard-map__controls"}>
-              <div className={"dashboard-map__control-content"}>
-                <div className={"dashboard-map__toggle"} onClick={this.toggleMap}>
-                  {this.state.isMapOpen ? "Close" : "Open"} Map
+            <div className={'dashboard-map__controls'}>
+              <div className={'dashboard-map__control-content'}>
+                <div className={'dashboard-map__toggle'} onClick={this.toggleMap}>
+                  {this.state.isMapOpen ? 'Close' : 'Open'} Map
                   <i
-                    className={`dashboard-map__arrow icon-ic-arrow-down ${this.state.isMapOpen ? "dashboard-map__arrow-up" : ""}`}/>
+                    className={`dashboard-map__arrow icon-ic-arrow-down ${this.state.isMapOpen ? 'dashboard-map__arrow-up' : ''}`}/>
                 </div>
               </div>
             </div>
             <div
-              className={`dashboard-map__container ${!this.state.isMapOpen ? "dashboard-map__container--closed" : ""}`}>
-              <div className={"dashboard-map__placeholder-map"}></div>
+              className={`dashboard-map__container ${!this.state.isMapOpen ? 'dashboard-map__container--closed' : ''}`}>
+              <div className={'dashboard-map__placeholder-map'}></div>
             </div>
           </div>
 
-          <div className={"dashboard-body"}>
-            <div className={"dashboard-body__content grid"}>
+          <div className={'dashboard-body'}>
+            <div className={'dashboard-body__content grid'}>
 
-              <div className={"dashboard-body__report-select grid__row"}>
-                <div className={"grid__column-12"}>
-                  <div className={"dashboard-body__report-title"}>Operational Performance Metrics</div>
+              <div className={'dashboard-body__report-select grid__row'}>
+                <div className={'grid__column-12'}>
+                  <div className={'dashboard-body__report-title'}>Operational Performance Metrics</div>
                 </div>
               </div>
 
-              <div className={"grid__row dashboard__KPI"}>
-                <div className={"grid__column-12 grid__column-m-4"}>
-                  <div id={"kpi-report"} className={"dashboard__report-container"}></div>
+              <div className={'grid__row dashboard__KPI'}>
+                <div className={'grid__column-12 grid__column-m-4'}>
+                  <div id={'kpi-report'} className={'dashboard__report-container'}></div>
                 </div>
               </div>
 
-              <div className={"grid__row"}>
-                <div className={"grid__column-8 grid__column-m-4"}>
-                  <div id={"in-need-report"}  className={"dashboard__report-container"}></div>
+              <div className={'grid__row'}>
+                <div className={'grid__column-8 grid__column-m-4'}>
+                  <div id={'in-need-report'}  className={'dashboard__report-container'}></div>
                 </div>
-                <div className={"grid__column-4 grid__column-m-4"}>
-                  <div id={"trip-detail-report"} className={"dashboard__report-container"}></div>
+                <div className={'grid__column-4 grid__column-m-4'}>
+                  <div id={'trip-detail-report'} className={'dashboard__report-container'}></div>
                 </div>
               </div>
             </div>
