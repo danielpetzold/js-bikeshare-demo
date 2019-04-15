@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 7.2.1.final using JasperReports Library version 6.6.0  -->
-<!-- 2019-04-11T19:00:44 -->
+<!-- 2019-04-15T11:49:50 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Driver_CheckIn_List" pageWidth="592" pageHeight="168" columnWidth="592" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="48e740a0-f7d9-4366-b8b6-69bcb63eeb9a">
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="BikeShare-Adapter-Dev"/>
@@ -202,6 +202,7 @@ Order By rs.is_completed, rs.stop_order]]>
 				<reportElement x="446" y="61" width="130" height="15" forecolor="#71AC5C" uuid="3f8f6239-69d9-441e-bc22-b80a6a6ecab3">
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<printWhenExpression><![CDATA[$F{is_completed}]]></printWhenExpression>
 				</reportElement>
 				<textElement>
 					<font size="12"/>
@@ -214,6 +215,19 @@ Order By rs.is_completed, rs.stop_order]]>
 				</reportElement>
 				<textFieldExpression><![CDATA[$V{ArrivalTime} + "AM"]]></textFieldExpression>
 			</textField>
+			<image>
+				<reportElement x="1" y="58" width="59" height="24" uuid="1d666db5-2f71-410e-8524-ee1011e21057">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<imageExpression><![CDATA["Images/LOW.png"]]></imageExpression>
+			</image>
+			<image>
+				<reportElement x="493" y="59" width="84" height="30" uuid="1b5e96c5-befe-4bce-80c1-f55e1d49a8c1">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<imageExpression><![CDATA["Images/CheckInButton.png"]]></imageExpression>
+			</image>
 		</band>
 	</detail>
 </jasperReport>
