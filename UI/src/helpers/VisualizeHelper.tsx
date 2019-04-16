@@ -77,6 +77,12 @@ class VisualizeHelper {
     });
   }
 
+  /**
+   *
+   * @param uiContainer
+   * @param resourcePath
+   * @param params
+   */
   getAdHocView(uiContainer: string, resourcePath: string, params: any = {}) {
     return new Promise((resolve, reject) => {
       this.viz((v: any) => {
