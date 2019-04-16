@@ -29,7 +29,7 @@ const app = new App(
         new SessionController(),
         new RouteStopController()
     ],
-    process.env.API_PORT
+    process.env.PORT || 8888
 );
 
 app.listen();

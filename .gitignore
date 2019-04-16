@@ -2,8 +2,8 @@
 API/package-lock.json
 API/.env
 .idea/
-.metadata/
-Reports/JasperReportsSamples/
-package-lock.json
+Reports/.metadata/
+Reports/BikeShareReports/public/
+Reports/BikeShareReports/.settings/
+
 *.prefs
-Reports/BikeShareReports/D3Components/donutChart/SampleDonutChart.jasper
