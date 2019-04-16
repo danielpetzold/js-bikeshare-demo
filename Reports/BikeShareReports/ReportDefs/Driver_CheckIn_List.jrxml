@@ -1,25 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 7.2.1.final using JasperReports Library version 6.6.0  -->
-<!-- 2019-04-15T11:49:50 -->
+<!-- 2019-04-16T14:11:05 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Driver_CheckIn_List" pageWidth="592" pageHeight="168" columnWidth="592" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="48e740a0-f7d9-4366-b8b6-69bcb63eeb9a">
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="BikeShare-Adapter-Dev"/>
-	<property name="com.jaspersoft.studio.unit." value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
 	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="302"/>
 	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="692"/>
 	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w1" value="381"/>
 	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w2" value="612"/>
+	<property name="net.sf.jasperreports.export.html.header" value=""/>
+	<property name="net.sf.jasperreports.export.html.remove.emtpy.space.between.rows" value="true"/>
+	<property name="net.sf.jasperreports.export.html.size.unit" value="px"/>
+	<property name="net.sf.jasperreports.export.html.white.page.background" value="false"/>
 	<property name="ireport.jasperserver.url" value="http://JRS-bikes-ElasticL-1K5YHF91VRJUO-1806919984.us-east-2.elb.amazonaws.com/jasperserver-pro/"/>
 	<property name="ireport.jasperserver.user" value="superuser"/>
-	<property name="net.sf.jasperreports.print.create.bookmarks" value="true"/>
 	<import value="java.time.LocalTime"/>
 	<template><![CDATA["ReportDefs/StyleTemplates/BikeShare_Style.jrtx"]]></template>
 	<queryString language="SQL">
@@ -29,11 +23,11 @@ rs.session_id as "rStopSessionId", ss.id as "stationId", ss.num_bikes_available,
 ss.num_docks_available,	ss.num_docks_disabled, ss.session_id as "sStatSessionId"
 From route_stop "rs"
 Inner Join
-	(Select rs1.station_id, rs1.route_id, Max(rs1.last_updated) "max_update" 
+	(Select rs1.station_id, rs1.route_id, Max(rs1.id) "maxId" 
 	 	From route_stop "rs1" 	
 	 	Where rs1.route_id = 'SF10' 
     	Group By rs1.route_id, rs1.station_id) "rs2"
-		on rs2.route_id = rs.route_id and rs2.max_update = rs.last_updated
+		on rs2.route_id = rs.route_id and rs2."maxId" = rs.id
 Inner Join
 	station_status "ss" on ss.station_id = rs.station_id and ss.system_id = rs.system_id
 Inner Join 
@@ -42,7 +36,7 @@ Inner Join
     	Group By ss1.station_id, ss1.system_id) "ss1" 
 		on ss1.station_id = rs.station_id and ss1.system_id = rs.system_id and ss.last_reported = ss1.max_reported	
 Inner Join station_information "si" on si.station_id = ss.station_id and si.system_id = ss.system_id
-Order By rs.is_completed, rs.stop_order]]>
+Order By rs.is_completed DESC, rs.stop_order]]>
 	</queryString>
 	<field name="stationName" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.label" value="stationName"/>
@@ -115,91 +109,45 @@ Order By rs.is_completed, rs.stop_order]]>
 		<variableExpression><![CDATA[LocalTime.of(6,0,0).plusMinutes(18 * $V{REPORT_COUNT})]]></variableExpression>
 	</variable>
 	<background>
-		<band height="168" splitType="Stretch">
-			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+		<band height="135" splitType="Stretch">
 			<frame>
-				<reportElement mode="Opaque" x="0" y="0" width="592" height="168" backcolor="#F7F9FA" uuid="1c1200f4-4a90-46df-8676-dfd9b90474c5"/>
+				<reportElement mode="Opaque" x="0" y="0" width="592" height="135" backcolor="#F7F9FA" uuid="1c1200f4-4a90-46df-8676-dfd9b90474c5">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
 			</frame>
 		</band>
 	</background>
 	<detail>
-		<band height="168" splitType="Stretch">
-			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+		<band height="132" splitType="Stretch">
 			<rectangle radius="5">
-				<reportElement mode="Opaque" x="0" y="48" width="592" height="120" uuid="18e91f03-c440-4d0e-b582-93cdd6a18712">
+				<reportElement x="0" y="11" width="592" height="120" uuid="18e91f03-c440-4d0e-b582-93cdd6a18712">
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
-					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value=""/>
 					<property name="com.jaspersoft.studio.unit.x" value="px"/>
 				</reportElement>
 				<graphicElement>
 					<pen lineStyle="Solid" lineColor="#DCDCDC"/>
 				</graphicElement>
 			</rectangle>
-			<textField isStretchWithOverflow="true">
-				<reportElement style="CheckInTitle" x="18" y="90" width="402" height="40" uuid="14d4d825-0655-4318-aca0-d7767a7f73ef"/>
-				<textFieldExpression><![CDATA[$F{stationName}]]></textFieldExpression>
-			</textField>
-			<image>
-				<reportElement x="446" y="97" width="20" height="20" uuid="3a02e238-27e3-40c2-affe-4cf15a214da7"/>
-				<imageExpression><![CDATA["repo:/public/Bikeshare_demo/Resources/Images/bicycle_2.png"]]></imageExpression>
-			</image>
-			<image>
-				<reportElement x="491" y="97" width="20" height="20" uuid="bfba36e2-5dca-40ee-bf78-52cdc9b7bd92">
-					<property name="com.jaspersoft.studio.unit.y" value="px"/>
-				</reportElement>
-				<imageExpression><![CDATA["repo:/public/Bikeshare_demo/Resources/Images/box_upload.png"]]></imageExpression>
-			</image>
-			<image>
-				<reportElement x="524" y="97" width="20" height="20" uuid="0155867a-756c-4c43-bcd5-ec97425ee9f8"/>
-				<imageExpression><![CDATA["repo:/public/Bikeshare_demo/Resources/Images/box_download.png"]]></imageExpression>
-			</image>
-			<image>
-				<reportElement x="557" y="97" width="20" height="20" uuid="490b0a93-59a5-4291-b308-9fa2a3e47324"/>
-				<imageExpression><![CDATA["repo:/public/Bikeshare_demo/Resources/Images/wrench_screwdriver.png"]]></imageExpression>
-			</image>
 			<line>
-				<reportElement x="478" y="96" width="1" height="31" forecolor="#DCDCDC" uuid="3787a389-0f2c-446d-8304-f9ecef935dc3"/>
+				<reportElement x="478" y="49" width="1" height="31" forecolor="#DCDCDC" uuid="3787a389-0f2c-446d-8304-f9ecef935dc3"/>
 				<graphicElement>
 					<pen lineColor="#DCDCDC"/>
 				</graphicElement>
 			</line>
-			<textField>
-				<reportElement style="BaseReportStyle" x="446" y="121" width="22" height="22" uuid="c8637f0c-8302-47aa-92f4-f70c6bde0b61">
-					<property name="com.jaspersoft.studio.unit.width" value="px"/>
-					<property name="com.jaspersoft.studio.unit.height" value="px"/>
-				</reportElement>
-				<textElement textAlignment="Center" verticalAlignment="Top"/>
-				<textFieldExpression><![CDATA[$F{num_bikes_available}]]></textFieldExpression>
+			<textField isStretchWithOverflow="true">
+				<reportElement style="CheckInTitle" x="18" y="52" width="402" height="40" uuid="14d4d825-0655-4318-aca0-d7767a7f73ef"/>
+				<textFieldExpression><![CDATA[$F{stationName}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement style="BaseReportStyle" x="490" y="121" width="22" height="22" uuid="7d8a97c4-c466-4a73-ae16-194b3c1d339a">
-					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				<reportElement style="CheckInTitle" x="22" y="98" width="128" height="16" forecolor="#9C9C9C" uuid="990c0ed1-1dbb-46d1-932a-9a1a658b867a">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
-				<textElement textAlignment="Center" verticalAlignment="Top"/>
-				<textFieldExpression><![CDATA[$F{num_docks_available}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$V{ArrivalTime} + "AM"]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement style="BaseReportStyle" x="523" y="121" width="22" height="22" uuid="c20f933e-1a12-4f0d-8d80-3af9e0f50b40">
-					<property name="com.jaspersoft.studio.unit.width" value="px"/>
-					<property name="com.jaspersoft.studio.unit.height" value="px"/>
-					<property name="com.jaspersoft.studio.unit.y" value="px"/>
-				</reportElement>
-				<textElement textAlignment="Center" verticalAlignment="Top"/>
-				<textFieldExpression><![CDATA[$F{num_docks_disabled}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement style="BaseReportStyle" x="556" y="121" width="22" height="22" uuid="6df28bf7-5ad7-4148-a84f-7d25316cf20b">
-					<property name="com.jaspersoft.studio.unit.width" value="px"/>
-					<property name="com.jaspersoft.studio.unit.height" value="px"/>
-					<property name="com.jaspersoft.studio.unit.y" value="px"/>
-				</reportElement>
-				<textElement textAlignment="Center" verticalAlignment="Top"/>
-				<textFieldExpression><![CDATA[$F{num_bikes_disabled}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="446" y="61" width="130" height="15" forecolor="#71AC5C" uuid="3f8f6239-69d9-441e-bc22-b80a6a6ecab3">
+				<reportElement x="446" y="23" width="130" height="15" forecolor="#71AC5C" uuid="3f8f6239-69d9-441e-bc22-b80a6a6ecab3">
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<printWhenExpression><![CDATA[$F{is_completed}]]></printWhenExpression>
@@ -209,24 +157,73 @@ Order By rs.is_completed, rs.stop_order]]>
 				</textElement>
 				<textFieldExpression><![CDATA["Completed at "]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement style="CheckInTitle" x="22" y="136" width="128" height="16" forecolor="#9C9C9C" uuid="990c0ed1-1dbb-46d1-932a-9a1a658b867a">
-					<property name="com.jaspersoft.studio.unit.height" value="px"/>
-				</reportElement>
-				<textFieldExpression><![CDATA[$V{ArrivalTime} + "AM"]]></textFieldExpression>
-			</textField>
 			<image>
-				<reportElement x="1" y="58" width="59" height="24" uuid="1d666db5-2f71-410e-8524-ee1011e21057">
-					<property name="com.jaspersoft.studio.unit.width" value="px"/>
-					<property name="com.jaspersoft.studio.unit.height" value="px"/>
-				</reportElement>
-				<imageExpression><![CDATA["Images/LOW.png"]]></imageExpression>
-			</image>
-			<image>
-				<reportElement x="493" y="59" width="84" height="30" uuid="1b5e96c5-befe-4bce-80c1-f55e1d49a8c1">
+				<reportElement x="493" y="19" width="84" height="30" uuid="1b5e96c5-befe-4bce-80c1-f55e1d49a8c1">
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
 				<imageExpression><![CDATA["Images/CheckInButton.png"]]></imageExpression>
+			</image>
+			<image>
+				<reportElement x="446" y="59" width="20" height="20" uuid="3a02e238-27e3-40c2-affe-4cf15a214da7"/>
+				<imageExpression><![CDATA["repo:/public/Bikeshare_demo/Resources/Images/bicycle_2.png"]]></imageExpression>
+			</image>
+			<image>
+				<reportElement x="491" y="59" width="20" height="20" uuid="bfba36e2-5dca-40ee-bf78-52cdc9b7bd92">
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<imageExpression><![CDATA["repo:/public/Bikeshare_demo/Resources/Images/box_upload.png"]]></imageExpression>
+			</image>
+			<image>
+				<reportElement x="524" y="59" width="20" height="20" uuid="0155867a-756c-4c43-bcd5-ec97425ee9f8"/>
+				<imageExpression><![CDATA["repo:/public/Bikeshare_demo/Resources/Images/box_download.png"]]></imageExpression>
+			</image>
+			<image>
+				<reportElement x="557" y="59" width="20" height="20" uuid="490b0a93-59a5-4291-b308-9fa2a3e47324"/>
+				<imageExpression><![CDATA["repo:/public/Bikeshare_demo/Resources/Images/wrench_screwdriver.png"]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement style="BaseReportStyle" x="444" y="83" width="22" height="22" uuid="c8637f0c-8302-47aa-92f4-f70c6bde0b61">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Top"/>
+				<textFieldExpression><![CDATA[$F{num_bikes_available}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="BaseReportStyle" x="488" y="83" width="22" height="22" uuid="7d8a97c4-c466-4a73-ae16-194b3c1d339a">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Top"/>
+				<textFieldExpression><![CDATA[$F{num_docks_available}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="BaseReportStyle" x="521" y="83" width="22" height="22" uuid="c20f933e-1a12-4f0d-8d80-3af9e0f50b40">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Top"/>
+				<textFieldExpression><![CDATA[$F{num_docks_disabled}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="BaseReportStyle" x="554" y="83" width="22" height="22" uuid="6df28bf7-5ad7-4148-a84f-7d25316cf20b">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Top"/>
+				<textFieldExpression><![CDATA[$F{num_bikes_disabled}]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement x="1" y="19" width="59" height="24" uuid="1d666db5-2f71-410e-8524-ee1011e21057">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<imageExpression><![CDATA["Images/LOW.png"]]></imageExpression>
 			</image>
 		</band>
 	</detail>
