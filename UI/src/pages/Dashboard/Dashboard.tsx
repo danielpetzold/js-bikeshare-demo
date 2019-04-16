@@ -4,6 +4,8 @@ import NavBar from '../../components/NavBar/NavBar';
 import Filter, { timeFrameFilter } from '../../components/Filter/Filter';
 import { visualizeHelper } from '../../helpers/VisualizeHelper';
 import { DashboardProps, DashboardState, FilterOption, ReportParams } from './Dashboard.types';
+import VisualizeAPI from "../../helpers/VisualizeAPI";
+import axios from "axios";
 
 const filterDataICUri = '/public/Bikeshare_demo/Reports/Lookups';
 
@@ -44,7 +46,8 @@ class Dashboard extends React.Component<DashboardProps, DashboardState> {
         return this.getReports();
       })
       .then((success: any) => {
-        // Load Maps
+        // Get Map
+        this.getMap();
       });
   }
 
@@ -71,14 +74,52 @@ class Dashboard extends React.Component<DashboardProps, DashboardState> {
     });
   }
 
-  getMap() {
+  async getMap() {
+
+    // let mapData = await VisualizeAPI.get('rest_v2/reports/public/Bikeshare_demo/Reports/Data/FranchiseRegionStatusData.json?franchise=BA', {
+    //   // params: {
+    //   //   franchise: 'BA'
+    //   // }
+    // });
+
+    let data = [{"system_id": "BA",
+      "region_id":"12",
+      "center_lat":37.8147072895131,
+      "center_lon":-122.26228890574002,
+      "name":"Oakland",
+      "percent_stations_in_need":7.5},
+      {"system_id":"BA",
+        "region_id":"13",
+        "center_lat":37.83726890715349,
+        "center_lon":-122.28727158004729,
+        "name":"Emeryville",
+        "percent_stations_in_need":60.0},
+      {"system_id":"BA",
+        "region_id":"14",
+        "center_lat":37.86432163072242,
+        "center_lon":-122.27095734993485,
+        "name":"Berkeley",
+        "percent_stations_in_need":21.6},
+      {"system_id":"BA",
+        "region_id":"3",
+        "center_lat":37.7721947747514,
+        "center_lon":-122.41162373324305,
+        "name":"San Francisco",
+        "percent_stations_in_need":26.4},
+      {"system_id":"BA",
+        "region_id":"5",
+        "center_lat":37.3345015942644,
+        "center_lon":-121.89065863197565,
+        "name":"San Jose",
+        "percent_stations_in_need":95.7}]
+
     let geo = (window as any).T;
     let mapContainer = geo.DomUtil.get('dashboard-map');
     let map = new geo.Map(
       mapContainer,
       {
-        zoom: 10,
-        center: new geo.LatLng(48.875521, 2.302537)
+        zoom: 12,
+        center: new geo.LatLng(37.773972, -122.431297)
       }
     );
 
@@ -109,10 +150,12 @@ class Dashboard extends React.Component<DashboardProps, DashboardState> {
     let markersLayer = new geo.MarkersLayer();
     map.addLayer(markersLayer);
 
-    let marker = new geo.ImageMarker( new geo.LatLng(46.87, 2.3356),
-      "http://geoanalytics.tibco.com/api/rest/assets/images/pin.png");
-    markersLayer.addMarker(marker);
+    data.forEach((marker) => {
+      markersLayer.addMarker(new geo.ImageMarker( new geo.LatLng(marker.center_lat, marker.center_lon),
+        "https://geoanalytics.tibco.com/documentation/assets/img/marker.png"));
+    })
   }
+
   getReports() {
     let promiseArray = [];
 
