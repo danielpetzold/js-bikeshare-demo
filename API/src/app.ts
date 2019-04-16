@@ -35,8 +35,20 @@ class App {
      */
     private initializeMiddleware() {
         // Opt into Middleware Services
-        this.app.use(cors());
-        this.app.options("*", cors());
+
+        // we should probably read the whitelist from server-specific env variables
+        let corsOptions: any = {
+            origin: ["http://localhost:3000"], // adds Access-Control-Allow-Origin
+            methods: ["GET", "PUT", "POST"], // adds Access-Control-Allow-Methods
+            allowedHeaders: ["Content-Type", "Authorization", "Origin", "Accept"], // adds Access-Control-Allow-Headers
+            credentials: true, // adds Access-Control-Allow-Credentials
+            maxAge: 5 * 60,  // seconds-adds Access-Control-Max-Age
+
+           // optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+        };
+
+        this.app.use(cors(corsOptions));
+       // this.app.options("*", cors());
         this.app.use(express.urlencoded({ extended: true }));
         this.app.use(express.json());
         this.app.use(ErrorMiddleware);
