@@ -1,11 +1,18 @@
 import axios from 'axios';
 
-const baseApiUrl =
-  'http://jrs-bikes-elasticl-1k5yhf91vrjuo-1806919984.us-east-2.elb.amazonaws.com/bikeshare-api';
+interface Options {
+  baseURL: string | undefined;
+  withCredentials: boolean;
+}
+
+let options: Options = {
+  baseURL: process.env.REACT_APP_API_URL,
+  withCredentials: true
+};
 
 export const getSessionId = (cb: Function) => {
   axios
-    .get(`${baseApiUrl}/session`, { withCredentials: true })
+    .get('/session', options)
     .then(res => {
       cb(res.data.sessionToken);
     })

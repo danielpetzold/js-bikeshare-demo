@@ -117,7 +117,9 @@ class Dashboard extends React.Component<DashboardProps, DashboardState> {
     for (let key in this.state.selectedFilters) {
       params[key] = [this.state.selectedFilters[key].value];
     }
-    params = { ...params, session_Id: [this.props.sessionId] };
+    this.props.sessionId
+      ? (params = { ...params, session_Id: [this.props.sessionId] })
+      : null;
     return params;
   };
 
