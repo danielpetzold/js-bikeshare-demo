@@ -3,9 +3,9 @@ import './Dashboard.scss';
 import NavBar from '../../components/NavBar/NavBar';
 import Filter, { timeFrameFilter } from '../../components/Filter/Filter';
 import { visualizeHelper } from '../../helpers/VisualizeHelper';
-import { DashboardProps, DashboardState, FilterOption, ReportParams } from './Dashboard.types';
+import { DashboardProps, DashboardState, FilterOption, FranchiseMapData, ReportParams } from "./Dashboard.types";
 import VisualizeAPI from "../../helpers/VisualizeAPI";
-import axios from "axios";
+import FranchiseMap from "../../components/FranchiseMap/FranchiseMap";
 
 const filterDataICUri = '/public/Bikeshare_demo/Reports/Lookups';
 
@@ -29,11 +29,9 @@ class Dashboard extends React.Component<DashboardProps, DashboardState> {
         Timeframe: emptyFilter
       },
       isMapOpen: true,
-      kpiDetailReport: 'Dashboard_Stations_InNeed_Detail'
+      kpiDetailReport: 'Dashboard_Stations_InNeed_Detail',
+      mapData: []
     };
-  }
-
-  componentWillMount() {
   }
 
   componentDidMount() {
@@ -52,7 +50,7 @@ class Dashboard extends React.Component<DashboardProps, DashboardState> {
   }
 
   setFilters(success: any) {
-    this.filters = Object.assign({}, ...(success.map((item: any) => {
+    let filterList = Object.assign({}, ...(success.map((item: any) => {
         return (
           {
             [item.id]: {
@@ -65,103 +63,37 @@ class Dashboard extends React.Component<DashboardProps, DashboardState> {
       }
     )));
 
+    filterList['Timeframe'] = {
+      id: 'Timeframe',
+      options: timeFrameFilter.options,
+      title: 'Timeframe'
+    };
+    this.filters = filterList;
+
+    // Set initial filters
     this.setState({
       selectedFilters: {
         Region: this.filters['Region'].options[0],
         Franchise: this.filters['Franchise'].options[0],
-        Timeframe: timeFrameFilter.options[0]
+        Timeframe: this.filters['Timeframe'].options[0]
       }
     });
   }
 
   async getMap() {
-
-    // let mapData = await VisualizeAPI.get('rest_v2/reports/public/Bikeshare_demo/Reports/Data/FranchiseRegionStatusData.json?franchise=BA', {
-    //   // params: {
-    //   //   franchise: 'BA'
-    //   // }
+    // let mapData: FranchiseMapData = await VisualizeAPI.get(process.env.REACT_APP_JASPERSERVER_URL + '/rest_v2/reports/public/Bikeshare_demo/Reports/Data/FranchiseRegionStatusData.json', {
+    //   params: {
+    //     franchise: 'BA'
+    //   }
     // });
-
-    let data = [{"system_id": "BA",
-      "region_id":"12",
-      "center_lat":37.8147072895131,
-      "center_lon":-122.26228890574002,
-      "name":"Oakland",
-      "percent_stations_in_need":7.5},
-      {"system_id":"BA",
-        "region_id":"13",
-        "center_lat":37.83726890715349,
-        "center_lon":-122.28727158004729,
-        "name":"Emeryville",
-        "percent_stations_in_need":60.0},
-      {"system_id":"BA",
-        "region_id":"14",
-        "center_lat":37.86432163072242,
-        "center_lon":-122.27095734993485,
-        "name":"Berkeley",
-        "percent_stations_in_need":21.6},
-      {"system_id":"BA",
-        "region_id":"3",
-        "center_lat":37.7721947747514,
-        "center_lon":-122.41162373324305,
-        "name":"San Francisco",
-        "percent_stations_in_need":26.4},
-      {"system_id":"BA",
-        "region_id":"5",
-        "center_lat":37.3345015942644,
-        "center_lon":-121.89065863197565,
-        "name":"San Jose",
-        "percent_stations_in_need":95.7}]
-
-    let geo = (window as any).T;
-    let mapContainer = geo.DomUtil.get('dashboard-map');
-    let map = new geo.Map(
-      mapContainer,
-      {
-        zoom: 12,
-        center: new geo.LatLng(37.773972, -122.431297)
-      }
-    );
-
-    //Add the navigation control
-    let tibcoLayerStandard = new geo.TibcoLayer({name: "TibcoLayer 1"});
-
-    map.addLayer(tibcoLayerStandard);
-    //Add the navigation control
-
-    let navigationControl = new geo.NavigationControl({
-      offset: [10, 10],
-      panControl: true,
-      zoomControl: true,
-      zoomRailHeight: 120,
-      titles: {
-        panUp: "Pan up",
-        panDown: "Pan down",
-        panLeft: "Pan left",
-        panRight: "Pan right",
-        reset: "Reset map",
-        zoomIn: "Zoom in",
-        zoomOut: "Zoom out"
-      }
-    });
-    map.addControl(navigationControl);
-
-    //Add the marker
-    let markersLayer = new geo.MarkersLayer();
-    map.addLayer(markersLayer);
-
-    data.forEach((marker) => {
-      markersLayer.addMarker(new geo.ImageMarker( new geo.LatLng(marker.center_lat, marker.center_lon),
-        "https://geoanalytics.tibco.com/documentation/assets/img/marker.png"));
-    })
-  }
+    // this.setState({mapData: mapData});
+  };
 
   getReports() {
     let promiseArray = [];
 
     // Create params object from selected filters
     let params: any = this.getParams();
-
     // KPI Report
     promiseArray.push(this.displayReport(
       'kpi-report',
@@ -187,7 +119,6 @@ class Dashboard extends React.Component<DashboardProps, DashboardState> {
       params,
       linkOptions
     );
-    this.getMap();
   }
 
   getParams = () => {
@@ -220,6 +151,13 @@ class Dashboard extends React.Component<DashboardProps, DashboardState> {
     e.preventDefault();
     this.displayReport('in-need-report', link.href, this.getParams());
     this.setState({ kpiDetailReport: link.href });
+  };
+
+  onClickMapMarker = (marker: any) => {
+    let selectedRegion = this.filters.Region.options.find((option: any) => {
+      return option.value === marker.options.regionId;
+    });
+    this.setFilter(Object.assign({}, {...this.state.selectedFilters, Region: selectedRegion} ));
   };
 
   render() {
@@ -269,7 +207,8 @@ class Dashboard extends React.Component<DashboardProps, DashboardState> {
               </div>
             </div>
             <div className={`dashboard-map__container ${!this.state.isMapOpen ? 'dashboard-map__container--closed' : ''}`}>
-              <div id='dashboard-map' className={'dashboard-map__map'}></div>
+              {this.state.mapData.length ? <FranchiseMap mapData={this.state.mapData} onClick={this.onClickMapMarker}/> : null}
+              {/*<FranchiseMap mapData={tempMapData} onClick={this.onClickMapMarker}/>*/}
             </div>
           </div>
 
