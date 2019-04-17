@@ -1,0 +1,40 @@
+{
+	_type: 'object',
+	id: 'value',
+	system_id: 'value',
+	region_id: 'value',
+	name: 'value',
+	center_lat: 'value',
+	center_lon: 'value',
+	map_zoom: 'value',
+	stations: {
+		_type: 'array',
+		_children: {
+			_type: 'object',
+			id: 'value',
+			station_id: 'value',
+			name: 'value',
+			lat: 'value',
+			lon: 'value',
+			active_route_stop: {
+				_type: 'object',
+				id: 'value',
+				route_id: 'value',
+				stop_order: 'value',
+				is_completed: 'value',
+				last_updated: 'value',
+				session_id: 'value'
+			},
+			active_station_status: {
+				_type: 'object',
+				id: 'value',
+				num_bikes_available: 'value',
+				num_bikes_disabled: 'value',
+				num_docks_available: 'value',
+				num_docks_disabled: 'value',
+				last_reported: 'value',
+				session_id: 'value'
+			}
+		}
+	}
+}
