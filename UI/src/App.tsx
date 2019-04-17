@@ -16,17 +16,18 @@ interface AppProps {
 }
 
 class App extends React.Component<any> {
-  componentWillMount() {
+  componentDidMount() {
     // Grabs session token on app load and stores in redux
     getSessionId(this.props.setSessionId);
+  }
+
+  render() {
     // Logs in user if refreshed while still logged in
     let user = JSON.parse(localStorage.getItem('user') as string);
     if (user && user.token) {
       this.props.loginUser(user.role);
     }
-  }
 
-  render() {
     return (
       <ConnectedRouter history={this.props.history}>
         <>
