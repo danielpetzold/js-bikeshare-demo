@@ -10,8 +10,6 @@ import { loginUser } from '../../store/Login/login.actions';
 import { connect } from 'react-redux';
 import { State } from '../../store';
 import { async } from 'q';
-import { getSessionId } from '../../services/apiCalls';
-import Cookies from 'js-cookie';
 
 interface LoginState {
   selectedRole: string;
@@ -33,7 +31,6 @@ class Login extends Component<any, LoginState> {
 
   handleLogin = async () => {
     await this.props.loginUser(this.state.selectedRole);
-    getSessionId();
     this.props.user.role === 'DRIVER_ROLE'
       ? this.props.history.push('/DriverDashboard')
       : this.props.history.push('/Dashboard');

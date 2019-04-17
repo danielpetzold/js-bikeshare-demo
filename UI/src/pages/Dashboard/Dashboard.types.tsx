@@ -1,4 +1,6 @@
-export interface DashboardProps {}
+export interface DashboardProps {
+  sessionId: string;
+}
 
 export interface DashboardState {
   isFilterOpen: boolean;
@@ -8,7 +10,7 @@ export interface DashboardState {
 }
 
 export interface SelectedFilters {
-  [index:string]: FilterOption;
+  [index: string]: FilterOption;
 }
 
 export interface FilterOption {
@@ -18,5 +20,5 @@ export interface FilterOption {
 }
 
 export interface ReportParams {
-  [index:string]: string[];
+  [index: string]: string[];
 }
