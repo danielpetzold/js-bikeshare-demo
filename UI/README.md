@@ -72,3 +72,9 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/tr
 ### Docker
 To Build the docker image: `docker build --rm -f Dockerfile -t js-bikeshare-demo .`
 Then run with:  `docker run --rm -d -p 80:80 js-bikeshare-demo:latest`
+
+## Troubleshooting
+
+### Bypassing CORS for Development
+To launch a new Chrome window with CORS disabled
+`open -n -a /Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --args --user-data-dir="/tmp/chrome_dev_test" --disable-web-security`

@@ -12,7 +12,7 @@ interface Props {
 }
 
 const AdHoc = (props: Props) => {
-  const url = `${process.env.REACT_APP_JASPERSERVER_URL}/flow.html?_flowId=adhocFlow&theme=bike_share&source=/public/Bikeshare_demo/Ad_hoc/App_Report_List/${props.match.params.path}`;
+  const url = `${process.env.REACT_APP_JASPERSERVER_URL}/flow.html?_flowId=adhocFlow&decorate=no&theme=bike_share&source=/public/Bikeshare_demo/Ad_hoc/App_Report_List/${props.match.params.path}`;
 
   return (
     <>

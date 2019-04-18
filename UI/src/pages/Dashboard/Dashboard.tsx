@@ -5,12 +5,9 @@ import { State } from '../../store';
 import NavBar from '../../components/NavBar/NavBar';
 import Filter, { timeFrameFilter } from '../../components/Filter/Filter';
 import { visualizeHelper } from '../../helpers/VisualizeHelper';
-import {
-  DashboardProps,
-  DashboardState,
-  FilterOption,
-  ReportParams
-} from './Dashboard.types';
+import { DashboardProps, DashboardState, FilterOption, ReportParams } from "./Dashboard.types";
+import FranchiseMap from "../../components/FranchiseMap/FranchiseMap";
+import JasperReportsService from "../../services/JasperReportsService";
 
 const filterDataICUri = '/public/Bikeshare_demo/Reports/Lookups';
 
@@ -34,7 +31,8 @@ class Dashboard extends React.Component<DashboardProps, DashboardState> {
         Timeframe: emptyFilter
       },
       isMapOpen: true,
-      kpiDetailReport: 'Dashboard_Stations_InNeed_Detail'
+      kpiDetailReport: 'Dashboard_Stations_InNeed_Detail',
+      mapData: []
     };
   }
 
@@ -48,39 +46,60 @@ class Dashboard extends React.Component<DashboardProps, DashboardState> {
         return this.getReports();
       })
       .then((success: any) => {
-        // Load Maps
+        // Get Map
+        this.getMap();
       });
   }
 
   setFilters(success: any) {
-    this.filters = Object.assign(
-      {},
-      ...success.map((item: any) => {
-        return {
-          [item.id]: {
-            title: item.label,
-            id: item.id,
-            options: item.state.options
+    let filterList = Object.assign({}, ...(success.map((item: any) => {
+        return (
+          {
+            [item.id]: {
+              title: item.label,
+              id: item.id,
+              options: item.state.options
+            }
           }
-        };
-      })
-    );
+        );
+      }
+    )));
 
+    filterList['Timeframe'] = {
+      id: 'Timeframe',
+      options: timeFrameFilter.options,
+      title: 'Timeframe'
+    };
+    this.filters = filterList;
+
+    // Set initial filters
     this.setState({
       selectedFilters: {
         Region: this.filters['Region'].options[0],
         Franchise: this.filters['Franchise'].options[0],
-        Timeframe: timeFrameFilter.options[0]
+        Timeframe: this.filters['Timeframe'].options[0]
       }
     });
   }
+
+  async getMap() {
+    try {
+      let mapData = await JasperReportsService.get('/rest_v2/reports/public/Bikeshare_demo/Reports/Data/FranchiseRegionStatusData.json', {
+        params: {
+          franchise: 'BA'
+        }
+      });
+      this.setState({mapData: mapData.data});
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   getReports() {
     let promiseArray = [];
 
     // Create params object from selected filters
     let params: any = this.getParams();
-
     // KPI Report
     promiseArray.push(
       this.displayReport('kpi-report', 'FM_Dashboard_KPIS', params, {
@@ -147,6 +166,13 @@ class Dashboard extends React.Component<DashboardProps, DashboardState> {
     this.setState({ kpiDetailReport: link.href });
   };
 
+  onClickMapMarker = (marker: any) => {
+    let selectedRegion = this.filters.Region.options.find((option: any) => {
+      return option.value === marker.options.regionId;
+    });
+    this.setFilter(Object.assign({}, {...this.state.selectedFilters, Region: selectedRegion} ));
+  };
+
   render() {
     return (
       <>
@@ -209,12 +235,8 @@ class Dashboard extends React.Component<DashboardProps, DashboardState> {
                 </div>
               </div>
             </div>
-            <div
-              className={`dashboard-map__container ${
-                !this.state.isMapOpen ? 'dashboard-map__container--closed' : ''
-              }`}
-            >
-              <div className={'dashboard-map__placeholder-map'} />
+            <div className={`dashboard-map__container ${!this.state.isMapOpen ? 'dashboard-map__container--closed' : ''}`}>
+              {this.state.mapData.length ? <FranchiseMap mapData={this.state.mapData} onClick={this.onClickMapMarker}/> : null}
             </div>
           </div>
 
@@ -238,11 +260,8 @@ class Dashboard extends React.Component<DashboardProps, DashboardState> {
               </div>
 
               <div className={'grid__row'}>
-                <div className={'grid__column-8 grid__column-m-4'}>
-                  <div
-                    id={'in-need-report'}
-                    className={'dashboard__report-container'}
-                  />
+                <div className={'grid__column-8 grid__column-m-4'} >
+                  <div id={'in-need-report'} className={'dashboard__report-container'}></div>
                 </div>
                 <div className={'grid__column-4 grid__column-m-4'}>
                   <div
