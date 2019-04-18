@@ -1,4 +1,6 @@
-export interface DashboardProps {}
+export interface DashboardProps {
+  sessionId: string;
+}
 
 export interface DashboardState {
   isFilterOpen: boolean;
@@ -9,7 +11,7 @@ export interface DashboardState {
 }
 
 export interface SelectedFilters {
-  [index:string]: FilterOption;
+  [index: string]: FilterOption;
 }
 
 export interface FilterOption {
@@ -27,6 +29,6 @@ export interface FranchiseMapData {
   region_id: string;
   center_lat: number;
   center_lon: number;
-  name: string,
+  name: string;
   percent_stations_in_need: number;
 }

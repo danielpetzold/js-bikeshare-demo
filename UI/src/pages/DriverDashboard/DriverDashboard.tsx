@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { State as ReduxState } from '../../store';
 import './DriverDashboard.scss';
 import NavBar from '../../components/NavBar/NavBar';
 import CheckInModal from '../../components/CheckInModal/CheckInModal';
@@ -74,4 +76,10 @@ class DriverDashboard extends Component<any, State> {
   }
 }
 
-export default DriverDashboard;
+const mapStateToProps = (state: ReduxState) => {
+  return {
+    sessionId: state.general.sessionId
+  };
+};
+
+export default connect(mapStateToProps)(DriverDashboard);

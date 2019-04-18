@@ -6,7 +6,6 @@
 	<style name="EnhancedTitleStyle" style="TitleStyle" fontName="Lato" isBold="true"/>
 	<style name="SecondaryTitleStyle" style="TitleStyle" forecolor="#C9CCCD" hTextAlign="Center" vTextAlign="Middle"/>
 	<style name="MetricLabelStyle" style="BaseReportStyle" hTextAlign="Center" vTextAlign="Middle" fontName="Lato&#xD;&#xA;" fontSize="28" isBold="true" isItalic="false"/>
-	<style name="MapStyle" style="BaseReportStyle"/>
 	<style name="OneThirdCardStyle" style="BaseReportStyle" mode="Opaque" forecolor="#9C9C9C" backcolor="#FFFFFF" radius="5" hTextAlign="Center" hImageAlign="Center" vTextAlign="Middle" vImageAlign="Middle">
 		<box padding="0"/>
 	</style>
@@ -15,4 +14,5 @@
 		<box padding="0"/>
 	</style>
 	<style name="TwoThirdsCardStyle" style="BaseReportStyle"/>
+	<style name="CheckInTitle" style="BaseReportStyle" fontName="Lato" fontSize="20" isBold="true" isItalic="false"/>
 </jasperTemplate>

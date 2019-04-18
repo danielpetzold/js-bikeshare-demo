@@ -1,0 +1,318 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 7.2.1.final using JasperReports Library version 6.6.0  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="RegionStationData" pageWidth="792" pageHeight="612" orientation="Landscape" columnWidth="792" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" isSummaryWithPageHeaderAndFooter="true" uuid="cb872b2c-8e1c-4ee9-864a-d0a539435aae">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Bikeshare demo Local"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<property name="ireport.jasperserver.url" value="http://jrs-bikes-elasticl-1k5yhf91vrjuo-1806919984.us-east-2.elb.amazonaws.com/jasperserver-pro/"/>
+	<property name="ireport.jasperserver.user" value="superuser"/>
+	<property name="ireport.jasperserver.reportUnit" value="/public/Bikeshare_demo/Reports/Data/RegionStationData"/>
+	<property name="net.sf.jasperreports.export.json.schema" value="RegionStationData_schema.json"/>
+	<property name="com.jaspersoft.studio.report.description" value=""/>
+	<parameter name="franchise" class="java.lang.String">
+		<defaultValueExpression><![CDATA["BA"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="region" class="java.lang.String">
+		<defaultValueExpression><![CDATA["3"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="sessionId" class="java.lang.String">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<queryString language="SQL">
+		<![CDATA[select r.system_id as region_system_id, r.region_id as region_region_id, r.name as region_name,
+  r.center_lat as region_center_lat, r.center_lon as region_center_lon, r.id as region_unique_id,
+  si.id as station_unique_id, si.name as station_name, si.lat as station_lat, si.lon as station_lon,
+  rs.route_id, rs.station_id, rs.stop_order, rs.last_updated, rs.is_completed, rs.id as route_stop_unique_id,
+  rs.session_id as route_stop_session_id,
+  ss.num_bikes_available, ss.num_bikes_disabled, 
+  ss.num_docks_available, ss.num_docks_disabled, ss.session_id as station_status_session_id,
+  ss.last_reported as station_status_last_reported, ss.id as station_status_unique_id
+from route_stop rs
+join
+    station_status ss on ss.station_id = rs.station_id and ss.system_id = rs.system_id
+join
+    (select rs1.system_id, rs1.region_id, rs1.station_id, rs1.route_id, Max(rs1.id) as max_id 
+         From route_stop rs1     
+         Where (session_id is null or session_id = $P{sessionId})
+        Group By rs1.system_id, rs1.region_id, rs1.route_id, rs1.station_id) rs2
+        on rs2.route_id = rs.route_id and rs2.max_id = rs.Id
+join 
+    (select ss1.station_id, ss1.system_id, Max(ss1.id) as max_id
+         From station_status ss1
+	     Where (session_id is null or session_id = $P{sessionId})
+        Group By ss1.station_id, ss1.system_id) ss2
+        on ss2.station_id = rs.station_id and ss2.system_id = rs.system_id and ss.id = ss2.max_id    
+join station_information si on si.station_id = ss.station_id and si.system_id = ss.system_id
+join system_region r on (si.system_id = r.system_id and si.region_id = r.region_id)
+where rs.system_id = $P{franchise} and rs.region_id = $P{region}
+Order By rs.route_id, rs.is_completed DESC, rs.stop_order, rs.station_id]]>
+	</queryString>
+	<field name="region_system_id" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="region_system_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="system_region"/>
+	</field>
+	<field name="region_region_id" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="region_region_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="system_region"/>
+	</field>
+	<field name="region_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="region_name"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="system_region"/>
+	</field>
+	<field name="region_center_lat" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.label" value="region_center_lat"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="system_region"/>
+	</field>
+	<field name="region_center_lon" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.label" value="region_center_lon"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="system_region"/>
+	</field>
+	<field name="region_unique_id" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.label" value="region_unique_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="system_region"/>
+	</field>
+	<field name="station_unique_id" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.label" value="station_unique_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="station_information"/>
+	</field>
+	<field name="station_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="station_name"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="station_information"/>
+	</field>
+	<field name="station_lat" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.label" value="station_lat"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="station_information"/>
+	</field>
+	<field name="station_lon" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.label" value="station_lon"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="station_information"/>
+	</field>
+	<field name="route_id" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="route_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="route_stop"/>
+	</field>
+	<field name="station_id" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="station_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="route_stop"/>
+	</field>
+	<field name="stop_order" class="java.lang.Float">
+		<property name="com.jaspersoft.studio.field.label" value="stop_order"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="route_stop"/>
+	</field>
+	<field name="last_updated" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.label" value="last_updated"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="route_stop"/>
+	</field>
+	<field name="is_completed" class="java.lang.Boolean">
+		<property name="com.jaspersoft.studio.field.label" value="is_completed"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="route_stop"/>
+	</field>
+	<field name="route_stop_unique_id" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.label" value="route_stop_unique_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="route_stop"/>
+	</field>
+	<field name="route_stop_session_id" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="route_stop_session_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="route_stop"/>
+	</field>
+	<field name="num_bikes_available" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="num_bikes_available"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="station_status"/>
+	</field>
+	<field name="num_bikes_disabled" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="num_bikes_disabled"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="station_status"/>
+	</field>
+	<field name="num_docks_available" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="num_docks_available"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="station_status"/>
+	</field>
+	<field name="num_docks_disabled" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="num_docks_disabled"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="station_status"/>
+	</field>
+	<field name="station_status_session_id" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="station_status_session_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="station_status"/>
+	</field>
+	<field name="station_status_last_reported" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.label" value="station_status_last_reported"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="station_status"/>
+	</field>
+	<field name="station_status_unique_id" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.label" value="station_status_unique_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="station_status"/>
+	</field>
+	<group name="Region">
+		<groupExpression><![CDATA[$F{region_region_id}]]></groupExpression>
+		<groupHeader>
+			<band height="56">
+				<textField>
+					<reportElement x="20" y="10" width="65" height="30" uuid="e7b0a18a-eb36-4412-a110-9d5144c399a6">
+						<property name="net.sf.jasperreports.export.json.path" value="id"/>
+					</reportElement>
+					<textFieldExpression><![CDATA[$F{region_unique_id}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="110" y="10" width="90" height="30" uuid="c5278a7a-a3f2-4f58-a934-c1bc0636d6eb">
+						<property name="net.sf.jasperreports.export.json.path" value="system_id"/>
+					</reportElement>
+					<textFieldExpression><![CDATA[$F{region_system_id}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="210" y="10" width="100" height="30" uuid="d11e49e0-d910-4fee-8591-5152d5730f3e">
+						<property name="net.sf.jasperreports.export.json.path" value="region_id"/>
+					</reportElement>
+					<textFieldExpression><![CDATA[$F{region_region_id}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="320" y="10" width="100" height="30" uuid="e4e0af41-903a-488f-8127-d9da91dfea63">
+						<property name="net.sf.jasperreports.export.json.path" value="name"/>
+					</reportElement>
+					<textFieldExpression><![CDATA[$F{region_name}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="430" y="10" width="150" height="30" uuid="784a7688-7941-4421-ab24-cabb9d4b8287">
+						<property name="net.sf.jasperreports.export.json.path" value="center_lat"/>
+					</reportElement>
+					<textFieldExpression><![CDATA[$F{region_center_lat}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="590" y="10" width="120" height="30" uuid="b84f72c8-7f39-4dcf-ab7d-033a3c0a299c">
+						<property name="net.sf.jasperreports.export.json.path" value="center_lon"/>
+					</reportElement>
+					<textFieldExpression><![CDATA[$F{region_center_lon}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="730" y="10" width="40" height="30" uuid="ef6555d6-48ad-478a-b5ea-dc5db96110db">
+						<property name="net.sf.jasperreports.export.json.path" value="map_zoom"/>
+					</reportElement>
+					<textFieldExpression><![CDATA[13]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="50"/>
+	</title>
+	<detail>
+		<band height="196">
+			<textField>
+				<reportElement x="40" y="5" width="100" height="30" uuid="b1fad914-436f-4404-9da1-e9905cad9058">
+					<property name="net.sf.jasperreports.export.json.path" value="stations.id"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{station_unique_id}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="180" y="0" width="160" height="30" uuid="2eeb39e7-fb16-4752-9644-874808f40b5b">
+					<property name="net.sf.jasperreports.export.json.path" value="stations.name"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{station_name}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="340" y="0" width="158" height="30" uuid="0838261a-70d1-4942-986e-6e5164ce0f72">
+					<property name="net.sf.jasperreports.export.json.path" value="stations.lat"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{station_lat}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="498" y="0" width="102" height="30" uuid="e9285d05-7aa8-42d6-a7bf-0c043217c80c">
+					<property name="net.sf.jasperreports.export.json.path" value="stations.lon"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{station_lon}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="670" y="40" width="100" height="30" uuid="7bf81235-3caa-46ff-a40c-f328d451ff97">
+					<property name="net.sf.jasperreports.export.json.path" value="stations.active_route_stop.id"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{route_stop_unique_id}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="20" y="40" width="120" height="30" uuid="e2c56cbc-7e4b-4500-b59f-eabe2ecf6846">
+					<property name="net.sf.jasperreports.export.json.path" value="stations.active_route_stop.route_id"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{route_id}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="180" y="40" width="106" height="30" uuid="fdde8da8-fd1d-483d-b71b-becdf2284924">
+					<property name="net.sf.jasperreports.export.json.path" value="stations.active_route_stop.stop_order"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{stop_order}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="450" y="40" width="100" height="30" uuid="853099f9-b907-42be-adb1-18833b9f2328">
+					<property name="net.sf.jasperreports.export.json.path" value="stations.active_route_stop.is_completed"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{is_completed}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="310" y="40" width="126" height="30" uuid="50fd7d55-9722-4f61-ae69-28a919153efd">
+					<property name="net.sf.jasperreports.export.json.path" value="stations.active_route_stop.last_updated"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{last_updated}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="560" y="40" width="100" height="30" uuid="45c95199-06f8-4e88-a1c7-f68a8256397e">
+					<property name="net.sf.jasperreports.export.json.path" value="stations.active_route_stop.session_id"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{route_stop_session_id}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="150" y="140" width="100" height="30" uuid="590ed3ed-eecd-471c-91b8-dd9941dd0c7f">
+					<property name="net.sf.jasperreports.export.json.path" value="stations.active_station_status.id"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{station_status_unique_id}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="94" width="160" height="30" uuid="be06427b-0572-49f1-ad1b-93320bac0eff">
+					<property name="net.sf.jasperreports.export.json.path" value="stations.active_station_status.num_bikes_available"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{num_bikes_available}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="160" y="94" width="158" height="30" uuid="24d8b34d-0b16-4821-affc-23e29c825229">
+					<property name="net.sf.jasperreports.export.json.path" value="stations.active_station_status.num_bikes_disabled"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{num_bikes_disabled}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="318" y="94" width="158" height="30" uuid="c9a6a8c8-237d-4ac8-983d-7f97b0059acc">
+					<property name="net.sf.jasperreports.export.json.path" value="stations.active_station_status.num_docks_available"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{num_docks_available}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="476" y="94" width="158" height="30" uuid="e388ee4f-c439-453e-b29a-191c7f70d8ec">
+					<property name="net.sf.jasperreports.export.json.path" value="stations.active_station_status.num_docks_disabled"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{num_docks_disabled}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="20" y="140" width="100" height="30" uuid="228b4f6e-5189-45c9-99b9-a72b657785d3">
+					<property name="net.sf.jasperreports.export.json.path" value="stations.active_station_status.last_reported"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{station_status_last_reported}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="634" y="94" width="158" height="30" uuid="d3003de3-1ac7-4746-9c5e-d8807fa43934">
+					<property name="net.sf.jasperreports.export.json.path" value="stations.active_station_status.session_id"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{station_status_session_id}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<summary>
+		<band height="50"/>
+	</summary>
+</jasperReport>

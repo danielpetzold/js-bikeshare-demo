@@ -1,11 +1,13 @@
 import {
   GeneralState,
   GeneralActionTypes,
-  TOGGLE_NO_ACCESS
+  TOGGLE_NO_ACCESS,
+  SET_SESSION_ID
 } from './general.types';
 
 const initialState: GeneralState = {
-  showNoAccess: false
+  showNoAccess: false,
+  sessionId: ''
 };
 
 const generalReducer = (
@@ -17,6 +19,11 @@ const generalReducer = (
       return {
         ...state,
         showNoAccess: !state.showNoAccess
+      };
+    case SET_SESSION_ID:
+      return {
+        ...state,
+        sessionId: action.sessionId
       };
     default:
       return state;

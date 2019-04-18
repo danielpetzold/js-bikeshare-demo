@@ -5,3 +5,5 @@ API/.env
 Reports/.metadata/
 Reports/BikeShareReports/public/
 Reports/BikeShareReports/.settings/
+
+*.prefs
