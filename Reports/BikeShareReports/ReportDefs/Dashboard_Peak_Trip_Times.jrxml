@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 7.2.1.final using JasperReports Library version 6.6.0  -->
+<!-- 2019-04-19T17:59:06 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Dashboard_Peak_Trip_Times" pageWidth="284" pageHeight="336" columnWidth="284" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="f6a4b4bb-5500-44c7-9f2e-3eca62fbded4">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="BikeShare-Adapter-Dev"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="229"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="766"/>
+	<property name="ireport.jasperserver.url" value="http://JRS-bikes-ElasticL-1K5YHF91VRJUO-1806919984.us-east-2.elb.amazonaws.com/jasperserver-pro/"/>
+	<property name="ireport.jasperserver.user" value="superuser"/>
+	<property name="ireport.jasperserver.report.resource" value="/public/Bikeshare_demo/Reports/Dashboard_Reports/Dashboard_Peak_Trip_Times_files/main_jrxml"/>
+	<property name="ireport.jasperserver.reportUnit" value="/public/Bikeshare_demo/Reports/Dashboard_Reports/Dashboard_Peak_Trip_Times"/>
+	<import value="java.util.Date"/>
+	<import value="java.time.LocalDate"/>
+	<import value="java.time.format.DateTimeFormatter"/>
+	<import value="java.time.ZoneOffset"/>
+	<template><![CDATA["repo:/public/Bikeshare_demo/Resources/Styles/BikeShare_Style.jrtx"]]></template>
+	<parameter name="Debug" class="java.lang.Boolean" isForPrompting="false">
+		<parameterDescription><![CDATA[During development, may set to true to view parameter values passed into report.]]></parameterDescription>
+		<defaultValueExpression><![CDATA[FALSE( )]]></defaultValueExpression>
+	</parameter>
+	<parameter name="Timeframe" class="java.lang.String">
+		<parameterDescription><![CDATA[Allowed values: current, last24, lastweek, lastmonth, lastquarter, annual. Value will determine values of Start_Date & End_Date.]]></parameterDescription>
+	</parameter>
+	<parameter name="Franchise" class="java.lang.String">
+		<parameterDescription><![CDATA[The Franchise Id (system_id)]]></parameterDescription>
+	</parameter>
+	<parameter name="Region" class="java.lang.String">
+		<parameterDescription><![CDATA[The Region Id - Maps to Region Input Control]]></parameterDescription>
+	</parameter>
+	<parameter name="Start_Date" class="java.util.Date" isForPrompting="false">
+		<parameterDescription><![CDATA[Requires java.time.LocalDate;java.time.format.DateTimeFormatter; imported into report. Will be programatically determined by examining the Timeframe parameter value.]]></parameterDescription>
+		<defaultValueExpression><![CDATA[	Objects.equals($P{Timeframe}, "current") ? Date.from(LocalDate.now().minusDays(1).atStartOfDay().toInstant(ZoneOffset.UTC))  :
+	Objects.equals($P{Timeframe}, "last24") ? Date.from(LocalDate.now().minusDays(2).atStartOfDay().toInstant(ZoneOffset.UTC)) :
+		Objects.equals($P{Timeframe}, "lastweek") ? Date.from(LocalDate.now().minusWeeks(1).atStartOfDay().toInstant(ZoneOffset.UTC)) :
+			Objects.equals($P{Timeframe}, "lastmonth") ? Date.from(LocalDate.now().minusMonths(1).atStartOfDay().toInstant(ZoneOffset.UTC)) :
+				Objects.equals($P{Timeframe}, "lastquarter") ? Date.from(LocalDate.now().minusMonths(3).atStartOfDay().toInstant(ZoneOffset.UTC)) :
+					 Date.from(LocalDate.now().minusYears(1).atStartOfDay().toInstant(ZoneOffset.UTC))]]></defaultValueExpression>
+	</parameter>
+	<parameter name="End_Date" class="java.util.Date" isForPrompting="false">
+		<parameterDescription><![CDATA[Requires java.time.LocalDate;java.time.format.DateTimeFormatter; imported into report. Will be programatically determined by examing the Timeframe parameter value.]]></parameterDescription>
+		<defaultValueExpression><![CDATA[	Objects.equals($P{Timeframe}, "current") ? Date.from(LocalDate.now().plusDays(1).atStartOfDay().toInstant(ZoneOffset.UTC)) : Date.from(LocalDate.now().atStartOfDay().toInstant(ZoneOffset.UTC))]]></defaultValueExpression>
+	</parameter>
+	<parameter name="Session_ID" class="java.lang.String">
+		<parameterDescription><![CDATA[A unique id passed by the web app to combine/merge data by session.]]></parameterDescription>
+	</parameter>
+	<queryString>
+		<![CDATA[
+select details.*, final_min_max.*
+ from
+
+	(Select EXTRACT(HOUR FROM tt.start_time) as hour_of_day, Count(*) as trip_count
+				   From trip_today "tt"
+					inner join station_information "si" on tt.start_station_id = si.station_id and tt.system_id = si.system_id
+				   where tt.system_id =  $P{Franchise}  and ($P{Region} is null OR si.region_id =  $P{Region}  )
+					and date(tt.start_time) >  $P{Start_Date}  and  date(tt.start_time)  < $P{End_Date} 
+				   Group By EXTRACT(HOUR FROM tt.start_time)
+				   Order By "hour_of_day") as details
+
+ join
+	(select max(totals.trip_count), min(totals.trip_count), totals.hour_of_day as "max_hour"
+		from
+			(Select EXTRACT(HOUR FROM tt.start_time) as hour_of_day, Count(*) as trip_count
+			   From trip_today "tt"
+			   inner join station_information "si" on tt.start_station_id = si.station_id and tt.system_id = si.system_id
+			   where tt.system_id = $P{Franchise} and ($P{Region} is null OR si.region_id = $P{Region})
+				and date(tt.start_time) >  $P{Start_Date}  and  date(tt.start_time)  < $P{End_Date} 
+			   Group By EXTRACT(HOUR FROM tt.start_time)
+			   Order By Count(*) DESC LIMIT 1) as totals
+	   Group By totals.hour_of_day
+	) as final_min_max 
+on 1=1
+ 
+]]>
+	</queryString>
+	<field name="hour_of_day" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="hour_of_day"/>
+	</field>
+	<field name="trip_count" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.label" value="trip_count"/>
+	</field>
+	<field name="max" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.label" value="max"/>
+	</field>
+	<field name="min" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.label" value="min"/>
+	</field>
+	<field name="max_hour" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="max_hour"/>
+	</field>
+	<variable name="FormattedHour" class="java.lang.String">
+		<variableExpression><![CDATA[$F{hour_of_day} <13 ? 
+	(     $F{hour_of_day} == 0 ? "12am" : $F{hour_of_day} == 12 ? $F{hour_of_day}.toString() + "pm" : $F{hour_of_day}.toString()  + "am"   ) 
+		:   Integer.toString($F{hour_of_day} - 12) + "pm"]]></variableExpression>
+	</variable>
+	<summary>
+		<band height="336" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<componentElement>
+				<reportElement x="0" y="72" width="284" height="264" uuid="2cc811b5-67ba-43b3-9c8b-a16c83ef2236"/>
+				<hc:chart xmlns:hc="http://jaspersoft.com/highcharts" xsi:schemaLocation="http://jaspersoft.com/highcharts http://jaspersoft.com/schema/highcharts.xsd" type="Column" evaluationTime="Band">
+					<hc:chartSetting name="default">
+						<hc:chartProperty name="title.text" value=""/>
+						<hc:chartProperty name="credits.enabled" value="false"/>
+						<hc:chartProperty name="credits.href" value=""/>
+						<hc:chartProperty name="credits.text" value=""/>
+						<hc:chartProperty name="yAxis.title.text" value=""/>
+						<hc:chartProperty name="chart.zoomType" value="xy"/>
+						<hc:chartProperty name="legend.enabled_customSimpleMode" value="true"/>
+						<hc:chartProperty name="legend.enabled">
+							<hc:propertyExpression><![CDATA[false]]></hc:propertyExpression>
+						</hc:chartProperty>
+						<hc:chartProperty name="plotOptions.column.borderRadius_customSimpleMode" value="true"/>
+						<hc:chartProperty name="plotOptions.column.borderRadius">
+							<hc:propertyExpression><![CDATA[5]]></hc:propertyExpression>
+						</hc:chartProperty>
+						<hc:chartProperty name="series.color.linearGradient">
+							<hc:propertyExpression><![CDATA["(function(){return {x1: 0, y1: 1, x2: 0, y2: 0 };})()"]]></hc:propertyExpression>
+						</hc:chartProperty>
+						<hc:chartProperty name="series.color.stops">
+							<hc:propertyExpression><![CDATA["(function(){return [[0, '#fefefe'], [1, '#f2f2f2']];})()"]]></hc:propertyExpression>
+						</hc:chartProperty>
+						<hc:chartProperty name="plotOptions.column.pointWidth_customSimpleMode" value="true"/>
+						<hc:chartProperty name="plotOptions.column.pointWidth">
+							<hc:propertyExpression><![CDATA[7]]></hc:propertyExpression>
+						</hc:chartProperty>
+						<hc:chartProperty name="yAxis.gridLineWidth_customSimpleMode" value="true"/>
+						<hc:chartProperty name="yAxis.gridLineWidth">
+							<hc:propertyExpression><![CDATA[0]]></hc:propertyExpression>
+						</hc:chartProperty>
+						<hc:chartProperty name="yAxis.stops">
+							<hc:propertyExpression><![CDATA[2]]></hc:propertyExpression>
+						</hc:chartProperty>
+						<hc:chartProperty name="yAxis.minColor" value="#D5DDF0"/>
+						<hc:chartProperty name="yAxis.maxColor" value="#F2F2F2"/>
+						<hc:chartProperty name="yAxis.minTickInterval">
+							<hc:propertyExpression><![CDATA[]]></hc:propertyExpression>
+						</hc:chartProperty>
+						<hc:chartProperty name="yAxis.showFirstLabel_customSimpleMode" value="true"/>
+						<hc:chartProperty name="yAxis.showFirstLabel">
+							<hc:propertyExpression><![CDATA[false]]></hc:propertyExpression>
+						</hc:chartProperty>
+						<hc:chartProperty name="yAxis.labels.enabled_customSimpleMode" value="true"/>
+						<hc:chartProperty name="yAxis.labels.enabled">
+							<hc:propertyExpression><![CDATA[false]]></hc:propertyExpression>
+						</hc:chartProperty>
+						<hc:chartProperty name="plotOptions.series.states.hover.halo.opacity">
+							<hc:propertyExpression><![CDATA[]]></hc:propertyExpression>
+						</hc:chartProperty>
+						<hc:chartProperty name="plotOptions.series.states.hover.marker.lineColor">
+							<hc:propertyExpression><![CDATA[]]></hc:propertyExpression>
+						</hc:chartProperty>
+						<hc:chartProperty name="plotOptions.series.states.hover.marker.fillColor">
+							<hc:propertyExpression><![CDATA[]]></hc:propertyExpression>
+						</hc:chartProperty>
+						<hc:chartProperty name="plotOptions.series.states.hover.enabled_customSimpleMode" value="true"/>
+						<hc:chartProperty name="plotOptions.series.states.hover.enabled">
+							<hc:propertyExpression><![CDATA[false]]></hc:propertyExpression>
+						</hc:chartProperty>
+						<hc:chartProperty name="xAxis.minorTickColor" value="#FFFFFF"/>
+						<hc:chartProperty name="xAxis.minorGridLineWidth">
+							<hc:propertyExpression><![CDATA[1]]></hc:propertyExpression>
+						</hc:chartProperty>
+						<hc:chartProperty name="xAxis.lineWidth_customSimpleMode" value="true"/>
+						<hc:chartProperty name="xAxis.lineWidth">
+							<hc:propertyExpression><![CDATA[0]]></hc:propertyExpression>
+						</hc:chartProperty>
+						<hc:chartProperty name="xAxis.tickColor" value="#FFFFFF"/>
+						<hc:chartProperty name="xAxis.tickInterval">
+							<hc:propertyExpression><![CDATA[6]]></hc:propertyExpression>
+						</hc:chartProperty>
+					</hc:chartSetting>
+					<multiAxisData>
+						<multiAxisDataset/>
+						<dataAxis axis="Rows">
+							<axisLevel name="category">
+								<labelExpression><![CDATA["Level Label expression"]]></labelExpression>
+								<axisLevelBucket class="java.lang.Comparable">
+									<bucketExpression><![CDATA[$F{hour_of_day}]]></bucketExpression>
+									<labelExpression><![CDATA[$V{FormattedHour}]]></labelExpression>
+									<bucketProperty name="color"><![CDATA[$F{trip_count}.equals($F{max}) ? "#12c2eb" : "#f0f0f0"]]></bucketProperty>
+								</axisLevelBucket>
+							</axisLevel>
+						</dataAxis>
+						<dataAxis axis="Columns"/>
+						<multiAxisMeasure name="NumOfTrips" class="java.lang.Number" calculation="Nothing">
+							<labelExpression><![CDATA["# of Trips"]]></labelExpression>
+							<valueExpression><![CDATA[$F{trip_count}]]></valueExpression>
+						</multiAxisMeasure>
+					</multiAxisData>
+					<hc:series name="NumOfTrips">
+						<hc:contributor name="SeriesItemProperty">
+							<hc:contributorProperty name="color" valueType="Bucket" value="category.color"/>
+						</hc:contributor>
+					</hc:series>
+				</hc:chart>
+			</componentElement>
+			<staticText>
+				<reportElement style="BaseReportStyle" x="18" y="12" width="112" height="18" uuid="cb78fbeb-c688-4b63-a0e4-0c599e129881"/>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Active Times]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="SecondaryTitleStyle" x="18" y="35" width="100" height="19" uuid="0e965b21-6676-4d1f-b138-2cf36521845e"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[Most Active Time]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="18" y="52" width="82" height="20" forecolor="#12C2EB" uuid="f6b995b0-40c3-48b9-967d-6acbfeb91bfe">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Bottom">
+					<font size="16" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{max_hour} <13 ? 
+	(     $F{max_hour} == 0 ? "12am" : $F{max_hour} == 12 ? $F{max_hour}.toString() + "pm" : $F{max_hour}.toString()  + "am"   ) 
+		:   Integer.toString($F{max_hour} - 12) + "pm"]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>
