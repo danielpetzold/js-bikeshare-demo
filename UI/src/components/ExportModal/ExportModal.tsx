@@ -78,7 +78,7 @@ export default class ExportModal extends Component<Props, State> {
             }
             onClick={this.exportSubmit}
           >
-            <i className={'icon-ic-download export-modal__export-icon'} />{' '}
+            <i className={'icon-ic-download export-modal__export-icon'} />
             Export
           </button>
         </div>
