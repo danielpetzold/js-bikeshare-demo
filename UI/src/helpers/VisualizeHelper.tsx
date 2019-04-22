@@ -107,40 +107,6 @@ class VisualizeHelper {
   }
 
   /**
-   *
-   * @param resourcePath
-   * @param format
-   */
-  exportReport(resourcePath: string, format: string) {
-    return new Promise((resolve, reject) => {
-      this.viz((v: any) => {
-        let report = v.report({
-          resource:
-            '/public/Bikeshare_demo/Reports/Data/FranchiseRegionStatusData',
-          success: function() {
-            report.export(
-              {
-                outputFormat: format
-              },
-              function(link: any) {
-                var url = link.href ? link.href : link;
-                window.location.href = url;
-              },
-              function(error: any) {
-                console.log(error);
-              }
-            );
-          },
-          error: (err: any) => {
-            console.log('exportReport', err);
-            reject(err);
-          }
-        });
-      });
-    });
-  }
-
-  /**
    * Get Input control
    * @param uiContainer
    * @param resourcePath

@@ -153,12 +153,6 @@ class ViewReport extends Component<any, ReportsState> {
     });
   };
 
-  exportReport = (format: string) => {
-    const resourcePath = this.state.selectedReportId;
-    this.state.selectedReportValue &&
-      visualizeHelper.exportReport(resourcePath, format);
-  };
-
   render() {
     const {
       filterOpen,
@@ -274,10 +268,7 @@ class ViewReport extends Component<any, ReportsState> {
             </div>
           </div>
           {exportModalOpen && (
-            <ExportModal
-              closeModal={this.toggleExportModal}
-              exportReport={this.exportReport}
-            />
+            <ExportModal closeModal={this.toggleExportModal} />
           )}
         </div>
       </>

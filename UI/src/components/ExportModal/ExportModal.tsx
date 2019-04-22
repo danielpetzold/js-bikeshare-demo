@@ -5,7 +5,6 @@ import { Option } from '../Dropdown/Dropdown';
 
 interface Props {
   closeModal: () => void;
-  exportReport: (format: string) => void;
 }
 
 interface State {
@@ -43,7 +42,6 @@ export default class ExportModal extends Component<Props, State> {
   exportSubmit = () => {
     // Do something with this format.
     const { selectedFormat } = this.state;
-    this.props.exportReport(selectedFormat.toLowerCase());
 
     this.props.closeModal();
   };
