@@ -1,23 +1,26 @@
 import React, { Component } from 'react';
+import { getStationStatus } from '../../services/apiCalls';
 import './CheckInModal.scss';
+
+interface Report {
+  id: string;
+  is_installed: boolean | null;
+  is_renting: boolean | null;
+  is_returning: boolean | null;
+  last_reported: string;
+  num_bikes_available: number | null;
+  num_bikes_disabled: number | null;
+  num_docks_available: number | null;
+  num_docks_disabled: number | null;
+  num_ebikes_available: number | null;
+  session_id: null | string;
+  station_id: string;
+  system_id: string;
+}
 
 interface State {
   step: number;
-  report: {
-    id: string;
-    systemId: string;
-    stationId: number;
-    lastReported: string;
-    sessionId: string;
-    bikesAvailable: number;
-    eBikesAvailable: number;
-    bikesDisabled: number;
-    docksAvailable: number;
-    isRenting: boolean;
-    isInstalled: boolean;
-    isReturning: boolean;
-    docksDisabled: number;
-  };
+  report: Report;
   bikesSeen: number;
   bikesPickedUp: number;
   bikesDroppedOff: number;
@@ -27,6 +30,7 @@ interface State {
 
 interface Props {
   closeModal: () => void;
+  selectedStationId: number | null;
 }
 
 interface Step {
@@ -41,18 +45,18 @@ export default class CheckInModal extends Component<Props, State> {
     step: 0,
     report: {
       id: '',
-      systemId: '',
-      stationId: 0,
-      lastReported: '',
-      sessionId: '',
-      bikesAvailable: 0,
-      eBikesAvailable: 0,
-      bikesDisabled: 0,
-      docksAvailable: 0,
-      isRenting: false,
-      isInstalled: false,
-      isReturning: false,
-      docksDisabled: 0
+      is_installed: null,
+      is_renting: null,
+      is_returning: null,
+      last_reported: '',
+      num_bikes_available: null,
+      num_bikes_disabled: null,
+      num_docks_available: null,
+      num_docks_disabled: null,
+      num_ebikes_available: null,
+      session_id: '',
+      station_id: '',
+      system_id: ''
     },
     bikesSeen: 0,
     bikesPickedUp: 0,
@@ -61,33 +65,11 @@ export default class CheckInModal extends Component<Props, State> {
     notes: ''
   };
 
-  componentDidMount() {
-    this.tempFunction();
+  async componentDidMount() {
+    await getStationStatus(this.props.selectedStationId, (response: any) =>
+      this.setState({ report: response })
+    );
   }
-
-  // Replace with api call
-  tempFunction = () => {
-    this.setState({
-      report: {
-        id: '456',
-        systemId: 'BA',
-        stationId: 10,
-        lastReported: '2019-03-29 06:31:00+00',
-        sessionId: '8ecd6441065e4f93b19ba7ca20562ae9',
-        bikesAvailable: 5,
-        eBikesAvailable: 5,
-        bikesDisabled: 4,
-        docksAvailable: 4,
-        isRenting: true,
-        isInstalled: true,
-        isReturning: true,
-        docksDisabled: 4
-      },
-      // Pull these from report.bikesAvailable to be manipulated but keep original for reference
-      bikesSeen: 5,
-      bikesPickedUp: 5
-    });
-  };
 
   // Hook this up to send finishedReport to the back-end
   submitWizard = () => {
@@ -100,15 +82,11 @@ export default class CheckInModal extends Component<Props, State> {
       notes
     } = this.state;
 
-    const finishedReport = { ...report, notes };
-    finishedReport.bikesAvailable = bikesSeen - bikesPickedUp + bikesDroppedOff;
-    finishedReport.bikesDisabled = finishedReport.bikesDisabled - bikesRepaired;
-
-    // console.log('finishedReport: ', finishedReport);
     this.props.closeModal();
   };
 
   render() {
+    // console.log(this.state);
     const {
       step,
       notes,

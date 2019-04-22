@@ -18,3 +18,12 @@ export const getSessionId = (cb: Function) => {
     })
     .catch(err => console.log(err));
 };
+
+export const getStationStatus = (id: number | null, cb: Function) => {
+  axios
+    .get(`/station-status/${id}`, options)
+    .then(res => {
+      cb(res.data);
+    })
+    .catch(err => console.log(err));
+};
