@@ -153,6 +153,12 @@ class ViewReport extends Component<any, ReportsState> {
     });
   };
 
+  exportReport = (format: string) => {
+    const resourcePath = this.state.selectedReportId;
+    this.state.selectedReportValue &&
+      visualizeHelper.exportReport(resourcePath, format);
+  };
+
   render() {
     const {
       filterOpen,
@@ -168,6 +174,7 @@ class ViewReport extends Component<any, ReportsState> {
     return (
       <>
         <NavBar />
+        {/* <button onClick={this.testFunc}>test</button> */}
         <div className={'report-container'}>
           <div className={'grid report-view'}>
             <div className={'grid__row report-header'}>
@@ -267,7 +274,10 @@ class ViewReport extends Component<any, ReportsState> {
             </div>
           </div>
           {exportModalOpen && (
-            <ExportModal closeModal={this.toggleExportModal} />
+            <ExportModal
+              closeModal={this.toggleExportModal}
+              exportReport={this.exportReport}
+            />
           )}
         </div>
       </>
