@@ -80,11 +80,8 @@
 
   &__reports {
     box-sizing: border-box;
-    height: 400px;
     width: calc(100% - 12px);
     margin: 0 6px 6px 6px;
-    border: solid 1px $gunmetal;
-    border-radius: 5px;
   }
 
   &__icon-left {

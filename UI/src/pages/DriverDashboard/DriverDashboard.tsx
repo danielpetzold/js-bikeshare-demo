@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { State as ReduxState } from '../../store';
+import { visualizeHelper } from '../../helpers/VisualizeHelper';
 import './DriverDashboard.scss';
 import NavBar from '../../components/NavBar/NavBar';
 import CheckInModal from '../../components/CheckInModal/CheckInModal';
@@ -12,6 +13,17 @@ interface State {
 class DriverDashboard extends Component<any, State> {
   state: State = {
     isCheckInOpen: false
+  };
+
+  componentDidMount() {
+    this.getReport();
+  }
+
+  getReport = () => {
+    visualizeHelper.getReport(
+      'maintenance',
+      `/public/Bikeshare_demo/Reports/Dashboard_Reports/Driver_CheckIn_List`
+    );
   };
 
   render() {
@@ -61,7 +73,7 @@ class DriverDashboard extends Component<any, State> {
                   <i className={'icon-ic-server maintenance__icon-left'} />
                   <i className={'icon-ic-printer'} />
                 </div>
-                <div className={'maintenance__reports'}>{''}</div>
+                <div className={'maintenance__reports'} id="maintenance" />
               </div>
             </div>
           </div>
