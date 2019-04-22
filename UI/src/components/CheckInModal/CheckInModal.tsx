@@ -1,44 +1,7 @@
 import React, { Component } from 'react';
 import { getStationStatus } from '../../services/apiCalls';
+import { Report, State, Props, Step } from './CheckInModal.types';
 import './CheckInModal.scss';
-
-interface Report {
-  id: string;
-  is_installed: boolean | null;
-  is_renting: boolean | null;
-  is_returning: boolean | null;
-  last_reported: string;
-  num_bikes_available: number | null;
-  num_bikes_disabled: number | null;
-  num_docks_available: number | null;
-  num_docks_disabled: number | null;
-  num_ebikes_available: number | null;
-  session_id: null | string;
-  station_id: string;
-  system_id: string;
-}
-
-interface State {
-  step: number;
-  report: Report;
-  bikesSeen: number;
-  bikesPickedUp: number;
-  bikesDroppedOff: number;
-  bikesRepaired: number;
-  notes: string;
-}
-
-interface Props {
-  closeModal: () => void;
-  selectedStationId: number | null;
-}
-
-interface Step {
-  icon: string;
-  text: string;
-  count: number;
-  stateName: any;
-}
 
 export default class CheckInModal extends Component<Props, State> {
   state: State = {
