@@ -168,7 +168,6 @@ class ViewReport extends Component<any, ReportsState> {
     return (
       <>
         <NavBar />
-        {/* <button onClick={this.testFunc}>test</button> */}
         <div className={'report-container'}>
           <div className={'grid report-view'}>
             <div className={'grid__row report-header'}>
