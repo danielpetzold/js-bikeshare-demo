@@ -21,7 +21,7 @@ class DriverDashboard extends Component<any, State> {
 
   getReport = () => {
     visualizeHelper.getReport(
-      'maintenance',
+      'check-in-report',
       `/public/Bikeshare_demo/Reports/Dashboard_Reports/Driver_CheckIn_List`
     );
   };
@@ -73,7 +73,7 @@ class DriverDashboard extends Component<any, State> {
                   <i className={'icon-ic-server maintenance__icon-left'} />
                   <i className={'icon-ic-printer'} />
                 </div>
-                <div className={'maintenance__reports'} id="maintenance" />
+                <div className={'maintenance__reports'} id="check-in-report" />
               </div>
             </div>
           </div>
