@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './ExportModal.scss';
 import Dropdown from '../Dropdown/Dropdown';
+import { Option } from '../Dropdown/Dropdown';
 
 interface Props {
   closeModal: () => void;
@@ -9,14 +10,21 @@ interface Props {
 interface State {
   openDropdown: boolean;
   selectedFormat: string;
-  options: string[];
+  options: Option[];
 }
 
 export default class ExportModal extends Component<Props, State> {
   state: State = {
     openDropdown: false,
     selectedFormat: '',
-    options: ['Select a format', 'PDF', 'XLSX', 'XLS', 'CVS', 'DOCX']
+    options: [
+      { name: 'Select a format', value: '', id: '1' },
+      { name: 'PDF', value: 'pdf', id: '2' },
+      { name: 'XLSX', value: 'xlsx', id: '3' },
+      { name: 'XLS', value: 'xls', id: '4' },
+      { name: 'CSV', value: 'csv', id: '5' },
+      { name: 'DOCX', value: 'docx', id: '6' }
+    ]
   };
 
   toggleDropdown = () => {
@@ -25,9 +33,9 @@ export default class ExportModal extends Component<Props, State> {
     });
   };
 
-  setSelected = (option: string) => {
+  setSelected = (option: Option) => {
     this.setState({
-      selectedFormat: option
+      selectedFormat: option.name
     });
   };
 
@@ -51,24 +59,26 @@ export default class ExportModal extends Component<Props, State> {
           </div>
           <div className={'export-modal__select'}>
             <div className={'modal-select'} onClick={this.toggleDropdown}>
-              <div>{selectedFormat ? selectedFormat : options[0]}</div>
+              <div>{selectedFormat ? selectedFormat : options[0].name}</div>
               <i className={'icon-ic-unfold-more'} />
             </div>
-            {/* {openDropdown && (*/}
-            {/*<Dropdown*/}
-            {/*setSelected={this.setSelected}*/}
-            {/*toggleDropdown={this.toggleDropdown}*/}
-            {/*options={options}*/}
-            {/*dropdownWidth="234px"*/}
-            {/*/>*/}
-            {/*)} */}
+            {openDropdown && (
+              <Dropdown
+                setSelected={this.setSelected}
+                toggleDropdown={this.toggleDropdown}
+                options={options}
+                dropdownWidth="234px"
+              />
+            )}
           </div>
           <button
             className={'export-modal__submit-btn'}
-            disabled={selectedFormat === '' || selectedFormat === options[0]}
+            disabled={
+              selectedFormat === '' || selectedFormat === options[0].value
+            }
             onClick={this.exportSubmit}
           >
-            <i className={'icon-ic-download export-modal__export-icon'} />{' '}
+            <i className={'icon-ic-download export-modal__export-icon'} />
             Export
           </button>
         </div>
