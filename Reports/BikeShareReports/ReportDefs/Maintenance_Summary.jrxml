@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 7.2.1.final using JasperReports Library version 6.6.0  -->
+<!-- 2019-04-23T14:15:48 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Maintenance_Summary" pageWidth="284" pageHeight="318" columnWidth="284" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="6d00c28d-12a5-4941-a42e-050dae24dcae">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="BikeShare-Adapter-Dev"/>
+	<property name="net.sf.jasperreports.export.html.remove.emtpy.space.between.rows" value="true"/>
+	<property name="net.sf.jasperreports.export.html.size.unit" value="px"/>
+	<property name="ireport.jasperserver.url" value="http://JRS-bikes-ElasticL-1K5YHF91VRJUO-1806919984.us-east-2.elb.amazonaws.com/jasperserver-pro/"/>
+	<property name="ireport.jasperserver.user" value="superuser"/>
+	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w1" value="797"/>
+	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w2" value="196"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="312"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="683"/>
+	<property name="ireport.jasperserver.report.resource" value="/public/Bikeshare_demo/Reports/Dashboard_Reports/Maintenance_Summary_files/main_jrxml"/>
+	<property name="ireport.jasperserver.reportUnit" value="/public/Bikeshare_demo/Reports/Dashboard_Reports/Maintenance_Summary"/>
+	<template><![CDATA["ReportDefs/StyleTemplates/BikeShare_Style.jrtx"]]></template>
+	<parameter name="Session_ID" class="java.lang.String"/>
+	<parameter name="Route" class="java.lang.String">
+		<defaultValueExpression><![CDATA["SF10"]]></defaultValueExpression>
+	</parameter>
+	<queryString language="SQL">
+		<![CDATA[SELECT * 
+FROM
+(SELECT SUM( CASE WHEN lnum_bikes_disabled - num_bikes_disabled > 0 THEN lnum_bikes_disabled - num_bikes_disabled
+            ELSE 0
+       		END) AS "num_fixed", 
+	    SUM(CASE WHEN lnum_docks_available - num_docks_available > 0 THEN lnum_docks_available - num_docks_available
+            ELSE 0
+       		END) AS "num_delivered",
+ 		SUM(inventory) AS "num_inventory"        
+ FROM (
+		  SELECT ss.station_id, (ss.num_bikes_available + ss.num_bikes_disabled + ss.num_docks_available) AS "inventory", num_bikes_disabled, num_docks_available,
+				 LEAD(num_bikes_disabled) OVER w AS lnum_bikes_disabled,
+				 LEAD(num_docks_available) OVER w AS lnum_docks_available
+		  FROM station_status "ss"
+		  JOIN route_stop "rs" ON rs.station_id = ss.station_id AND rs.system_id = ss.system_id
+		  WHERE rs.route_id =  $P{Route}  AND rs.is_completed = true	AND (rs.session_id = $P{Session_ID} OR rs.session_id IS null)
+		  WINDOW w AS (PARTITION BY ss.system_id, ss.station_id ORDER BY ss.last_reported DESC) 
+	  ) AS "resultsA") "A"
+	
+ JOIN (
+	 	SELECT COUNT(*) AS "num_completed"
+	 	FROM
+			(SELECT rs1.station_id, rs1.route_id, MAX(rs1.id) "maxId", rs1.is_completed
+			FROM route_stop "rs1" 	
+			WHERE rs1.route_id =  $P{Route} AND (rs1.session_id = $P{Session_ID} OR rs1.session_id IS null)
+			GROUP BY rs1.route_id, rs1.station_id, rs1.is_completed) "resultsB"
+	    WHERE is_completed = true
+ 	  ) "B" ON 1=1
+	  
+JOIN (
+	 	SELECT COUNT(*) AS "num_total_assigned"
+	 	FROM
+			(SELECT rs1.station_id, rs1.route_id, MAX(rs1.id) "maxId"
+			FROM route_stop "rs1" 	
+			WHERE rs1.route_id =  $P{Route} AND (rs1.session_id = $P{Session_ID} OR rs1.session_id IS null)
+			GROUP BY rs1.route_id, rs1.station_id) "resultsC"	    
+ 	  ) "C" ON 1=1
+	  
+JOIN (
+		 SELECT SUM((ss.num_bikes_available + ss.num_bikes_disabled + ss.num_docks_available)) AS "num_total_region_inventory"
+		  FROM station_status "ss"
+		  JOIN route_stop "rs" ON rs.station_id = ss.station_id AND rs.system_id = ss.system_id
+		  WHERE rs.region_id = (SELECT region_id FROM route_stop WHERE route_id =  $P{Route} LIMIT 1) and (rs.session_id = '' OR rs.session_id IS null)
+	 ) "D" ON 1=1
+	 
+JOIN (
+		 SELECT SUM(ss.num_docks_available) AS "num_total_to_deliver"
+		  FROM (
+				SELECT rs.station_id, rs.system_id, MAX(rs.id) AS "max_rs_id", MAX(ss.id) AS "max_ss_id"
+				FROM route_stop "rs" 	
+			    JOIN station_status "ss" ON ss.station_id = rs.station_id AND ss.system_id = rs.system_id
+				WHERE rs.route_id =  $P{Route} AND (rs.session_id = $P{Session_ID} OR rs.session_id IS null)
+				GROUP BY rs.station_id, rs.system_id
+			   ) "a"
+		 JOIN station_status AS "ss" ON ss.id = a.max_ss_id
+			  
+	 ) "E" ON 1=1
+
+JOIN (
+		 SELECT SUM(num_bikes_disabled) AS "num_total_disabled"
+		  FROM (
+				SELECT rs.station_id, rs.system_id, MAX(rs.id) AS "max_rs_id", MAX(ss.id) AS "max_ss_id"
+				FROM route_stop "rs" 	
+				JOIN station_status "ss" ON ss.station_id = rs.station_id AND ss.system_id = rs.system_id
+				WHERE rs.route_id =  $P{Route} AND (rs.session_id = $P{Session_ID} OR rs.session_id IS null) AND (ss.session_id IS null) -- don't want ss session data here
+				GROUP BY rs.station_id, rs.system_id
+			  ) "a"
+	      JOIN station_status "ss" ON ss.id = a.max_ss_id
+	 ) "F" ON 1=1]]>
+	</queryString>
+	<field name="num_fixed" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.label" value="num_fixed"/>
+	</field>
+	<field name="num_delivered" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.label" value="num_delivered"/>
+	</field>
+	<field name="num_inventory" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.label" value="num_inventory"/>
+	</field>
+	<field name="num_completed" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.label" value="num_completed"/>
+	</field>
+	<field name="num_total_assigned" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.label" value="num_total_assigned"/>
+	</field>
+	<field name="num_total_region_inventory" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.label" value="num_total_region_inventory"/>
+	</field>
+	<field name="num_total_to_deliver" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.label" value="num_total_to_deliver"/>
+	</field>
+	<field name="num_total_disabled" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.label" value="num_total_disabled"/>
+	</field>
+	<summary>
+		<band height="318" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<rectangle radius="5">
+				<reportElement mode="Transparent" x="0" y="0" width="284" height="318" uuid="fcc1f55a-3fda-4138-af61-73e3db77f67e">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<graphicElement>
+					<pen lineStyle="Solid" lineColor="#DCDCDC"/>
+				</graphicElement>
+			</rectangle>
+			<staticText>
+				<reportElement style="BaseReportStyle" x="21" y="26" width="110" height="15" uuid="b7eea1ee-4cdf-488f-835a-c380bdc5988f">
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<text><![CDATA[Current Inventory]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="BaseReportStyle" x="21" y="96" width="110" height="15" uuid="390e5f56-d910-468a-b55a-6b17b9c43ab6">
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<text><![CDATA[Bikes Fixed]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="BaseReportStyle" x="21" y="166" width="110" height="15" uuid="573b5ba1-d2d8-4477-9f8e-405d25c2ebcf">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<text><![CDATA[Bikes Transported]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="BaseReportStyle" positionType="FixRelativeToBottom" x="21" y="238" width="149" height="15" uuid="43a15de4-8801-475b-ae98-a4aaff2fb303">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<text><![CDATA[Checkups Completed]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="21" y="47" width="30" height="30" isPrintWhenDetailOverflows="true" forecolor="#F19B19" uuid="2b81c6bf-577a-4041-9cc8-a2d963bf4a91">
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left">
+					<font size="20" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{num_inventory}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="21" y="259" width="30" height="30" forecolor="#71AC5C" uuid="4c86f1a2-138f-4b78-8821-5ab2aab698a8">
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left">
+					<font size="20" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{num_completed}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="21" y="187" width="30" height="30" forecolor="#71AC5C" uuid="a3ea382f-04d2-4e4a-9b06-84ec979970a4">
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left">
+					<font size="20" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{num_delivered}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="21" y="117" width="30" height="30" forecolor="#EF473F" uuid="35c0f74c-cfbc-4b2a-8e0e-77635c1799e3">
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left">
+					<font size="20" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{num_fixed}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="EnhancedTitleStyle" x="47" y="47" width="100" height="30" isRemoveLineWhenBlank="true" uuid="6c916753-c43c-4518-a14c-858a6246b751">
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA["/" + $F{num_total_region_inventory}.toString()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="EnhancedTitleStyle" x="47" y="259" width="100" height="30" isRemoveLineWhenBlank="true" uuid="ae8849a1-2218-407c-862d-c582e55ca835">
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA["/" + $F{num_total_assigned}.toString()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="EnhancedTitleStyle" x="47" y="187" width="100" height="30" isRemoveLineWhenBlank="true" uuid="d54360bd-9d3f-4e26-bfa1-539e72aa3b5c">
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA["/" + $F{num_total_to_deliver}.toString()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="EnhancedTitleStyle" x="47" y="117" width="100" height="30" isRemoveLineWhenBlank="true" uuid="fad1fbdb-fdd5-4956-a9bf-01a727408847"/>
+				<textElement textAlignment="Left">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA["/" + $F{num_total_disabled}.toString()]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>
