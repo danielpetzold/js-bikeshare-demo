@@ -29,8 +29,8 @@ export default class CheckInModal extends Component<Props, State> {
   };
 
   async componentDidMount() {
-    await getStationStatus(this.props.selectedStationId, (response: any) =>
-      this.setState({ report: Report })
+    await getStationStatus(this.props.selectedStationId, (response: Report) =>
+      this.setState({ report: response })
     );
   }
 
