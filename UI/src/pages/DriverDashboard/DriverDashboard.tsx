@@ -1,17 +1,41 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { State as ReduxState } from '../../store';
+import { visualizeHelper } from '../../helpers/VisualizeHelper';
 import './DriverDashboard.scss';
 import NavBar from '../../components/NavBar/NavBar';
 import CheckInModal from '../../components/CheckInModal/CheckInModal';
 
 interface State {
   isCheckInOpen: boolean;
+  selectedStationId: number | null;
 }
 
 class DriverDashboard extends Component<any, State> {
   state: State = {
-    isCheckInOpen: false
+    isCheckInOpen: false,
+    selectedStationId: null
+  };
+
+  componentDidMount() {
+    this.getReport();
+  }
+
+  getReport = () => {
+    visualizeHelper.getReport(
+      'check-in-report',
+      `/public/Bikeshare_demo/Reports/Dashboard_Reports/Driver_CheckIn_List`,
+      {},
+      {
+        events: {
+          click: this.checkInStation
+        }
+      }
+    );
+  };
+
+  checkInStation = async (e: any, link: any) => {
+    this.setState({ isCheckInOpen: true, selectedStationId: link.href });
   };
 
   render() {
@@ -61,7 +85,7 @@ class DriverDashboard extends Component<any, State> {
                   <i className={'icon-ic-server maintenance__icon-left'} />
                   <i className={'icon-ic-printer'} />
                 </div>
-                <div className={'maintenance__reports'}>{''}</div>
+                <div className={'maintenance__reports'} id="check-in-report" />
               </div>
             </div>
           </div>
@@ -69,6 +93,7 @@ class DriverDashboard extends Component<any, State> {
         {this.state.isCheckInOpen && (
           <CheckInModal
             closeModal={() => this.setState({ isCheckInOpen: false })}
+            selectedStationId={this.state.selectedStationId}
           />
         )}
       </>

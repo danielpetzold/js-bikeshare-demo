@@ -16,25 +16,19 @@
 			name: 'value',
 			lat: 'value',
 			lon: 'value',
-			active_route_stop: {
-				_type: 'object',
-				id: 'value',
-				route_id: 'value',
-				stop_order: 'value',
-				is_completed: 'value',
-				last_updated: 'value',
-				session_id: 'value'
-			},
-			active_station_status: {
-				_type: 'object',
-				id: 'value',
-				num_bikes_available: 'value',
-				num_bikes_disabled: 'value',
-				num_docks_available: 'value',
-				num_docks_disabled: 'value',
-				last_reported: 'value',
-				session_id: 'value'
-			}
+			route_stop_id: 'value',
+			route_id: 'value',
+			route_stop_order: 'value',
+			route_stop_is_completed: 'value',
+			route_stop_last_updated: 'value',
+			route_stop_session_id: 'value',
+			station_status_id: 'value',
+			num_bikes_available: 'value',
+			num_bikes_disabled: 'value',
+			num_docks_available: 'value',
+			num_docks_disabled: 'value',
+			station_status_last_reported: 'value',
+			station_status_session_id: 'value'
 		}
 	}
 }
