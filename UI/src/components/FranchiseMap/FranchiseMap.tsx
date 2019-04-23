@@ -21,11 +21,9 @@ class FranchiseMap extends Component<FranchiseMapProps> {
   customTilelayer: any;
   navigationControl: any;
   markersLayer: any;
+  franchiseMarkerLayer: any;
   vectorLayer: any;
 
-  constructor(props: FranchiseMapProps) {
-    super(props);
-  }
 
   componentDidMount() {
     // Get reference to GeoAnalytics global instance
@@ -42,7 +40,7 @@ class FranchiseMap extends Component<FranchiseMapProps> {
 
     this.addMapTiles();
     this.addMapNavigation();
-    this.addMapMarkers();
+    this.addFranchiseMapMarkers();
   }
 
   addMapTiles() {
@@ -72,7 +70,7 @@ class FranchiseMap extends Component<FranchiseMapProps> {
     this.map.addControl(this.navigationControl);
   }
 
-  addMapMarkers() {
+  addFranchiseMapMarkers() {
     // Create a Vector layer
     let vectorLayer = new this.geo.VectorLayer({
       useCanvas: true
@@ -80,13 +78,13 @@ class FranchiseMap extends Component<FranchiseMapProps> {
     this.map.addLayer(vectorLayer);
 
     //Add the marker
-    let markersLayer = new this.geo.MarkersLayer();
-    this.map.addLayer(markersLayer);
+    this.franchiseMarkerLayer = new this.geo.MarkersLayer();
+    this.map.addLayer(this.franchiseMarkerLayer);
 
 
     this.props.mapData.forEach((marker: any) => {
       // Add Marker
-      markersLayer.addMarker(new this.geo.ImageMarker( new this.geo.LatLng(marker.center_lat, marker.center_lon),
+      this.franchiseMarkerLayer.addMarker(new this.geo.ImageMarker( new this.geo.LatLng(marker.center_lat, marker.center_lon),
         markerImage, {
           systemId: marker.system_id,
           regionId: marker.region_id,
@@ -105,7 +103,7 @@ class FranchiseMap extends Component<FranchiseMapProps> {
       vectorLayer.addGeometry(circle);
     });
 
-    markersLayer.events.on("press", (marker: any) => {
+    this.franchiseMarkerLayer.events.on("press", (marker: any) => {
       this.props.onClick(marker);
     });
   }

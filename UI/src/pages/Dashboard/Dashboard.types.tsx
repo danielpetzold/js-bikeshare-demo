@@ -7,7 +7,9 @@ export interface DashboardState {
   selectedFilters: SelectedFilters;
   isMapOpen: boolean;
   kpiDetailReport: string;
-  mapData: FranchiseMapData[]
+  regionMapData: any;
+  franchiseMapData: FranchiseMapData[];
+  displayedMap: string;
 }
 
 export interface SelectedFilters {
