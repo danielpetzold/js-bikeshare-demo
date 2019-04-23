@@ -8,11 +8,13 @@ import CheckInModal from '../../components/CheckInModal/CheckInModal';
 
 interface State {
   isCheckInOpen: boolean;
+  selectedStationId: number | null;
 }
 
 class DriverDashboard extends Component<any, State> {
   state: State = {
-    isCheckInOpen: false
+    isCheckInOpen: false,
+    selectedStationId: null
   };
 
   componentDidMount() {
@@ -22,8 +24,18 @@ class DriverDashboard extends Component<any, State> {
   getReport = () => {
     visualizeHelper.getReport(
       'check-in-report',
-      `/public/Bikeshare_demo/Reports/Dashboard_Reports/Driver_CheckIn_List`
+      `/public/Bikeshare_demo/Reports/Dashboard_Reports/Driver_CheckIn_List`,
+      {},
+      {
+        events: {
+          click: this.checkInStation
+        }
+      }
     );
+  };
+
+  checkInStation = async (e: any, link: any) => {
+    this.setState({ isCheckInOpen: true, selectedStationId: link.href });
   };
 
   render() {
@@ -81,6 +93,7 @@ class DriverDashboard extends Component<any, State> {
         {this.state.isCheckInOpen && (
           <CheckInModal
             closeModal={() => this.setState({ isCheckInOpen: false })}
+            selectedStationId={this.state.selectedStationId}
           />
         )}
       </>
