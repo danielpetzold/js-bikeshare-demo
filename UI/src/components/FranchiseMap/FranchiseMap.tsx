@@ -22,12 +22,8 @@ class FranchiseMap extends Component<FranchiseMapProps> {
   navigationControl: any;
   markersLayer: any;
   franchiseMarkerLayer: any;
-  regionMarkerLayer: any;
   vectorLayer: any;
 
-  constructor(props: FranchiseMapProps) {
-    super(props);
-  }
 
   componentDidMount() {
     // Get reference to GeoAnalytics global instance

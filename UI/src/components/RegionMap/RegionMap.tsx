@@ -21,10 +21,6 @@ class RegionMap extends Component<RegionMapProps> {
   popupsLayer: any;
   popup: any;
 
-  constructor(props: RegionMapProps) {
-    super(props);
-  }
-
   componentDidMount() {
     // Get reference to GeoAnalytics global instance
     this.geo = (window as any).T;
