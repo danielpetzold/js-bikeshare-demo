@@ -1,0 +1,60 @@
+@import '../../scss/util/colors';
+
+.region-map {
+  width: 100%;
+  height: 362px;
+  background-color: $gunmetal;
+}
+
+.popup {
+  width: 214px;
+
+  &__name {
+    font-weight: bold;
+    font-size: 24px;
+    color: $gunmetal;
+    margin-bottom: 18px;
+  }
+
+  &__row {
+    display: inline-flex;
+  }
+
+  &__item {
+    width: 55px;
+    height: 50px;
+
+    &--first {
+      width: 24px;
+    }
+  }
+
+  &__icon {
+    width: 100%;
+    height: 24px;
+    font-size: 23px;
+    text-align: center;
+
+    &--red {
+      color: $pale-red;
+    }
+  }
+
+  &__divider {
+    border-right: 2px solid #dcdcdc;
+    height: 27px;
+    margin: 10px 10px 0 20px;
+  }
+
+  &__value {
+    width: 100%;
+    text-align: center;
+    margin-top: 6px;
+  }
+
+}
+
+// Geoanalytics style override
+.tibco-popup {
+  box-shadow: 0 0 12px -5px rgba(0, 0, 0, 0.5);
+}
