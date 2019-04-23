@@ -27,7 +27,6 @@ class Dashboard extends React.Component<DashboardProps, DashboardState> {
       selected: false
     };
 
-    // Set initial state for filter to first two options in data
     this.state = {
       isFilterOpen: false,
       selectedFilters: {
@@ -47,13 +46,10 @@ class Dashboard extends React.Component<DashboardProps, DashboardState> {
     // Load Filters, Reports, and Maps in order
     this.getFilterData()
       .then((success: any) => {
-        // Set Filters
         this.setFilters(success);
-        // Load Reports
         return this.getReports();
       })
       .then((success: any) => {
-        // Get Map
         this.getMap();
       });
   }
@@ -88,33 +84,6 @@ class Dashboard extends React.Component<DashboardProps, DashboardState> {
       }
     });
   }
-
-  async getFranchiseMap() {
-    try {
-      let mapData = await JasperReportsService.get('/rest_v2/reports/public/Bikeshare_demo/Reports/Data/FranchiseRegionStatusData.json', {
-        params: {
-          franchise: 'BA'
-        }
-      });
-      this.setState({franchiseMapData: mapData.data});
-    } catch (e) {
-      console.log(e);
-    }
-  };
-
-  async getRegionMap() {
-    try {
-      let mapData = await JasperReportsService.get('/rest_v2/reports/public/Bikeshare_demo/Reports/Data/RegionStationData.json', {
-        params: {
-          franchise: 'BA',
-          region: '8D'
-        }
-      });
-      this.setState({regionMapData: mapData.data});
-    } catch (e) {
-      console.log(e);
-    }
-  };
 
   async getMap() {
     // Clear Map
@@ -219,7 +188,6 @@ class Dashboard extends React.Component<DashboardProps, DashboardState> {
 
   render() {
     let map;
-    console.log(this.state.franchiseMapData.length);
     if (this.state.displayedMap === 'Franchise' && this.state.franchiseMapData.length) {
       map = <FranchiseMap mapData={this.state.franchiseMapData} onClick={this.onClickMapMarker} />;
     } else if (this.state.displayedMap === 'Region' && this.state.regionMapData){
