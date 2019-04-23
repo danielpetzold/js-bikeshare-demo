@@ -165,9 +165,6 @@ class RegionMap extends Component<RegionMapProps> {
     } else if (activeStationStatus.num_bikes_available > 0 && activeStationStatus.num_bikes_disabled <= 5) {
       marker = grayMarkerImage;
     }
-    if(marker === null) {
-      console.log(activeStationStatus.id, activeStationStatus.num_bikes_available, activeStationStatus.num_bikes_disabled, activeStationStatus.station_status_session_id, isCompleted)
-    }
     return marker;
   }
 
