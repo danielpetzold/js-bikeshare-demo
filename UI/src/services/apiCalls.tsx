@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { Report } from '../components/CheckInModal/CheckInModal.types';
 
 interface Options {
   baseURL: string | undefined;
@@ -24,6 +25,15 @@ export const getStationStatus = (id: number | null, cb: Function) => {
     .get(`/station-status/${id}`, options)
     .then(res => {
       cb(res.data);
+    })
+    .catch(err => console.log(err));
+};
+
+export const postStationStatus = (finishedReport: Report) => {
+  axios
+    .post(`/station-status/`, { options, data: finishedReport })
+    .then(res => {
+      console.log('res: ', res);
     })
     .catch(err => console.log(err));
 };
