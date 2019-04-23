@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { getStationStatus } from '../../services/apiCalls';
-import { State, Props, Step } from './CheckInModal.types';
+import { State, Props, Step, Report } from './CheckInModal.types';
 import './CheckInModal.scss';
 
 export default class CheckInModal extends Component<Props, State> {
@@ -28,7 +28,7 @@ export default class CheckInModal extends Component<Props, State> {
   };
 
   async componentDidMount() {
-    await getStationStatus(this.props.selectedStationId, (response: any) =>
+    await getStationStatus(this.props.selectedStationId, (response: Report) =>
       this.setState({
         report: response,
         bikesSeen: response.num_bikes_available,
@@ -60,14 +60,11 @@ export default class CheckInModal extends Component<Props, State> {
     finishedReport.num_bikes_disabled =
       finishedReport.num_bikes_disabled - bikesRepaired;
 
-    // console.log('finishedReport: ', finishedReport);
-
     this.props.getReport();
     this.props.closeModal();
   };
 
   render() {
-    // console.log(this.state);
     const {
       step,
       bikesSeen,
