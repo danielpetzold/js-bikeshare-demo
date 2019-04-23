@@ -32,8 +32,5 @@ export const getStationStatus = (id: number | null, cb: Function) => {
 export const postStationStatus = (finishedReport: Report) => {
   axios
     .post(`/station-status/`, { options, data: finishedReport })
-    .then(res => {
-      // figure out if we need to get a response
-    })
     .catch(err => console.log(err));
 };

@@ -34,6 +34,10 @@ class DriverDashboard extends Component<any, State> {
     );
   };
 
+  refreshPage = () => {
+    this.getReport();
+  };
+
   checkInStation = async (e: any, link: any) => {
     this.setState({ isCheckInOpen: true, selectedStationId: link.href });
   };
@@ -87,7 +91,7 @@ class DriverDashboard extends Component<any, State> {
           <CheckInModal
             closeModal={() => this.setState({ isCheckInOpen: false })}
             selectedStationId={this.state.selectedStationId}
-            getReport={this.getReport}
+            refreshPage={this.refreshPage}
           />
         )}
       </>

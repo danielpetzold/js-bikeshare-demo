@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
-import { getStationStatus } from '../../services/apiCalls';
+import { connect } from 'react-redux';
+import { State as ReduxState } from '../../store';
+import { getStationStatus, postStationStatus } from '../../services/apiCalls';
 import { State, Props, Step, Report } from './CheckInModal.types';
 import './CheckInModal.scss';
 
-export default class CheckInModal extends Component<Props, State> {
+class CheckInModal extends Component<Props, State> {
   state: State = {
     step: 0,
     report: {
@@ -59,8 +61,11 @@ export default class CheckInModal extends Component<Props, State> {
     // Final Bikes Disabled
     finishedReport.num_bikes_disabled =
       finishedReport.num_bikes_disabled - bikesRepaired;
+    // Attach Session Id
+    finishedReport.session_id = this.props.sessionId;
 
-    this.props.getReport();
+    postStationStatus(finishedReport);
+    this.props.refreshPage();
     this.props.closeModal();
   };
 
@@ -70,7 +75,8 @@ export default class CheckInModal extends Component<Props, State> {
       bikesSeen,
       bikesPickedUp,
       bikesDroppedOff,
-      bikesRepaired
+      bikesRepaired,
+      report
     } = this.state;
     const { closeModal } = this.props;
 
@@ -80,25 +86,29 @@ export default class CheckInModal extends Component<Props, State> {
         icon: 'bicycle-2',
         text: 'How many available bikes at the station?',
         count: bikesSeen,
-        stateName: 'bikesSeen'
+        stateName: 'bikesSeen',
+        max: 999
       },
       {
         icon: 'box-upload',
         text: 'How many bikes did you pick up for transport?',
         count: bikesPickedUp,
-        stateName: 'bikesPickedUp'
+        stateName: 'bikesPickedUp',
+        max: bikesSeen
       },
       {
         icon: 'box-download',
         text: 'How many bikes did you drop-off?',
         count: bikesDroppedOff,
-        stateName: 'bikesDroppedOff'
+        stateName: 'bikesDroppedOff',
+        max: report.num_docks_available
       },
       {
         icon: 'wrench-screwdriver',
         text: 'How many bikes did you repair on-site?',
         count: bikesRepaired,
-        stateName: 'bikesRepaired'
+        stateName: 'bikesRepaired',
+        max: report.num_bikes_disabled
       }
     ];
 
@@ -145,10 +155,11 @@ export default class CheckInModal extends Component<Props, State> {
                 <i
                   className={`icon-ic-add`}
                   onClick={() => {
-                    let { count, stateName } = steps[step];
-                    this.setState({
-                      [stateName]: count + 1
-                    } as Pick<State, keyof State>);
+                    let { count, stateName, max } = steps[step];
+                    count < max &&
+                      this.setState({
+                        [stateName]: count + 1
+                      } as Pick<State, keyof State>);
                   }}
                 />
               </div>
@@ -187,3 +198,11 @@ export default class CheckInModal extends Component<Props, State> {
     );
   }
 }
+
+const mapStateToProps = (state: ReduxState) => {
+  return {
+    sessionId: state.general.sessionId
+  };
+};
+
+export default connect(mapStateToProps)(CheckInModal);

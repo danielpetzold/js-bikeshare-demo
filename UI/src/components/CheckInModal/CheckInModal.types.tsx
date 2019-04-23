@@ -26,7 +26,8 @@ export interface State {
 export interface Props {
   closeModal: () => void;
   selectedStationId: number | null;
-  getReport: () => void;
+  refreshPage: () => void;
+  sessionId: string;
 }
 
 export interface Step {
@@ -34,4 +35,5 @@ export interface Step {
   text: string;
   count: number;
   stateName: any;
+  max: number;
 }
