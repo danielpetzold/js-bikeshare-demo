@@ -30,7 +30,7 @@ export default class CheckInModal extends Component<Props, State> {
 
   async componentDidMount() {
     await getStationStatus(this.props.selectedStationId, (response: any) =>
-      this.setState({ report: response })
+      this.setState({ report: Report })
     );
   }
 
@@ -49,7 +49,7 @@ export default class CheckInModal extends Component<Props, State> {
   };
 
   render() {
-    // console.log(this.state);
+    
     const {
       step,
       notes,
