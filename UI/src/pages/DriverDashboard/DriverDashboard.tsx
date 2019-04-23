@@ -58,13 +58,6 @@ class DriverDashboard extends Component<any, State> {
               <div className={'grid__column-12 grid__column-m-4'} />
             </div>
           </div>
-          {/* Remove this once reports are in. */}
-          <button
-            onClick={() => this.setState({ isCheckInOpen: true })}
-            className={'btn--primary'}
-          >
-            Check In
-          </button>
           {/* REPORTS */}
           <div className={'grid driver-reports-grid'}>
             <div className={`grid__row arrow`}>
@@ -94,6 +87,7 @@ class DriverDashboard extends Component<any, State> {
           <CheckInModal
             closeModal={() => this.setState({ isCheckInOpen: false })}
             selectedStationId={this.state.selectedStationId}
+            getReport={this.getReport}
           />
         )}
       </>
