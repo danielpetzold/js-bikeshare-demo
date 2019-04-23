@@ -8,8 +8,13 @@ import { visualizeHelper } from '../../helpers/VisualizeHelper';
 import { DashboardProps, DashboardState, FilterOption, ReportParams } from "./Dashboard.types";
 import FranchiseMap from "../../components/FranchiseMap/FranchiseMap";
 import JasperReportsService from "../../services/JasperReportsService";
+import RegionMap from "../../components/RegionMap/RegionMap";
 
 const filterDataICUri = '/public/Bikeshare_demo/Reports/Lookups';
+const mapDataLocations: any = {
+  Region: '/rest_v2/reports/public/Bikeshare_demo/Reports/Data/RegionStationData.json',
+  Franchise: '/rest_v2/reports/public/Bikeshare_demo/Reports/Data/FranchiseRegionStatusData.json'
+};
 
 class Dashboard extends React.Component<DashboardProps, DashboardState> {
   filters: any = [];
@@ -32,7 +37,9 @@ class Dashboard extends React.Component<DashboardProps, DashboardState> {
       },
       isMapOpen: true,
       kpiDetailReport: 'Dashboard_Stations_InNeed_Detail',
-      mapData: []
+      franchiseMapData: [],
+      regionMapData: null,
+      displayedMap: ''
     };
   }
 
@@ -82,18 +89,54 @@ class Dashboard extends React.Component<DashboardProps, DashboardState> {
     });
   }
 
-  async getMap() {
+  async getFranchiseMap() {
     try {
       let mapData = await JasperReportsService.get('/rest_v2/reports/public/Bikeshare_demo/Reports/Data/FranchiseRegionStatusData.json', {
         params: {
           franchise: 'BA'
         }
       });
-      this.setState({mapData: mapData.data});
+      this.setState({franchiseMapData: mapData.data});
     } catch (e) {
       console.log(e);
     }
   };
+
+  async getRegionMap() {
+    try {
+      let mapData = await JasperReportsService.get('/rest_v2/reports/public/Bikeshare_demo/Reports/Data/RegionStationData.json', {
+        params: {
+          franchise: 'BA',
+          region: '8D'
+        }
+      });
+      this.setState({regionMapData: mapData.data});
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  async getMap() {
+    // Clear Map
+    this.setState({displayedMap: ''});
+
+    let displayMap = this.state.selectedFilters.Region.value === '~NOTHING~' ? 'Franchise' : 'Region';
+    try {
+      let mapData = await JasperReportsService.get(mapDataLocations[displayMap], {
+        params: {
+          Franchise: this.state.selectedFilters.Franchise.value,
+          Region: this.state.selectedFilters.Region.value
+        }
+      });
+      if (displayMap === 'Franchise') {
+        this.setState({ franchiseMapData: mapData.data, displayedMap: displayMap })
+      } else {
+        this.setState({ regionMapData: mapData.data, displayedMap: displayMap })
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  }
 
   getReports() {
     let promiseArray = [];
@@ -153,6 +196,7 @@ class Dashboard extends React.Component<DashboardProps, DashboardState> {
   setFilter = (state: any) => {
     this.setState({ selectedFilters: state }, () => {
       this.getReports();
+      this.getMap();
     });
   };
 
@@ -174,6 +218,16 @@ class Dashboard extends React.Component<DashboardProps, DashboardState> {
   };
 
   render() {
+    let map;
+    console.log(this.state.franchiseMapData.length);
+    if (this.state.displayedMap === 'Franchise' && this.state.franchiseMapData.length) {
+      map = <FranchiseMap mapData={this.state.franchiseMapData} onClick={this.onClickMapMarker} />;
+    } else if (this.state.displayedMap === 'Region' && this.state.regionMapData){
+      map =  <RegionMap mapData={this.state.regionMapData} onClick={this.onClickMapMarker} />
+    } else {
+      map = null;
+    }
+
     return (
       <>
         <NavBar />
@@ -236,7 +290,7 @@ class Dashboard extends React.Component<DashboardProps, DashboardState> {
               </div>
             </div>
             <div className={`dashboard-map__container ${!this.state.isMapOpen ? 'dashboard-map__container--closed' : ''}`}>
-              {this.state.mapData.length ? <FranchiseMap mapData={this.state.mapData} onClick={this.onClickMapMarker}/> : null}
+              {map}
             </div>
           </div>
 
