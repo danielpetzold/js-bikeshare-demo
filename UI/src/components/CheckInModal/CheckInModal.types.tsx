@@ -4,11 +4,11 @@ export interface Report {
   is_renting: boolean | null;
   is_returning: boolean | null;
   last_reported: string;
-  num_bikes_available: number | null;
-  num_bikes_disabled: number | null;
-  num_docks_available: number | null;
-  num_docks_disabled: number | null;
-  num_ebikes_available: number | null;
+  num_bikes_available: number;
+  num_bikes_disabled: number;
+  num_docks_available: number;
+  num_docks_disabled: number;
+  num_ebikes_available: number;
   session_id: null | string;
   station_id: string;
   system_id: string;
@@ -21,12 +21,12 @@ export interface State {
   bikesPickedUp: number;
   bikesDroppedOff: number;
   bikesRepaired: number;
-  notes: string;
 }
 
 export interface Props {
   closeModal: () => void;
   selectedStationId: number | null;
+  getReport: () => void;
 }
 
 export interface Step {

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { getStationStatus } from '../../services/apiCalls';
-import { Report, State, Props, Step } from './CheckInModal.types';
+import { State, Props, Step, Report } from './CheckInModal.types';
 import './CheckInModal.scss';
 
 export default class CheckInModal extends Component<Props, State> {
@@ -12,11 +12,11 @@ export default class CheckInModal extends Component<Props, State> {
       is_renting: null,
       is_returning: null,
       last_reported: '',
-      num_bikes_available: null,
-      num_bikes_disabled: null,
-      num_docks_available: null,
-      num_docks_disabled: null,
-      num_ebikes_available: null,
+      num_bikes_available: 0,
+      num_bikes_disabled: 0,
+      num_docks_available: 0,
+      num_docks_disabled: 0,
+      num_ebikes_available: 0,
       session_id: '',
       station_id: '',
       system_id: ''
@@ -24,13 +24,17 @@ export default class CheckInModal extends Component<Props, State> {
     bikesSeen: 0,
     bikesPickedUp: 0,
     bikesDroppedOff: 0,
-    bikesRepaired: 0,
-    notes: ''
+    bikesRepaired: 0
   };
 
   async componentDidMount() {
     await getStationStatus(this.props.selectedStationId, (response: Report) =>
-      this.setState({ report: response })
+      this.setState({
+        report: response,
+        bikesSeen: response.num_bikes_available,
+        bikesDroppedOff: response.num_docks_available,
+        bikesRepaired: response.num_bikes_disabled
+      })
     );
   }
 
@@ -41,18 +45,28 @@ export default class CheckInModal extends Component<Props, State> {
       bikesSeen,
       bikesPickedUp,
       bikesDroppedOff,
-      bikesRepaired,
-      notes
+      bikesRepaired
     } = this.state;
 
+    const finishedReport = { ...report };
+
+    // Final Bikes Available
+    finishedReport.num_bikes_available =
+      bikesSeen - bikesPickedUp + bikesDroppedOff;
+    // Final Docks Available
+    finishedReport.num_docks_available =
+      finishedReport.num_docks_available - bikesDroppedOff;
+    // Final Bikes Disabled
+    finishedReport.num_bikes_disabled =
+      finishedReport.num_bikes_disabled - bikesRepaired;
+
+    this.props.getReport();
     this.props.closeModal();
   };
 
   render() {
-    
     const {
       step,
-      notes,
       bikesSeen,
       bikesPickedUp,
       bikesDroppedOff,
@@ -64,7 +78,7 @@ export default class CheckInModal extends Component<Props, State> {
     const steps: Step[] = [
       {
         icon: 'bicycle-2',
-        text: 'How many bikes did you see at the station?',
+        text: 'How many available bikes at the station?',
         count: bikesSeen,
         stateName: 'bikesSeen'
       },
@@ -105,47 +119,45 @@ export default class CheckInModal extends Component<Props, State> {
             <i className={'icon-ic-close'} onClick={closeModal} />
           </div>
           {/* CONTENT */}
-          {step < 4 ? (
-            <>
-              <div className={'checkin-modal__body checkin-content'}>
+          <>
+            <div className={'checkin-modal__body checkin-content'}>
+              <i
+                className={`icon-ic-${steps[step].icon} checkin-content__icon`}
+              />
+              <h3 className={'checkin-content__text'}>{steps[step].text}</h3>
+              <div className={'checkin-content__counter'}>
                 <i
-                  className={`icon-ic-${
-                    steps[step].icon
-                  } checkin-content__icon`}
-                />
-                <h3 className={'checkin-content__text'}>{steps[step].text}</h3>
-                <div className={'checkin-content__counter'}>
-                  <i
-                    className={`icon-ic-minus`}
-                    onClick={() => {
-                      let { count, stateName } = steps[step];
-                      count > 0 &&
-                        this.setState({
-                          [stateName]: count - 1
-                        } as Pick<State, keyof State>);
-                    }}
-                  />
-                  <input
-                    className={'checkin-content__number-input'}
-                    type="string"
-                    readOnly
-                    value={steps[step].count}
-                  />
-                  <i
-                    className={`icon-ic-add`}
-                    onClick={() => {
-                      let { count, stateName } = steps[step];
+                  className={`icon-ic-minus`}
+                  onClick={() => {
+                    let { count, stateName } = steps[step];
+                    count > 0 &&
                       this.setState({
-                        [stateName]: count + 1
+                        [stateName]: count - 1
                       } as Pick<State, keyof State>);
-                    }}
-                  />
-                </div>
+                  }}
+                />
+                <input
+                  className={'checkin-content__number-input'}
+                  type="string"
+                  readOnly
+                  value={steps[step].count}
+                />
+                <i
+                  className={`icon-ic-add`}
+                  onClick={() => {
+                    let { count, stateName } = steps[step];
+                    this.setState({
+                      [stateName]: count + 1
+                    } as Pick<State, keyof State>);
+                  }}
+                />
               </div>
-              {/* FOOTER */}
+            </div>
+            {/* FOOTER */}
+            {step < 3 ? (
               <div className={'checkin-modal__footer checkin-footer'}>
                 <div className={'checkin-footer__tracker'}>
-                  {[0, 1, 2, 3, 4].map(num => (
+                  {[0, 1, 2, 3].map(num => (
                     <div
                       key={num}
                       className={`checkin-footer__dot ${
@@ -156,36 +168,20 @@ export default class CheckInModal extends Component<Props, State> {
                 </div>
                 <div
                   className={'checkin-footer__button'}
-                  onClick={() => step < 4 && this.setState({ step: step + 1 })}
+                  onClick={() => step < 3 && this.setState({ step: step + 1 })}
                 >
                   <i className={'icon-ic-arrow-forward'} />
                 </div>
               </div>
-            </>
-          ) : (
-            // FINAL STEP IN WIZARD
-            <div className={'checkin-modal__body checkin-final'}>
-              <p className={'checkin-final__text'}>
-                If you would like to request any additional needs, leave a
-                message below.
-              </p>
-              <textarea
-                className={'checkin-final__notes'}
-                name=""
-                placeholder="(Optional) Write something here…"
-                value={notes}
-                onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
-                  this.setState({ notes: e.target.value })
-                }
-              />
+            ) : (
               <button
                 className={'checkin-final__button'}
                 onClick={this.submitWizard}
               >
                 Check in and send maintenance report
               </button>
-            </div>
-          )}
+            )}
+          </>
         </div>
       </div>
     );
