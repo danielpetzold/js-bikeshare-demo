@@ -25,12 +25,18 @@ class DriverDashboard extends Component<any, State> {
     visualizeHelper.getReport(
       'check-in-report',
       `/public/Bikeshare_demo/Reports/Dashboard_Reports/Driver_CheckIn_List`,
-      { session_id: [this.props.sessionId] },
+      { Session_ID: [this.props.sessionId] },
       {
         events: {
           click: this.checkInStation
         }
       }
+    );
+
+    visualizeHelper.getReport(
+      'summary-report',
+      `/public/Bikeshare_demo/Reports/Dashboard_Reports/Maintenance_Summary`,
+      { Session_ID: [this.props.sessionId] }
     );
   };
 
@@ -74,7 +80,7 @@ class DriverDashboard extends Component<any, State> {
             <div className="grid__row maintenance">
               <div className="grid__column-4 grid__column-m-4">
                 <h3 className={'maintenance__title'}>Maintenance Schedule</h3>
-                <div className={'maintenance__table'}>{''}</div>
+                <div className={'maintenance__table'} id="summary-report" />
               </div>
 
               <div className="grid__column-8 grid__column-m-4">

@@ -29,21 +29,19 @@ class CheckInModal extends Component<Props, State> {
     bikesRepaired: 0
   };
 
-  async componentDidMount() {
-    await getStationStatus(
-      this.props.selectedStationId,
-      (response: StationStatus) =>
-        this.setState({
-          report: response,
-          bikesSeen: response.num_bikes_available,
-          bikesDroppedOff: response.num_docks_available,
-          bikesRepaired: response.num_bikes_disabled
-        })
+  componentDidMount() {
+    getStationStatus(this.props.selectedStationId, (response: StationStatus) =>
+      this.setState({
+        report: response,
+        bikesSeen: response.num_bikes_available,
+        bikesDroppedOff: response.num_docks_available,
+        bikesRepaired: response.num_bikes_disabled
+      })
     );
   }
 
   // Hook this up to send finishedReport to the back-end
-  submitWizard = () => {
+  submitWizard = async () => {
     const {
       report,
       bikesSeen,
@@ -64,7 +62,7 @@ class CheckInModal extends Component<Props, State> {
     finishedReport.num_bikes_disabled =
       finishedReport.num_bikes_disabled - bikesRepaired;
 
-    postStationStatus(finishedReport);
+    await postStationStatus(finishedReport);
     this.props.refreshPage();
     this.props.closeModal();
   };

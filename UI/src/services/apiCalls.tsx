@@ -4,19 +4,13 @@ import { StationStatus } from '../components/CheckInModal/CheckInModal.types';
 interface Options {
   baseURL: string | undefined;
   withCredentials: boolean;
-  data: any;
-  headers: any;
 }
 
 let baseURL = process.env.REACT_APP_API_URL;
 
 let options: Options = {
   baseURL: baseURL,
-  withCredentials: true,
-  data: {},
-  headers: {
-    'Content-Type': 'application/json'
-  }
+  withCredentials: true
 };
 
 export const getSessionId = (cb: Function) => {
@@ -38,17 +32,12 @@ export const getStationStatus = (id: number | null, cb: Function) => {
 };
 
 export const postStationStatus = (stationStatus: StationStatus) => {
-  options.data = stationStatus;
-  console.log('options: ', options);
-  axios
-    .post(`${baseURL}/station-status`, {
-      data: stationStatus,
-      withCredentials: true
-    })
-    .then(res => {
-      // options.data = {};
-      // figure out if we need to get a response
-      console.log('res: ', res);
-    })
-    .catch(err => console.log(err));
+  fetch(`${baseURL}/station-status`, {
+    method: 'POST',
+    body: JSON.stringify(stationStatus),
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    credentials: 'include'
+  }).catch(err => console.log(err));
 };

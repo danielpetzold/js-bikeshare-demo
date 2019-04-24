@@ -52,10 +52,10 @@
   padding: 0 10px;
 
   &__table {
-    height: 276px;
-    width: 100%;
     background-color: $white;
-    box-shadow: 0 2px 15px -7px rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    overflow: hidden;
   }
 
   &__title {
@@ -80,11 +80,16 @@
 
   &__reports {
     box-sizing: border-box;
-    width: calc(100% - 12px);
-    margin: 0 6px 6px 6px;
-    display: flex;
-    justify-content: center;
+    width: max-content;
+    margin: 0 auto;
     overflow: scroll;
+  }
+
+  @media screen and (max-width: 592px) {
+    &__reports {
+      width: calc(100% - 12px);
+      margin: 0 6px 6px 6px;
+    }
   }
 
   &__icon-left {
