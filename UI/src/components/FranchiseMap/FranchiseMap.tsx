@@ -103,7 +103,7 @@ class FranchiseMap extends Component<FranchiseMapProps> {
       vectorLayer.addGeometry(circle);
     });
 
-    this.franchiseMarkerLayer.events.on("press", (marker: any) => {
+    this.franchiseMarkerLayer.events.on("marker-click", (marker: any) => {
       this.props.onClick(marker);
     });
   }

@@ -7,17 +7,19 @@
 }
 
 .popup {
-  width: 214px;
+  width: 250px;
 
   &__name {
     font-weight: bold;
     font-size: 24px;
     color: $gunmetal;
-    margin-bottom: 18px;
+    padding: 18px 12px 12px 12px;
   }
 
   &__row {
     display: inline-flex;
+    width: 100%;
+    margin-bottom: 10px;
   }
 
   &__item {
@@ -25,7 +27,7 @@
     height: 50px;
 
     &--first {
-      width: 24px;
+      width: 60px;
     }
   }
 
@@ -41,9 +43,9 @@
   }
 
   &__divider {
-    border-right: 2px solid #dcdcdc;
+    border-right: 2px solid $light-grey;
     height: 27px;
-    margin: 10px 10px 0 20px;
+    margin: 0 5px;
   }
 
   &__value {
@@ -52,9 +54,37 @@
     margin-top: 6px;
   }
 
+  &__interaction-area {
+    width: 100%;
+    border-top: 1px solid $light-grey;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &__button {
+
+    color: $jade;
+
+    &:active {
+      color: $blue-green;
+    }
+
+    &:hover {
+      color: $seafoam-blue;
+    }
+  }
+
 }
 
 // Geoanalytics style override
 .tibco-popup {
   box-shadow: 0 0 12px -5px rgba(0, 0, 0, 0.5);
+  padding: 0 !important;
+  border-radius: 5px;
+
+  &-content {
+    padding: 0 !important;
+  }
 }
