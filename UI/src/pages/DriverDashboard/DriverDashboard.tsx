@@ -25,7 +25,7 @@ class DriverDashboard extends Component<any, State> {
     visualizeHelper.getReport(
       'check-in-report',
       `/public/Bikeshare_demo/Reports/Dashboard_Reports/Driver_CheckIn_List`,
-      {},
+      { session_id: [this.props.sessionId] },
       {
         events: {
           click: this.checkInStation

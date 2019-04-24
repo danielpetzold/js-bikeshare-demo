@@ -82,6 +82,9 @@
     box-sizing: border-box;
     width: calc(100% - 12px);
     margin: 0 6px 6px 6px;
+    display: flex;
+    justify-content: center;
+    overflow: scroll;
   }
 
   &__icon-left {

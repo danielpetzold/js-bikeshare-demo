@@ -1,4 +1,4 @@
-export interface Report {
+export interface StationStatus {
   id: string;
   is_installed: boolean | null;
   is_renting: boolean | null;
@@ -16,7 +16,7 @@ export interface Report {
 
 export interface State {
   step: number;
-  report: Report;
+  report: StationStatus;
   bikesSeen: number;
   bikesPickedUp: number;
   bikesDroppedOff: number;

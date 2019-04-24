@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { State as ReduxState } from '../../store';
 import { getStationStatus, postStationStatus } from '../../services/apiCalls';
-import { State, Props, Step, Report } from './CheckInModal.types';
+import { State, Props, Step, StationStatus } from './CheckInModal.types';
 import './CheckInModal.scss';
 
 class CheckInModal extends Component<Props, State> {
@@ -30,13 +30,15 @@ class CheckInModal extends Component<Props, State> {
   };
 
   async componentDidMount() {
-    await getStationStatus(this.props.selectedStationId, (response: Report) =>
-      this.setState({
-        report: response,
-        bikesSeen: response.num_bikes_available,
-        bikesDroppedOff: response.num_docks_available,
-        bikesRepaired: response.num_bikes_disabled
-      })
+    await getStationStatus(
+      this.props.selectedStationId,
+      (response: StationStatus) =>
+        this.setState({
+          report: response,
+          bikesSeen: response.num_bikes_available,
+          bikesDroppedOff: response.num_docks_available,
+          bikesRepaired: response.num_bikes_disabled
+        })
     );
   }
 
@@ -61,8 +63,6 @@ class CheckInModal extends Component<Props, State> {
     // Final Bikes Disabled
     finishedReport.num_bikes_disabled =
       finishedReport.num_bikes_disabled - bikesRepaired;
-    // Attach Session Id
-    finishedReport.session_id = this.props.sessionId;
 
     postStationStatus(finishedReport);
     this.props.refreshPage();
