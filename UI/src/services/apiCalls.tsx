@@ -1,13 +1,15 @@
 import axios from 'axios';
-import { Report } from '../components/CheckInModal/CheckInModal.types';
+import { StationStatus } from '../components/CheckInModal/CheckInModal.types';
 
 interface Options {
   baseURL: string | undefined;
   withCredentials: boolean;
 }
 
+let baseURL = process.env.REACT_APP_API_URL;
+
 let options: Options = {
-  baseURL: process.env.REACT_APP_API_URL,
+  baseURL: baseURL,
   withCredentials: true
 };
 
@@ -29,11 +31,13 @@ export const getStationStatus = (id: number | null, cb: Function) => {
     .catch(err => console.log(err));
 };
 
-export const postStationStatus = (finishedReport: Report) => {
-  axios
-    .post(`/station-status/`, { options, data: finishedReport })
-    .then(res => {
-      // figure out if we need to get a response
-    })
-    .catch(err => console.log(err));
+export const postStationStatus = (stationStatus: StationStatus) => {
+  fetch(`${baseURL}/station-status`, {
+    method: 'POST',
+    body: JSON.stringify(stationStatus),
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    credentials: 'include'
+  }).catch(err => console.log(err));
 };

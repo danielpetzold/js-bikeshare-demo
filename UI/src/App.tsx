@@ -29,19 +29,22 @@ class App extends React.Component<any> {
     }
 
     return (
-      <ConnectedRouter history={this.props.history}>
-        <>
-          {this.props.showNoAccess && <NoAccess />}
-          {routes}
-        </>
-      </ConnectedRouter>
+      this.props.sessionId && (
+        <ConnectedRouter history={this.props.history}>
+          <>
+            {this.props.showNoAccess && <NoAccess />}
+            {routes}
+          </>
+        </ConnectedRouter>
+      )
     );
   }
 }
 
 const mapStateToProps = (state: State) => {
   return {
-    showNoAccess: state.general.showNoAccess
+    showNoAccess: state.general.showNoAccess,
+    sessionId: state.general.sessionId
   };
 };
 

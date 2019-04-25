@@ -1,4 +1,4 @@
-export interface Report {
+export interface StationStatus {
   id: string;
   is_installed: boolean | null;
   is_renting: boolean | null;
@@ -16,7 +16,7 @@ export interface Report {
 
 export interface State {
   step: number;
-  report: Report;
+  report: StationStatus;
   bikesSeen: number;
   bikesPickedUp: number;
   bikesDroppedOff: number;
@@ -26,7 +26,8 @@ export interface State {
 export interface Props {
   closeModal: () => void;
   selectedStationId: number | null;
-  getReport: () => void;
+  refreshPage: () => void;
+  sessionId: string;
 }
 
 export interface Step {
@@ -34,4 +35,5 @@ export interface Step {
   text: string;
   count: number;
   stateName: any;
+  max: number;
 }
