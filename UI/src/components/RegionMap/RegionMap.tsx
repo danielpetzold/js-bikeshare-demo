@@ -4,6 +4,7 @@ import './RegionMap.scss';
 interface RegionMapProps {
   mapData: any;
   onClick: (marker: any) => void;
+  openModal: (data: any) => void;   //TODO: Create Data type for modal
 }
 
 // Map tiles using openMapTiles schema from Carto Positron style
@@ -144,6 +145,8 @@ class RegionMap extends Component<RegionMapProps> {
           docksAvailable: station.num_docks_available,
           docksDisabled: station.num_docks_disabled,
           bikesDisabled: station.num_bikes_disabled,
+          id: station.id,
+          routeId: station.route_id,
           lat: station.lat,
           lon: station.lon,
           name: station.name,
@@ -180,6 +183,7 @@ class RegionMap extends Component<RegionMapProps> {
     if (e.target.id === 'popup__button') {
       // console.log(this.popup.options.data);
       this.popup.close();
+      this.props.openModal(this.popup.options.data);
     }
   }
 

@@ -9,6 +9,9 @@ import { DashboardProps, DashboardState, FilterOption, ReportParams } from "./Da
 import FranchiseMap from "../../components/FranchiseMap/FranchiseMap";
 import JasperReportsService from "../../services/JasperReportsService";
 import RegionMap from "../../components/RegionMap/RegionMap";
+import SendToStationModal from "../../components/SendToStationModal/SendToStationModal";
+import CheckInModal from "../../components/CheckInModal/CheckInModal";
+import { SendToStationData } from "../../components/SendToStationModal/SendToStationModal.types";
 
 const filterDataICUri = '/public/Bikeshare_demo/Reports/Lookups';
 const mapDataLocations: any = {
@@ -38,7 +41,8 @@ class Dashboard extends React.Component<DashboardProps, DashboardState> {
       kpiDetailReport: 'Dashboard_Stations_InNeed_Detail',
       franchiseMapData: [],
       regionMapData: null,
-      displayedMap: ''
+      displayedMap: '',
+      popupData: null
     };
   }
 
@@ -186,12 +190,28 @@ class Dashboard extends React.Component<DashboardProps, DashboardState> {
     this.setFilter(Object.assign({}, {...this.state.selectedFilters, Region: selectedRegion} ));
   };
 
+  openSendToStationModal = (data: any) => {
+    let popupData: SendToStationData = {
+      driverName: 'Test Driver',  // Temporary until value is added
+      regionName: this.state.selectedFilters.Region.label,  // Temporary until value is added
+      routeId: data.routeId,
+      numBikesDisabled: data.bikesDisabled,
+      numDocksAvailable: data.docksAvailable,
+      stationId: data.id
+    };
+    this.setState({popupData: popupData});
+  };
+
+  closeModal = () => {
+    this.setState({popupData: null});
+  };
+
   render() {
     let map;
     if (this.state.displayedMap === 'Franchise' && this.state.franchiseMapData.length) {
       map = <FranchiseMap mapData={this.state.franchiseMapData} onClick={this.onClickMapMarker} />;
     } else if (this.state.displayedMap === 'Region' && this.state.regionMapData){
-      map =  <RegionMap mapData={this.state.regionMapData} onClick={this.onClickMapMarker} />
+      map =  <RegionMap mapData={this.state.regionMapData} onClick={this.onClickMapMarker} openModal={this.openSendToStationModal}/>
     } else {
       map = null;
     }
@@ -208,6 +228,10 @@ class Dashboard extends React.Component<DashboardProps, DashboardState> {
           />
         ) : null}
         <div className={'dashboard'}>
+          {this.state.popupData && (
+            <SendToStationModal data={this.state.popupData} closeModal={this.closeModal}/>
+          )}
+
           <header className={'dashboard-header'}>
             <div className={'dashboard-header__content grid'}>
               <div className={'grid__row'}>
