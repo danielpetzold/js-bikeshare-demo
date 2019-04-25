@@ -171,14 +171,14 @@ class RegionMap extends Component<RegionMapProps> {
      * Temp solution: Manually adding click event to popup element.
      */
     this.popupEvent = this.popup.$htmlContent.addEventListener('click', (event: any) => {
-      this.testMethod(event);
+      this.openSendToStationModal(event);
     });
   }
 
-  testMethod(e: any) {
+  openSendToStationModal(e: any) {
     e.preventDefault();
     if (e.target.id === 'popup__button') {
-      console.log(this.popup.options.data);
+      // console.log(this.popup.options.data);
       this.popup.close();
     }
   }
