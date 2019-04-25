@@ -41,7 +41,7 @@ class RegionMap extends Component<RegionMapProps> {
   }
 
   componentWillUnmount() {
-    this.popupEvent.removeEventListener('click', (event: any) => { this.testMethod(event)});
+    this.popupEvent.removeEventListener('click', (event: any) => { this.openSendToStationModal(event)});
   }
 
   addMapTiles() {
