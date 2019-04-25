@@ -20,6 +20,7 @@ class RegionMap extends Component<RegionMapProps> {
   markersLayer: any;
   popupsLayer: any;
   popup: any;
+  popupEvent: any;
 
   componentDidMount() {
     // Get reference to GeoAnalytics global instance
@@ -37,6 +38,10 @@ class RegionMap extends Component<RegionMapProps> {
     this.addMapTiles();
     this.addMapNavigation();
     this.addRegionMapMarkers();
+  }
+
+  componentWillUnmount() {
+    this.popupEvent.removeEventListener('click', (event: any) => { this.openSendToStationModal(event)});
   }
 
   addMapTiles() {
@@ -74,8 +79,14 @@ class RegionMap extends Component<RegionMapProps> {
     this.popupsLayer =  new this.geo.PopupsLayer();
     this.map.addLayer(this.popupsLayer);
 
+    let button = `
+        <div class="popup__interaction-area">
+            <a id="popup__button" class="popup__button" href="#">Send Driver to Station</a>
+        </div> 
+      `;
+
     let popupContent = `
-      <div class='popup'>
+      <div class='popup' id={{name}}>
         <div class='popup__name'>{{name}}</div>
         <div class="popup__row">
             <div class="popup__item popup__item--first">
@@ -104,6 +115,10 @@ class RegionMap extends Component<RegionMapProps> {
                 <div class='popup__value'>{{bikesDisabled}}</div>
             </div>
         </div>
+        <div class="popup__interaction-area" style="display: {{showButton}}">
+        
+            <a id="popup__button" class="popup__button" href="#">Send Driver to Station</a>
+        </div> 
       </div>`;
 
       this.popup =  new this.geo.Popup(popupContent, {
@@ -122,44 +137,67 @@ class RegionMap extends Component<RegionMapProps> {
     this.popupsLayer.addPopup(this.popup);
 
     this.props.mapData.stations.forEach((station: any) => {
-
+      let marker = this.getMarkerImage(station, station.route_stop_is_completed);
       this.markersLayer.addMarker(new this.geo.ImageMarker( new this.geo.LatLng(station.lat, station.lon),
-        this.getMarkerImage(station, station.route_stop_is_completed), {
+          marker.image, {
           bikesAvailable: station.num_bikes_available,
           docksAvailable: station.num_docks_available,
           docksDisabled: station.num_docks_disabled,
           bikesDisabled: station.num_bikes_disabled,
           lat: station.lat,
           lon: station.lon,
-          name: station.name
+          name: station.name,
+          showButton: marker.color === 'red' ? 'flex' : 'none'
         })
       );
-
       //Add events
-      this.markersLayer.events.on("press", (station: any) => {
+      this.markersLayer.events.on("marker-click", (station: any) => {
         this.popup.setHtml(popupContent, {
           bikesAvailable: station.options.bikesAvailable,
           docksAvailable: station.options.docksAvailable,
           docksDisabled: station.options.docksDisabled,
           bikesDisabled: station.options.bikesDisabled,
-          name: station.options.name
+          name: station.options.name,
+          showButton: station.options.showButton
         });
+        this.popup.options.data = station.options;
         this.popup.open(new this.geo.LatLng(station.options.lat, station.options.lon));
       });
-
     });
 
+    /**
+     * There is a bug on the popup layer where events are not being properly triggered.
+     * Also callback methods can't be passed in as an option to the popup content.
+     * Temp solution: Manually adding click event to popup element.
+     */
+    this.popupEvent = this.popup.$htmlContent.addEventListener('click', (event: any) => {
+      this.openSendToStationModal(event);
+    });
+  }
+
+  openSendToStationModal(e: any) {
+    e.preventDefault();
+    if (e.target.id === 'popup__button') {
+      // console.log(this.popup.options.data);
+      this.popup.close();
+    }
   }
 
   // TODO: Simplify conditionals
   getMarkerImage(activeStationStatus: any, isCompleted: boolean) {
-    let marker = null;
+    let marker = {
+      image: null,
+      color: ''
+    };
     if ((activeStationStatus.num_bikes_available === 0 || activeStationStatus.num_bikes_disabled > 5) && activeStationStatus.station_status_session_id === "null") {
-      marker = redMarkerImage;
+      marker.image = redMarkerImage;
+      marker.color = 'red';
     } else if ((activeStationStatus.num_bikes_available === 0 || activeStationStatus.num_bikes_disabled > 5) && activeStationStatus.station_status_session_id !== "null" && !isCompleted) {
-      marker = yellowMarkerImage;
+      marker.image = yellowMarkerImage;
+      marker.color = 'yellow';
     } else if (activeStationStatus.num_bikes_available > 0 && activeStationStatus.num_bikes_disabled <= 5) {
-      marker = grayMarkerImage;
+      marker.image = grayMarkerImage;
+      marker.color = 'gray';
     }
     return marker;
   }
