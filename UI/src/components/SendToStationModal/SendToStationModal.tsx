@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './SendToStationModal.scss';
 import {SendToStationData, SendToStationPayload} from "./SendToStationModal.types";
+import { setRouteStop } from "../../services/apiCalls";
 
 export interface SendToStationProps {
   data: SendToStationData;
@@ -21,13 +22,13 @@ class SendToStationModal extends Component<SendToStationProps, SendToStationStat
   };
 
   submitDriverUpdate = async () => {
-    console.log('submit to Api', this.assemblePayload());
+    await setRouteStop(this.assemblePayload());
     this.props.closeModal();
   };
 
   assemblePayload(): SendToStationPayload {
     return {
-      stationId: this.props.data.stationId,
+      stationId: this.props.data.stationId.toString(),
       routeId: this.props.data.routeId,
       highPri: this.state.isPriority ? 1 : 0
     };
@@ -69,7 +70,7 @@ class SendToStationModal extends Component<SendToStationProps, SendToStationStat
           </div>
           <div className="send-station-modal__footer">
             <button className="send-station-modal__submit-button" onClick={this.submitDriverUpdate}>
-              <i className={'icon-ic-download send-station-modal__export-icon'} />
+              <i className={'icon-ic-truck send-station-modal__export-icon'} />
               Send to Driver
             </button>
           </div>

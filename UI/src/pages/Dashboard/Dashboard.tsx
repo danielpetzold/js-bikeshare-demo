@@ -10,7 +10,6 @@ import FranchiseMap from "../../components/FranchiseMap/FranchiseMap";
 import JasperReportsService from "../../services/JasperReportsService";
 import RegionMap from "../../components/RegionMap/RegionMap";
 import SendToStationModal from "../../components/SendToStationModal/SendToStationModal";
-import CheckInModal from "../../components/CheckInModal/CheckInModal";
 import { SendToStationData } from "../../components/SendToStationModal/SendToStationModal.types";
 
 const filterDataICUri = '/public/Bikeshare_demo/Reports/Lookups';
@@ -153,7 +152,7 @@ class Dashboard extends React.Component<DashboardProps, DashboardState> {
       params[key] = [this.state.selectedFilters[key].value];
     }
     this.props.sessionId
-      ? (params = { ...params, session_Id: [this.props.sessionId] })
+      ? (params = { ...params, Session_ID: [this.props.sessionId] })
       : null;
     return params;
   };
@@ -204,6 +203,8 @@ class Dashboard extends React.Component<DashboardProps, DashboardState> {
 
   closeModal = () => {
     this.setState({popupData: null});
+    this.getReports();
+    this.getMap();
   };
 
   render() {

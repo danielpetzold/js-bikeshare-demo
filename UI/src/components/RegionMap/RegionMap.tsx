@@ -41,10 +41,6 @@ class RegionMap extends Component<RegionMapProps> {
     this.addRegionMapMarkers();
   }
 
-  componentWillUnmount() {
-    this.popupEvent.removeEventListener('click', (event: any) => { this.openSendToStationModal(event)});
-  }
-
   addMapTiles() {
     this.customTilelayer = new this.geo.TileLayer(baseMapUrl, {
       name: "Openstreetmap"
@@ -181,7 +177,6 @@ class RegionMap extends Component<RegionMapProps> {
   openSendToStationModal(e: any) {
     e.preventDefault();
     if (e.target.id === 'popup__button') {
-      // console.log(this.popup.options.data);
       this.popup.close();
       this.props.openModal(this.popup.options.data);
     }

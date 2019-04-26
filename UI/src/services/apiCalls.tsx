@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { StationStatus } from '../components/CheckInModal/CheckInModal.types';
+import { SendToStationPayload } from "../components/SendToStationModal/SendToStationModal.types";
 
 interface Options {
   baseURL: string | undefined;
@@ -35,6 +36,17 @@ export const postStationStatus = (stationStatus: StationStatus) => {
   fetch(`${baseURL}/station-status`, {
     method: 'POST',
     body: JSON.stringify(stationStatus),
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    credentials: 'include'
+  }).catch(err => console.log(err));
+};
+
+export const setRouteStop = (sendToStationPayload: SendToStationPayload) => {
+  fetch(`${baseURL}/route-stop`, {
+    method: 'POST',
+    body: JSON.stringify(sendToStationPayload),
     headers: {
       'Content-Type': 'application/json'
     },
