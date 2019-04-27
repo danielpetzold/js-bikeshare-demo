@@ -202,10 +202,12 @@ class Dashboard extends React.Component<DashboardProps, DashboardState> {
     this.setState({popupData: popupData});
   };
 
-  closeModal = () => {
+  closeModal = (refresh: boolean) => {
     this.setState({popupData: null});
-    this.getReports();
-    this.getMap();
+    if (refresh) {
+      this.getReports();
+      this.getMap();
+    }
   };
 
   render() {

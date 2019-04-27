@@ -5,7 +5,7 @@ import { setRouteStop } from "../../services/apiCalls";
 
 export interface SendToStationProps {
   data: SendToStationData;
-  closeModal: () => void
+  closeModal: (refresh: boolean) => void
 }
 
 export interface SendToStationState {
@@ -18,12 +18,12 @@ class SendToStationModal extends Component<SendToStationProps, SendToStationStat
   };
 
   closeModal = () => {
-    this.props.closeModal();
+    this.props.closeModal(false);
   };
 
   submitDriverUpdate = async () => {
     await setRouteStop(this.assemblePayload());
-    this.props.closeModal();
+    this.props.closeModal(true);
   };
 
   assemblePayload(): SendToStationPayload {
