@@ -63,6 +63,7 @@ class DriverDashboard extends Component<any, State> {
 
   refreshPage = () => {
     this.getReport();
+    this.getMap();
   };
 
   checkInStation = async (e: any, link: any) => {
