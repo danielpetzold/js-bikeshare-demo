@@ -18,6 +18,7 @@
 			lon: 'value',
 			route_stop_id: 'value',
 			route_id: 'value',
+			route_driver_name: 'value',
 			route_stop_order: 'value',
 			route_stop_is_completed: 'value',
 			route_stop_last_updated: 'value',

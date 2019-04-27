@@ -14,9 +14,11 @@
 	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
 	<property name="net.sf.jasperreports.export.json.schema" value="reportConfig/RegionStationData_schema.json"/>
 	<property name="com.jaspersoft.studio.report.description" value=""/>
-	<property name="ireport.jasperserver.url" value="http://jrs-bikes-elasticl-1k5yhf91vrjuo-1806919984.us-east-2.elb.amazonaws.com/jasperserver-pro/"/>
+	<property name="ireport.jasperserver.url" value="http://localhost:8080/jasperserver-pro/"/>
 	<property name="ireport.jasperserver.user" value="superuser"/>
 	<property name="ireport.jasperserver.reportUnit" value="/public/Bikeshare_demo/Reports/Data/RegionStationData"/>
+	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w1" value="695"/>
+	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w2" value="297"/>
 	<parameter name="LoggedInUserTenantId" class="java.lang.String" isForPrompting="false">
 		<parameterDescription><![CDATA[From JasperReports Server]]></parameterDescription>
 		<defaultValueExpression><![CDATA["BA"]]></defaultValueExpression>
@@ -25,14 +27,19 @@
 		<parameterDescription><![CDATA[Home region for user]]></parameterDescription>
 		<defaultValueExpression><![CDATA["12"]]></defaultValueExpression>
 	</parameter>
-	<parameter name="Franchise" class="java.lang.String">
-		<defaultValueExpression><![CDATA[$P{LoggedInUserTenantId} != null ? $P{LoggedInUserTenantId} : "BA"]]></defaultValueExpression>
-	</parameter>
+	<parameter name="Franchise" class="java.lang.String"/>
 	<parameter name="Region" class="java.lang.String">
-		<defaultValueExpression><![CDATA[$P{Attribute_Region} != null ? $P{Attribute_Region} : $P{Region}]]></defaultValueExpression>
+		<parameterDescription><![CDATA[]]></parameterDescription>
+	</parameter>
+	<parameter name="Route" class="java.lang.String">
+		<parameterDescription><![CDATA[Optional]]></parameterDescription>
+		<defaultValueExpression><![CDATA[null]]></defaultValueExpression>
 	</parameter>
 	<parameter name="session_id" class="java.lang.String">
 		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="RouteClause" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[$P{Route} != null && !$P{Route}.isEmpty() ? "rs.route_id = '" + $P{Route}.trim() + "'" : "1=1"]]></defaultValueExpression>
 	</parameter>
 	<queryString language="SQL">
 		<![CDATA[select r.system_id as region_system_id, r.region_id as region_region_id, r.name as region_name,
@@ -40,6 +47,7 @@
   si.id as station_unique_id, si.name as station_name, si.lat as station_lat, si.lon as station_lon,
   rs.route_id, rs.station_id, rs.stop_order, rs.last_updated, rs.is_completed, rs.id as route_stop_unique_id,
   rs.session_id as route_stop_session_id,
+  p.name as driver_name,
   ss.num_bikes_available, ss.num_bikes_disabled, 
   ss.num_docks_available, ss.num_docks_disabled, ss.session_id as station_status_session_id,
   ss.last_reported as station_status_last_reported, ss.id as station_status_unique_id
@@ -58,9 +66,10 @@ join
 	     Where (session_id is null or session_id = $P{session_id})
         Group By ss1.station_id, ss1.system_id) ss2
         on ss2.station_id = rs.station_id and ss2.system_id = rs.system_id and ss.id = ss2.max_id    
+left outer join person p on rs.driver_id = p.person_id
 join station_information si on si.station_id = ss.station_id and si.system_id = ss.system_id
 join system_region r on (si.system_id = r.system_id and si.region_id = r.region_id)
-where rs.system_id = $P{Franchise} and rs.region_id = $P{Region}
+where rs.system_id = $P{Franchise} and rs.region_id = $P{Region} and $P!{RouteClause}
 Order By rs.route_id, rs.is_completed DESC, rs.stop_order, rs.station_id]]>
 	</queryString>
 	<field name="region_system_id" class="java.lang.String">
@@ -130,6 +139,9 @@ Order By rs.route_id, rs.is_completed DESC, rs.stop_order, rs.station_id]]>
 	<field name="route_stop_session_id" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.label" value="route_stop_session_id"/>
 		<property name="com.jaspersoft.studio.field.tree.path" value="route_stop"/>
+	</field>
+	<field name="driver_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="driver_name"/>
 	</field>
 	<field name="num_bikes_available" class="java.lang.Integer">
 		<property name="com.jaspersoft.studio.field.label" value="num_bikes_available"/>
@@ -238,6 +250,12 @@ Order By rs.route_id, rs.is_completed DESC, rs.stop_order, rs.station_id]]>
 				<textFieldExpression><![CDATA[$F{station_unique_id}]]></textFieldExpression>
 			</textField>
 			<textField>
+				<reportElement x="640" y="0" width="80" height="19" uuid="3381f1d2-a120-453c-8db1-f83e8828257a">
+					<property name="net.sf.jasperreports.export.json.path" value="stations.station_id"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{station_id}]]></textFieldExpression>
+			</textField>
+			<textField>
 				<reportElement x="170" y="0" width="200" height="19" uuid="2eeb39e7-fb16-4752-9644-874808f40b5b">
 					<property name="net.sf.jasperreports.export.json.path" value="stations.name"/>
 				</reportElement>
@@ -269,6 +287,14 @@ Order By rs.route_id, rs.is_completed DESC, rs.stop_order, rs.station_id]]>
 				<textFieldExpression><![CDATA[$F{route_id}]]></textFieldExpression>
 			</textField>
 			<textField>
+				<reportElement x="640" y="20" width="130" height="19" uuid="39ec33e6-2c6f-4a2f-b2df-87430193144f">
+					<property name="net.sf.jasperreports.export.json.path" value="stations.route_driver_name"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<propertyExpression name="net.sf.jasperreports.export.json.data"><![CDATA[$F{driver_name} == null ? "" : $F{driver_name}]]></propertyExpression>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{driver_name}]]></textFieldExpression>
+			</textField>
+			<textField>
 				<reportElement x="169" y="50" width="59" height="19" uuid="fdde8da8-fd1d-483d-b71b-becdf2284924">
 					<property name="net.sf.jasperreports.export.json.path" value="stations.route_stop_order"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
@@ -293,6 +319,7 @@ Order By rs.route_id, rs.is_completed DESC, rs.stop_order, rs.station_id]]>
 				<reportElement x="479" y="50" width="100" height="19" uuid="45c95199-06f8-4e88-a1c7-f68a8256397e">
 					<property name="net.sf.jasperreports.export.json.path" value="stations.route_stop_session_id"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<propertyExpression name="net.sf.jasperreports.export.json.data"><![CDATA[$F{route_stop_session_id} == null ? "" : $F{route_stop_session_id}]]></propertyExpression>
 				</reportElement>
 				<textFieldExpression><![CDATA[$F{route_stop_session_id}]]></textFieldExpression>
 			</textField>
@@ -346,6 +373,7 @@ Order By rs.route_id, rs.is_completed DESC, rs.stop_order, rs.station_id]]>
 				<reportElement x="316" y="20" width="64" height="19" uuid="d3003de3-1ac7-4746-9c5e-d8807fa43934">
 					<property name="net.sf.jasperreports.export.json.path" value="stations.station_status_session_id"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<propertyExpression name="net.sf.jasperreports.export.json.data"><![CDATA[$F{station_status_session_id} == null ? "" : $F{station_status_session_id}]]></propertyExpression>
 				</reportElement>
 				<textElement verticalAlignment="Top"/>
 				<textFieldExpression><![CDATA[$F{station_status_session_id}]]></textFieldExpression>
