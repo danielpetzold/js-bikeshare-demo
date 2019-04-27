@@ -28,7 +28,7 @@ class SendToStationModal extends Component<SendToStationProps, SendToStationStat
 
   assemblePayload(): SendToStationPayload {
     return {
-      stationId: this.props.data.stationId.toString(),
+      stationId: this.props.data.stationId,
       routeId: this.props.data.routeId,
       highPri: this.state.isPriority ? 1 : 0
     };

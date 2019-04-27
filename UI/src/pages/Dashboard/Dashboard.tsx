@@ -191,12 +191,12 @@ class Dashboard extends React.Component<DashboardProps, DashboardState> {
 
   openSendToStationModal = (data: any) => {
     let popupData: SendToStationData = {
-      driverName: 'Test Driver',  // Temporary until value is added
-      regionName: this.state.selectedFilters.Region.label,  // Temporary until value is added
+      driverName: data.driverName,
+      regionName: data.regionName,
       routeId: data.routeId,
       numBikesDisabled: data.bikesDisabled,
       numDocksAvailable: data.docksAvailable,
-      stationId: data.id
+      stationId: data.stationId
     };
     this.setState({popupData: popupData});
   };
