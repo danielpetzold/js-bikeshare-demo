@@ -11,6 +11,7 @@ import JasperReportsService from "../../services/JasperReportsService";
 import RegionMap from "../../components/RegionMap/RegionMap";
 import SendToStationModal from "../../components/SendToStationModal/SendToStationModal";
 import { SendToStationData } from "../../components/SendToStationModal/SendToStationModal.types";
+import { PopupData } from "../../components/RegionMap/RegionMap.types";
 
 const filterDataICUri = '/public/Bikeshare_demo/Reports/Lookups';
 const mapDataLocations: any = {
@@ -189,7 +190,7 @@ class Dashboard extends React.Component<DashboardProps, DashboardState> {
     this.setFilter(Object.assign({}, {...this.state.selectedFilters, Region: selectedRegion} ));
   };
 
-  openSendToStationModal = (data: any) => {
+  openSendToStationModal = (data: PopupData) => {
     let popupData: SendToStationData = {
       driverName: data.driverName,
       regionName: data.regionName,

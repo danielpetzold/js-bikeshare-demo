@@ -1,10 +1,11 @@
 import React, { Component } from "react";
 import './RegionMap.scss';
+import {PopupData} from "./RegionMap.types";
 
 interface RegionMapProps {
   mapData: any;
   onClick: (marker: any) => void;
-  openModal: (data: any) => void;   //TODO: Create Data type for modal
+  openModal: (data: PopupData) => void;
 }
 
 // Map tiles using openMapTiles schema from Carto Positron style
