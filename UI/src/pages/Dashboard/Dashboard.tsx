@@ -53,7 +53,7 @@ class Dashboard extends React.Component<DashboardProps, DashboardState> {
         this.setFilters(success);
         return this.getReports();
       })
-      .then((success: any) => {
+      .then(() => {
         this.getMap();
       });
   }
@@ -107,7 +107,7 @@ class Dashboard extends React.Component<DashboardProps, DashboardState> {
         this.setState({ regionMapData: mapData.data, displayedMap: displayMap })
       }
     } catch (e) {
-      console.log(e);
+      console.error(e);
     }
   }
 
@@ -211,13 +211,11 @@ class Dashboard extends React.Component<DashboardProps, DashboardState> {
   };
 
   render() {
-    let map;
+    let map = null;
     if (this.state.displayedMap === 'Franchise' && this.state.franchiseMapData.length) {
       map = <FranchiseMap mapData={this.state.franchiseMapData} onClick={this.onClickMapMarker} />;
     } else if (this.state.displayedMap === 'Region' && this.state.regionMapData){
       map =  <RegionMap mapData={this.state.regionMapData} onClick={this.onClickMapMarker} openModal={this.openSendToStationModal}/>
-    } else {
-      map = null;
     }
 
     return (
