@@ -2,6 +2,7 @@ import { SendToStationData } from "../../components/SendToStationModal/SendToSta
 
 export interface DashboardProps {
   sessionId: string;
+  role: string;
 }
 
 export interface DashboardState {

@@ -6,6 +6,7 @@ interface RegionMapProps {
   mapData: any;
   onClick: (marker: any) => void;
   openModal: (data: PopupData) => void;
+  role: string;
 }
 
 // Map tiles using openMapTiles schema from Carto Positron style

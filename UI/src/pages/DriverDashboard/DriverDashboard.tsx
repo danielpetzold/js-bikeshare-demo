@@ -5,20 +5,25 @@ import { visualizeHelper } from '../../helpers/VisualizeHelper';
 import './DriverDashboard.scss';
 import NavBar from '../../components/NavBar/NavBar';
 import CheckInModal from '../../components/CheckInModal/CheckInModal';
+import JasperReportsService from "../../services/JasperReportsService";
+import RegionMap from "../../components/RegionMap/RegionMap";
 
 interface State {
   isCheckInOpen: boolean;
   selectedStationId: number | null;
+  mapData: any | null;
 }
 
 class DriverDashboard extends Component<any, State> {
   state: State = {
     isCheckInOpen: false,
-    selectedStationId: null
+    selectedStationId: null,
+    mapData: null
   };
 
   componentDidMount() {
     this.getReport();
+    this.getMap();
   }
 
   getReport = () => {
@@ -40,6 +45,22 @@ class DriverDashboard extends Component<any, State> {
     );
   };
 
+  async getMap() {
+    try {
+      let mapData = await JasperReportsService.get('/rest_v2/reports/public/Bikeshare_demo/Reports/Data/RegionStationData.json', {
+        params: {
+          Franchise: 'BA',
+          Region: '3',
+          Route: 'SF10'
+        }
+      });
+      console.log(mapData);
+      this.setState({ mapData: mapData.data})
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
   refreshPage = () => {
     this.getReport();
   };
@@ -47,6 +68,10 @@ class DriverDashboard extends Component<any, State> {
   checkInStation = async (e: any, link: any) => {
     this.setState({ isCheckInOpen: true, selectedStationId: link.href });
   };
+
+  temp() {
+
+  }
 
   render() {
     return (
@@ -65,7 +90,11 @@ class DriverDashboard extends Component<any, State> {
           {/* MAP */}
           <div className={'grid driver-map-grid'}>
             <div className={'grid__row map-view'}>
-              <div className={'grid__column-12 grid__column-m-4'} />
+              <div className={'grid__column-12 grid__column-m-4'} >
+                {this.state.mapData && (
+                  <RegionMap role={this.props.role} mapData={this.state.mapData} onClick={this.temp} openModal={this.temp}/>
+                )}
+              </div>
             </div>
           </div>
           {/* REPORTS */}
@@ -107,7 +136,8 @@ class DriverDashboard extends Component<any, State> {
 
 const mapStateToProps = (state: ReduxState) => {
   return {
-    sessionId: state.general.sessionId
+    sessionId: state.general.sessionId,
+    role: state.login.user.role
   };
 };
 
