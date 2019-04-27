@@ -1,3 +1,5 @@
+import { SendToStationData } from "../../components/SendToStationModal/SendToStationModal.types";
+
 export interface DashboardProps {
   sessionId: string;
 }
@@ -10,6 +12,7 @@ export interface DashboardState {
   regionMapData: any;
   franchiseMapData: FranchiseMapData[];
   displayedMap: string;
+  popupData: SendToStationData | null
 }
 
 export interface SelectedFilters {

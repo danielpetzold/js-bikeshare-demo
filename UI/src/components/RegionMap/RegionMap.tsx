@@ -1,16 +1,18 @@
 import React, { Component } from "react";
 import './RegionMap.scss';
+import {PopupData} from "./RegionMap.types";
 
 interface RegionMapProps {
   mapData: any;
   onClick: (marker: any) => void;
+  openModal: (data: PopupData) => void;
 }
 
 // Map tiles using openMapTiles schema from Carto Positron style
 const baseMapUrl = 'http://basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png';
 const redMarkerImage: any = require(`../../assets/RedMarker.png`);
 const yellowMarkerImage: any = require(`../../assets/YellowMarker.png`);
-const grayMarkerImage: any = require(`../../assets/GrayMarker.png`);
+const grayMarkerImage: any = require(`../../assets/StationDot.png`);
 
 class RegionMap extends Component<RegionMapProps> {
   geo: any;
@@ -38,10 +40,6 @@ class RegionMap extends Component<RegionMapProps> {
     this.addMapTiles();
     this.addMapNavigation();
     this.addRegionMapMarkers();
-  }
-
-  componentWillUnmount() {
-    this.popupEvent.removeEventListener('click', (event: any) => { this.openSendToStationModal(event)});
   }
 
   addMapTiles() {
@@ -78,12 +76,6 @@ class RegionMap extends Component<RegionMapProps> {
 
     this.popupsLayer =  new this.geo.PopupsLayer();
     this.map.addLayer(this.popupsLayer);
-
-    let button = `
-        <div class="popup__interaction-area">
-            <a id="popup__button" class="popup__button" href="#">Send Driver to Station</a>
-        </div> 
-      `;
 
     let popupContent = `
       <div class='popup' id={{name}}>
@@ -144,9 +136,13 @@ class RegionMap extends Component<RegionMapProps> {
           docksAvailable: station.num_docks_available,
           docksDisabled: station.num_docks_disabled,
           bikesDisabled: station.num_bikes_disabled,
+          stationId: station.station_id,
+          routeId: station.route_id,
           lat: station.lat,
           lon: station.lon,
           name: station.name,
+          regionName: this.props.mapData.name,
+          driverName: station.route_driver_name,
           showButton: marker.color === 'red' ? 'flex' : 'none'
         })
       );
@@ -178,8 +174,8 @@ class RegionMap extends Component<RegionMapProps> {
   openSendToStationModal(e: any) {
     e.preventDefault();
     if (e.target.id === 'popup__button') {
-      // console.log(this.popup.options.data);
       this.popup.close();
+      this.props.openModal(this.popup.options.data);
     }
   }
 
@@ -189,10 +185,10 @@ class RegionMap extends Component<RegionMapProps> {
       image: null,
       color: ''
     };
-    if ((activeStationStatus.num_bikes_available === 0 || activeStationStatus.num_bikes_disabled > 5) && activeStationStatus.station_status_session_id === "null") {
+    if ((activeStationStatus.num_bikes_available === 0 || activeStationStatus.num_bikes_disabled > 5) && !activeStationStatus.station_status_session_id) {
       marker.image = redMarkerImage;
       marker.color = 'red';
-    } else if ((activeStationStatus.num_bikes_available === 0 || activeStationStatus.num_bikes_disabled > 5) && activeStationStatus.station_status_session_id !== "null" && !isCompleted) {
+    } else if ((activeStationStatus.num_bikes_available === 0 || activeStationStatus.num_bikes_disabled > 5) && activeStationStatus.station_status_session_id && !isCompleted) {
       marker.image = yellowMarkerImage;
       marker.color = 'yellow';
     } else if (activeStationStatus.num_bikes_available > 0 && activeStationStatus.num_bikes_disabled <= 5) {

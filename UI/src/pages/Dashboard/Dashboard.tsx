@@ -9,6 +9,9 @@ import { DashboardProps, DashboardState, FilterOption, ReportParams } from "./Da
 import FranchiseMap from "../../components/FranchiseMap/FranchiseMap";
 import JasperReportsService from "../../services/JasperReportsService";
 import RegionMap from "../../components/RegionMap/RegionMap";
+import SendToStationModal from "../../components/SendToStationModal/SendToStationModal";
+import { SendToStationData } from "../../components/SendToStationModal/SendToStationModal.types";
+import { PopupData } from "../../components/RegionMap/RegionMap.types";
 
 const filterDataICUri = '/public/Bikeshare_demo/Reports/Lookups';
 const mapDataLocations: any = {
@@ -38,7 +41,8 @@ class Dashboard extends React.Component<DashboardProps, DashboardState> {
       kpiDetailReport: 'Dashboard_Stations_InNeed_Detail',
       franchiseMapData: [],
       regionMapData: null,
-      displayedMap: ''
+      displayedMap: '',
+      popupData: null
     };
   }
 
@@ -49,7 +53,7 @@ class Dashboard extends React.Component<DashboardProps, DashboardState> {
         this.setFilters(success);
         return this.getReports();
       })
-      .then((success: any) => {
+      .then(() => {
         this.getMap();
       });
   }
@@ -103,7 +107,7 @@ class Dashboard extends React.Component<DashboardProps, DashboardState> {
         this.setState({ regionMapData: mapData.data, displayedMap: displayMap })
       }
     } catch (e) {
-      console.log(e);
+      console.error(e);
     }
   }
 
@@ -149,7 +153,7 @@ class Dashboard extends React.Component<DashboardProps, DashboardState> {
       params[key] = [this.state.selectedFilters[key].value];
     }
     this.props.sessionId
-      ? (params = { ...params, session_Id: [this.props.sessionId] })
+      ? (params = { ...params, Session_ID: [this.props.sessionId] })
       : null;
     return params;
   };
@@ -186,14 +190,32 @@ class Dashboard extends React.Component<DashboardProps, DashboardState> {
     this.setFilter(Object.assign({}, {...this.state.selectedFilters, Region: selectedRegion} ));
   };
 
+  openSendToStationModal = (data: PopupData) => {
+    let popupData: SendToStationData = {
+      driverName: data.driverName,
+      regionName: data.regionName,
+      routeId: data.routeId,
+      numBikesDisabled: data.bikesDisabled,
+      numDocksAvailable: data.docksAvailable,
+      stationId: data.stationId
+    };
+    this.setState({popupData: popupData});
+  };
+
+  closeModal = (refresh: boolean) => {
+    this.setState({popupData: null});
+    if (refresh) {
+      this.getReports();
+      this.getMap();
+    }
+  };
+
   render() {
-    let map;
+    let map = null;
     if (this.state.displayedMap === 'Franchise' && this.state.franchiseMapData.length) {
       map = <FranchiseMap mapData={this.state.franchiseMapData} onClick={this.onClickMapMarker} />;
     } else if (this.state.displayedMap === 'Region' && this.state.regionMapData){
-      map =  <RegionMap mapData={this.state.regionMapData} onClick={this.onClickMapMarker} />
-    } else {
-      map = null;
+      map =  <RegionMap mapData={this.state.regionMapData} onClick={this.onClickMapMarker} openModal={this.openSendToStationModal}/>
     }
 
     return (
@@ -208,6 +230,10 @@ class Dashboard extends React.Component<DashboardProps, DashboardState> {
           />
         ) : null}
         <div className={'dashboard'}>
+          {this.state.popupData && (
+            <SendToStationModal data={this.state.popupData} closeModal={this.closeModal}/>
+          )}
+
           <header className={'dashboard-header'}>
             <div className={'dashboard-header__content grid'}>
               <div className={'grid__row'}>
