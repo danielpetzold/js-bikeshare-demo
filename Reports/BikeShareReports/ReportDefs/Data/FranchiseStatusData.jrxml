@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 7.2.1.final using JasperReports Library version 6.6.0  -->
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="FranchiseRegionStationStatusData" pageWidth="792" pageHeight="612" orientation="Landscape" columnWidth="792" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" isSummaryWithPageHeaderAndFooter="true" uuid="cb872b2c-8e1c-4ee9-864a-d0a539435aae">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="FranchiseRegionStationStatusData" pageWidth="792" pageHeight="612" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="792" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" isSummaryWithPageHeaderAndFooter="true" uuid="cb872b2c-8e1c-4ee9-864a-d0a539435aae">
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Bikeshare demo Local"/>
 	<property name="com.jaspersoft.studio.unit." value="pixel"/>
@@ -14,13 +14,20 @@
 	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
 	<property name="ireport.jasperserver.url" value="http://jrs-bikes-elasticl-1k5yhf91vrjuo-1806919984.us-east-2.elb.amazonaws.com/jasperserver-pro/"/>
 	<property name="ireport.jasperserver.user" value="superuser"/>
-	<property name="ireport.jasperserver.report.resource" value="/public/Bikeshare_demo/Reports/Data/FranchiseRegionStatusData_files/main_jrxml"/>
+	<property name="ireport.jasperserver.report.resource" value="/public/Bikeshare_demo/Reports/Data/FranchiseRegionStatusData_files/FranchiseStatusData"/>
 	<property name="ireport.jasperserver.reportUnit" value="/public/Bikeshare_demo/Reports/Data/FranchiseRegionStatusData"/>
-	<parameter name="franchise" class="java.lang.String">
-		<defaultValueExpression><![CDATA["BA"]]></defaultValueExpression>
+	<property name="com.jaspersoft.studio.report.unit.description" value="Region status and details for a franchise"/>
+	<parameter name="LoggedInUsername" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[Of logged in user]]></parameterDescription>
+		<defaultValueExpression><![CDATA["joeuser"]]></defaultValueExpression>
 	</parameter>
-	<parameter name="sessionId" class="java.lang.String">
+	<parameter name="LoggedInUserTenantId" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="Franchise" class="java.lang.String"/>
+	<parameter name="session_id" class="java.lang.String">
 		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="FranchiseFilter" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[$P{LoggedInUserTenantId} != null ? $P{LoggedInUserTenantId} : $P{Franchise}]]></defaultValueExpression>
 	</parameter>
 	<queryString language="SQL">
 		<![CDATA[select cStat.system_id, si.region_id, cStat.station_id, cStat.last_reported, cStat.session_id,
@@ -37,12 +44,12 @@ join (
   select system_id, station_id,
     max(last_reported) as maxStatusTime
   from station_status
-  where system_id = $P{franchise} and (session_id is null or session_id = $P{sessionId})
+  where system_id = $P{Franchise} and (session_id is null or session_id = $P{session_id})
   group by system_id, station_id) as  mStat
 on mStat.system_id = cStat.system_id and mStat.station_id = cStat.station_id and mStat.maxStatusTime = cStat.last_reported
 join station_information si on (si.system_id = cStat.system_id and si.station_id = cStat.station_id)
 join system_region r on (si.system_id = r.system_id and si.region_id = r.region_id)
-WHERE si.system_id = $P{franchise}
+WHERE si.system_id = $P{FranchiseFilter}
 order by cStat.system_id, si.region_id, cStat.station_id]]>
 	</queryString>
 	<field name="system_id" class="java.lang.String">
@@ -154,7 +161,7 @@ order by cStat.system_id, si.region_id, cStat.station_id]]>
 					<reportElement x="620" y="0" width="100" height="30" uuid="41a10f20-245d-4a6d-b7d9-40807ba43183">
 						<property name="net.sf.jasperreports.export.json.path" value="percent_stations_in_need"/>
 					</reportElement>
-					<textFieldExpression><![CDATA[Math.round($V{StationsInNeedCount} / $V{Region_COUNT} * 1000.0)/10.0]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$V{Region_COUNT} != 0 ? Math.round($V{StationsInNeedCount} / $V{Region_COUNT} * 1000.0)/10.0 : 0.0]]></textFieldExpression>
 				</textField>
 			</band>
 		</groupFooter>
@@ -163,9 +170,23 @@ order by cStat.system_id, si.region_id, cStat.station_id]]>
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="50"/>
+		<band height="54">
+			<textField>
+				<reportElement x="136" y="10" width="380" height="30" uuid="5dc773c5-e05a-4d9a-ac61-c840142b51a2"/>
+				<textFieldExpression><![CDATA["<" + $P{session_id} + ">"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="526" y="10" width="100" height="30" uuid="52a53482-c9f1-465f-96b9-0cde34952618"/>
+				<textFieldExpression><![CDATA[$P{LoggedInUsername}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="20" y="10" width="100" height="30" uuid="cf61b249-41a8-4d92-9d70-e02aefee3daa"/>
+				<textFieldExpression><![CDATA[$P{FranchiseFilter}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="640" y="10" width="100" height="30" uuid="159f0f97-cd44-404c-9cd2-3c61b9cbdf86"/>
+				<textFieldExpression><![CDATA[$P{LoggedInUserTenantId}]]></textFieldExpression>
+			</textField>
+		</band>
 	</title>
-	<summary>
-		<band height="50"/>
-	</summary>
 </jasperReport>
