@@ -20,7 +20,7 @@ export const getSessionId = (cb: Function) => {
     .then(res => {
       cb(res.data.sessionToken);
     })
-    .catch(err => console.log(err));
+    .catch(err => console.error(err));
 };
 
 export const getStationStatus = (id: number | null, cb: Function) => {
@@ -29,7 +29,7 @@ export const getStationStatus = (id: number | null, cb: Function) => {
     .then(res => {
       cb(res.data);
     })
-    .catch(err => console.log(err));
+    .catch(err => console.error(err));
 };
 
 export const postStationStatus = (stationStatus: StationStatus) => {
@@ -40,7 +40,7 @@ export const postStationStatus = (stationStatus: StationStatus) => {
       'Content-Type': 'application/json'
     },
     credentials: 'include'
-  }).catch(err => console.log(err));
+  }).catch(err => console.error(err));
 };
 
 export const setRouteStop = (sendToStationPayload: SendToStationPayload) => {
@@ -51,5 +51,16 @@ export const setRouteStop = (sendToStationPayload: SendToStationPayload) => {
       'Content-Type': 'application/json'
     },
     credentials: 'include'
-  }).catch(err => console.log(err));
+  }).catch(err => console.error(err));
+};
+
+export const getDriverNotifications = async () => {
+  const response: any = await fetch(`${baseURL}/route-stops/session`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    credentials: 'include'
+  }).catch(err => console.error(err));
+  return await response.json();
 };

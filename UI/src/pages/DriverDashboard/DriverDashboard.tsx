@@ -7,21 +7,25 @@ import NavBar from '../../components/NavBar/NavBar';
 import CheckInModal from '../../components/CheckInModal/CheckInModal';
 import JasperReportsService from "../../services/JasperReportsService";
 import RegionMap from "../../components/RegionMap/RegionMap";
+import { getDriverNotifications } from "../../services/apiCalls";
 
 interface State {
   isCheckInOpen: boolean;
   selectedStationId: number | null;
   mapData: any | null;
+  notifications: Notification[] | null;
 }
 
 class DriverDashboard extends Component<any, State> {
   state: State = {
     isCheckInOpen: false,
     selectedStationId: null,
-    mapData: null
+    mapData: null,
+    notifications: null
   };
 
   componentDidMount() {
+    this.getNotifications();
     this.getReport();
     this.getMap();
   }
@@ -67,6 +71,11 @@ class DriverDashboard extends Component<any, State> {
 
   checkInStation = async (e: any, link: any) => {
     this.setState({ isCheckInOpen: true, selectedStationId: link.href });
+  };
+
+  getNotifications = async () => {
+    let notifications: Notification[] = await getDriverNotifications();
+    this.setState({notifications: notifications});
   };
 
   render() {
