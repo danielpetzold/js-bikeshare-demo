@@ -214,11 +214,10 @@ class RegionMap extends Component<RegionMapProps> {
     await this.itineraryService.computeItinerary(start, end, waypoints, computeOptions)
       .then((results: any) => {
         if (results) {
-          console.log(results);
           this.itineraryRenderer.displayItinerary(results, {
             zoomToItinerary: true,
             stroke: true,
-            strokeColor: "#1c9d6c",
+            strokeColor: "#69caa4",
             strokeWeight: 4,
             startMarkerPath: greenDotImage,
             endMarkerPath: greenCircleImage
