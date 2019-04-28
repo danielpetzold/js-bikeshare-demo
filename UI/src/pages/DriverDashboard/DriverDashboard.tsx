@@ -60,7 +60,7 @@ class DriverDashboard extends Component<any, State> {
           Route: 'SF10'
         }
       });
-      this.setState({ mapData: mapData.data})
+      this.setState({ mapData: mapData.data[0]})
     } catch (e) {
       console.error(e);
     }

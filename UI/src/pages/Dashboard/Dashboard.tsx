@@ -104,7 +104,7 @@ class Dashboard extends React.Component<DashboardProps, DashboardState> {
       if (displayMap === 'Franchise') {
         this.setState({ franchiseMapData: mapData.data, displayedMap: displayMap })
       } else {
-        this.setState({ regionMapData: mapData.data, displayedMap: displayMap })
+        this.setState({ regionMapData: mapData.data[0], displayedMap: displayMap })
       }
     } catch (e) {
       console.error(e);
