@@ -1,4 +1,4 @@
-export interface Notification {
+export interface DriverNotificationData {
   driver_id: string;
   id: string;
   is_completed: boolean
