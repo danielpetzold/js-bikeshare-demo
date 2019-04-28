@@ -20,6 +20,10 @@ const greenMarkerImage: any = require(`../../assets/GreenMarker.png`);
 const greenDotImage: any = require(`../../assets/Green-Dot.png`);
 const greenCircleImage: any = require(`../../assets/Green-Circle.png`);
 
+const itineraryServiceAccount = "demo";
+const itineraryServiceKey = '2u7kdn4DnYE=';
+const itineraryServiceURL = 'https://geowebservices.maporama.com/';
+
 class RegionMap extends Component<RegionMapProps> {
   geo: any;
   map: any;
@@ -191,7 +195,7 @@ class RegionMap extends Component<RegionMapProps> {
   }
 
   async drawRoute() {
-    this.itineraryService = new this.geo.ItineraryService("demo", "2u7kdn4DnYE=", "https://geowebservices.maporama.com/");
+    this.itineraryService = new this.geo.ItineraryService(itineraryServiceAccount, itineraryServiceKey, itineraryServiceURL);
     this.itineraryRenderer = new this.geo.ItineraryRenderer(this.map);
 
     // Sort by stop order
@@ -201,7 +205,7 @@ class RegionMap extends Component<RegionMapProps> {
 
     let waypoints = sortedStations.map((station: any) => {
       return new this.geo.LatLng(station.lat, station.lon);
-    })
+    });
 
     let start = waypoints.shift();
     let end = waypoints.pop();
