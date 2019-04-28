@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import './RegionMap.scss';
 import {PopupData} from "./RegionMap.types";
-import { FRANCHISE_MANAGER_ROLE } from "../../helpers/userData";
+import { DRIVER_ROLE, FRANCHISE_MANAGER_ROLE } from "../../helpers/userData";
 
 interface RegionMapProps {
   mapData: any;
@@ -53,7 +53,10 @@ class RegionMap extends Component<RegionMapProps> {
     this.map.addLayer(tibcoLayerStandard);
 
     this.addMapTiles();
-    this.drawRoute();
+
+    // Draw route only for Driver
+    this.props.role === DRIVER_ROLE ? this.drawRoute() : null;
+
     this.addMapNavigation();
     this.addRegionMapMarkers();
   }
