@@ -1,0 +1,59 @@
+@import '../../scss/util/colors';
+@import '../../scss/util/variables';
+
+.driver-notification {
+  width: calc(100vw - 20px);
+  display: flex;
+  flex-direction: column;
+  background-color: $white;
+  box-shadow: 0 4px 25px -10px rgba(0, 0, 0, 0.5);
+  border: solid 1px $jade;
+  padding: 12px;
+  box-sizing: border-box;
+  margin: 10px 0;
+  position: relative;
+
+  &__close {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    cursor: pointer;
+  }
+
+  &__title {
+    font-size: 24px;
+    line-height: 30px;
+  }
+
+  &__info {
+    display: inline-flex;
+    color: $cool-grey-two;
+  }
+
+  &__data {
+    margin-right: 10px;
+    line-height: 24px;
+  }
+
+  &__bike-icon {
+    color: $gunmetal;
+    margin-right: 4px;
+  }
+
+  &__wrench-icon {
+    color: $pale-red;
+    margin-right: 4px;
+  }
+
+  &__route-info {
+    font-size: 12px;
+    line-height: 20px;
+    color: $cool-grey-two;
+  }
+}
+
+@media screen and (min-width: $tablet-break) {
+  .driver-notification {
+    width: 600px;
+  }
+}

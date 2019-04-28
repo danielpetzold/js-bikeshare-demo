@@ -7,21 +7,27 @@ import NavBar from '../../components/NavBar/NavBar';
 import CheckInModal from '../../components/CheckInModal/CheckInModal';
 import JasperReportsService from "../../services/JasperReportsService";
 import RegionMap from "../../components/RegionMap/RegionMap";
+import { getDriverNotifications } from "../../services/apiCalls";
+import DriverNotification from "../../components/DriverNotification/DriverNotification";
+import { DriverNotificationData } from "./DriverDashboard.types";
 
 interface State {
   isCheckInOpen: boolean;
   selectedStationId: number | null;
   mapData: any | null;
+  notifications: DriverNotificationData[] | null;
 }
 
 class DriverDashboard extends Component<any, State> {
   state: State = {
     isCheckInOpen: false,
     selectedStationId: null,
-    mapData: null
+    mapData: null,
+    notifications: null
   };
 
   componentDidMount() {
+    this.getNotifications();
     this.getReport();
     this.getMap();
   }
@@ -69,11 +75,30 @@ class DriverDashboard extends Component<any, State> {
     this.setState({ isCheckInOpen: true, selectedStationId: link.href });
   };
 
+  getNotifications = async () => {
+    let notifications: DriverNotificationData[] = await getDriverNotifications();
+    this.setState({notifications: notifications});
+  };
+
+  closeNotification = (index: number) => {
+    const newNotifications = this.state.notifications;
+    newNotifications ? newNotifications.splice(index, 1) : null;
+    this.setState({notifications: newNotifications})
+  };
+
   render() {
+
+    const notifications = this.state.notifications ? this.state.notifications.map((item, key) => {
+      return <DriverNotification data={item} index={key} closeNotification={this.closeNotification} key={key}/>
+    }) : null;
+
     return (
       <>
         <NavBar altHamburger={true} />
         <div className={'dash-container'}>
+          <div className="notification-container">
+            {notifications}
+          </div>
           <div className={'grid driver-header-grid'}>
             {/* HEADER */}
             <div className={'grid__row dash-header hide-mobile'}>

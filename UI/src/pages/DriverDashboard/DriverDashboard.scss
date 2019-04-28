@@ -1,6 +1,14 @@
 @import '../../scss/util/colors';
 @import '../../scss/util/variables';
 
+.notification-container {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  z-index: 2;
+  margin-top: 0px;
+}
+
 .dash-container {
   display: flex;
   flex-direction: column;
@@ -102,6 +110,10 @@
 }
 
 @media screen and (min-width: $tablet-break) {
+  .notification-container {
+    margin-top: 24px;
+  }
+
   .hide-mobile {
     display: inline-block;
   }
