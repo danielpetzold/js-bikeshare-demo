@@ -215,7 +215,7 @@ class Dashboard extends React.Component<DashboardProps, DashboardState> {
     if (this.state.displayedMap === 'Franchise' && this.state.franchiseMapData.length) {
       map = <FranchiseMap mapData={this.state.franchiseMapData} onClick={this.onClickMapMarker} />;
     } else if (this.state.displayedMap === 'Region' && this.state.regionMapData){
-      map =  <RegionMap mapData={this.state.regionMapData} onClick={this.onClickMapMarker} openModal={this.openSendToStationModal}/>
+      map =  <RegionMap role={this.props.role} mapData={this.state.regionMapData} onClick={this.onClickMapMarker} openModal={this.openSendToStationModal}/>
     }
 
     return (
@@ -328,7 +328,8 @@ class Dashboard extends React.Component<DashboardProps, DashboardState> {
 
 const mapStateToProps = (state: State) => {
   return {
-    sessionId: state.general.sessionId
+    sessionId: state.general.sessionId,
+    role: state.login.user.role
   };
 };
 

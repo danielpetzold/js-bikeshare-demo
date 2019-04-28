@@ -1,18 +1,28 @@
 import React, { Component } from "react";
 import './RegionMap.scss';
 import {PopupData} from "./RegionMap.types";
+import { DRIVER_ROLE, FRANCHISE_MANAGER_ROLE } from "../../helpers/userData";
 
 interface RegionMapProps {
   mapData: any;
-  onClick: (marker: any) => void;
-  openModal: (data: PopupData) => void;
+  onClick?: (marker: any) => void;
+  openModal?: (data: PopupData) => void;
+  role: string;
 }
 
 // Map tiles using openMapTiles schema from Carto Positron style
 const baseMapUrl = 'http://basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png';
 const redMarkerImage: any = require(`../../assets/RedMarker.png`);
 const yellowMarkerImage: any = require(`../../assets/YellowMarker.png`);
-const grayMarkerImage: any = require(`../../assets/StationDot.png`);
+const grayDotImage: any = require(`../../assets/StationDot.png`);
+const grayMarkerImage: any = require('../../assets/GrayMarker.png');
+const greenMarkerImage: any = require(`../../assets/GreenMarker.png`);
+const greenDotImage: any = require(`../../assets/Green-Dot.png`);
+const greenCircleImage: any = require(`../../assets/Green-Circle.png`);
+
+const itineraryServiceAccount = "demo";
+const itineraryServiceKey = '2u7kdn4DnYE=';
+const itineraryServiceURL = 'https://geowebservices.maporama.com/';
 
 class RegionMap extends Component<RegionMapProps> {
   geo: any;
@@ -23,12 +33,16 @@ class RegionMap extends Component<RegionMapProps> {
   popupsLayer: any;
   popup: any;
   popupEvent: any;
+  itineraryService: any;
+  itineraryRenderer: any;
 
   componentDidMount() {
     // Get reference to GeoAnalytics global instance
     this.geo = (window as any).T;
 
     let mapContainer = this.geo.DomUtil.get('region-map');
+    let tibcoLayerStandard = new this.geo.TibcoLayer({name: "TibcoLayer 1"});
+
     this.map = new this.geo.Map(
       mapContainer,
       {
@@ -36,8 +50,13 @@ class RegionMap extends Component<RegionMapProps> {
         center: new this.geo.LatLng(this.props.mapData.center_lat, this.props.mapData.center_lon)
       }
     );
+    this.map.addLayer(tibcoLayerStandard);
 
     this.addMapTiles();
+
+    // Draw route only for Driver
+    this.props.role === DRIVER_ROLE ? this.drawRoute() : null;
+
     this.addMapNavigation();
     this.addRegionMapMarkers();
   }
@@ -108,7 +127,6 @@ class RegionMap extends Component<RegionMapProps> {
             </div>
         </div>
         <div class="popup__interaction-area" style="display: {{showButton}}">
-        
             <a id="popup__button" class="popup__button" href="#">Send Driver to Station</a>
         </div> 
       </div>`;
@@ -129,7 +147,7 @@ class RegionMap extends Component<RegionMapProps> {
     this.popupsLayer.addPopup(this.popup);
 
     this.props.mapData.stations.forEach((station: any) => {
-      let marker = this.getMarkerImage(station, station.route_stop_is_completed);
+      let marker = this.props.role === FRANCHISE_MANAGER_ROLE ? this.getMarkerImage(station, station.route_stop_is_completed) : this.getDriverMarkerImage(station, station.route_stop_is_completed);
       this.markersLayer.addMarker(new this.geo.ImageMarker( new this.geo.LatLng(station.lat, station.lon),
           marker.image, {
           bikesAvailable: station.num_bikes_available,
@@ -143,7 +161,7 @@ class RegionMap extends Component<RegionMapProps> {
           name: station.name,
           regionName: this.props.mapData.name,
           driverName: station.route_driver_name,
-          showButton: marker.color === 'red' ? 'flex' : 'none'
+          showButton: marker.color === 'red' && this.props.role === FRANCHISE_MANAGER_ROLE ? 'flex' : 'none'
         })
       );
       //Add events
@@ -175,9 +193,45 @@ class RegionMap extends Component<RegionMapProps> {
     e.preventDefault();
     if (e.target.id === 'popup__button') {
       this.popup.close();
-      this.props.openModal(this.popup.options.data);
+      this.props.openModal ? this.props.openModal(this.popup.options.data) : null;
     }
   }
+
+  async drawRoute() {
+    this.itineraryService = new this.geo.ItineraryService(itineraryServiceAccount, itineraryServiceKey, itineraryServiceURL);
+    this.itineraryRenderer = new this.geo.ItineraryRenderer(this.map);
+
+    // Sort by stop order
+    let sortedStations = this.props.mapData.stations.sort((a: any, b: any) => {
+      (a.route_stop_order > b.route_stop_order) ? 1 : -1;
+    });
+
+    let waypoints = sortedStations.map((station: any) => {
+      return new this.geo.LatLng(station.lat, station.lon);
+    });
+
+    let start = waypoints.shift();
+    let end = waypoints.pop();
+    let computeOptions = {
+      travelMode: 'vehicle',
+      avoidHighways: false,
+      optimizationType: 'time'
+    };
+
+    await this.itineraryService.computeItinerary(start, end, waypoints, computeOptions)
+      .then((results: any) => {
+        if (results) {
+          this.itineraryRenderer.displayItinerary(results, {
+            zoomToItinerary: true,
+            stroke: true,
+            strokeColor: "#69caa4",
+            strokeWeight: 4,
+            startMarkerPath: greenDotImage,
+            endMarkerPath: greenCircleImage
+          });
+        }
+      })
+  };
 
   // TODO: Simplify conditionals
   getMarkerImage(activeStationStatus: any, isCompleted: boolean) {
@@ -191,6 +245,27 @@ class RegionMap extends Component<RegionMapProps> {
     } else if ((activeStationStatus.num_bikes_available === 0 || activeStationStatus.num_bikes_disabled > 5) && activeStationStatus.station_status_session_id && !isCompleted) {
       marker.image = yellowMarkerImage;
       marker.color = 'yellow';
+    } else if (activeStationStatus.num_bikes_available > 0 && activeStationStatus.num_bikes_disabled <= 5) {
+      marker.image = grayDotImage;
+      marker.color = 'gray';
+    }
+    return marker;
+  }
+
+  getDriverMarkerImage(activeStationStatus: any, isCompleted: boolean) {
+    let marker = {
+      image: null,
+      color: ''
+    };
+    if ((activeStationStatus.num_bikes_available === 0 || activeStationStatus.num_bikes_disabled > 5) && !activeStationStatus.station_status_session_id && !isCompleted && activeStationStatus.route_stop_order === 0) {
+      marker.image = redMarkerImage;
+      marker.color = 'red';
+    } else if ((activeStationStatus.num_bikes_available === 0 || activeStationStatus.num_bikes_disabled > 5) && !activeStationStatus.station_status_session_id && !isCompleted && activeStationStatus.route_stop_order > 0) {
+      marker.image = yellowMarkerImage;
+      marker.color = 'yellow';
+    } else if (isCompleted) {
+      marker.image = greenMarkerImage;
+      marker.color = 'green';
     } else if (activeStationStatus.num_bikes_available > 0 && activeStationStatus.num_bikes_disabled <= 5) {
       marker.image = grayMarkerImage;
       marker.color = 'gray';
