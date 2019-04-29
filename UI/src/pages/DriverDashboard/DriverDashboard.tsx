@@ -57,7 +57,8 @@ class DriverDashboard extends Component<any, State> {
         params: {
           Franchise: 'BA',
           Region: '3',
-          Route: 'SF10'
+          Route: 'SF10',
+          session_id: this.props.sessionId
         }
       });
       this.setState({ mapData: mapData.data[0]})

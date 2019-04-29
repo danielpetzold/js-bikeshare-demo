@@ -98,7 +98,8 @@ class Dashboard extends React.Component<DashboardProps, DashboardState> {
       let mapData = await JasperReportsService.get(mapDataLocations[displayMap], {
         params: {
           Franchise: this.state.selectedFilters.Franchise.value,
-          Region: this.state.selectedFilters.Region.value
+          Region: this.state.selectedFilters.Region.value,
+          session_id: this.props.sessionId
         }
       });
       if (displayMap === 'Franchise') {
