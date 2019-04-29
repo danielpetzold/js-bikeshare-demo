@@ -131,6 +131,11 @@ class Dashboard extends React.Component<DashboardProps, DashboardState> {
       this.displayReport('in-need-report', this.state.kpiDetailReport, params)
     );
 
+    // Peak Trip Times
+    promiseArray.push(
+      this.displayReport('peak-trip-report', 'Dashboard_Peak_Trip_Times', params)
+    );
+
     return Promise.all(promiseArray);
   }
 
@@ -299,23 +304,22 @@ class Dashboard extends React.Component<DashboardProps, DashboardState> {
                 </div>
               </div>
 
-              <div className={'grid__row dashboard__KPI'}>
+              <div className={'grid__row dashboard-body__KPI'}>
                 <div className={'grid__column-12 grid__column-m-4'}>
                   <div
                     id={'kpi-report'}
-                    className={'dashboard__report-container'}
                   />
                 </div>
               </div>
 
               <div className={'grid__row'}>
                 <div className={'grid__column-8 grid__column-m-4'} >
-                  <div id={'in-need-report'} className={'dashboard__report-container'}></div>
+                  <div id={'in-need-report'} className={'dashboard-body__report-container'}></div>
                 </div>
                 <div className={'grid__column-4 grid__column-m-4'}>
                   <div
-                    id={'trip-detail-report'}
-                    className={'dashboard__report-container'}
+                    id={'peak-trip-report'}
+                    className={'dashboard-body__report-container'}
                   />
                 </div>
               </div>
