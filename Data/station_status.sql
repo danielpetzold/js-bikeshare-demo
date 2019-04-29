@@ -1,11 +1,22 @@
--- center of regions
+-- wrong!!! center of regions
 select si.system_id, si.region_id, avg(lat) as center_lat, avg(lon) as center_lon
 from station_information si
 where si.system_id in ('BA', 'bluebikes')
 group by si.system_id, si.region_id
 order by si.system_id, si.region_id
 
--- update center lat/lon of regions
+-- center of regions
+
+select si.system_id, si.region_id,
+min(lat) + ((max(lat) - min(lat)) / 2.0)  as center_lat, min(lat) as min_lat, max(lat) as max_lat,
+min(lon) + ((max(lon) - min(lon)) / 2.0)  as center_lat, min(lon) as min_lon, max(lon) as max_lon
+from station_information si
+where si.system_id in ('BA', 'bluebikes')
+group by si.system_id, si.region_id
+order by si.system_id, si.region_id
+
+
+-- wrong! update center lat/lon of regions
 update system_regions
 SET center_lat=subquery.center_lat,
     center_lon=subquery.center_lon
@@ -17,12 +28,36 @@ FROM (select si.system_id, si.region_id, avg(lat) as center_lat, avg(lon) as cen
 WHERE system_regions.system_id = subquery.system_id and  system_regions.region_id=subquery.region_id
 
 
--- update center lat/lon of systems
+update system_region
+SET center_lat=subquery.center_lat,
+    center_lon=subquery.center_lon
+FROM (select si.system_id, si.region_id,
+min(lat) + ((max(lat) - min(lat)) / 2.0)  as center_lat, min(lat) as min_lat, max(lat) as max_lat,
+min(lon) + ((max(lon) - min(lon)) / 2.0)  as center_lon, min(lon) as min_lon, max(lon) as max_lon
+from station_information si
+where si.system_id in ('BA', 'bluebikes')
+group by si.system_id, si.region_id) AS subquery
+WHERE system_region.system_id = subquery.system_id and  system_region.region_id=subquery.region_id
+
+
+-- Wrong! update center lat/lon of systems
 update system_information
 SET center_lat=subquery.center_lat,
     center_lon=subquery.center_lon
 FROM (select r.system_id, avg(center_lat) as center_lat, avg(center_lon) as center_lon
 	from system_regions r
+	where r.system_id in ('BA', 'bluebikes')
+	group by r.system_id
+	order by r.system_id) AS subquery
+WHERE system_information.system_id = subquery.system_id
+
+update system_information
+SET center_lat=subquery.center_lat,
+    center_lon=subquery.center_lon
+FROM (select r.system_id,
+	  min(r.center_lat) + ((max(r.center_lat) - min(r.center_lat)) / 2.0)  as center_lat,
+	  min(r.center_lon) + ((max(r.center_lon) - min(r.center_lon)) / 2.0) as center_lon
+	from system_region r
 	where r.system_id in ('BA', 'bluebikes')
 	group by r.system_id
 	order by r.system_id) AS subquery
