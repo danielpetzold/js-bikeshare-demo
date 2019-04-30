@@ -5,3 +5,8 @@
   height: 504px;
   background-color: $gunmetal;
 }
+
+// Override Geoanalytics Map styling for zoom navigation
+.zoom-thumb {
+  z-index: 0 !important
+}
