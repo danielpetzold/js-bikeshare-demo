@@ -62,27 +62,27 @@ class NavBar extends Component<any, State> {
             </a>
           </div>
           <ul className={'nav-bar__top-menu'}>
-            <li className={'nav-bar__item'}>
+            <li className={'nav-bar__item'} title="Trends and Analytics">
               <NavLink
                 activeClassName="nav-bar__link--active"
                 className="nav-bar__link"
                 to={title === 'Driver' ? '/driverDashboard' : '/dashboard'}
               >
                 <i className="icon-ic-trending-up nav-bar__icon " />
-                <span className="nav-bar__text">Trends and Analytics</span>
+                <span className="nav-bar__text" >Trends and Analytics</span>
               </NavLink>
             </li>
 
             {/* Hides icons for driver view */}
             {title !== 'Driver' && (
               <>
-                <li className={'nav-bar__item'}>
-                  <a className="nav-bar__link" href="#">
+                <li className={'nav-bar__item'} title='Franchises'>
+                  <a className="nav-bar__link" href="#" onClick={this.toggleNoAccess}>
                     <i className="icon-ic-store-mall nav-bar__icon " />
                     <span className="nav-bar__text">Franchises</span>
                   </a>
                 </li>
-                <li className={'nav-bar__item'}>
+                <li className={'nav-bar__item'} title='Roles and Permissions'>
                   <a
                     className="nav-bar__link"
                     href="#"
@@ -92,7 +92,7 @@ class NavBar extends Component<any, State> {
                     <span className="nav-bar__text">Roles and Permissions</span>
                   </a>
                 </li>
-                <li className={'nav-bar__item'}>
+                <li className={'nav-bar__item'} title="Reports">
                   <NavLink
                     activeClassName="nav-bar__link--active"
                     className="nav-bar__link"
@@ -105,17 +105,17 @@ class NavBar extends Component<any, State> {
               </>
             )}
             <div className="nav-bar__divider" />
-            <li className="nav-bar__item">
+            <li className="nav-bar__item" title='Notifications'>
               <a
                 className="nav-bar__link"
                 href="#"
                 onClick={this.toggleNoAccess}
               >
-                <i className="icon-ic-notifications nav-bar__icon " />
+                <i className="icon-ic-notifications nav-bar__icon "/>
                 <span className="nav-bar__text">Notifications</span>
               </a>
             </li>
-            <li className="nav-bar__item">
+            <li className="nav-bar__item" title='Settings'>
               <a
                 className="nav-bar__link"
                 href="#"

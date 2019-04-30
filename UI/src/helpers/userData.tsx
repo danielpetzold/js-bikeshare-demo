@@ -23,7 +23,7 @@ export const userData: User[] = [
       'WXQ9SzJkZE4xT19EXDYwcQ==mLdLkeHDirq7yQHSjBjuDrYDvoIfRE2+kRjEUU0ATK1Obry2FlaAJBzcg8Rv3SMxljx6FHq2BFdV2n9Q2ojtZg=='
   },
   {
-    userName: 'Jeff Franchise',
+    userName: 'Carolyn Franchise',
     title: 'Franchise Manager',
     role: FRANCHISE_MANAGER_ROLE,
     token:
