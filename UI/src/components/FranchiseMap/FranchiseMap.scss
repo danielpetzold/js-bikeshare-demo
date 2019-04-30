@@ -1,9 +1,27 @@
 @import '../../scss/util/colors';
 
 .franchise-map {
-  width: 100%;
-  height: 504px;
-  background-color: $gunmetal;
+  position: relative;
+
+  &__overlay {
+    width: 100%;
+    height: 504px;
+    z-index: 1;
+    position: absolute;
+    background-color: $gunmetal;
+    opacity: 0.1;
+
+    &--disabled {
+      pointer-events: none;
+      opacity: 0;
+    }
+  }
+
+  &__container {
+    width: 100%;
+    height: 504px;
+    background-color: $gunmetal;
+  }
 }
 
 // Override Geoanalytics Map styling for zoom navigation
