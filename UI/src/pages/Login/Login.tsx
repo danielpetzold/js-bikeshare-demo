@@ -2,14 +2,12 @@ import React, { Component } from 'react';
 import './Login.scss';
 import logo from '../../assets/logo.svg';
 import {
-  COO_ROLE,
   DRIVER_ROLE,
   FRANCHISE_MANAGER_ROLE
 } from '../../helpers/userData';
 import { loginUser } from '../../store/Login/login.actions';
 import { connect } from 'react-redux';
 import { State } from '../../store';
-import { async } from 'q';
 
 interface LoginState {
   selectedRole: string;
@@ -47,7 +45,7 @@ class Login extends Component<any, LoginState> {
               <div className={'login__content'}>
                 <div className={'login__welcome'}>
                   <h2>Welcome back</h2>
-                  <p>Select a role below and login to continue</p>
+                  <div className={'login__instructions'}>Select a role below and login to continue</div>
                 </div>
                 <div className={'user-options'}>
 
