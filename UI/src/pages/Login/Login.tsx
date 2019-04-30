@@ -47,24 +47,13 @@ class Login extends Component<any, LoginState> {
               <div className={'login__content'}>
                 <div className={'login__welcome'}>
                   <h2>Welcome back</h2>
-                  <p>Sign in to continue</p>
+                  <p>Select a role below and login to continue</p>
                 </div>
                 <div className={'user-options'}>
+
                   <div
                     className={
                       'user-options__role' +
-                      (selectedRole === COO_ROLE
-                        ? ' user-options__role--active'
-                        : '')
-                    }
-                    id={COO_ROLE}
-                    onClick={e => this.selectRole(e)}
-                  >
-                    COO
-                  </div>
-                  <div
-                    className={
-                      'user-options__role user-options__role--mid' +
                       (selectedRole === FRANCHISE_MANAGER_ROLE
                         ? ' user-options__role--active'
                         : '')
@@ -72,11 +61,11 @@ class Login extends Component<any, LoginState> {
                     id={FRANCHISE_MANAGER_ROLE}
                     onClick={this.selectRole}
                   >
-                    Regional
+                    Manager
                   </div>
                   <div
                     className={
-                      'user-options__role' +
+                      'user-options__role user-options__role--last' +
                       (selectedRole === DRIVER_ROLE
                         ? ' user-options__role--active'
                         : '')
@@ -94,6 +83,11 @@ class Login extends Component<any, LoginState> {
                 >
                   Login
                 </button>
+                <div
+                 className={'login__purpose'}
+                >
+                  The purpose of this application is to demonstrate seamless integration of Jaspersoft reports & data into a modern web application.
+                </div>
               </div>
               <div />
             </div>
