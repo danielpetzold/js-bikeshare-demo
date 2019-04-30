@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 7.2.1.final using JasperReports Library version 6.6.0  -->
-<!-- 2019-04-22T11:04:29 -->
+<!-- 2019-04-30T11:57:41 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Dashboard_Peak_Trip_Times" pageWidth="284" pageHeight="336" columnWidth="284" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="f6a4b4bb-5500-44c7-9f2e-3eca62fbded4">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="BikeShare-Adapter-Dev"/>
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
@@ -18,12 +18,14 @@
 	<property name="ireport.jasperserver.url" value="http://JRS-bikes-ElasticL-1K5YHF91VRJUO-1806919984.us-east-2.elb.amazonaws.com/jasperserver-pro/"/>
 	<property name="ireport.jasperserver.user" value="superuser"/>
 	<property name="ireport.jasperserver.reportUnit" value="/public/Bikeshare_demo/Reports/Dashboard_Reports/Dashboard_Peak_Trip_Times"/>
+	<property name="com.jaspersoft.jasperreports.highcharts.interactive" value="false"/>
+	<property name="ireport.jasperserver.report.resource" value="/public/Bikeshare_demo/Reports/Dashboard_Reports/Dashboard_Peak_Trip_Times_files/main_jrxml"/>
 	<import value="java.util.Date"/>
 	<import value="java.time.LocalDate"/>
 	<import value="java.time.format.DateTimeFormatter"/>
 	<import value="java.time.ZoneOffset"/>
 	<template><![CDATA["repo:/public/Bikeshare_demo/Resources/Styles/BikeShare_Style.jrtx"]]></template>
-	<parameter name="Debug" class="java.lang.Boolean" isForPrompting="false">
+	<parameter name="Debug" class="java.lang.Boolean">
 		<parameterDescription><![CDATA[During development, may set to true to view parameter values passed into report.]]></parameterDescription>
 		<defaultValueExpression><![CDATA[FALSE( )]]></defaultValueExpression>
 	</parameter>
@@ -224,6 +226,16 @@ on 1=1]]>
 				<textFieldExpression><![CDATA[$F{max_hour} <13 ? 
 	(     $F{max_hour} == 0 ? "12am" : $F{max_hour} == 12 ? $F{max_hour}.toString() + "pm" : $F{max_hour}.toString()  + "am"   ) 
 		:   Integer.toString($F{max_hour} - 12) + "pm"]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement mode="Transparent" x="140" y="3" width="139" height="77" forecolor="#4A5357" backcolor="#FFFFFF" uuid="e9b8b85b-7438-49c8-84d6-b263f09dc1dd">
+					<printWhenExpression><![CDATA[$P{Debug} == true]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font fontName="SansSerif" size="8" pdfFontName="" pdfEncoding="" isPdfEmbedded="true"/>
+					<paragraph lineSpacing="Single" lineSpacingSize="1.0" firstLineIndent="0" leftIndent="0" rightIndent="0" spacingBefore="0" spacingAfter="0" tabStopWidth="40"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Timeframe: " + $P{Timeframe} + "; Franchise: " + $P{Franchise} + "; Region: " + $P{Region} + "; Start_Date: " + $P{Start_Date} + "; End_Date: " + $P{End_Date} + "; " + $P{Session_ID}]]></textFieldExpression>
 			</textField>
 		</band>
 	</summary>
