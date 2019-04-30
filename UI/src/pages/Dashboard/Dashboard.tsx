@@ -84,7 +84,7 @@ class Dashboard extends React.Component<DashboardProps, DashboardState> {
       selectedFilters: {
         Region: this.filters['Region'].options[0],
         Franchise: this.filters['Franchise'].options[0],
-        Timeframe: this.filters['Timeframe'].options[0]
+        Timeframe: this.filters['Timeframe'].options[2]
       }
     });
   }
