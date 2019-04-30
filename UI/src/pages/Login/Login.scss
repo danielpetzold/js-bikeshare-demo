@@ -38,6 +38,13 @@
     width: 294px;
     margin: auto;
   }
+  &__purpose {
+    width: 294px;
+    margin-top: 50px;
+    color: $bluish-grey-two;
+    text-align: center;
+    font-style: italic;
+  }
 }
 
 .user-options {
@@ -59,14 +66,16 @@
   &__role {
     padding: 0 15px;
     background: white;
+    border-right: solid 1px $btn-green;
+    min-width: 55px;
+    text-align: center;
   }
   &__role:hover {
     background-color: $btn-teal;
     color: white;
   }
-  &__role--mid {
-    border-left: solid 1px $btn-green;
-    border-right: solid 1px $btn-green;
+  &__role--last {
+    border-right: none;
   }
   &__role--active {
     background: $btn-green;
