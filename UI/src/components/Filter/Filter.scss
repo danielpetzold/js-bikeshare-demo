@@ -9,17 +9,14 @@
   z-index: 3;
   margin: 0;
   animation: slideDown 300ms cubic-bezier(0.17, 0.04, 0.03, 0.94);
-  &__shadow {
-    position: absolute;
-    height: 100%;
-    width: 100vw;
-    background-color: $gunmetal;
-    opacity: 0.6;
-    animation: fadeIn 300ms cubic-bezier(0.17, 0.04, 0.03, 0.94);
+
+  &__heading {
+    font-size: 28px;
+    font-weight: bold;
   }
 
   &__title {
-    margin-bottom: 10px;
+    margin-bottom: 0;
   }
 
   &__container {
@@ -37,7 +34,7 @@
 
   &__option {
     width: 100%;
-    height: 120px;
+    height: 80px;
     border-radius: 5px;
     box-shadow: 0 2px 15px -7px rgba(0, 0, 0, 0.5);
     background-color: $white;
@@ -59,17 +56,17 @@
     &-divider {
       &::after {
         height: 100%;
-        width: 2px;
+        width: 4px;
         background-color: $cool-grey-two;
         content: '';
         position: relative;
-        right: -35px;
+        right: -24px;
       }
     }
   }
 
   &__save {
-    margin: 80px 0 30px 0;
+    margin: 60px 0 30px 0;
     .btn--primary {
       width: 100%;
     }
@@ -84,7 +81,18 @@
 
   @media screen and (min-width: $tablet-break) {
     margin-left: 70px;
+    width: calc(100% - 70px);
   }
+}
+
+.dark-background {
+  position: fixed;
+  top: 0;
+  z-index: 1;
+  width: 100vw;
+  height: 100vh;
+  background: rgba($background-grey, 0.7);
+  animation: fadeIn 300ms linear;
 }
 
 @keyframes slideDown {
@@ -100,6 +108,6 @@
     opacity: 0;
   }
   100% {
-    opacity: 0.6;
+    opacity: 1.0;
   }
 }

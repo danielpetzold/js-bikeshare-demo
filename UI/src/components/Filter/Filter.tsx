@@ -129,7 +129,7 @@ class Filter extends Component<FilterProps> {
 
             <div className={'grid__row'}>
               <div className={'grid__column-12 grid__column-m-4'}>
-                <h1>Show data from...</h1>
+                <div className={'filter__heading'}>Show data from...</div>
               </div>
             </div>
 
@@ -172,6 +172,7 @@ class Filter extends Component<FilterProps> {
             </div>
           </div>
         </div>
+        <div className="dark-background"></div>
       </>
     );
   }
