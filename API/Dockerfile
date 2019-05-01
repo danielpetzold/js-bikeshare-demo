@@ -5,7 +5,10 @@ ENV PORT 8888
 WORKDIR /usr/src/app
 
 # Bundle app source
-COPY . .
+COPY src src
+COPY *.json ./
+COPY *.js ./
+COPY .env ./
 
 RUN npm install
 

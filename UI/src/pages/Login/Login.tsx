@@ -84,7 +84,7 @@ class Login extends Component<any, LoginState> {
                 <div
                  className={'login__purpose'}
                 >
-                  The purpose of this application is to demonstrate seamless integration of Jaspersoft reports & data into a modern web application.
+                 *  This application is designed for demonstration purposes.
                 </div>
               </div>
               <div />
