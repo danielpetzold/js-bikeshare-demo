@@ -1,136 +1,82 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import {
-  selectOption,
-  clearFilters
-} from '../../store/Reports/reports.actions';
+import React, { Component, createRef } from "react";
 import './ReportFilter.scss';
+import ReportFilterCategory from "./ReportFilterCategory";
+import { ReportFilterData, ReportFilterOption } from "../../pages/ViewReport/ViewReport.types";
 
-interface State {}
-
-interface ReportFilterProps {
-  filterUpdated: () => void;
-  filters: any;
-  clearFilters: (filters: any) => void;
-  selectOption: (option: any) => void;
+interface ReportFilterState {
+  selectedFilters: any[];
 }
 
-class ReportFilter extends Component<ReportFilterProps, any> {
-  state: any = {};
+interface ReportFilterProps {
+  data: ReportFilterData[] | null;
+  toggleFilter: (e: any) => void
+  setFilter: (filterId: string, option: ReportFilterOption) => void;
+  reset: () => void;
+  selectedFilters: any;
+}
+
+interface SelectedFilters {
+  filterId: string;
+  selectedOption: ReportFilterOption;
+}
+
+class ReportFilter extends Component<ReportFilterProps, ReportFilterState> {
+  private myRef: any = createRef();
+
+  state: ReportFilterState = {
+    selectedFilters: []
+  };
 
   componentDidMount() {
-    // Creates an open state for each filter.
-    let catState: any = {};
-    this.props.filters.forEach((cat: any) => {
-      catState[`${cat.altName}Open`] = false;
-    });
-    this.setState(catState);
+    const selectedFilters: SelectedFilters[] = this.props.data ? this.props.data.map((filter) => {
+      return {
+        filterId: filter.id,
+        selectedOption: filter.options[0],
+        toggled: false
+      }
+    }): [];
+    this.setState({selectedFilters: selectedFilters});
+
+    document.addEventListener('click', this.handleClick, false);
   }
 
-  toggleOpen = (e: any, open: boolean) => {
-    // Toggles an individual filter.
-    const { id }: any = e.target;
-    this.setState({
-      [id]: open
-    } as Pick<State, keyof State>);
-  };
+  componentWillUnmount() {
+    document.removeEventListener('click', this.handleClick, false);
+  }
 
   clearFilter = () => {
-    this.props.clearFilters(this.props.filters);
-    this.forceUpdate();
-    this.props.filterUpdated();
+    this.props.reset();
   };
 
-  updateFilter = (value: any) => {
-    this.props.selectOption(value);
-    this.props.filterUpdated();
+  // Closes dropdown if clicked outside of element
+  handleClick = (e: any) => {
+    if (this.myRef.contains(e.target)) {
+      return;
+    }
+    this.props.toggleFilter(e);
   };
 
   render() {
-    const { filters } = this.props;
-
-    // Creates a select option for each filter option passed in from displayCategories.
-    const displayOptions = (
-      options: any,
-      selected: any,
-      index: number,
-      open: string
-    ) => {
-      let optionsList = options.map((option: any, i: number) => {
-        return (
-          <div
-            className={
-              'report-filter__options ' +
-              (selected.value === option.value && 'report-filter__option--active')
-            }
-            key={i}
-            onClick={() => {
-              this.updateFilter({ option, index });
-              this.setState({
-                [open]: false
-              });
-            }}
-          >
-            {option.label}
-          </div>
-        );
-      });
-      return optionsList;
-    };
-
-
-    // Created a select for each filter type from props.
-    const displayCategories = filters.map((cat: any, i: number) => {
-      return (
-        <div key={i}>
-          <div
-            className={'report-filter__option-title'}
-            id={`${cat.altName}Open`}
-            onClick={e => this.toggleOpen(e, !this.state[`${cat.altName}Open`])}
-          >
-            <div>
-              <p className={'report-filter__option-title--filter'}>
-                {cat.name}
-              </p>
-              <p>{cat.selected.label || `Select an option`}</p>
-            </div>
-            <i className={'report-filter__arrow icon-ic-arrow-down'} />
-          </div>
-          <hr />
-          <div
-            className={
-              'report-filter__content ' +
-              (!this.state[`${cat.altName}Open`]
-                ? 'report-filter__content--hidden'
-                : '')
-            }
-          >
-            {displayOptions(cat.options, cat.selected, i, `${cat.altName}Open`)}
-          </div>
-        </div>
-      );
-    });
-
     return (
-      <form className={'report-filter'}>
+      <div className={'report-filter'} ref={node => this.myRef = node}>
         <div className={'report-filter__title'}>
           <p>Filter</p>
           <h4 onClick={this.clearFilter}>Clear All</h4>
         </div>
-        {displayCategories}
-      </form>
+        {
+          this.props.data ? this.props.data.map((filter: ReportFilterData, i: number) => {
+            return (
+              <div className="report-filter__container" key={i}>
+                <ReportFilterCategory data={filter}
+                                      setFilter={this.props.setFilter}
+                                      filterId={filter.id}
+                                      selectedFilter={this.props.selectedFilters[filter.id]}/>
+              </div>
+            )
+        }) : null}
+      </div>
     );
   }
 }
 
-const mapStateToProps = (state: any, ownProps: any) => {
-  return {
-    filters: state.reports.filters,
-    filterUpdated: ownProps.filterUpdated
-  }
-};
-
-export default connect(
-  mapStateToProps,
-  { selectOption, clearFilters }
-)(ReportFilter);
+export default ReportFilter;

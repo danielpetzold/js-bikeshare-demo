@@ -1,17 +1,16 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
 import { clearFilters, setFilters } from '../../store/Reports/reports.actions';
 import './ViewReport.scss';
 import filterIcon from '../../fonts/icons/filter-icon.svg';
 import NavBar from '../../components/NavBar/NavBar';
-import ExportModal from '../../components/ExportModal/ExportModal';
 import ReportFilter from '../../components/ReportFilter/ReportFilter';
 import Dropdown, { Option } from '../../components/Dropdown/Dropdown';
 import { visualizeHelper } from '../../helpers/VisualizeHelper';
+import { Report, ReportFilterData, ReportFilterOption } from "./ViewReport.types";
 
 interface ReportsState {
-  filterOpen: boolean;
+  isFilterOpen: boolean;
   exportModalOpen: boolean;
   actionsOpen: boolean;
   isReportSelectOpen: boolean;
@@ -19,48 +18,37 @@ interface ReportsState {
   selectedReportName: string;
   selectedReportValue: string;
   selectedReportId: string;
-  mounted: boolean;
   reportFilters: any[];
-}
-
-interface Report {
-  creationDate: string;
-  description: string;
-  label: string;
-  permissionMask: number;
-  resourceType: string;
-  updateDate: string;
-  uri: string;
-  version: string;
+  filters: ReportFilterData[] | null;
+  selectedFilters: any;
 }
 
 class ViewReport extends Component<any, ReportsState> {
-  constructor(props: any) {
-    super(props);
-    this.state = {
-      mounted: false,
-      filterOpen: false,
-      exportModalOpen: false,
-      isReportSelectOpen: false,
-      actionsOpen: false,
-      reportOptions: [],
-      selectedReportName: '',
-      selectedReportValue: '',
-      selectedReportId: '',
-      reportFilters: []
-    };
+
+  state: ReportsState =  {
+    isFilterOpen: false,
+    exportModalOpen: false,
+    isReportSelectOpen: false,
+    actionsOpen: false,
+    reportOptions: [],
+    selectedReportName: '',
+    selectedReportValue: '',
+    selectedReportId: '',
+    reportFilters: [],
+    filters: [],
+    selectedFilters: {}
+  };
+
+  async componentDidMount() {
+    await this.getReports();
+    await this.getFilters();
+    this.showReport();
   }
 
-  componentDidMount() {
-    this.getReports();
-    this.getFilters();
-    this.setState({ mounted: true });
-  }
-
-  getReports() {
-    visualizeHelper
-      .getReportList('/public/Bikeshare_demo/Ad_hoc/App_Report_List', {})
+  async getReports() {
+    await visualizeHelper.getReportList('/public/Bikeshare_demo/Ad_hoc/App_Report_List', {})
       .then((reports: any) => {
+
         let reportMap = reports.map((report: Report) => {
           return {
             name: report.label,
@@ -68,6 +56,7 @@ class ViewReport extends Component<any, ReportsState> {
             id: report.uri.split('/').pop()
           };
         });
+
         this.setState({ reportOptions: reportMap });
 
         // If no report is selected, load the first report in the list
@@ -77,73 +66,62 @@ class ViewReport extends Component<any, ReportsState> {
       });
   }
 
-  getFilters() {
-    if (this.state.selectedReportValue) {
-      visualizeHelper
-        .getInputControl('inputControl', this.state.selectedReportValue)
-        .then((inputControl: any) => {
-          let reportFilters = inputControl.map((control: any) => {
-            return {
-              altName: control.id,
-              name: control.label,
-              selected: '',
-              options: control.state.options
-            };
-          });
-          this.props.setFilters(reportFilters);
+  async getFilters() {
+    this.setState({selectedFilters: {}});
+    await visualizeHelper.getInputControl('inputControl', this.state.selectedReportValue)
+      .then((inputControl: any) => {
+        let reportFilters = inputControl.map((control: any) => {
+          return {
+            id: control.id,
+            label: control.label,
+            options: control.state.options,
+            isOpen: false
+          };
         });
-    }
+
+        // Set filters
+        this.setState({filters: reportFilters});
+
+        // Set initial filter
+        let filters: any = {};
+        reportFilters.forEach((filter: ReportFilterData) => {
+          filters[filter.id] = filter.options[0];
+        });
+        this.setState({selectedFilters: filters});
+      });
   }
 
   showReport() {
     if (this.state.selectedReportValue) {
+
       let params: any = {};
-      this.props.filters.forEach((filter: any) => {
-        params[filter.altName] = [filter.selected.value];
-      });
-      visualizeHelper
-        .getAdHocView('report', this.state.selectedReportValue, params)
+      for (let filter in this.state.selectedFilters) {
+        params[filter] = [this.state.selectedFilters[filter].value];
+      }
+      visualizeHelper.getAdHocView('report', this.state.selectedReportValue, params)
         .then((success: any) => {
           console.log('success', success);
         });
     }
   }
 
-  toggleExportModal = () => {
-    this.setState({
-      exportModalOpen: !this.state.exportModalOpen
-    });
-  };
-
-  toggleActions = () => {
-    this.setState({
-      actionsOpen: !this.state.actionsOpen
-    });
-  };
-
-  toggleReports = () => {
+  toggleReportsDropdown = () => {
     this.setState({
       isReportSelectOpen: !this.state.isReportSelectOpen
     });
   };
 
   setReport = (option: Option) => {
-    this.setState(
-      {
+    this.setState({
         selectedReportName: option.name,
         selectedReportValue: option.value,
         selectedReportId: option.id
       },
-      () => {
-        this.showReport();
-        this.getFilters();
-        this.props.clearFilters(this.props.filters);
+      async () => {
+        await this.getFilters();
+        await this.showReport();
       }
     );
-  };
-
-  reportUpdated = () => {
-    this.showReport();
   };
 
   modifyReport = (e: any) => {
@@ -153,16 +131,32 @@ class ViewReport extends Component<any, ReportsState> {
     });
   };
 
+  toggleFilter = () => {
+    this.setState({ isFilterOpen: !this.state.isFilterOpen });
+  };
+
+  setFilter = (filterId: string, option: ReportFilterOption) => {
+    let newFilters: any = Object.assign({}, this.state.selectedFilters);
+    newFilters[filterId] = option;
+    this.setState({selectedFilters: newFilters}, () => this.showReport());
+
+  };
+
+  resetFilters = () => {
+    if (this.state.filters) {
+      let newState = Object.assign({}, this.state.selectedFilters);
+      this.state.filters.forEach((filter: any) => {
+        newState[filter.id] = filter.options[0];
+      });
+      this.setState({selectedFilters: newState}, () => this.showReport());
+    }
+  };
+
   render() {
     const {
-      filterOpen,
-      exportModalOpen,
-      actionsOpen,
       isReportSelectOpen,
-      mounted,
       reportOptions,
-      selectedReportName,
-      selectedReportValue
+      selectedReportName
     } = this.state;
 
     return (
@@ -174,7 +168,7 @@ class ViewReport extends Component<any, ReportsState> {
               <div className={'grid__column-12 grid__column-m-4'}>
                 <div className={'report-header__top'}>
                   <h3 className={'report-header__title'}>Reports</h3>
-                  <div className={'header-select'} onClick={this.toggleReports}>
+                  <div className={'header-select'} onClick={this.toggleReportsDropdown}>
                     <h5>{selectedReportName}</h5>
                     <i className={'icon-ic-unfold-more'} />
                   </div>
@@ -182,7 +176,7 @@ class ViewReport extends Component<any, ReportsState> {
                     {isReportSelectOpen && (
                       <Dropdown
                         setSelected={this.setReport}
-                        toggleDropdown={this.toggleReports}
+                        toggleDropdown={this.toggleReportsDropdown}
                         options={reportOptions}
                         dropdownWidth="100%"
                       />
@@ -193,65 +187,23 @@ class ViewReport extends Component<any, ReportsState> {
                 {/* Bottom Header Row */}
                 <div className={'report-header__bottom'}>
                   <div className={'report-header__buttons'}>
-                    <button
-                      className={'report-view__btn--create btn--primary'}
-                      onClick={this.modifyReport}
-                    >
-                      Create Report
+                    <button className={'report-view__btn--create btn--primary'} onClick={this.modifyReport}>
+                      Create New
                     </button>
-                    <a
-                      className={'report-view__btn--actions btn--secondary'}
-                      onClick={this.toggleActions}
-                    >
-                      <p>Modify</p>
-                      <i
-                        className={'report-view__actions icon-ic-arrow-down'}
-                      />
-                    </a>
-                    {actionsOpen && (
-                      <div
-                        className={'report-view__actions-dropdown'}
-                        onClick={this.toggleActions}
-                      >
-                        {/* replace empty string with the report url */}
-                        <a href="#" onClick={this.modifyReport}>
-                          <div className={'report-view__action-options'}>
-                            Modify
-                          </div>
-                        </a>
-
-                        <div
-                          className={'report-view__action-options'}
-                          onClick={this.toggleExportModal}
-                        >
-                          Export
-                        </div>
-                        <div
-                          className={'report-view__action-options'}
-                          onClick={() => setTimeout(() => window.print(), 100)}
-                        >
-                          Print
-                        </div>
-                      </div>
-                    )}
+                    <button className={'report-view__btn--actions btn--secondary'} onClick={this.modifyReport}>
+                      Modify / Export
+                    </button>
                   </div>
-                  <img
-                    src={filterIcon}
-                    alt="filter"
-                    onClick={() => this.setState({ filterOpen: !filterOpen })}
-                  />
+                  <img src={filterIcon} alt="filter" onClick={this.toggleFilter}/>
                 </div>
-
-                {mounted && (
-                  <div
-                    className={
-                      filterOpen
-                        ? 'report-view__show-filter'
-                        : 'report-view__hide-filter'
-                    }
-                  >
-                    <ReportFilter filterUpdated={this.reportUpdated} />
-                  </div>
+                {(
+                    this.state.filters && this.state.filters.length && this.state.isFilterOpen ?
+                    <ReportFilter
+                                  data={this.state.filters}
+                                  selectedFilters={this.state.selectedFilters}
+                                  toggleFilter={this.toggleFilter}
+                                  reset={this.resetFilters}
+                                  setFilter={this.setFilter}/> : null
                 )}
               </div>
             </div>
@@ -266,9 +218,6 @@ class ViewReport extends Component<any, ReportsState> {
               </div>
             </div>
           </div>
-          {exportModalOpen && (
-            <ExportModal closeModal={this.toggleExportModal} />
-          )}
         </div>
       </>
     );
