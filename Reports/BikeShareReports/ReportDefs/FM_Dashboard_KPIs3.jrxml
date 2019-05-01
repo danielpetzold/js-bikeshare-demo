@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 7.2.1.final using JasperReports Library version 6.6.0  -->
-<!-- 2019-04-11T17:28:56 -->
+<!-- 2019-05-01T14:11:10 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="FM_Dashboard_KPIS" printOrder="Horizontal" pageWidth="900" pageHeight="144" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="900" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="5347bef6-468e-4022-865e-bd6933f0fa4b">
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="BikeShare-Adapter-Dev"/>
@@ -63,7 +63,7 @@
 		and (session_id is null or session_id = $P{Session_ID})
 		group by system_id, station_id) as  mStat
 	on mStat.system_id = cStat.system_id and mStat.station_id = cStat.station_id and mStat.maxStatusTime = cStat.last_reported
-	where cStat.num_bikes_available = 0  or cStat.num_bikes_disabled > 5
+	where cStat.num_bikes_available < 3  or cStat.num_bikes_disabled > 5
 	group by cStat.system_id
          ) AS "stations_in_need",
 	(SELECT SUM("sum_value") FROM 
