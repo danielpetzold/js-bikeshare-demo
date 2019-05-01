@@ -28,12 +28,12 @@ class DriverDashboard extends Component<any, State> {
 
   componentDidMount() {
     this.getNotifications();
-    this.getReport();
     this.getMap();
+    this.getReports();
   }
 
-  getReport = () => {
-    visualizeHelper.getReport(
+  getReports = async () => {
+    await visualizeHelper.getReport(
       'check-in-report',
       `/public/Bikeshare_demo/Reports/Dashboard_Reports/Driver_CheckIn_List`,
       { Session_ID: [this.props.sessionId] },
@@ -44,7 +44,7 @@ class DriverDashboard extends Component<any, State> {
       }
     );
 
-    visualizeHelper.getReport(
+    await visualizeHelper.getReport(
       'summary-report',
       `/public/Bikeshare_demo/Reports/Dashboard_Reports/Maintenance_Summary`,
       { Session_ID: [this.props.sessionId] }
@@ -68,7 +68,7 @@ class DriverDashboard extends Component<any, State> {
   }
 
   refreshPage = () => {
-    this.getReport();
+    this.getReports();
     this.getMap();
   };
 
@@ -88,7 +88,6 @@ class DriverDashboard extends Component<any, State> {
   };
 
   render() {
-
     const notifications = this.state.notifications ? this.state.notifications.map((item, key) => {
       return <DriverNotification data={item} index={key} closeNotification={this.closeNotification} key={key}/>
     }) : null;

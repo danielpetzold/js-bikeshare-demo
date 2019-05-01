@@ -111,7 +111,7 @@ class CheckInModal extends Component<Props, State> {
     ];
 
     return (
-      <div className={'modal-wrapper'}>
+      <>
         <div className={'checkin-modal'}>
           {/* NAV BUTTONS/TITLE */}
           <div className={'checkin-modal__nav'}>
@@ -192,7 +192,8 @@ class CheckInModal extends Component<Props, State> {
             )}
           </>
         </div>
-      </div>
+      <div className="dark-background"></div>
+      </>
     );
   }
 }
