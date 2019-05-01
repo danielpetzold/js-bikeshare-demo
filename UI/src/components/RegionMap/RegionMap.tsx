@@ -201,12 +201,7 @@ class RegionMap extends Component<RegionMapProps> {
     this.itineraryService = new this.geo.ItineraryService(itineraryServiceAccount, itineraryServiceKey, itineraryServiceURL);
     this.itineraryRenderer = new this.geo.ItineraryRenderer(this.map);
 
-    // Sort by stop order
-    let sortedStations = this.props.mapData.stations.sort((a: any, b: any) => {
-      (a.route_stop_order > b.route_stop_order) ? 1 : -1;
-    });
-
-    let waypoints = sortedStations.map((station: any) => {
+    let waypoints = this.props.mapData.stations.map((station: any) => {
       return new this.geo.LatLng(station.lat, station.lon);
     });
 
