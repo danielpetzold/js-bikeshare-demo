@@ -83,7 +83,7 @@ class ViewReport extends Component<any, ReportsState> {
         // Set initial filter
         let filters: any = {};
         reportFilters.forEach((filter: ReportFilterData) => {
-          filters[filter.id] = filter.options[0];
+          filters[filter.id] = filter.options[1];
         });
         this.setState({selectedFilters: filters});
       });
@@ -144,7 +144,7 @@ class ViewReport extends Component<any, ReportsState> {
     if (this.state.filters) {
       let newState = Object.assign({}, this.state.selectedFilters);
       this.state.filters.forEach((filter: any) => {
-        newState[filter.id] = filter.options[0];
+        newState[filter.id] = filter.options[1];
       });
       this.setState({selectedFilters: newState}, () => this.showReport());
     }
