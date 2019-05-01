@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 7.2.1.final using JasperReports Library version 6.6.0  -->
-<!-- 2019-04-30T11:57:41 -->
+<!-- 2019-05-01T15:28:07 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Dashboard_Peak_Trip_Times" pageWidth="284" pageHeight="336" columnWidth="284" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="f6a4b4bb-5500-44c7-9f2e-3eca62fbded4">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="BikeShare-Adapter-Dev"/>
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
@@ -19,7 +19,6 @@
 	<property name="ireport.jasperserver.user" value="superuser"/>
 	<property name="ireport.jasperserver.reportUnit" value="/public/Bikeshare_demo/Reports/Dashboard_Reports/Dashboard_Peak_Trip_Times"/>
 	<property name="com.jaspersoft.jasperreports.highcharts.interactive" value="false"/>
-	<property name="ireport.jasperserver.report.resource" value="/public/Bikeshare_demo/Reports/Dashboard_Reports/Dashboard_Peak_Trip_Times_files/main_jrxml"/>
 	<import value="java.util.Date"/>
 	<import value="java.time.LocalDate"/>
 	<import value="java.time.format.DateTimeFormatter"/>
