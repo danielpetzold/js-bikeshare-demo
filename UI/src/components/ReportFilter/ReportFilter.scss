@@ -2,83 +2,86 @@
 
 .report-filter {
   box-sizing: border-box;
-  width: 299px;
-  max-height: 713px;
+  width: 300px;
   border-radius: 5px;
   box-shadow: 0 2px 15px -7px rgba(0, 0, 0, 0.5);
   padding: 24px 12px;
   background: $white;
-  overflow: scroll;
   position: absolute;
   top: 100%;
   right: 0;
-  z-index: 99999;
+  z-index: 9999;
+
   hr {
     border: 0;
     border-top: 1px solid $text-disabled;
     margin: 0;
   }
-  &__option-title--filter {
-    font-weight: bold;
+
+  &__title {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    font-size: 14px;
+    h4 {
+      color: $text-nav;
+      width: max-content;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    * {
+      margin-top: 0;
+    }
   }
+}
+
+.filter-category {
+  &__container {
+    display: none;
+
+    &--open {
+      display: block;
+    }
+  }
+
   &__arrow {
     font-size: 14px;
     color: $icon-primary-active;
     cursor: pointer;
     pointer-events: none;
-  }
-  &__content {
-    cursor: pointer;
-    margin-top: 15px;
-    box-shadow: 0 2px 15px -7px rgba(0, 0, 0, 0.5);
-    border-radius: 5px;
-    overflow: hidden;
-    &--hidden {
-      display: none;
+    float: right;
+
+    &--active {
+      transform: rotate(180deg);
     }
   }
-  &__options {
+
+  &__label {
+    height: 30px;
+    cursor: pointer;
+    font-weight: bold;
+  }
+
+  &__list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  &__option {
     line-height: 32px;
     padding: 0 12px;
-  }
-  &__options:hover {
-    background: $btn-teal;
-    color: $white;
-  }
-  &__option--active,
-  &__option--active:hover {
-    background-color: $jade;
-    color: $white;
-  }
-}
-
-.report-filter__title {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  font-size: 14px;
-  h4 {
-    color: $text-nav;
-    width: max-content;
-    font-weight: bold;
     cursor: pointer;
-  }
-  * {
-    margin-top: 0;
-  }
-}
 
-.report-filter__option-title {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  height: 17px;
-  cursor: pointer;
-  padding: 24px 0 16px 0;
-  div {
-    pointer-events: none;
-  }
-  p {
-    margin: 0;
+    &:hover {
+      background: $btn-teal;
+      color: $white;
+    }
+
+    &--active,
+    &--active:hover {
+      background-color: $jade;
+      color: $white;
+    }
   }
 }

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component, createRef } from "react";
 import './Dropdown.scss';
 
 export interface Option {
@@ -14,25 +14,45 @@ interface Props {
   dropdownWidth: string;
 }
 
-export default function Dropdown(props: Props) {
-  const { options, dropdownWidth } = props;
+class Dropdown extends Component<Props> {
+  myRef: any = createRef();
 
-  const handleSelect = (value: Option) => {
-    props.toggleDropdown();
-    props.setSelected(value);
+  componentDidMount() {
+    document.addEventListener('click', this.handleClick, false);
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener('click', this.handleClick, false);
+  }
+
+  handleSelect = (value: Option) => {
+    this.props.toggleDropdown();
+    this.props.setSelected(value);
   };
 
-  const items = options.map((item, key) => {
-    return <div className="dropdown__option"
-         key={key}
-         onClick={() => handleSelect(item)}>
-      {item.name}
-    </div>
-  });
+  // Closes dropdown if clicked outside of element
+  handleClick = (e: any) => {
+    if (this.myRef.contains(e.target)) {
+      return;
+    }
+    this.props.toggleDropdown();
+  };
 
-  return (
-    <div className='dropdown' style={{ width: dropdownWidth }}>
-      {items}
-    </div>
-  );
+  render() {
+    const items = this.props.options.map((item, key) => {
+      return <div className="dropdown__option"
+                  key={key}
+                  onClick={() => this.handleSelect(item)}>
+        {item.name}
+      </div>
+    });
+
+    return (
+      <div className='dropdown' style={{ width: this.props.dropdownWidth }} ref={node => this.myRef = node}>
+        {items}
+      </div>
+    );
+  }
 }
+
+export default Dropdown;
