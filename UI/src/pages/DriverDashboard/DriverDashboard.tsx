@@ -26,10 +26,10 @@ class DriverDashboard extends Component<any, State> {
     notifications: null
   };
 
-  componentDidMount() {
-    this.getNotifications();
-    this.getMap();
-    this.getReports();
+  async componentDidMount() {
+    await this.getNotifications();
+    await this.getReports();
+    await this.getMap();
   }
 
   getReports = async () => {
@@ -52,6 +52,7 @@ class DriverDashboard extends Component<any, State> {
   };
 
   async getMap() {
+    this.setState({mapData: null});
     try {
       let mapData = await JasperReportsService.get('/rest_v2/reports/public/Bikeshare_demo/Reports/Data/RegionStationData.json', {
         params: {
@@ -67,9 +68,9 @@ class DriverDashboard extends Component<any, State> {
     }
   }
 
-  refreshPage = () => {
-    this.getReports();
-    this.getMap();
+  refreshPage = async () => {
+    await this.getMap();
+    await this.getReports();
   };
 
   checkInStation = async (e: any, link: any) => {
