@@ -8,10 +8,13 @@ RUN apk add --update nodejs && rm -rf /var/cache/apk/*
 WORKDIR /usr/src/app
 
 # get the UI source and install
-COPY . .
+COPY src src
+COPY public public
+COPY *.json ./
+COPY *.lock ./
+COPY .env.production ./
+
 RUN mkdir /conf && \
-    rm -rf build && \
-    rm -rf node_modules && \
 	npm install
 
 COPY docker/nginx.template /conf
