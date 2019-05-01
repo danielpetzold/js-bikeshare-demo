@@ -1,6 +1,4 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { clearFilters, setFilters } from '../../store/Reports/reports.actions';
 import './ViewReport.scss';
 import filterIcon from '../../fonts/icons/filter-icon.svg';
 import NavBar from '../../components/NavBar/NavBar';
@@ -224,7 +222,4 @@ class ViewReport extends Component<any, ReportsState> {
   }
 }
 
-export default connect(
-  (state: any) => state.reports,
-  { setFilters, clearFilters }
-)(ViewReport);
+export default ViewReport;
