@@ -1,14 +1,6 @@
 @import '../../scss/util/colors';
 @import '../../scss/util/variables';
 
-.notification-container {
-  position: absolute;
-  display: flex;
-  flex-direction: column;
-  z-index: 2;
-  margin-top: 0px;
-}
-
 .dash-container {
   display: flex;
   flex-direction: column;
@@ -16,8 +8,7 @@
 }
 
 .driver-header-grid,
-.driver-map-grid,
-.driver-reports-grid {
+.driver-map-grid {
   width: 100%;
   position: relative;
   padding: 0;
@@ -55,56 +46,6 @@
   }
 }
 
-.maintenance {
-  width: 100%;
-  padding: 0 10px;
-
-  &__table {
-    background-color: $white;
-    display: flex;
-    justify-content: center;
-    overflow: hidden;
-  }
-
-  &__title {
-    font-weight: normal;
-    text-align: center;
-    margin: 0;
-    padding: 24px 0;
-    background-color: $white;
-  }
-
-  &__option-icons {
-    display: flex;
-    justify-content: flex-end;
-    align-items: flex-end;
-    box-sizing: border-box;
-    font-size: 24px;
-    padding: 36px 6px 19px 0;
-    i {
-      cursor: pointer;
-    }
-  }
-
-  &__reports {
-    box-sizing: border-box;
-    width: max-content;
-    margin: 0 auto;
-    overflow: scroll;
-  }
-
-  @media screen and (max-width: 592px) {
-    &__reports {
-      width: calc(100% - 12px);
-      margin: 0 6px 6px 6px;
-    }
-  }
-
-  &__icon-left {
-    margin-right: 24px;
-  }
-}
-
 .hide-mobile {
   display: none;
 }
@@ -119,8 +60,7 @@
   }
 
   .driver-header-grid,
-  .driver-map-grid,
-  .driver-reports-grid {
+  .driver-map-grid {
     box-sizing: border-box;
     padding-left: 70px;
   }
@@ -150,41 +90,85 @@
   .schedule-arrow {
     display: none;
   }
+}
 
-  .maintenance {
-    padding: 0;
-    width: 900px;
-    margin-bottom: 24px;
 
-    &__title {
-      padding: 0;
-      margin: 26px 0 41px 0;
-      text-align: left;
-      background-color: transparent;
-    }
 
-    &__table {
-      width: 284px;
-      height: 318px;
-      box-shadow: none;
-      border-radius: 5px;
-      border: solid 1px $light-grey;
-    }
+.driver-reports {
+  width: 100%;
+  margin: 0 10px;
 
-    &__option-icons {
-      padding: 0;
-      margin: 26px 0 41px 0;
+  &__schedule-arrow {
+    height: 28px;
+    width: 100%;
+    background-color: $white;
+    color: $light-grey;
+    display: flex;
+    justify-content: center;
 
-      i {
-        line-height: 29px;
-      }
-    }
-
-    &__reports {
-      width: 592px;
-      margin: 0;
+    i {
+      line-height: 28px;
+      transform: rotate(-180deg);
     }
   }
+
+  &__action-icons {
+    padding: 0;
+    margin: 24px 0 24px 0;
+    text-align: center;
+
+    i {
+      font-size: 24px;
+      line-height: 29px;
+      padding: 0 10px
+    }
+  }
+
+  &__title {
+    text-align: center;
+  }
+
+  ._jr_report_container_ {
+    display: flex;
+    justify-content: center;
+  }
+
+  @media screen and (min-width: $tablet-break) {
+    margin-left: 70px;
+    width: calc(100% - 70px);
+    display: flex;
+    justify-content: center;
+    box-sizing: border-box;
+    overflow: hidden;
+
+    &__container {
+      width: 900px;
+    }
+
+    &__schedule-arrow {
+      display: none;
+    }
+
+    &__action-icons {
+      text-align: right;
+    }
+
+    &__report {
+      width: 100%;
+    }
+
+    &__title {
+      text-align: left;
+    }
+  }
+}
+
+.notification-container {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  z-index: 2;
+  margin-top: 0px;
 }
 
 // Override for Visualize.js img hyperlink

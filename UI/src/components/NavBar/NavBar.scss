@@ -62,6 +62,7 @@
   &__log-out {
     color: $icon-nav-active;
     margin-left: auto;
+    cursor: pointer;
   }
 
   // Menus
@@ -158,6 +159,7 @@
       bottom: 28px;
       left: 10px;
       color: $text-secondary;
+      cursor: pointer;
     }
     &__log-out:hover {
       color: $seafoam-blue;
