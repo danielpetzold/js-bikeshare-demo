@@ -1,4 +1,5 @@
 import { SendToStationData } from "../../components/SendToStationModal/SendToStationModal.types";
+import { NotificationData } from "../../components/Notification/Notification";
 
 export interface DashboardProps {
   sessionId: string;
@@ -13,7 +14,8 @@ export interface DashboardState {
   regionMapData: any;
   franchiseMapData: FranchiseMapData[];
   displayedMap: string;
-  popupData: SendToStationData | null
+  popupData: SendToStationData | null,
+  notification: NotificationData | null;
 }
 
 export interface SelectedFilters {
