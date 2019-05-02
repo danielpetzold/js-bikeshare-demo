@@ -33,8 +33,8 @@ class FranchiseMap extends Component<FranchiseMapProps> {
     this.map = new this.geo.Map(
       mapContainer,
       {
-        zoom: 11, // Hardcoded for now until provided by API
-        center: new this.geo.LatLng(37.773972, -122.431297)
+        zoom: 9, // Hardcoded for now until provided by API
+        center: new this.geo.LatLng(37.5988531222099, -122.156530953733)
       }
     );
 
@@ -109,9 +109,9 @@ class FranchiseMap extends Component<FranchiseMapProps> {
   }
 
   inNeedStatusColor(percent: number) {
-    return percent < 10
+    return percent < 4
       ? colors.green
-      : percent >= 10 && percent < 75
+      : percent >= 4 && percent < 12
       ? colors.yellow
       : colors.red;
   }
