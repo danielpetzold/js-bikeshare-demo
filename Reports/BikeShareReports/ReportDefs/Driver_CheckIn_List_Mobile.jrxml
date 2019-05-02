@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 7.2.1.final using JasperReports Library version 6.6.0  -->
-<!-- 2019-04-29T13:52:50 -->
+<!-- 2019-05-01T15:28:02 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Driver_CheckIn_List_Mobile" pageWidth="308" pageHeight="172" columnWidth="308" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" isIgnorePagination="true" uuid="05a6d2ba-fba0-440b-964e-7586501cfd05">
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="BikeShare-Adapter-Dev"/>
@@ -14,7 +14,6 @@
 	<property name="net.sf.jasperreports.export.html.white.page.background" value="false"/>
 	<property name="ireport.jasperserver.url" value="http://JRS-bikes-ElasticL-1K5YHF91VRJUO-1806919984.us-east-2.elb.amazonaws.com/jasperserver-pro/"/>
 	<property name="ireport.jasperserver.user" value="superuser"/>
-	<property name="ireport.jasperserver.report.resource" value="/public/Bikeshare_demo/Reports/Dashboard_Reports/Driver_CheckIn_List_Mobile_files/main_jrxml"/>
 	<property name="ireport.jasperserver.reportUnit" value="/public/Bikeshare_demo/Reports/Dashboard_Reports/Driver_CheckIn_List_Mobile"/>
 	<import value="java.time.LocalTime"/>
 	<import value="java.lang.Math"/>
@@ -129,7 +128,7 @@ Order By rs.is_completed DESC, rs.stop_order]]>
 		<variableExpression><![CDATA[LocalTime.of(6,0,0).plusMinutes(22 * $V{REPORT_COUNT})]]></variableExpression>
 	</variable>
 	<variable name="IsInNeed" class="java.lang.Boolean">
-		<variableExpression><![CDATA[($F{num_bikes_available} == 0 || $F{num_bikes_disabled} > 5)]]></variableExpression>
+		<variableExpression><![CDATA[($F{num_bikes_available} < 3 || $F{num_bikes_disabled} > 5)]]></variableExpression>
 	</variable>
 	<variable name="GetColor" class="java.lang.String">
 		<variableExpression><![CDATA[($V{IsInNeed} && $F{rStopSessionId} != null && !$F{is_completed}  && $F{stop_order} == 0 ) ? "RED" :
