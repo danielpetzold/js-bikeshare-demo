@@ -16,38 +16,66 @@ interface State {
   selectedStationId: number | null;
   mapData: any | null;
   notifications: DriverNotificationData[] | null;
+  isMobile: boolean;
 }
+
+const mobileWidth: number = 1024;
 
 class DriverDashboard extends Component<any, State> {
   state: State = {
     isCheckInOpen: false,
     selectedStationId: null,
     mapData: null,
-    notifications: null
+    notifications: null,
+    isMobile: window.innerWidth < mobileWidth
   };
 
   async componentDidMount() {
     await this.getNotifications();
     await this.getReports();
     await this.getMap();
+    window.addEventListener('resize', this.updateWindowDimensions);
   }
+
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.updateWindowDimensions);
+  }
+
+  updateWindowDimensions = async () => {
+
+    /*
+      Reports do not have responsive support yet (only ad-hoc) so we're switching between a larger and
+      smaller width report based on screen width.
+    */
+
+    if (window.innerWidth < mobileWidth && !this.state.isMobile) {
+      this.setState({isMobile: true});
+      await this.getReports();
+    } else if (window.innerWidth >= mobileWidth && this.state.isMobile) {
+      this.setState({isMobile: false});
+      await this.getReports();
+    }
+  };
 
   getReports = async () => {
     await visualizeHelper.getReport(
+      'summary-report',
+      `/public/Bikeshare_demo/Reports/Dashboard_Reports/Maintenance_Summary`,
+      { Session_ID: [this.props.sessionId] }
+    );
+
+    let report = '/public/Bikeshare_demo/Reports/Dashboard_Reports/Driver_CheckIn_List';
+    this.state.isMobile ? report += '_Mobile': '';
+
+    await visualizeHelper.getReport(
       'check-in-report',
-      `/public/Bikeshare_demo/Reports/Dashboard_Reports/Driver_CheckIn_List`,
+      report,
       { Session_ID: [this.props.sessionId] },
       {
         events: {
           click: this.checkInStation
         }
       }
-    );
-
-    await visualizeHelper.getReport(
-      'summary-report',
-      `/public/Bikeshare_demo/Reports/Dashboard_Reports/Maintenance_Summary`,
-      { Session_ID: [this.props.sessionId] }
     );
   };
 
@@ -120,26 +148,27 @@ class DriverDashboard extends Component<any, State> {
             </div>
           </div>
           {/* REPORTS */}
-          <div className={'grid driver-reports-grid'}>
-            <div className={`grid__row arrow`}>
-              <div className={'grid__column-12 grid__column-m-4'}>
-                <div className={`schedule-arrow`}>
-                  <i className={'icon-ic-arrow-down'} />
+          <div className={'driver-reports'}>
+            <div className={'driver-reports__container grid'}>
+              <div className='grid__row'>
+                <div className={'grid__column-12 grid__column-m-4'}>
+                  <div className={`driver-reports__schedule-arrow`}>
+                    <i className={'icon-ic-arrow-down'} />
+                  </div>
                 </div>
               </div>
-            </div>
-            <div className="grid__row maintenance">
-              <div className="grid__column-4 grid__column-m-4">
-                <h3 className={'maintenance__title'}>Maintenance Schedule</h3>
-                <div className={'maintenance__table'} id="summary-report" />
-              </div>
-
-              <div className="grid__column-8 grid__column-m-4">
-                <div className={'maintenance__option-icons'}>
-                  <i className={'icon-ic-server maintenance__icon-left'} />
-                  <i className={'icon-ic-printer'} />
+              <div className='grid__row'>
+                <div className="grid__column-4 grid__column-m-4">
+                  <h3 className={'driver-reports__title'}>Maintenance Schedule</h3>
+                  <div className={'driver-reports__report'} id="summary-report" />
                 </div>
-                <div className={'maintenance__reports'} id="check-in-report" />
+                <div className="grid__column-8 grid__column-m-4">
+                  <div className={'driver-reports__action-icons'}>
+                    <i className={'icon-ic-server'} />
+                    <i className={'icon-ic-printer'} />
+                  </div>
+                  <div className={'driver-reports__report'} id="check-in-report" />
+                </div>
               </div>
             </div>
           </div>
