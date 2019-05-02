@@ -2,10 +2,11 @@ import React, { Component } from 'react';
 import './SendToStationModal.scss';
 import {SendToStationData, SendToStationPayload} from "./SendToStationModal.types";
 import { setRouteStop } from "../../services/apiCalls";
+import { NotificationData } from "../Notification/Notification";
 
 export interface SendToStationProps {
   data: SendToStationData;
-  closeModal: (refresh: boolean) => void
+  closeModal: (refresh: boolean, notificationData: NotificationData |  null) => void
 }
 
 export interface SendToStationState {
@@ -18,12 +19,25 @@ class SendToStationModal extends Component<SendToStationProps, SendToStationStat
   };
 
   closeModal = () => {
-    this.props.closeModal(false);
+    this.props.closeModal(false, null);
   };
 
   submitDriverUpdate = async () => {
-    await setRouteStop(this.assemblePayload());
-    this.props.closeModal(true);
+    await setRouteStop(this.assemblePayload())
+      .catch((err) => {
+        this.props.closeModal(true, {
+          title: 'Oops! Something went wrong.',
+          message: 'The action was not completeted. Error: ' + err,
+          type: 'error'
+        })
+      })
+      .then(() => {
+        this.props.closeModal(true, {
+          title: 'Success!',
+          message: 'The driver has been notified of the route update.',
+          type: 'success'
+        });
+      });
   };
 
   assemblePayload(): SendToStationPayload {

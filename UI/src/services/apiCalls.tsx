@@ -44,14 +44,14 @@ export const postStationStatus = (stationStatus: StationStatus) => {
 };
 
 export const setRouteStop = (sendToStationPayload: SendToStationPayload) => {
-  fetch(`${baseURL}/route-stop`, {
+  return fetch(`${baseURL}/route-stop`, {
     method: 'POST',
     body: JSON.stringify(sendToStationPayload),
     headers: {
       'Content-Type': 'application/json'
     },
     credentials: 'include'
-  }).catch(err => console.error(err));
+  });
 };
 
 export const getDriverNotifications = async () => {

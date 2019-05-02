@@ -12,6 +12,7 @@ import RegionMap from "../../components/RegionMap/RegionMap";
 import SendToStationModal from "../../components/SendToStationModal/SendToStationModal";
 import { SendToStationData } from "../../components/SendToStationModal/SendToStationModal.types";
 import { PopupData } from "../../components/RegionMap/RegionMap.types";
+import Notification, { NotificationData } from "../../components/Notification/Notification";
 
 const filterDataICUri = '/public/Bikeshare_demo/Reports/Lookups';
 const mapDataLocations: any = {
@@ -42,7 +43,8 @@ class Dashboard extends React.Component<DashboardProps, DashboardState> {
       franchiseMapData: [],
       regionMapData: null,
       displayedMap: '',
-      popupData: null
+      popupData: null,
+      notification: null
     };
   }
 
@@ -208,12 +210,16 @@ class Dashboard extends React.Component<DashboardProps, DashboardState> {
     this.setState({popupData: popupData});
   };
 
-  closeModal = (refresh: boolean) => {
-    this.setState({popupData: null});
+  closeModal = (refresh: boolean, notificationData: NotificationData | null) => {
+    this.setState({popupData: null, notification: notificationData});
     if (refresh) {
       this.getReports();
       this.getMap();
     }
+  };
+
+  closeNotification = () => {
+    this.setState({notification: null});
   };
 
   render() {
@@ -236,10 +242,15 @@ class Dashboard extends React.Component<DashboardProps, DashboardState> {
           />
         ) : null}
         <div className={'dashboard'}>
-          {this.state.popupData && (
+          { this.state.popupData && (
             <SendToStationModal data={this.state.popupData} closeModal={this.closeModal}/>
           )}
-
+          { this.state.notification &&
+            <Notification title={this.state.notification.title}
+                          message={this.state.notification.message}
+                          type={this.state.notification.type}
+                          close={this.closeNotification}/>
+          }
           <header className={'dashboard-header'}>
             <div className={'dashboard-header__content grid'}>
               <div className={'grid__row'}>
