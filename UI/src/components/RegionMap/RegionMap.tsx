@@ -201,12 +201,7 @@ class RegionMap extends Component<RegionMapProps> {
     this.itineraryService = new this.geo.ItineraryService(itineraryServiceAccount, itineraryServiceKey, itineraryServiceURL);
     this.itineraryRenderer = new this.geo.ItineraryRenderer(this.map);
 
-    // Sort by stop order
-    let sortedStations = this.props.mapData.stations.sort((a: any, b: any) => {
-      (a.route_stop_order > b.route_stop_order) ? 1 : -1;
-    });
-
-    let waypoints = sortedStations.map((station: any) => {
+    let waypoints = this.props.mapData.stations.map((station: any) => {
       return new this.geo.LatLng(station.lat, station.lon);
     });
 
@@ -239,13 +234,13 @@ class RegionMap extends Component<RegionMapProps> {
       image: null,
       color: ''
     };
-    if ((activeStationStatus.num_bikes_available === 0 || activeStationStatus.num_bikes_disabled > 5) && !activeStationStatus.route_stop_session_id) {
+    if ((activeStationStatus.num_bikes_available < 3 || activeStationStatus.num_bikes_disabled > 5) && !activeStationStatus.route_stop_session_id) {
       marker.image = redMarkerImage;
       marker.color = 'red';
-    } else if ((activeStationStatus.num_bikes_available === 0 || activeStationStatus.num_bikes_disabled > 5) && activeStationStatus.route_stop_session_id && !isCompleted) {
+    } else if ((activeStationStatus.num_bikes_available < 3 || activeStationStatus.num_bikes_disabled > 5) && activeStationStatus.route_stop_session_id && !isCompleted) {
       marker.image = yellowMarkerImage;
       marker.color = 'yellow';
-    } else if (activeStationStatus.num_bikes_available > 0 && activeStationStatus.num_bikes_disabled <= 5) {
+    } else {
       marker.image = grayDotImage;
       marker.color = 'gray';
     }
@@ -257,10 +252,10 @@ class RegionMap extends Component<RegionMapProps> {
       image: null,
       color: ''
     };
-    if ((activeStationStatus.num_bikes_available === 0 || activeStationStatus.num_bikes_disabled > 5) && activeStationStatus.route_stop_session_id && !isCompleted && activeStationStatus.route_stop_order === 0) {
+    if ((activeStationStatus.num_bikes_available < 3 || activeStationStatus.num_bikes_disabled > 5) && activeStationStatus.route_stop_session_id && !isCompleted && activeStationStatus.route_stop_order === 0) {
       marker.image = redMarkerImage;
       marker.color = 'red';
-    } else if ((activeStationStatus.num_bikes_available === 0 || activeStationStatus.num_bikes_disabled > 5) && activeStationStatus.route_stop_session_id && !isCompleted && activeStationStatus.route_stop_order > 0) {
+    } else if ((activeStationStatus.num_bikes_available < 3 || activeStationStatus.num_bikes_disabled > 5) && activeStationStatus.route_stop_session_id && !isCompleted && activeStationStatus.route_stop_order > 0) {
       marker.image = yellowMarkerImage;
       marker.color = 'yellow';
     } else if (isCompleted) {
