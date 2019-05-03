@@ -41,6 +41,10 @@ $header-height-mobile: 168px;
     height: 60px;
   }
 
+  &__report-row {
+    min-height: 336px;
+  }
+
   @media screen and (min-width: $tablet-break) {
     min-height: calc(100vh - 120px);
     &__content {

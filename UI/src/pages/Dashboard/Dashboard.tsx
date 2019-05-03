@@ -323,7 +323,7 @@ class Dashboard extends React.Component<DashboardProps, DashboardState> {
                 </div>
               </div>
 
-              <div className={'grid__row'}>
+              <div className={'grid__row dashboard-body__report-row'}>
                 <div className={'grid__column-8 grid__column-m-4'} >
                   <div id={'in-need-report'} className={'dashboard-body__report-container'}></div>
                 </div>
