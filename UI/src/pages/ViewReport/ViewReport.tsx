@@ -129,6 +129,13 @@ class ViewReport extends Component<any, ReportsState> {
     });
   };
 
+  createNewReport = (e: any) => {
+    e.preventDefault();
+    this.props.history.push({
+      pathname: `/reports/new`
+    });
+  };
+
   toggleFilter = () => {
     this.setState({ isFilterOpen: !this.state.isFilterOpen });
   };
@@ -185,10 +192,14 @@ class ViewReport extends Component<any, ReportsState> {
                 {/* Bottom Header Row */}
                 <div className={'report-header__bottom'}>
                   <div className={'report-header__buttons'}>
-                    <button className={'report-view__btn--create btn--primary'} onClick={this.modifyReport}>
+                    <button className={'report-view__btn--create btn--primary'}
+                            disabled={!(this.state.filters && this.state.filters.length)}
+                            onClick={this.createNewReport}>
                       Create New
                     </button>
-                    <button className={'report-view__btn--actions btn--secondary'} onClick={this.modifyReport}>
+                    <button className={'report-view__btn--actions btn--secondary'}
+                            disabled={!(this.state.filters && this.state.filters.length)}
+                            onClick={this.modifyReport}>
                       Modify / Export
                     </button>
                   </div>
