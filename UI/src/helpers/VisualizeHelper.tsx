@@ -69,6 +69,7 @@ class VisualizeHelper {
           resource: resourcePath,
           params: params,
           linkOptions: linkOptions,
+          scrollToTop: false,
           success: (success: any) => {
             resolve(success);
           },
