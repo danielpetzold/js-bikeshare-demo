@@ -19,7 +19,7 @@ class SendToStationModal extends Component<SendToStationProps, SendToStationStat
   };
 
   closeModal = () => {
-    this.props.closeModal(true, null);
+    this.props.closeModal(false, null);
   };
 
   submitDriverUpdate = async () => {
