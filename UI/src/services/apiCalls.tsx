@@ -54,8 +54,8 @@ export const setRouteStop = (sendToStationPayload: SendToStationPayload) => {
   });
 };
 
-export const getDriverNotifications = async () => {
-  const response: any = await fetch(`${baseURL}/route-stops/session`, {
+export let getDriverNotifications = async (routeId: string) => {
+  const response: any = await fetch(`${baseURL}/route-stops/session/${routeId}`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json'

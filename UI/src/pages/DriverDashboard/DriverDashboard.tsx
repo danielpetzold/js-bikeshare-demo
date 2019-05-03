@@ -17,6 +17,9 @@ interface State {
   mapData: any | null;
   notifications: DriverNotificationData[] | null;
   isMobile: boolean;
+  routeId: string;
+  franchiseId: string;
+  regionId: string;
 }
 
 const mobileWidth: number = 1024;
@@ -27,7 +30,10 @@ class DriverDashboard extends Component<any, State> {
     selectedStationId: null,
     mapData: null,
     notifications: null,
-    isMobile: window.innerWidth < mobileWidth
+    isMobile: window.innerWidth < mobileWidth,
+    routeId: 'SF10',
+    franchiseId: 'BA',
+    regionId: '3'
   };
 
   async componentDidMount() {
@@ -84,9 +90,9 @@ class DriverDashboard extends Component<any, State> {
     try {
       let mapData = await JasperReportsService.get('/rest_v2/reports/public/Bikeshare_demo/Reports/Data/RegionStationData.json', {
         params: {
-          Franchise: 'BA',
-          Region: '3',
-          Route: 'SF10',
+          Franchise: this.state.franchiseId,
+          Region: this.state.regionId,
+          Route: this.state.routeId,
           session_id: this.props.sessionId
         }
       });
@@ -106,7 +112,7 @@ class DriverDashboard extends Component<any, State> {
   };
 
   getNotifications = async () => {
-    let notifications: DriverNotificationData[] = await getDriverNotifications();
+    let notifications: DriverNotificationData[] = await getDriverNotifications(this.state.routeId);
     this.setState({notifications: notifications});
   };
 
@@ -164,8 +170,7 @@ class DriverDashboard extends Component<any, State> {
                 </div>
                 <div className="grid__column-8 grid__column-m-4">
                   <div className={'driver-reports__action-icons'}>
-                    <i className={'icon-ic-server'} />
-                    <i className={'icon-ic-printer'} />
+
                   </div>
                   <div className={'driver-reports__report'} id="check-in-report" />
                 </div>

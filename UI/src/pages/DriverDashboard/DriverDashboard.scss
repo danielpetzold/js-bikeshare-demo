@@ -116,7 +116,7 @@
     padding: 0;
     margin: 24px 0 24px 0;
     text-align: center;
-
+    min-height: 29px;
     i {
       font-size: 24px;
       line-height: 29px;
@@ -151,6 +151,7 @@
 
     &__action-icons {
       text-align: right;
+      min-height: 0px;
     }
 
     &__report {
