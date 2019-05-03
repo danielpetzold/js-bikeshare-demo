@@ -19,6 +19,7 @@ const grayMarkerImage: any = require('../../assets/GrayMarker.png');
 const greenMarkerImage: any = require(`../../assets/GreenMarker.png`);
 const greenDotImage: any = require(`../../assets/Green-Dot.png`);
 const greenCircleImage: any = require(`../../assets/Green-Circle.png`);
+const closeImage: any = require(`../../assets/close.png`);
 
 const itineraryServiceAccount = "demo";
 const itineraryServiceKey = '2u7kdn4DnYE=';
@@ -132,7 +133,7 @@ class RegionMap extends Component<RegionMapProps> {
       </div>`;
 
       this.popup =  new this.geo.Popup(popupContent, {
-        closeButtonUrl: "https://geoanalytics.tibco.com/documentation/assets/img/close.png",
+        closeButtonUrl: closeImage,
         offset: {
           x: 0,
           y: -39
