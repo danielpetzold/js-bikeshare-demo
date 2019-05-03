@@ -166,7 +166,7 @@ class RegionMap extends Component<RegionMapProps> {
         })
       );
       //Add events
-      this.markersLayer.events.on("marker-click", (station: any) => {
+      this.markersLayer.events.on("press", (station: any) => {
         this.popup.setHtml(popupContent, {
           bikesAvailable: station.options.bikesAvailable,
           docksAvailable: station.options.docksAvailable,
@@ -185,7 +185,7 @@ class RegionMap extends Component<RegionMapProps> {
      * Also callback methods can't be passed in as an option to the popup content.
      * Temp solution: Manually adding click event to popup element.
      */
-    this.popupEvent = this.popup.$htmlContent.addEventListener('click', (event: any) => {
+    this.popupEvent = this.popup.$htmlContent.addEventListener('press', (event: any) => {
       this.openSendToStationModal(event);
     });
   }
