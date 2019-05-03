@@ -70,6 +70,7 @@ class VisualizeHelper {
           params: params,
           linkOptions: linkOptions,
           scrollToTop: false,
+          loadingOverlay: true,
           success: (success: any) => {
             resolve(success);
           },

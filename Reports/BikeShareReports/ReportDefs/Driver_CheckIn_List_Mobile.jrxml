@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 7.2.1.final using JasperReports Library version 6.6.0  -->
-<!-- 2019-05-01T17:41:56 -->
+<!-- 2019-05-03T12:07:16 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Driver_CheckIn_List_Mobile" pageWidth="308" pageHeight="172" columnWidth="308" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" isIgnorePagination="true" uuid="05a6d2ba-fba0-440b-964e-7586501cfd05">
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="BikeShare-Adapter-Dev"/>
@@ -173,9 +173,10 @@ Order By rs.is_completed DESC, rs.stop_order]]>
 				<textFieldExpression><![CDATA[$F{stationName}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement style="BaseReportStyle" mode="Transparent" x="230" y="12" width="65" height="14" forecolor="#9C9C9C" uuid="990c0ed1-1dbb-46d1-932a-9a1a658b867a">
+				<reportElement style="BaseReportStyle" mode="Transparent" x="230" y="13" width="65" height="14" forecolor="#9C9C9C" uuid="990c0ed1-1dbb-46d1-932a-9a1a658b867a">
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
 					<printWhenExpression><![CDATA[!$F{is_completed}]]></printWhenExpression>
 				</reportElement>
 				<textElement>
@@ -185,9 +186,9 @@ Order By rs.is_completed DESC, rs.stop_order]]>
 				<hyperlinkTooltipExpression><![CDATA["Est. Arrival Time"]]></hyperlinkTooltipExpression>
 			</textField>
 			<textField>
-				<reportElement style="BaseReportStyle" mode="Transparent" x="25" y="135" width="120" height="20" forecolor="#71AC5C" uuid="3f8f6239-69d9-441e-bc22-b80a6a6ecab3">
-					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				<reportElement style="BaseReportStyle" mode="Transparent" x="27" y="136" width="120" height="20" forecolor="#71AC5C" uuid="3f8f6239-69d9-441e-bc22-b80a6a6ecab3">
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
 					<printWhenExpression><![CDATA[$F{is_completed}]]></printWhenExpression>
 				</reportElement>
 				<textElement>
@@ -297,9 +298,10 @@ $V{GetStatus} == "DONE" ? "Station Check-In Complete" :
 				<hyperlinkTooltipExpression><![CDATA["Est. Check-In Time"]]></hyperlinkTooltipExpression>
 			</image>
 			<textField>
-				<reportElement style="BaseReportStyle" mode="Transparent" x="99" y="10" width="50" height="18" uuid="16df263f-3b58-418c-91c9-3922a8fcc968">
+				<reportElement style="BaseReportStyle" mode="Transparent" x="99" y="11" width="50" height="18" uuid="16df263f-3b58-418c-91c9-3922a8fcc968">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
 					<printWhenExpression><![CDATA[!$F{is_completed}]]></printWhenExpression>
 				</reportElement>
 				<textElement verticalAlignment="Middle">

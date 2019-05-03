@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 7.2.1.final using JasperReports Library version 6.6.0  -->
-<!-- 2019-05-01T14:11:10 -->
+<!-- 2019-05-03T11:48:13 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="FM_Dashboard_KPIS" printOrder="Horizontal" pageWidth="900" pageHeight="144" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="900" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="5347bef6-468e-4022-865e-bd6933f0fa4b">
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="BikeShare-Adapter-Dev"/>
@@ -187,11 +187,12 @@ FROM "region_kpi_today" FETCH FIRST 1 ROW ONLY]]>
 				</graphicElement>
 			</rectangle>
 			<textField hyperlinkType="Reference" hyperlinkTarget="Top">
-				<reportElement style="SecondaryTitleStyle" x="5" y="99" width="120" height="38" uuid="7db82294-fab0-4b06-a9c1-d774ba7d7a6a">
+				<reportElement style="SecondaryTitleStyle" x="5" y="105" width="120" height="18" forecolor="#949799" uuid="7db82294-fab0-4b06-a9c1-d774ba7d7a6a">
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 					<property name="net.sf.jasperreports.export.html.class" value="kpi-card"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
 					<font size="10"/>
 				</textElement>
 				<textFieldExpression><![CDATA["Stations In-need"]]></textFieldExpression>
@@ -240,13 +241,14 @@ FROM "region_kpi_today" FETCH FIRST 1 ROW ONLY]]>
 				<hyperlinkReferenceExpression><![CDATA["Dashboard_Trip_Detail"]]></hyperlinkReferenceExpression>
 			</textField>
 			<textField hyperlinkType="Reference" hyperlinkTarget="Top">
-				<reportElement style="SecondaryTitleStyle" x="159" y="99" width="120" height="38" uuid="97fd726e-4e76-4322-93ee-ab61238e5f1f">
+				<reportElement style="SecondaryTitleStyle" x="159" y="105" width="120" height="18" forecolor="#949799" uuid="97fd726e-4e76-4322-93ee-ab61238e5f1f">
 					<property name="com.jaspersoft.studio.unit.x" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 					<property name="com.jaspersoft.studio.unit.y" value="px"/>
 					<property name="net.sf.jasperreports.export.html.class" value="kpi-card"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
 					<font size="10"/>
 				</textElement>
 				<textFieldExpression><![CDATA["Total Trips"]]></textFieldExpression>
@@ -271,11 +273,10 @@ FROM "region_kpi_today" FETCH FIRST 1 ROW ONLY]]>
 				<patternExpression><![CDATA[$F{lost_bikes} > 999999 ? "###.#m" : ($F{lost_bikes} > 999 ? "###.#k" : "###")]]></patternExpression>
 			</textField>
 			<staticText>
-				<reportElement style="SecondaryTitleStyle" x="622" y="99" width="120" height="38" uuid="b5b0021f-840a-4c0f-988d-74651e414808">
+				<reportElement style="SecondaryTitleStyle" x="622" y="105" width="120" height="18" forecolor="#949799" uuid="b5b0021f-840a-4c0f-988d-74651e414808">
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
-					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
 					<font size="10"/>
 				</textElement>
 				<text><![CDATA[Lost Bikes]]></text>
@@ -299,11 +300,10 @@ FROM "region_kpi_today" FETCH FIRST 1 ROW ONLY]]>
 				<patternExpression><![CDATA[$F{driven_routes} > 999999 ? "###.#m" : ($F{driven_routes} > 999 ? "###.#k" : "###")]]></patternExpression>
 			</textField>
 			<staticText>
-				<reportElement style="SecondaryTitleStyle" x="467" y="99" width="120" height="38" uuid="71250b93-523c-42ec-980a-7a57d4db3ccb">
+				<reportElement style="SecondaryTitleStyle" x="467" y="105" width="120" height="18" forecolor="#949799" uuid="71250b93-523c-42ec-980a-7a57d4db3ccb">
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
-					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
 					<font size="10"/>
 				</textElement>
 				<text><![CDATA[Routes Driven]]></text>
@@ -331,12 +331,11 @@ FROM "region_kpi_today" FETCH FIRST 1 ROW ONLY]]>
 				<hyperlinkReferenceExpression><![CDATA["Dashboard_Bikes_Fixed_Detail"]]></hyperlinkReferenceExpression>
 			</textField>
 			<textField hyperlinkType="Reference" hyperlinkTarget="Top">
-				<reportElement style="SecondaryTitleStyle" x="313" y="99" width="120" height="38" uuid="6f7376f7-b5f4-47be-a78e-66923401ae44">
+				<reportElement style="SecondaryTitleStyle" x="313" y="105" width="120" height="18" forecolor="#949799" uuid="6f7376f7-b5f4-47be-a78e-66923401ae44">
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
-					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="net.sf.jasperreports.export.html.class" value="kpi-card"/>
 				</reportElement>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
 					<font size="10"/>
 				</textElement>
 				<textFieldExpression><![CDATA["Bikes Fixed"]]></textFieldExpression>
@@ -361,11 +360,10 @@ FROM "region_kpi_today" FETCH FIRST 1 ROW ONLY]]>
 				<patternExpression><![CDATA[$F{transported_bikes} > 999999 ? "###.#m" : ($F{transported_bikes} > 999 ? "###.#k" : "###")]]></patternExpression>
 			</textField>
 			<staticText>
-				<reportElement style="SecondaryTitleStyle" x="775" y="99" width="120" height="38" uuid="7202a76c-7142-4c81-b437-f06b8c46a10b">
+				<reportElement style="SecondaryTitleStyle" x="775" y="105" width="120" height="18" forecolor="#949799" uuid="7202a76c-7142-4c81-b437-f06b8c46a10b">
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
-					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
 					<font size="10"/>
 				</textElement>
 				<text><![CDATA[Bikes Transported]]></text>
@@ -378,6 +376,17 @@ FROM "region_kpi_today" FETCH FIRST 1 ROW ONLY]]>
 					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA["Timeframe: " + $P{Timeframe} + "; Franchise: " + $P{Franchise} + "; Region: " + $P{Region} + "; Start_Date: " + $P{Start_Date} + "; End_Date: " + $P{End_Date}]]></textFieldExpression>
+			</textField>
+			<textField hyperlinkType="Reference" hyperlinkTarget="Top">
+				<reportElement style="SecondaryTitleStyle" x="5" y="120" width="120" height="16" uuid="b7e5cd04-e800-47ae-a10b-5973b38d5142">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="net.sf.jasperreports.export.html.class" value="kpi-card"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA["(current)"]]></textFieldExpression>
+				<hyperlinkReferenceExpression><![CDATA["Dashboard_Stations_InNeed_Detail"]]></hyperlinkReferenceExpression>
 			</textField>
 		</band>
 	</summary>
