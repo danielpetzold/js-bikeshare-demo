@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 7.2.1.final using JasperReports Library version 6.6.0  -->
-<!-- 2019-05-01T15:28:07 -->
+<!-- 2019-05-03T11:40:16 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Dashboard_Peak_Trip_Times" pageWidth="284" pageHeight="336" columnWidth="284" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="f6a4b4bb-5500-44c7-9f2e-3eca62fbded4">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="BikeShare-Adapter-Dev"/>
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
@@ -204,12 +204,12 @@ on 1=1]]>
 			<staticText>
 				<reportElement style="BaseReportStyle" x="18" y="12" width="112" height="18" uuid="cb78fbeb-c688-4b63-a0e4-0c599e129881"/>
 				<textElement textAlignment="Left" verticalAlignment="Top">
-					<font size="12"/>
+					<font size="14"/>
 				</textElement>
 				<text><![CDATA[Active Times]]></text>
 			</staticText>
 			<staticText>
-				<reportElement style="SecondaryTitleStyle" x="18" y="35" width="100" height="19" uuid="0e965b21-6676-4d1f-b138-2cf36521845e"/>
+				<reportElement style="SecondaryTitleStyle" x="18" y="35" width="100" height="19" forecolor="#949799" uuid="0e965b21-6676-4d1f-b138-2cf36521845e"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font size="10"/>
 				</textElement>
