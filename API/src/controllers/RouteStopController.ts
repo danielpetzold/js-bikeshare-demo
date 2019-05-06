@@ -22,7 +22,7 @@ class RouteStopController {
      * Registers it's own routes into the Express Router
      */
     public initializeRoutes() {
-        this.router.get ( `${this.path}s/session`, this.getSessionAddedRouteStops);
+        this.router.get ( `${this.path}s/session/:id`, this.getSessionAddedRouteStops);
         this.router.get(`${this.path}/:id`, this.getRouteStopById);
         this.router.post(`${this.path}`, this.createSessionRouteStop);
       //  this.router.put(this.path, this.addRouteStop);
@@ -84,10 +84,12 @@ class RouteStopController {
             // TypeORM and it's relationship functionality which is making it difficult for me to
             // to get this info in one db call. Will revisit later if time allows.
 
+            let routeId: string = request.params.id;
+
             // get all incomplete session-assigned route stops
             let routeStops: IRouteStop[] = await this.rStopRepo.find(
                 {
-                    where: { session_id: request.sessionID, is_completed: false },
+                    where: { session_id: request.sessionID, is_completed: false, route_id: routeId },
                     order: { last_updated: "DESC" }
                 }
             );
