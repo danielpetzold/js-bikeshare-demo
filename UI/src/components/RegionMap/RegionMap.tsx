@@ -166,7 +166,7 @@ class RegionMap extends Component<RegionMapProps> {
         })
       );
       //Add events
-      this.markersLayer.events.on("marker-click", (station: any) => {
+      this.markersLayer.events.on("press", (station: any) => {
         this.popup.setHtml(popupContent, {
           bikesAvailable: station.options.bikesAvailable,
           docksAvailable: station.options.docksAvailable,
