@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 7.2.1.final using JasperReports Library version 6.6.0  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="FranchiseRegionStationStatusData" pageWidth="792" pageHeight="612" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="792" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" isSummaryWithPageHeaderAndFooter="true" uuid="cb872b2c-8e1c-4ee9-864a-d0a539435aae">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Bikeshare demo Local"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<property name="ireport.jasperserver.url" value="http://jrs-bikes-elasticl-1k5yhf91vrjuo-1806919984.us-east-2.elb.amazonaws.com/jasperserver-pro/"/>
+	<property name="ireport.jasperserver.user" value="superuser"/>
+	<property name="ireport.jasperserver.report.resource" value="/public/Bikeshare_demo/Reports/Data/FranchiseRegionStatusData_files/FranchiseStatusData"/>
+	<property name="ireport.jasperserver.reportUnit" value="/public/Bikeshare_demo/Reports/Data/FranchiseRegionStatusData"/>
+	<property name="com.jaspersoft.studio.report.unit.description" value="Region status and details for a franchise"/>
+	<parameter name="LoggedInUsername" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[Of logged in user]]></parameterDescription>
+		<defaultValueExpression><![CDATA["joeuser"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="LoggedInUserTenantId" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="Franchise" class="java.lang.String"/>
+	<parameter name="session_id" class="java.lang.String">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="FranchiseFilter" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[$P{LoggedInUserTenantId} != null ? $P{LoggedInUserTenantId} : $P{Franchise}]]></defaultValueExpression>
+	</parameter>
+	<queryString language="SQL">
+		<![CDATA[select cStat.system_id, si.region_id, cStat.station_id, cStat.last_reported, cStat.session_id,
+  cStat.num_bikes_available,
+  cStat.num_bikes_disabled, 
+  cStat.num_docks_available,
+  cStat.num_docks_disabled,
+  si.name as station_name, si.short_name as station_short_name, 
+  si.lat as station_lat, si.lon as station_lon,
+  r.name as region_name, r.center_lat as region_center_lat, r.center_lon as region_center_lon,
+  (cStat.num_bikes_available = 0 or cStat.num_bikes_disabled > 5) as in_need
+from station_status cStat
+join (
+  select system_id, station_id,
+    max(last_reported) as maxStatusTime
+  from station_status
+  where system_id = $P{Franchise} and (session_id is null or session_id = $P{session_id})
+  group by system_id, station_id) as  mStat
+on mStat.system_id = cStat.system_id and mStat.station_id = cStat.station_id and mStat.maxStatusTime = cStat.last_reported
+join station_information si on (si.system_id = cStat.system_id and si.station_id = cStat.station_id)
+join system_region r on (si.system_id = r.system_id and si.region_id = r.region_id)
+WHERE si.system_id = $P{FranchiseFilter}
+order by cStat.system_id, si.region_id, cStat.station_id]]>
+	</queryString>
+	<field name="system_id" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="system_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="station_status"/>
+	</field>
+	<field name="region_id" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="region_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="station_information"/>
+	</field>
+	<field name="station_id" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="station_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="station_status"/>
+	</field>
+	<field name="last_reported" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.label" value="last_reported"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="station_status"/>
+	</field>
+	<field name="session_id" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="session_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="station_status"/>
+	</field>
+	<field name="num_bikes_available" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="num_bikes_available"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="station_status"/>
+	</field>
+	<field name="num_bikes_disabled" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="num_bikes_disabled"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="station_status"/>
+	</field>
+	<field name="num_docks_available" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="num_docks_available"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="station_status"/>
+	</field>
+	<field name="num_docks_disabled" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="num_docks_disabled"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="station_status"/>
+	</field>
+	<field name="station_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="station_name"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="station_information"/>
+	</field>
+	<field name="station_short_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="station_short_name"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="station_information"/>
+	</field>
+	<field name="station_lat" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.label" value="station_lat"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="station_information"/>
+	</field>
+	<field name="station_lon" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.label" value="station_lon"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="station_information"/>
+	</field>
+	<field name="region_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="region_name"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="system_region"/>
+	</field>
+	<field name="region_center_lat" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.label" value="region_center_lat"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="system_region"/>
+	</field>
+	<field name="region_center_lon" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.label" value="region_center_lon"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="system_region"/>
+	</field>
+	<field name="in_need" class="java.lang.Boolean">
+		<property name="com.jaspersoft.studio.field.label" value="in_need"/>
+	</field>
+	<variable name="StationsInNeedCount" class="java.lang.Float" calculation="Sum">
+		<variableExpression><![CDATA[$F{in_need} ? 1.0 : 0.0]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<group name="Region">
+		<groupExpression><![CDATA[$F{region_id}]]></groupExpression>
+		<groupFooter>
+			<band height="42">
+				<textField>
+					<reportElement x="10" y="0" width="90" height="30" uuid="c5278a7a-a3f2-4f58-a934-c1bc0636d6eb">
+						<property name="net.sf.jasperreports.export.json.path" value="system_id"/>
+					</reportElement>
+					<textFieldExpression><![CDATA[$F{system_id}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="110" y="0" width="100" height="30" uuid="d11e49e0-d910-4fee-8591-5152d5730f3e">
+						<property name="net.sf.jasperreports.export.json.path" value="region_id"/>
+					</reportElement>
+					<textFieldExpression><![CDATA[$F{region_id}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="330" y="0" width="150" height="30" uuid="784a7688-7941-4421-ab24-cabb9d4b8287">
+						<property name="net.sf.jasperreports.export.json.path" value="center_lat"/>
+					</reportElement>
+					<textFieldExpression><![CDATA[$F{region_center_lat}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="490" y="0" width="120" height="30" uuid="b84f72c8-7f39-4dcf-ab7d-033a3c0a299c">
+						<property name="net.sf.jasperreports.export.json.path" value="center_lon"/>
+					</reportElement>
+					<textFieldExpression><![CDATA[$F{region_center_lon}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="220" y="0" width="100" height="30" uuid="e4e0af41-903a-488f-8127-d9da91dfea63">
+						<property name="net.sf.jasperreports.export.json.path" value="name"/>
+					</reportElement>
+					<textFieldExpression><![CDATA[$F{region_name}]]></textFieldExpression>
+				</textField>
+				<textField pattern="###0.#">
+					<reportElement x="620" y="0" width="100" height="30" uuid="41a10f20-245d-4a6d-b7d9-40807ba43183">
+						<property name="net.sf.jasperreports.export.json.path" value="percent_stations_in_need"/>
+					</reportElement>
+					<textFieldExpression><![CDATA[$V{Region_COUNT} != 0 ? Math.round($V{StationsInNeedCount} / $V{Region_COUNT} * 1000.0)/10.0 : 0.0]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="54">
+			<textField>
+				<reportElement x="136" y="10" width="380" height="30" uuid="5dc773c5-e05a-4d9a-ac61-c840142b51a2"/>
+				<textFieldExpression><![CDATA["<" + $P{session_id} + ">"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="526" y="10" width="100" height="30" uuid="52a53482-c9f1-465f-96b9-0cde34952618"/>
+				<textFieldExpression><![CDATA[$P{LoggedInUsername}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="20" y="10" width="100" height="30" uuid="cf61b249-41a8-4d92-9d70-e02aefee3daa"/>
+				<textFieldExpression><![CDATA[$P{FranchiseFilter}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="640" y="10" width="100" height="30" uuid="159f0f97-cd44-404c-9cd2-3c61b9cbdf86"/>
+				<textFieldExpression><![CDATA[$P{LoggedInUserTenantId}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+</jasperReport>

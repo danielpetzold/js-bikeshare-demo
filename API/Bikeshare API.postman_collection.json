@@ -1,0 +1,129 @@
+{
+	"info": {
+		"_postman_id": "f49547b1-cdd3-45f0-8e3b-ba9f9b2c2dd7",
+		"name": "Bikeshare API",
+		"description": "Bikeshare Node API EndPoint Tests",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get Session Token",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{HostName}}/session",
+					"host": [
+						"{{HostName}}"
+					],
+					"path": [
+						"session"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Route Stop",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \"stationId\" : \"299\", \"routeId\" : \"SJ06\", \"highPri\" : 1}"
+				},
+				"url": {
+					"raw": "{{HostName}}/route-stop",
+					"host": [
+						"{{HostName}}"
+					],
+					"path": [
+						"route-stop"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Route Stop",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{HostName}}/route-stop/558",
+					"host": [
+						"{{HostName}}"
+					],
+					"path": [
+						"route-stop",
+						"558"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Station Status",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{HostName}}/station-status/266",
+					"host": [
+						"{{HostName}}"
+					],
+					"path": [
+						"station-status",
+						"266"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Save Station Status",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\": \"266\",\n    \"system_id\": \"BA\",\n    \"station_id\": \"299\",\n    \"num_bikes_available\": 10,\n    \"num_ebikes_available\": 0,\n    \"num_bikes_disabled\": 0,\n    \"num_docks_available\": 14,\n    \"num_docks_disabled\": 0,\n    \"is_renting\": true,\n    \"is_installed\": null,\n    \"is_returning\": true,\n    \"last_reported\": \"2018-10-16T03:45:37.000Z\",\n    \"session_id\": null\n}"
+				},
+				"url": {
+					"raw": "{{HostName}}/station-status",
+					"host": [
+						"{{HostName}}"
+					],
+					"path": [
+						"station-status"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

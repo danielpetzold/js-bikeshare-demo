@@ -1,0 +1,64 @@
+version: 0.2
+
+#env:
+  #variables:
+     # key: "value"
+     # key: "value"
+  #parameter-store:
+     # key: "value"
+     # key: "value"
+
+phases:
+  install:
+    commands:
+      #- apt-get update -y
+      # zip is in the image
+      #- apt-get install -y zip
+      # git-all 
+  #pre_build:
+    #commands:
+      # - command
+      # - command
+  build:
+    commands:
+      # make sure we have the latest
+      #- git checkout develop: not needed?
+      - ls -lsa
+      - mkdir nodeBuild
+      - cd UI
+      - npm install
+      - npm run build
+      - ls -lsa build
+      # create and fill the deployment directory
+      - cd ..
+      - mkdir target
+      - mkdir target/build
+      - cp -R UI/build/* target/build
+      - cp -R deploy/Docker/* target
+      - cp -R deploy/ElasticBeanstalk/* target
+      # original approach of building a Beanstalk zip
+      #- zip -r ../nodeBuild/bikeshare-node.zip build/*
+      #- cd ../deploy/Docker
+      #- zip ../../nodeBuild/bikeshare-node.zip *
+      #- cd ../ElasticBeanstalk
+      #- zip ../../nodeBuild/bikeshare-node.zip *
+      #- cd ../../nodeBuild
+      #- zipinfo -1 bikeshare-node.zip
+      # - command
+    #finally:
+      #echo Build finished on `date`
+  #post_build:
+    #commands:
+      # - command
+      # - command
+artifacts:
+  files:
+    - '**/*'
+    #- nodeBuild/bikeshare-node.zip
+  base-directory: 'target'
+    # - location
+  #name: $(date +%Y-%m-%d)
+  #discard-paths: yes
+#cache:
+  #paths:
+    # - paths

@@ -1,0 +1,29 @@
+@import '../../scss/util/variables';
+
+.adhoc-container {
+  display: flex;
+  justify-content: center;
+}
+
+.adhoc-view {
+  width: 100%;
+}
+
+.adhoc-frame {
+  box-sizing: border-box;
+  height: 100vh;
+  width: 100%;
+  background-color: lightgrey;
+  border-style: none;
+}
+
+// Desktop changes
+
+@media screen and (min-width: $tablet-break) {
+  .adhoc-view {
+    padding: 20px 20px 0 94px;
+  }
+  .adhoc-frame {
+    height: calc(100vh - 48px);
+  }
+}

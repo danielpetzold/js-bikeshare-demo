@@ -1,0 +1,306 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 7.2.1.final using JasperReports Library version 6.6.0  -->
+<!-- 2019-04-04T12:44:34 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="FM_Dashboard_KPIS" printOrder="Horizontal" pageWidth="900" pageHeight="144" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="900" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="5347bef6-468e-4022-865e-bd6933f0fa4b">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="BikeShare-Adapter-Dev"/>
+	<property name="com.jaspersoft.studio.report.description" value=""/>
+	<property name="ireport.jasperserver.url" value="http://JRS-bikes-ElasticL-1K5YHF91VRJUO-1806919984.us-east-2.elb.amazonaws.com/jasperserver-pro/"/>
+	<property name="ireport.jasperserver.user" value="superuser"/>
+	<property name="ireport.jasperserver.reportUnit" value="/public/Bikeshare_demo/Reports/Dashboard_Reports/FM_Dashboard_KPIS"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="280"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="715"/>
+	<property name="net.sf.jasperreports.export.html.class" value=""/>
+	<property name="net.sf.jasperreports.export.html.header" value=""/>
+	<property name="net.sf.jasperreports.export.html.remove.emtpy.space.between.rows" value="true"/>
+	<property name="net.sf.jasperreports.export.html.size.unit" value="px"/>
+	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w1" value="524"/>
+	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w2" value="469"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<import value="java.time.LocalDate"/>
+	<import value="java.time.format.DateTimeFormatter"/>
+	<template><![CDATA["repo:/public/Bikeshare_demo/Resources/Styles/BikeShare_Style.jrtx"]]></template>
+	<parameter name="Debug" class="java.lang.Boolean">
+		<parameterDescription><![CDATA[During development, may set to true to view parameter values passed into report.]]></parameterDescription>
+		<defaultValueExpression><![CDATA[FALSE( )]]></defaultValueExpression>
+	</parameter>
+	<parameter name="Timeframe" class="java.lang.String">
+		<parameterDescription><![CDATA[Supports "current", "last24", "lastweek", "lastmonth" "lastquarter" and "annual".]]></parameterDescription>
+		<defaultValueExpression><![CDATA["current"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="Franchise" class="java.lang.String">
+		<parameterDescription><![CDATA[The Franchise Id (system_id)]]></parameterDescription>
+	</parameter>
+	<parameter name="Region" class="java.lang.String">
+		<parameterDescription><![CDATA[The Region Id - Maps to Region Input Control]]></parameterDescription>
+	</parameter>
+	<parameter name="Start_Date" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[Determined by examining the Timeframe parameter value.]]></parameterDescription>
+		<defaultValueExpression><![CDATA[Objects.equals($P{Timeframe}, "current") ? LocalDate.now().minusDays(1).format(DateTimeFormatter.ofPattern("MMdduuuu")) :
+	Objects.equals($P{Timeframe}, "last24") ? LocalDate.now().minusDays(2).format(DateTimeFormatter.ofPattern("MMdduuuu")) :
+		Objects.equals($P{Timeframe}, "lastweek") ? LocalDate.now().minusWeeks(1).format(DateTimeFormatter.ofPattern("MMdduuuu")) :
+			Objects.equals($P{Timeframe}, "lastmonth") ? LocalDate.now().minusMonths(1).format(DateTimeFormatter.ofPattern("MMdduuuu")) :
+				Objects.equals($P{Timeframe}, "lastquarter") ? LocalDate.now().minusMonths(3).format(DateTimeFormatter.ofPattern("MMdduuuu")) :
+					 LocalDate.now().minusYears(1).format(DateTimeFormatter.ofPattern("MMdduuuu"))]]></defaultValueExpression>
+	</parameter>
+	<parameter name="End_Date" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[Determined by examining the Timeframe parameter value.]]></parameterDescription>
+		<defaultValueExpression><![CDATA[Objects.equals($P{Timeframe}, "current") ? LocalDate.now().plusDays(1).format(DateTimeFormatter.ofPattern("MMdduuuu")) : LocalDate.now().format(DateTimeFormatter.ofPattern("MMdduuuu"))]]></defaultValueExpression>
+	</parameter>
+	<parameter name="Session_ID" class="java.lang.String"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT 5 AS "stations_in_need",
+	(SELECT SUM("sum_value") FROM 
+		(SELECT SUM("region_kpi_today"."value") as "sum_value", "region_kpi_today"."kpi_type"
+			FROM "region_kpi_today"
+			WHERE ("system_id" =  $P{Franchise} ) AND "today_adj_date" >  to_date($P{Start_Date}, 'MMDDYYYY')  AND "today_adj_date" <  to_date($P{End_Date}, 'MMDDYYYY')
+			GROUP BY  "kpi_type") as "kpi_table" WHERE kpi_type = 'driven_routes_count' ) AS "driven_routes",
+	(SELECT SUM("sum_value") FROM 
+		(SELECT SUM("region_kpi_today"."value") as "sum_value", "region_kpi_today"."kpi_type"
+			FROM "region_kpi_today"
+			WHERE ("system_id" = $P{Franchise}) AND "today_adj_date" > to_date($P{Start_Date}, 'MMDDYYYY') AND "today_adj_date" < to_date($P{End_Date}, 'MMDDYYYY')
+			GROUP BY  "kpi_type") as "kpi_table" WHERE kpi_type = 'fixed_bikes_count') AS "fixed_bikes",
+	(SELECT SUM("sum_value") FROM 
+		(SELECT SUM("region_kpi_today"."value") as "sum_value", "region_kpi_today"."kpi_type"
+			FROM "region_kpi_today"
+			WHERE ("system_id" = $P{Franchise}) AND "today_adj_date" > to_date($P{Start_Date}, 'MMDDYYYY') AND "today_adj_date" < to_date($P{End_Date}, 'MMDDYYYY')
+			GROUP BY  "kpi_type") as "kpi_table" WHERE kpi_type = 'lost_bikes_count') AS "lost_bikes",
+	(SELECT SUM("sum_value") FROM 
+		(SELECT SUM("region_kpi_today"."value") as "sum_value", "region_kpi_today"."kpi_type"
+			FROM "region_kpi_today"
+			WHERE ("system_id" = $P{Franchise}) AND "today_adj_date" > to_date($P{Start_Date}, 'MMDDYYYY') AND "today_adj_date" < to_date($P{End_Date}, 'MMDDYYYY')
+			GROUP BY  "kpi_type") as "kpi_table" WHERE kpi_type = 'transported_bikes_count') AS "transported_bikes",
+	(SELECT SUM("sum_value") FROM 
+		(SELECT SUM("region_kpi_today"."value") as "sum_value", "region_kpi_today"."kpi_type"
+			FROM "region_kpi_today"
+			WHERE ("system_id" = $P{Franchise}) AND "today_adj_date" > to_date($P{Start_Date}, 'MMDDYYYY') AND "today_adj_date" < to_date($P{End_Date}, 'MMDDYYYY')
+			GROUP BY  "kpi_type") as "kpi_table" WHERE kpi_type = 'total_trips_count') AS "total_trips"		
+FROM "region_kpi_today" FETCH FIRST 1 ROW ONLY]]>
+	</queryString>
+	<field name="stations_in_need" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="stations_in_need"/>
+	</field>
+	<field name="driven_routes" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="driven_routes"/>
+	</field>
+	<field name="fixed_bikes" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="fixed_bikes"/>
+	</field>
+	<field name="lost_bikes" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="lost_bikes"/>
+	</field>
+	<field name="transported_bikes" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="transported_bikes"/>
+	</field>
+	<field name="total_trips" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="total_trips"/>
+	</field>
+	<background>
+		<band height="144">
+			<frame>
+				<reportElement stretchType="ContainerHeight" x="0" y="0" width="900" height="144" backcolor="#F7F9FA" uuid="f06647a8-265b-4feb-bcd6-dc7cddb4b0c4">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="ShowOutOfBoundContent" value="true"/>
+				</reportElement>
+			</frame>
+		</band>
+	</background>
+	<summary>
+		<band height="144">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<rectangle radius="6">
+				<reportElement x="0" y="0" width="130" height="144" uuid="b384d264-8ee9-493d-8810-7c9e55f39d47">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+				</reportElement>
+				<graphicElement>
+					<pen lineColor="#FFFFFF"/>
+				</graphicElement>
+			</rectangle>
+			<rectangle radius="6">
+				<reportElement style="BaseReportStyle" x="154" y="0" width="130" height="144" uuid="ea6f1417-fd84-4d9e-94a9-207ff0141b46">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+				</reportElement>
+				<graphicElement>
+					<pen lineColor="#FFFFFF"/>
+				</graphicElement>
+			</rectangle>
+			<rectangle radius="6">
+				<reportElement style="BaseReportStyle" x="308" y="0" width="130" height="144" uuid="59fdd43f-e244-402e-8cbf-e4cc813510dc">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+				</reportElement>
+				<graphicElement>
+					<pen lineColor="#FFFFFF"/>
+				</graphicElement>
+			</rectangle>
+			<rectangle radius="6">
+				<reportElement style="BaseReportStyle" x="462" y="0" width="130" height="144" uuid="7198e40d-1edc-4454-a98a-b00139efb4ad">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+				</reportElement>
+				<graphicElement>
+					<pen lineColor="#FFFFFF"/>
+				</graphicElement>
+			</rectangle>
+			<rectangle radius="6">
+				<reportElement style="BaseReportStyle" x="616" y="0" width="130" height="144" uuid="9ed5d254-05a2-42d1-aac2-cbe0815f0500">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+				</reportElement>
+				<graphicElement>
+					<pen lineColor="#FFFFFF"/>
+				</graphicElement>
+			</rectangle>
+			<rectangle radius="6">
+				<reportElement style="BaseReportStyle" x="770" y="0" width="130" height="144" uuid="3fb5a207-247a-4248-aa40-e1439c768667">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+				</reportElement>
+				<graphicElement>
+					<pen lineColor="#FFFFFF"/>
+				</graphicElement>
+			</rectangle>
+			<staticText>
+				<reportElement style="SecondaryTitleStyle" x="16" y="108" width="100" height="22" uuid="823f2533-52bb-4206-a191-8fd5a02e2d81">
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[Stations In-need]]></text>
+			</staticText>
+			<textField isBlankWhenNull="false">
+				<reportElement style="MetricLabelStyle" x="16" y="67" width="100" height="36" isPrintInFirstWholeBand="true" uuid="ef9016b8-7fe9-4b50-be38-36d5e1f655fd">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{stations_in_need} == null ? 0 : $F{stations_in_need} > 999999 ? $F{stations_in_need} / 1000000.0 : ($F{stations_in_need} > 999 ?  $F{stations_in_need} / 1000.0 	: $F{stations_in_need})]]></textFieldExpression>
+				<patternExpression><![CDATA[$F{stations_in_need} > 999999 ? "###.#m" : ($F{stations_in_need} > 999 ? "###.#k" : "###")]]></patternExpression>
+			</textField>
+			<image>
+				<reportElement x="48" y="23" width="36" height="36" uuid="dd1745bb-dfe0-4b5e-8395-39c3b335bcc3">
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<imageExpression><![CDATA["repo:/public/Bikeshare_demo/Resources/Images/station_in_need_icon.png"]]></imageExpression>
+			</image>
+			<image>
+				<reportElement x="201" y="23" width="36" height="36" uuid="9ab5fc7d-ad5c-4a7e-8136-7f057e2b7327"/>
+				<imageExpression><![CDATA["repo:/public/Bikeshare_demo/Resources/Images/total_trips_icon.png"]]></imageExpression>
+			</image>
+			<textField isBlankWhenNull="false">
+				<reportElement style="MetricLabelStyle" x="169" y="67" width="100" height="36" isPrintInFirstWholeBand="true" uuid="04840c74-a052-42dd-b888-47590b2d1691">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{total_trips} == null ? 0 : $F{total_trips} > 999999 ? $F{total_trips} / 1000000.0 : ($F{total_trips} > 999 ?  $F{total_trips} / 1000.0 	: $F{total_trips})]]></textFieldExpression>
+				<patternExpression><![CDATA[$F{total_trips} > 999999 ? "###.#m" : ($F{total_trips} > 999 ? "###.#k" : "###")]]></patternExpression>
+			</textField>
+			<staticText>
+				<reportElement style="SecondaryTitleStyle" x="169" y="108" width="100" height="22" uuid="a4f4d042-2307-448a-bebc-fa7841826538"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[Total Trips]]></text>
+			</staticText>
+			<image>
+				<reportElement x="355" y="23" width="36" height="36" uuid="7852baae-5372-4430-8d43-e1332dd2c2e7"/>
+				<imageExpression><![CDATA["repo:/public/Bikeshare_demo/Resources/Images/lost_bikes_icon.png"]]></imageExpression>
+			</image>
+			<textField isBlankWhenNull="false">
+				<reportElement style="MetricLabelStyle" x="323" y="67" width="100" height="36" isPrintInFirstWholeBand="true" uuid="01e47b88-b21e-4ab3-975c-ccca2b9d3c66">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{lost_bikes} == null ? 0 : $F{lost_bikes} > 999999 ? $F{lost_bikes} / 1000000.0 : ($F{lost_bikes} > 999 ?  $F{lost_bikes} / 1000.0 	: $F{lost_bikes})]]></textFieldExpression>
+				<patternExpression><![CDATA[$F{lost_bikes} > 999999 ? "###.#m" : ($F{lost_bikes} > 999 ? "###.#k" : "###")]]></patternExpression>
+			</textField>
+			<staticText>
+				<reportElement style="SecondaryTitleStyle" x="323" y="108" width="100" height="22" uuid="d930111c-55f7-4335-a560-8d719b71fbcc"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[Lost Bikes]]></text>
+			</staticText>
+			<image>
+				<reportElement x="510" y="23" width="36" height="36" uuid="23a1e390-f12d-4356-b4b3-19da9f441fc2"/>
+				<imageExpression><![CDATA["repo:/public/Bikeshare_demo/Resources/Images/routes_driven_icon.png"]]></imageExpression>
+			</image>
+			<textField isBlankWhenNull="false">
+				<reportElement style="MetricLabelStyle" x="477" y="67" width="100" height="36" isPrintInFirstWholeBand="true" uuid="7339d94c-13aa-4ab0-855b-8e6c75f29f75">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{driven_routes} == null ? 0 : $F{driven_routes} > 999999 ? $F{driven_routes} / 1000000.0 : ($F{driven_routes} > 999 ?  $F{driven_routes} / 1000.0 	: $F{driven_routes})]]></textFieldExpression>
+				<patternExpression><![CDATA[$F{driven_routes} > 999999 ? "###.#m" : ($F{driven_routes} > 999 ? "###.#k" : "###")]]></patternExpression>
+			</textField>
+			<staticText>
+				<reportElement style="SecondaryTitleStyle" x="477" y="108" width="100" height="22" uuid="aa97557a-bd5d-423e-b91f-37d4c09ad175"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[Routes Driven]]></text>
+			</staticText>
+			<image>
+				<reportElement x="664" y="23" width="36" height="36" uuid="533da92c-5e98-41ab-978d-ade91625012d"/>
+				<imageExpression><![CDATA["repo:/public/Bikeshare_demo/Resources/Images/bikes_fixed_icon.png"]]></imageExpression>
+			</image>
+			<textField isBlankWhenNull="false">
+				<reportElement style="MetricLabelStyle" x="631" y="67" width="100" height="36" isPrintInFirstWholeBand="true" uuid="99fd557c-f359-4be1-84e8-c453d8685fb5">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{fixed_bikes} == null ? 0 : $F{fixed_bikes} > 999999 ? $F{fixed_bikes} / 1000000.0 : ($F{fixed_bikes} > 999 ?  $F{fixed_bikes} / 1000.0 	: $F{fixed_bikes})]]></textFieldExpression>
+				<patternExpression><![CDATA[$F{fixed_bikes} > 999999 ? "###.#m" : ($F{fixed_bikes} > 999 ? "###.#k" : "###")]]></patternExpression>
+			</textField>
+			<staticText>
+				<reportElement style="SecondaryTitleStyle" x="631" y="108" width="100" height="22" uuid="bab35aa7-2a36-4837-ad4b-188c7ce25182"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[Bikes Fixed]]></text>
+			</staticText>
+			<image>
+				<reportElement x="817" y="23" width="36" height="36" uuid="75ca1a3b-e885-4b77-8641-ff4fabd942a2"/>
+				<imageExpression><![CDATA["repo:/public/Bikeshare_demo/Resources/Images/bikes_transported_icon.png"]]></imageExpression>
+			</image>
+			<textField isBlankWhenNull="false">
+				<reportElement style="MetricLabelStyle" x="785" y="67" width="100" height="36" isPrintInFirstWholeBand="true" uuid="4ea6fc90-018b-441c-a648-662fb91ee146">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{transported_bikes} == null ? 0 : $F{transported_bikes} > 999999 ? $F{transported_bikes} / 1000000.0 : ($F{transported_bikes} > 999 ?  $F{transported_bikes} / 1000.0 	: $F{transported_bikes})]]></textFieldExpression>
+				<patternExpression><![CDATA[$F{transported_bikes} > 999999 ? "###.#m" : ($F{transported_bikes} > 999 ? "###.#k" : "###")]]></patternExpression>
+			</textField>
+			<staticText>
+				<reportElement style="SecondaryTitleStyle" x="785" y="108" width="100" height="22" uuid="e0f58082-30d3-479a-8b24-6a6505cc74d5"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[Bikes Transported]]></text>
+			</staticText>
+			<textField>
+				<reportElement mode="Transparent" x="15" y="3" width="100" height="64" uuid="74089a0a-4899-45c8-87ec-5fb5fa2264ea">
+					<printWhenExpression><![CDATA[$P{Debug} == true]]></printWhenExpression>
+				</reportElement>
+				<textElement>
+					<font fontName="SansSerif" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Timeframe: " + $P{Timeframe} + "; Franchise: " + $P{Franchise} + "; Region: " + $P{Region} + "; Start_Date: " + $P{Start_Date} + "; End_Date: " + $P{End_Date}]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

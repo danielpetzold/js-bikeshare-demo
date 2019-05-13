@@ -1,0 +1,9 @@
+
+API/package-lock.json
+API/.env
+.idea/
+Reports/.metadata/
+Reports/BikeShareReports/public/
+Reports/BikeShareReports/.settings/
+
+*.prefs

@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 7.2.1.final using JasperReports Library version 6.6.0  -->
+<!-- 2019-05-03T12:08:43 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Dashboard_Stations_InNeed_Detail" pageWidth="592" pageHeight="336" columnWidth="592" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="468dd506-a703-44bd-90d0-ceb9a6ce3577">
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="330"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="665"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="BikeShare-Adapter-Dev"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<property name="ireport.jasperserver.url" value="http://JRS-bikes-ElasticL-1K5YHF91VRJUO-1806919984.us-east-2.elb.amazonaws.com/jasperserver-pro/"/>
+	<property name="ireport.jasperserver.user" value="superuser"/>
+	<property name="ireport.jasperserver.reportUnit" value="/public/Bikeshare_demo/Reports/Dashboard_Reports/Dashboard_Stations_InNeed_Detail"/>
+	<property name="com.jaspersoft.jasperreports.highcharts.interactive" value="false"/>
+	<parameter name="Debug" class="java.lang.Boolean" isForPrompting="false">
+		<parameterDescription><![CDATA[During development, may set to true to view parameter values passed into report.]]></parameterDescription>
+		<defaultValueExpression><![CDATA[FALSE( )]]></defaultValueExpression>
+	</parameter>
+	<parameter name="Timeframe" class="java.lang.String">
+		<parameterDescription><![CDATA[Allowed values: current, last24, lastweek, lastmonth, lastquarter, annual. Value will determine values of Start_Date & End_Date.]]></parameterDescription>
+	</parameter>
+	<parameter name="Franchise" class="java.lang.String">
+		<parameterDescription><![CDATA[The Franchise Id (system_id)]]></parameterDescription>
+		<defaultValueExpression><![CDATA["BA"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="Region" class="java.lang.String">
+		<parameterDescription><![CDATA[The Region Id - Maps to Region Input Control]]></parameterDescription>
+	</parameter>
+	<parameter name="Session_ID" class="java.lang.String">
+		<parameterDescription><![CDATA[A unique id passed by the web app to combine/merge data by session.]]></parameterDescription>
+	</parameter>
+	<parameter name="regionExpression" class="java.lang.String">
+		<defaultValueExpression><![CDATA[$P{Region} != null && !$P{Region}.isEmpty() ? " and region_id = '" + $P{Region}.trim() + "' " : ""]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select cStat.system_id, iStat.name as "station_name", cStat.station_id, cStat.num_bikes_available, cStat.num_bikes_disabled, iStat.capacity
+	from station_status cStat
+	join (
+		select system_id, station_id,
+		max(last_reported) as maxStatusTime
+		from station_status
+		where system_id = $P{Franchise} $P!{regionExpression}
+		and (session_id is null or session_id = $P{Session_ID})
+		group by system_id, station_id) as  mStat
+	on mStat.station_id = cStat.station_id and mStat.maxStatusTime = cStat.last_reported
+	join station_information iStat on iStat.station_id = cStat.station_id and iStat.system_id = cStat.system_id
+	Group By cStat.system_id, iStat.name, cStat.station_id, cStat.num_bikes_available, cStat.num_bikes_disabled, iStat.capacity
+	Order By cStat.num_bikes_available, num_bikes_disabled desc
+	FETCH FIRST 10 ROW ONLY]]>
+	</queryString>
+	<field name="system_id" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="system_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="station_status"/>
+	</field>
+	<field name="station_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="station_name"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="station_information"/>
+	</field>
+	<field name="station_id" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="station_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="station_status"/>
+	</field>
+	<field name="num_bikes_available" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="num_bikes_available"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="station_status"/>
+	</field>
+	<field name="num_bikes_disabled" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="num_bikes_disabled"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="station_status"/>
+	</field>
+	<field name="capacity" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="capacity"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="station_information"/>
+	</field>
+	<summary>
+		<band height="336" splitType="Stretch">
+			<componentElement>
+				<reportElement x="-2" y="-1" width="592" height="336" uuid="abd3af23-0657-4ac4-b5c3-aa6221c5bc61">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<hc:chart xmlns:hc="http://jaspersoft.com/highcharts" xsi:schemaLocation="http://jaspersoft.com/highcharts http://jaspersoft.com/schema/highcharts.xsd" type="Column">
+					<hc:chartSetting name="default">
+						<hc:chartProperty name="title.text">
+							<hc:propertyExpression><![CDATA["Top Stations In Need (current)"]]></hc:propertyExpression>
+						</hc:chartProperty>
+						<hc:chartProperty name="credits.enabled" value="false"/>
+						<hc:chartProperty name="credits.href" value=""/>
+						<hc:chartProperty name="credits.text" value=""/>
+						<hc:chartProperty name="yAxis.title.text" value=""/>
+						<hc:chartProperty name="chart.zoomType" value="xy"/>
+						<hc:chartProperty name="com.jaspersoft.studio.highcharts.dataconfiguration.simple" value="true"/>
+						<hc:chartProperty name="title.style.color" value="#4A5357"/>
+						<hc:chartProperty name="title.style.fontFamily" value="Lato"/>
+						<hc:chartProperty name="title.style.fontSize" value="14px"/>
+						<hc:chartProperty name="title.align" value="left"/>
+						<hc:chartProperty name="title.y_measureUnit" value="{&quot;key&quot;:&quot;px&quot;,&quot;name&quot;:&quot;px&quot;}"/>
+						<hc:chartProperty name="title.y_customSimpleMode" value="true"/>
+						<hc:chartProperty name="title.y">
+							<hc:propertyExpression><![CDATA[10]]></hc:propertyExpression>
+						</hc:chartProperty>
+						<hc:chartProperty name="title.x"/>
+						<hc:chartProperty name="title.margin">
+							<hc:propertyExpression><![CDATA[20]]></hc:propertyExpression>
+						</hc:chartProperty>
+						<hc:chartProperty name="colors">
+							<hc:propertyExpression><![CDATA[Arrays.asList("#69caa4","#f37e78","#d1d3d2","#12C2EB","#F19B19","#4E40C3","#f15c80","#7cb5ec","#90ed7d","#8085e9","#e4d354","#2b908f","#f45b5b","#91e8e1")]]></hc:propertyExpression>
+						</hc:chartProperty>
+						<hc:chartProperty name="yAxis.alternateGridColor" value="#FAFBFC"/>
+						<hc:chartProperty name="yAxis.gridLineWidth">
+							<hc:propertyExpression><![CDATA[0]]></hc:propertyExpression>
+						</hc:chartProperty>
+						<hc:chartProperty name="legend.itemStyle.color" value="#4a5357"/>
+						<hc:chartProperty name="labels.style.color" value="#4A5357"/>
+						<hc:chartProperty name="xAxis.labels.style.fontSize" value="9px"/>
+						<hc:chartProperty name="yAxis.minTickInterval">
+							<hc:propertyExpression><![CDATA[5]]></hc:propertyExpression>
+						</hc:chartProperty>
+						<hc:chartProperty name="yAxis.tickInterval_customSimpleMode" value="true"/>
+						<hc:chartProperty name="yAxis.tickInterval">
+							<hc:propertyExpression><![CDATA[5]]></hc:propertyExpression>
+						</hc:chartProperty>
+						<hc:chartProperty name="legend.symbolWidth_measureUnit" value="{&quot;key&quot;:&quot;px&quot;,&quot;name&quot;:&quot;px&quot;}"/>
+						<hc:chartProperty name="legend.symbolWidth_customSimpleMode" value="true"/>
+						<hc:chartProperty name="legend.symbolWidth">
+							<hc:propertyExpression><![CDATA[12]]></hc:propertyExpression>
+						</hc:chartProperty>
+						<hc:chartProperty name="legend.symbolHeight"/>
+						<hc:chartProperty name="legend.style.fontSize" value="9px"/>
+						<hc:chartProperty name="plotOptions.series.marker.radius_customSimpleMode" value="true"/>
+						<hc:chartProperty name="plotOptions.series.marker.radius">
+							<hc:propertyExpression><![CDATA[1]]></hc:propertyExpression>
+						</hc:chartProperty>
+						<hc:chartProperty name="subtitle.style.fontFamily"/>
+						<hc:chartProperty name="subtitle.style.fontSize"/>
+						<hc:chartProperty name="subtitle.align" value="center"/>
+						<hc:chartProperty name="subtitle.text"/>
+						<hc:chartProperty name="subtitle.style.color" value="#949799"/>
+					</hc:chartSetting>
+					<multiAxisData>
+						<multiAxisDataset/>
+						<dataAxis axis="Rows">
+							<axisLevel name="Category1 ">
+								<labelExpression><![CDATA[]]></labelExpression>
+								<axisLevelBucket class="java.lang.Comparable">
+									<bucketExpression><![CDATA[$F{station_name}]]></bucketExpression>
+								</axisLevelBucket>
+							</axisLevel>
+						</dataAxis>
+						<dataAxis axis="Columns"/>
+						<multiAxisMeasure name="AvailBikes" class="java.lang.Number" calculation="Nothing">
+							<labelExpression><![CDATA["Available Bikes"]]></labelExpression>
+							<valueExpression><![CDATA[$F{num_bikes_available}]]></valueExpression>
+						</multiAxisMeasure>
+						<multiAxisMeasure name="Measure1" class="java.lang.Number" calculation="Nothing">
+							<labelExpression><![CDATA["Bikes Disabled"]]></labelExpression>
+							<valueExpression><![CDATA[$F{num_bikes_disabled}]]></valueExpression>
+						</multiAxisMeasure>
+						<multiAxisMeasure name="Measure2" class="java.lang.Number" calculation="Nothing">
+							<labelExpression><![CDATA["Station Capacity"]]></labelExpression>
+							<valueExpression><![CDATA[$F{capacity}]]></valueExpression>
+						</multiAxisMeasure>
+					</multiAxisData>
+					<hc:series name="AvailBikes"/>
+				</hc:chart>
+			</componentElement>
+		</band>
+	</summary>
+</jasperReport>

@@ -1,0 +1,332 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 7.2.1.final using JasperReports Library version 6.6.0  -->
+<!-- 2019-05-03T14:33:29 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Driver_CheckIn_List_Mobile" pageWidth="308" pageHeight="172" columnWidth="308" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" isIgnorePagination="true" uuid="05a6d2ba-fba0-440b-964e-7586501cfd05">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="BikeShare-Adapter-Dev"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="302"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="692"/>
+	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w1" value="633"/>
+	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w2" value="359"/>
+	<property name="net.sf.jasperreports.export.html.header" value=""/>
+	<property name="net.sf.jasperreports.export.html.remove.emtpy.space.between.rows" value="true"/>
+	<property name="net.sf.jasperreports.export.html.size.unit" value="px"/>
+	<property name="net.sf.jasperreports.export.html.white.page.background" value="false"/>
+	<property name="ireport.jasperserver.url" value="http://JRS-bikes-ElasticL-1K5YHF91VRJUO-1806919984.us-east-2.elb.amazonaws.com/jasperserver-pro/"/>
+	<property name="ireport.jasperserver.user" value="superuser"/>
+	<property name="ireport.jasperserver.reportUnit" value="/public/Bikeshare_demo/Reports/Dashboard_Reports/Driver_CheckIn_List_Mobile"/>
+	<property name="ireport.jasperserver.report.resource" value="/public/Bikeshare_demo/Reports/Dashboard_Reports/Driver_CheckIn_List_Mobile_files/main_jrxml"/>
+	<import value="java.time.LocalTime"/>
+	<import value="java.lang.Math"/>
+	<template><![CDATA["ReportDefs/StyleTemplates/BikeShare_Style.jrtx"]]></template>
+	<style name="Style1">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$F{is_completed}]]></conditionExpression>
+			<style mode="Transparent"/>
+		</conditionalStyle>
+	</style>
+	<parameter name="Driver" class="java.lang.Integer">
+		<parameterDescription><![CDATA[The driver Id to render report for.]]></parameterDescription>
+	</parameter>
+	<parameter name="Session_ID" class="java.lang.String">
+		<parameterDescription><![CDATA[The current session id used for demo.]]></parameterDescription>
+	</parameter>
+	<parameter name="Route" class="java.lang.String">
+		<parameterDescription><![CDATA[The route id to render report for.]]></parameterDescription>
+		<defaultValueExpression><![CDATA["SF10"]]></defaultValueExpression>
+	</parameter>
+	<queryString language="SQL">
+		<![CDATA[Select si.name as "stationName", rs.system_id as "systemId", rs.region_id as "regionId",
+rs.route_id, rs.station_id, rs.stop_order, rs.last_updated, rs.is_completed, rs.id as "routeId",
+rs.session_id as "rStopSessionId", ss.id as "stationId", ss.num_bikes_available, ss.num_bikes_disabled, 
+ss.num_docks_available,	ss.num_docks_disabled, ss.session_id as "sStatSessionId"
+From route_stop "rs"
+Inner Join
+	(Select rs1.station_id, rs1.route_id, Max(rs1.id) "maxId" 
+	 	From route_stop "rs1" 	
+	 	Where rs1.route_id =  $P{Route}  and (rs1.session_id =  $P{Session_ID}  or rs1.session_id is null)
+    	Group By rs1.route_id, rs1.station_id) "rs2"
+		on rs2.route_id = rs.route_id and rs2."maxId" = rs.id
+Inner Join
+	station_status "ss" on ss.station_id = rs.station_id and ss.system_id = rs.system_id
+Inner Join 
+	(Select ss1.station_id, ss1.system_id, Max(ss1.last_reported) "max_reported" 
+	 	From station_status "ss1" 
+	 	Where (ss1.session_id = $P{Session_ID} or ss1.session_id is null)
+    	Group By ss1.station_id, ss1.system_id) "ss1" 
+		on ss1.station_id = rs.station_id and ss1.system_id = rs.system_id and ss.last_reported = ss1.max_reported	
+Inner Join station_information "si" on si.station_id = ss.station_id and si.system_id = ss.system_id
+Order By rs.is_completed DESC, rs.stop_order]]>
+	</queryString>
+	<field name="stationName" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="stationName"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="station_information"/>
+	</field>
+	<field name="systemId" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="systemId"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="route_stop"/>
+	</field>
+	<field name="regionId" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="regionId"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="route_stop"/>
+	</field>
+	<field name="route_id" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="route_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="route_stop"/>
+	</field>
+	<field name="station_id" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="station_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="route_stop"/>
+	</field>
+	<field name="stop_order" class="java.lang.Float">
+		<property name="com.jaspersoft.studio.field.label" value="stop_order"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="route_stop"/>
+	</field>
+	<field name="last_updated" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.label" value="last_updated"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="route_stop"/>
+	</field>
+	<field name="is_completed" class="java.lang.Boolean">
+		<property name="com.jaspersoft.studio.field.label" value="is_completed"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="route_stop"/>
+	</field>
+	<field name="routeId" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.label" value="routeId"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="route_stop"/>
+	</field>
+	<field name="rStopSessionId" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="rStopSessionId"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="route_stop"/>
+	</field>
+	<field name="stationId" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.label" value="stationId"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="station_status"/>
+	</field>
+	<field name="num_bikes_available" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="num_bikes_available"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="station_status"/>
+	</field>
+	<field name="num_bikes_disabled" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="num_bikes_disabled"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="station_status"/>
+	</field>
+	<field name="num_docks_available" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="num_docks_available"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="station_status"/>
+	</field>
+	<field name="num_docks_disabled" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="num_docks_disabled"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="station_status"/>
+	</field>
+	<field name="sStatSessionId" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="sStatSessionId"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="station_status"/>
+	</field>
+	<variable name="CheckInTime" class="java.lang.String">
+		<variableExpression><![CDATA[$V{REPORT_COUNT}]]></variableExpression>
+	</variable>
+	<variable name="ArrivalTime" class="java.time.LocalTime">
+		<variableExpression><![CDATA[LocalTime.of(6,0,0).plusMinutes(22 * $V{REPORT_COUNT})]]></variableExpression>
+	</variable>
+	<variable name="IsInNeed" class="java.lang.Boolean">
+		<variableExpression><![CDATA[($F{num_bikes_available} < 3 || $F{num_bikes_disabled} > 5)]]></variableExpression>
+	</variable>
+	<variable name="GetColor" class="java.lang.String">
+		<variableExpression><![CDATA[($V{IsInNeed} && $F{rStopSessionId} != null && !$F{is_completed}  && $F{stop_order} == 0 ) ? "RED" :
+	($V{IsInNeed} && $F{rStopSessionId} != null && !$F{is_completed}  && $F{stop_order} > 0 ) ? "YELLOW" :
+		$F{is_completed} ? "GREEN" : "GRAY"]]></variableExpression>
+	</variable>
+	<variable name="GetStatus" class="java.lang.String">
+		<variableExpression><![CDATA[($V{IsInNeed} && $F{rStopSessionId} != null && !$F{is_completed}  && $F{stop_order} == 0 ) ? "HIGH" :
+	($V{IsInNeed} && $F{rStopSessionId} != null && !$F{is_completed}  && $F{stop_order} > 0 ) ? "MED" :
+		$F{is_completed} ? "DONE" : "LOW"]]></variableExpression>
+	</variable>
+	<background>
+		<band height="172" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<frame>
+				<reportElement mode="Opaque" x="0" y="0" width="308" height="172" backcolor="#F7F9FA" uuid="1c1200f4-4a90-46df-8676-dfd9b90474c5">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+			</frame>
+		</band>
+	</background>
+	<detail>
+		<band height="172" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<rectangle radius="5">
+				<reportElement style="Style1" x="0" y="0" width="308" height="167" uuid="18e91f03-c440-4d0e-b582-93cdd6a18712">
+					<property name="com.jaspersoft.studio.unit.y" value=""/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+				</reportElement>
+				<graphicElement>
+					<pen lineStyle="Solid" lineColor="#DCDCDC"/>
+				</graphicElement>
+			</rectangle>
+			<textField isStretchWithOverflow="true">
+				<reportElement style="CheckInTitle" mode="Transparent" x="13" y="35" width="282" height="36" uuid="14d4d825-0655-4318-aca0-d7767a7f73ef">
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="16"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{stationName}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="BaseReportStyle" mode="Transparent" x="230" y="13" width="65" height="14" forecolor="#9C9C9C" uuid="990c0ed1-1dbb-46d1-932a-9a1a658b867a">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<printWhenExpression><![CDATA[!$F{is_completed}]]></printWhenExpression>
+				</reportElement>
+				<textElement>
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{ArrivalTime} + "AM"]]></textFieldExpression>
+				<hyperlinkTooltipExpression><![CDATA["Est. Arrival Time"]]></hyperlinkTooltipExpression>
+			</textField>
+			<textField>
+				<reportElement style="BaseReportStyle" mode="Transparent" x="27" y="133" width="120" height="20" forecolor="#71AC5C" uuid="3f8f6239-69d9-441e-bc22-b80a6a6ecab3">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<printWhenExpression><![CDATA[$F{is_completed}]]></printWhenExpression>
+				</reportElement>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Completed at " + $F{last_updated}.getHours() + ":" + $F{last_updated}.getMinutes() + ($F{last_updated}.getHours() > 11 ? " PM" : " AM")]]></textFieldExpression>
+			</textField>
+			<image hyperlinkType="Reference" hyperlinkTarget="Top">
+				<reportElement x="13" y="121" width="84" height="30" uuid="1b5e96c5-befe-4bce-80c1-f55e1d49a8c1">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<printWhenExpression><![CDATA[!$F{is_completed}]]></printWhenExpression>
+				</reportElement>
+				<imageExpression><![CDATA["repo:/public/Bikeshare_demo/Resources/Images/CheckInButton.png"]]></imageExpression>
+				<hyperlinkReferenceExpression><![CDATA[$F{stationId}.toString()]]></hyperlinkReferenceExpression>
+				<hyperlinkTooltipExpression><![CDATA["Begin Check-In Process for station #" + $F{stationId}.toString()]]></hyperlinkTooltipExpression>
+			</image>
+			<image>
+				<reportElement mode="Transparent" x="15" y="77" width="12" height="12" uuid="3a02e238-27e3-40c2-affe-4cf15a214da7">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<imageExpression><![CDATA["repo:/public/Bikeshare_demo/Resources/Images/bicycle_2.png"]]></imageExpression>
+				<hyperlinkTooltipExpression><![CDATA["Available Bikes"]]></hyperlinkTooltipExpression>
+			</image>
+			<image>
+				<reportElement mode="Transparent" x="46" y="77" width="12" height="12" uuid="bfba36e2-5dca-40ee-bf78-52cdc9b7bd92">
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<imageExpression><![CDATA["repo:/public/Bikeshare_demo/Resources/Images/box_upload.png"]]></imageExpression>
+				<hyperlinkTooltipExpression><![CDATA["Available Docking Stations"]]></hyperlinkTooltipExpression>
+			</image>
+			<image>
+				<reportElement mode="Transparent" x="77" y="77" width="12" height="12" uuid="0155867a-756c-4c43-bcd5-ec97425ee9f8">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<imageExpression><![CDATA["repo:/public/Bikeshare_demo/Resources/Images/box_download.png"]]></imageExpression>
+				<hyperlinkTooltipExpression><![CDATA["Disabled Docking Stations"]]></hyperlinkTooltipExpression>
+			</image>
+			<image>
+				<reportElement mode="Transparent" x="109" y="77" width="12" height="12" uuid="490b0a93-59a5-4291-b308-9fa2a3e47324">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<imageExpression><![CDATA["repo:/public/Bikeshare_demo/Resources/Images/wrench_screwdriver.png"]]></imageExpression>
+				<hyperlinkTooltipExpression><![CDATA["Broken Bikes"]]></hyperlinkTooltipExpression>
+			</image>
+			<textField>
+				<reportElement style="BaseReportStyle" mode="Transparent" x="13" y="94" width="16" height="16" uuid="c8637f0c-8302-47aa-92f4-f70c6bde0b61">
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Top"/>
+				<textFieldExpression><![CDATA[$F{num_bikes_available}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="BaseReportStyle" mode="Transparent" x="43" y="94" width="16" height="16" uuid="7d8a97c4-c466-4a73-ae16-194b3c1d339a">
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Top"/>
+				<textFieldExpression><![CDATA[$F{num_docks_available}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="BaseReportStyle" mode="Transparent" x="74" y="94" width="16" height="16" uuid="c20f933e-1a12-4f0d-8d80-3af9e0f50b40">
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Top"/>
+				<textFieldExpression><![CDATA[$F{num_docks_disabled}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="BaseReportStyle" mode="Transparent" x="107" y="94" width="16" height="16" uuid="6df28bf7-5ad7-4148-a84f-7d25316cf20b">
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Top"/>
+				<textFieldExpression><![CDATA[$F{num_bikes_disabled}]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement mode="Transparent" x="1" y="9" width="59" height="24" uuid="1d666db5-2f71-410e-8524-ee1011e21057">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<imageExpression><![CDATA["repo:/public/Bikeshare_demo/Resources/Images/" + $V{GetStatus} + ".png"]]></imageExpression>
+				<hyperlinkTooltipExpression><![CDATA[$V{GetStatus} == "HIGH" ? "Special High Priority Station Assignment" :
+$V{GetStatus} == "MED" ? "Special Station Assignment" :
+$V{GetStatus} == "DONE" ? "Station Check-In Complete" :
+"Regular Route Stop"]]></hyperlinkTooltipExpression>
+			</image>
+			<image>
+				<reportElement x="13" y="133" width="12" height="12" uuid="d1657139-f260-4ccb-a026-7b2ae047ce49">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<printWhenExpression><![CDATA[$F{is_completed}]]></printWhenExpression>
+				</reportElement>
+				<imageExpression><![CDATA["repo:/public/Bikeshare_demo/Resources/Images/Check.png"]]></imageExpression>
+			</image>
+			<image>
+				<reportElement mode="Transparent" x="79" y="12" width="16" height="16" uuid="63c1885b-1bd6-4328-9f08-dc9d993dc4c3">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<printWhenExpression><![CDATA[!$F{is_completed}]]></printWhenExpression>
+				</reportElement>
+				<imageExpression><![CDATA["repo:/public/Bikeshare_demo/Resources/Images/stopwatch.png"]]></imageExpression>
+				<hyperlinkTooltipExpression><![CDATA["Est. Check-In Time"]]></hyperlinkTooltipExpression>
+			</image>
+			<textField>
+				<reportElement style="BaseReportStyle" mode="Transparent" x="99" y="11" width="50" height="18" uuid="16df263f-3b58-418c-91c9-3922a8fcc968">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<printWhenExpression><![CDATA[!$F{is_completed}]]></printWhenExpression>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[10 + (int)(Math.random() * ((22 - 10) + 1)) + "m"]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement mode="Transparent" x="214" y="14" width="12" height="12" uuid="d9f8ffcb-fadf-47d7-8e6d-faf6d8a0afd9">
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<printWhenExpression><![CDATA[!$F{is_completed}]]></printWhenExpression>
+				</reportElement>
+				<imageExpression><![CDATA["repo:/public/Bikeshare_demo/Resources/Images/GPS2.png"]]></imageExpression>
+			</image>
+			<rectangle radius="5">
+				<reportElement style="Style1" mode="Opaque" x="0" y="0" width="308" height="167" backcolor="rgba(247, 249, 250, 0.27450982)" uuid="3fb297ed-93f0-4aee-ba95-e01078691cec">
+					<property name="com.jaspersoft.studio.unit.y" value=""/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<printWhenExpression><![CDATA[$F{is_completed}]]></printWhenExpression>
+				</reportElement>
+				<graphicElement>
+					<pen lineStyle="Solid" lineColor="#DCDCDC"/>
+				</graphicElement>
+			</rectangle>
+		</band>
+	</detail>
+</jasperReport>

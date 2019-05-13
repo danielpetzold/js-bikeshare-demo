@@ -1,0 +1,62 @@
+{
+  "homepage": "/bikeshare/",
+  "name": "TIBCO-Jaspersoft-bikeshare-demonstration",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@types/enzyme": "^3.1.18",
+    "@types/enzyme-adapter-react-16": "^1.0.4",
+    "@types/history": "^4.7.2",
+    "@types/jest": "^24.0.3",
+    "@types/node": "^11.9.3",
+    "@types/react": "^16.8.2",
+    "@types/react-dom": "^16.8.0",
+    "@types/react-redux": "^6.0.9",
+    "@types/react-router": "^4.4.0",
+    "@types/react-router-dom": "^4.3.1",
+    "axios": "^0.18.0",
+    "connected-react-router": "^6.3.1",
+    "enzyme": "^3.8.0",
+    "enzyme-adapter-react-16": "^1.9.1",
+    "history": "^4.7.2",
+    "husky": "^1.3.1",
+    "lint-staged": "^8.1.3",
+    "node-sass": "^4.11.0",
+    "normalize.css": "^8.0.1",
+    "prettier": "^1.16.4",
+    "react": "^16.8.1",
+    "react-dom": "^16.8.1",
+    "react-redux": "^6.0.0",
+    "react-router-dom": "^4.3.1",
+    "react-scripts": "2.1.5",
+    "redux": "^4.0.1",
+    "redux-mock-store": "^1.5.3",
+    "redux-thunk": "^2.3.0",
+    "typescript": "^3.3.3"
+  },
+  "lint-staged": {
+    "src/**/*.{js,jsx,ts,tsx,json,css,scss,md}": [
+      "git add"
+    ]
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ],
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  }
+}

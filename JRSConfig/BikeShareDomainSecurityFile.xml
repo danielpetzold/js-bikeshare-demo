@@ -1,0 +1,12 @@
+<securityDefinition xmlns="http://www.jaspersoft.com/2007/SL/XMLSchema" version="1.0" itemGroupDefaultAccess="granted">
+  <resourceAccessGrants>   
+    <resourceAccessGrantList id="Jointree_1_row_access_grant" label="joinTree1label" resourceId="JoinTree_1">
+      <resourceAccessGrants>
+        <resourceAccessGrant id="Jointree_1_row_access_grant_20">
+          <principalExpression>authentication.principal.tenantId != null</principalExpression>
+          <filterExpression>public_system_information.system_id IN (groovy('authentication.principal.tenantId'))</filterExpression>
+        </resourceAccessGrant>
+      </resourceAccessGrants>
+    </resourceAccessGrantList>  
+  </resourceAccessGrants> 
+</securityDefinition>

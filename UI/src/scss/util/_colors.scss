@@ -1,0 +1,51 @@
+// === Base Colors === //
+$white: #ffffff;
+$pale-grey: #f7f9fa;
+$light-grey: #dcdcdc;
+$bluish-grey-two: #81878a;
+$cool-grey-two: #a5a9ab;
+$light-blue-grey: #c9cccd;
+$gunmetal: #4a5357;
+
+$jade: #1c9d6c;
+$seafoam-blue: #69caa4;
+$blue-green: #1c9786;
+
+$pale-red: #ef473f;
+$dull-green: #71ac5c;
+$aqua-blue: #12c2eb;
+$squash: #f19b19;
+$blue-with-purple: #4e40c3;
+
+$ugly-pink: #ca6983;
+$ugly-yellow: #caa569;
+
+// === Elements === //
+
+// Text
+$text-primary: $gunmetal;
+$text-hover: $bluish-grey-two;
+$text-secondary: $cool-grey-two;
+$text-disabled: $light-blue-grey;
+$text-nav: #1c9d6c;
+
+// Background
+$background-main: $white;
+$background-alt: $pale-grey;
+$background-grey: $gunmetal;
+
+// Navigation
+$mobile-sub-nav: $jade;
+$main-nav: $gunmetal;
+
+// Icons
+$icon-primary-active: $gunmetal;
+$icon-disabled: $light-blue-grey;
+$icon-nav-active: $seafoam-blue;
+$icon-nav-inactive: $cool-grey-two;
+$icon-background: $white;
+
+// Buttons
+$btn-green: $jade;
+$btn-teal: $seafoam-blue;
+$btn-grey: $cool-grey-two;

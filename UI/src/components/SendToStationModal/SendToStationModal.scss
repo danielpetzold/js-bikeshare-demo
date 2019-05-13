@@ -1,0 +1,178 @@
+@import '../../scss/util/colors';
+@import '../../scss/util/variables';
+
+.send-station-modal {
+  position: relative;
+  height: 100vh;
+  width: 100vw;
+  background-color: $pale-grey;
+  margin: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 20px;
+  box-sizing: border-box;
+
+  &__title {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+
+    h2 {
+      font-size: 20px;
+    }
+
+    i {
+      cursor: pointer;
+    }
+
+  }
+
+  &__body {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__section {
+    width: 100%;
+    padding: 10px 0;
+  }
+
+  &__sub-title {
+    font-size: 14px;
+    color: $btn-grey;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  &__title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    min-width: 236px;
+    max-width: 425px;
+    i {
+      cursor: pointer;
+    }
+  }
+
+  &__divider {
+    width: 100%;
+    border : 0;
+    height : 1px;
+    background-color: #d2dadd;
+    margin : 0 0 15px 0;
+  }
+
+  &__submit-button {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 64px;
+    border-radius: 0;
+    border-style: none;
+    background: $btn-green;
+    color: $white;
+    display: flex;
+    justify-content: center;
+
+    &:hover {
+      background-color: $btn-teal;
+    }
+    &:disabled {
+      background-color: $btn-grey;
+    }
+
+  }
+  &__export-icon {
+    margin-right: 10px;
+    font-size: 17px;
+  }
+}
+
+.main-modal-wrapper {
+  padding: 0;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 10;
+  height: 100vh;
+  width: 100vw;
+  background: rgba($background-grey, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@media screen and (min-width: $tablet-break) {
+  .send-station-modal {
+    width: 320px;
+    height: 520px;
+    border-radius: 5px;
+  }
+}
+
+//----- CUSTOM CHECKBOX ----//
+.container {
+  display: block;
+  position: relative;
+  padding-left: 35px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.container input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+.checkmark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 16px;
+  width: 16px;
+  border: 2px solid #4a5357;
+  background-color: $pale-grey;
+}
+
+.container:hover input ~ .checkmark {
+  background-color: $light-grey;
+}
+
+.container input:checked ~ .checkmark {
+  background-color: $pale-grey;
+}
+
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+.container input:checked ~ .checkmark:after {
+  display: block;
+}
+
+.container .checkmark:after {
+  left: 4px;
+  top: 0px;
+  width: 5px;
+  height: 10px;
+  border: solid $jade;
+  border-width: 0 3px 3px 0;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+

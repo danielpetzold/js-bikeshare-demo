@@ -1,0 +1,16 @@
+// Creates Grid with defined number of columns and column gap value
+@mixin content-grid($numCol, $gap) {
+  @supports (display: grid) {
+    display: grid;
+    grid-template-columns: repeat($numCol, 1fr);
+    grid-column-gap: $gap;
+    grid-row-gap: $gap;
+  }
+}
+
+// Sets span on column
+@mixin grid-column-span($span) {
+  @supports (display: grid) {
+    grid-column: span $span;
+  }
+}

@@ -1,0 +1,140 @@
+@import '../util/fonts';
+@import '../util/colors';
+@import '../util/variables';
+
+a {
+  text-decoration: none;
+}
+
+html {
+  font-size: 14px;
+  font-family: $main-font-family;
+  font-weight: normal;
+  color: $text-primary;
+}
+
+h1 {
+  font-size: 30px;
+}
+
+h2 {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+h3 {
+  font-size: 24px;
+}
+
+// Tablet & Desktop
+@media screen and (min-width: $tablet-break) {
+  h1 {
+    font-size: 50px;
+  }
+  h2 {
+    font-size: 32px;
+    font-weight: bold;
+  }
+  h3 {
+    font-size: 24px;
+  }
+}
+
+.title {
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #c9cccd;
+}
+
+[class^='icon-'],
+[class*=' icon-'] {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'icomoon' !important;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-ic-server:before {
+  content: '\e900';
+}
+.icon-ic-minus:before {
+  content: '\e916';
+}
+.icon-ic-add:before {
+  content: '\e917';
+}
+.icon-ic-arrow-forward:before {
+  content: '\e915';
+}
+.icon-ic-arrow-back:before {
+  content: '\e914';
+}
+.icon-ic-bicycle-2:before {
+  content: '\e910';
+}
+.icon-ic-box-download:before {
+  content: '\e911';
+}
+.icon-ic-box-upload:before {
+  content: '\e912';
+}
+.icon-ic-wrench-screwdriver:before {
+  content: '\e913';
+}
+.icon-ic-printer:before {
+  content: '\e90e';
+}
+.icon-ic-download:before {
+  content: '\e90c';
+}
+.icon-ic-unfold-more:before {
+  content: '\e90d';
+}
+.icon-ic-menu:before {
+  content: '\e90b';
+}
+.icon-ic-close:before {
+  content: '\e90a';
+}
+.icon-ic-assignment:before {
+  content: '\e901';
+}
+.icon-ic-arrow-down:before {
+  content: '\e902';
+}
+.icon-ic-arrow-left:before {
+  content: '\e903';
+}
+.icon-ic-arrow-right:before {
+  content: '\e904';
+}
+.icon-ic-notifications:before {
+  content: '\e905';
+}
+.icon-ic-people-outline:before {
+  content: '\e906';
+}
+.icon-ic-settings:before {
+  content: '\e907';
+}
+.icon-ic-store-mall:before {
+  content: '\e908';
+}
+.icon-ic-trending-up:before {
+  content: '\e909';
+}
+.icon-ic-kabob:before {
+  content: '\e90f';
+}
+.icon-ic-truck:before {
+  content: "\e918";
+}

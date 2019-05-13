@@ -1,0 +1,12 @@
+@import '../../scss/util/colors';
+
+.franchise-map {
+  width: 100%;
+  height: 504px;
+  background-color: $gunmetal;
+}
+
+// Override Geoanalytics Map styling for zoom navigation
+.zoom-thumb {
+  z-index: 0 !important
+}
