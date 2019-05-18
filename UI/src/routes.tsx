@@ -2,9 +2,13 @@ import React from 'react';
 import { Redirect, Route, Switch } from 'react-router';
 import Login from './pages/Login/Login';
 import Dashboard from './pages/Dashboard/Dashboard';
-import ViewReport from './pages/ViewReport/ViewReport';
-import AdHoc from './pages/AdHoc/AdHoc';
 import DriverDashboard from './pages/DriverDashboard/DriverDashboard';
+import Repository from './pages/Repository/Repository';
+import ViewReport from './pages/ViewReport/ViewJasperReport';
+import ViewAdhoc from './pages/Adhoc/ViewAdhoc';
+import EditAdhoc from './pages/Adhoc/EditAdhoc';
+import ViewDashboard from './pages/DashboardManagement/ViewDashboard';
+import EditDashboard from './pages/DashboardManagement/EditDashboard';
 
 // @ts-ignore
 // Allows access to route only if token exists
@@ -32,11 +36,16 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
 const routes = (
   <Switch>
     <Route exact path="/" component={Login} />
-    <PrivateRoute path="/dashboard" component={Dashboard} />
+    <PrivateRoute path="/managerDashboard" component={Dashboard} />
     <PrivateRoute path="/driverDashboard" component={DriverDashboard} />
-    <PrivateRoute exact path="/reports" component={ViewReport} />
-    <PrivateRoute exact path="/reports/new/" component={AdHoc} />
-    <PrivateRoute exact path="/reports/edit/:path" component={AdHoc} />
+    <PrivateRoute path="/repository" component={Repository} />
+    <PrivateRoute exact path="/report" component={ViewReport} />
+    <PrivateRoute exact path="/adhoc" component={ViewAdhoc} />
+    <PrivateRoute exact path="/adhoc/new" component={EditAdhoc} />
+    <PrivateRoute exact path="/adhoc/edit" component={EditAdhoc} />
+    <PrivateRoute exact path="/dashboard" component={ViewDashboard} />
+    <PrivateRoute exact path="/dashboards/new" component={EditDashboard} />
+    <PrivateRoute exact path="/dashboards/edit" component={EditDashboard} />
   </Switch>
 );
 

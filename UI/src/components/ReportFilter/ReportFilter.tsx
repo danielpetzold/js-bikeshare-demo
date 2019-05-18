@@ -1,7 +1,7 @@
 import React, { Component, createRef } from "react";
 import './ReportFilter.scss';
+import { ReportFilterData, ReportFilterOption } from "./ReportFilter.types";
 import ReportFilterCategory from "./ReportFilterCategory";
-import { ReportFilterData, ReportFilterOption } from "../../pages/ViewReport/ViewReport.types";
 
 interface ReportFilterState {
   selectedFilters: any[];

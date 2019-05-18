@@ -30,8 +30,8 @@ class Login extends Component<any, LoginState> {
   handleLogin = async () => {
     await this.props.loginUser(this.state.selectedRole);
     this.props.user.role === 'DRIVER_ROLE'
-      ? this.props.history.push('/DriverDashboard')
-      : this.props.history.push('/Dashboard');
+      ? this.props.history.push('/driverDashboard')
+      : this.props.history.push('/managerDashboard');
   };
 
   render() {

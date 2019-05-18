@@ -1,20 +1,23 @@
 import React from 'react';
-import './AdHoc.scss';
+import './EditAdhoc.scss';
 import NavBar from '../../components/NavBar/NavBar';
 
 interface Props {
   match: {
     params: {
-      path: string;
+      resource: string;
     };
   };
   location: any;
 }
 
-const AdHoc = (props: Props) => {
+const EditAdhoc = (props: Props) => {
+  const search = props.location.search; // should be '?resource=/public/path'
+  const params = new URLSearchParams(search);
+  const uri = params.get('resource'); 
   let url = `${process.env.REACT_APP_JASPERSERVER_URL}/flow.html?_flowId=adhocFlow&decorate=no&theme=bike_share`;
-  if (props.match.params.path) {
-    url += `&resource=/public/Bikeshare_demo/Ad_hoc/App_Report_List/${props.match.params.path}`;
+  if (uri != undefined) {
+    url += '&resource=' + uri;
   }
 
   return (
@@ -36,4 +39,4 @@ const AdHoc = (props: Props) => {
   );
 };
 
-export default AdHoc;
+export default EditAdhoc;

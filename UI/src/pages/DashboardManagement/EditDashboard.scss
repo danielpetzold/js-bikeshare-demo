@@ -1,0 +1,29 @@
+@import '../../scss/util/variables';
+
+.dashboard-container {
+  display: flex;
+  justify-content: center;
+}
+
+.dashboard-view {
+  width: 100%;
+}
+
+.dashboard-frame {
+  box-sizing: border-box;
+  height: 100vh;
+  width: 100%;
+  background-color: lightgrey;
+  border-style: none;
+}
+
+// Desktop changes
+
+@media screen and (min-width: $tablet-break) {
+  .dashboard-view {
+    padding: 20px 20px 0 94px;
+  }
+  .dashboard-frame {
+    height: calc(100vh - 48px);
+  }
+}

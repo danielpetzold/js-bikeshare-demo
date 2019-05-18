@@ -1,3 +1,6 @@
+import { JaspersoftRepositoryItem, JaspersoftRepositoryItems,
+JaspersoftRepositoryTreeNode, JaspersoftRepositoryTreeNodes } from "../pages/Repository/Repository.types";
+
 /**
  * Helper functions for interfacing with Visualizer.js global instance.
  */
@@ -64,7 +67,7 @@ class VisualizeHelper {
   ) {
     return new Promise((resolve, reject) => {
       this.viz((v: any) => {
-        v.report({
+        let aReport: any = v.report({
           container: `#${uiContainer}`,
           resource: resourcePath,
           params: params,
@@ -72,7 +75,7 @@ class VisualizeHelper {
           scrollToTop: false,
           loadingOverlay: true,
           success: (success: any) => {
-            resolve(success);
+            resolve({ success: success, report: aReport });
           },
           error: (err: any) => {
             console.log('getReport', err);
@@ -89,18 +92,51 @@ class VisualizeHelper {
    * @param resourcePath
    * @param params
    */
-  getAdHocView(uiContainer: string, resourcePath: string, params: any = {}) {
+  getAdHocView(
+	uiContainer: string,
+	resourcePath: string,
+	params: any = {}
+  ) {
     return new Promise((resolve, reject) => {
       this.viz((v: any) => {
-        v.adhocView({
+        let aView: any = v.adhocView({
           container: `#${uiContainer}`,
           resource: resourcePath,
           params: params,
           success: (success: any) => {
-            resolve(success);
+            resolve({ success: success, adhocView: aView });
           },
           error: (err: any) => {
             console.log('getAdHocView', err);
+            reject(err);
+          }
+        });
+      });
+    });
+  }
+
+  /**
+   *
+   * @param uiContainer
+   * @param resourcePath
+   * @param params
+   */
+  getDashboard(
+	uiContainer: string,
+	resourcePath: string,
+	params: any = {}
+  ) {
+    return new Promise((resolve, reject) => {
+      this.viz((v: any) => {
+        let aDashboard: any = v.dashboard({
+          container: `#${uiContainer}`,
+          resource: resourcePath,
+          params: params,
+          success: (success: any) => {
+            resolve({ success: success, dashboard: aDashboard });
+          },
+          error: (err: any) => {
+            console.log('getDashboard', err);
             reject(err);
           }
         });
@@ -115,40 +151,47 @@ class VisualizeHelper {
    * @param params
    */
   getInputControl(
-    uiContainer: string | null,
     resourcePath: string,
-    params: any = {}
+    uiContainer: string | null,
+    params: any = {},
+	events: any = {}
   ) {
     return new Promise((resolve, reject) => {
       this.viz((v: any) => {
-        v.inputControls({
+        let controls: any = v.inputControls({
           resource: resourcePath,
+		  container: `#${uiContainer}`,
           params: params,
           success: (success: any) => {
-            resolve(success);
+            resolve({ success: success, inputControls: controls });
           },
           error: (err: any) => {
-            console.log('getReport', err);
+            console.log('getInputControl', err);
             reject(err);
-          }
+          },
+		  events: events
         });
       });
     });
   }
 
   /**
-   * Get list of reports in repo folder
-   * @param folderUrl
-   * @param reportTypes
+   * Get list of resources in below the given folder
+   * @param folderUrl starting folder
+   * @param types resource types. see visualize.js doc. Default to repo browsing types
    */
-  getReportList(folderUrl: string, reportTypes: any) {
+  getResources(folderUrl: string, types: any) {
+	if (types == null) {
+		types = ['folder', 'reportUnit', 'dashboard', 'adhocDataView'];
+	}
     return new Promise((resolve, reject) => {
       this.viz((v: any) => {
         v.resourcesSearch({
           folderUri: folderUrl,
           recursive: true,
-          // types: [reportTypes],
-          success: function(repo: any) {
+          types: types,
+		  sortBy: "uri",
+          success: function(repo: JaspersoftRepositoryTreeNodes) {
             resolve(repo);
           },
           error: function(err: any) {
@@ -158,6 +201,7 @@ class VisualizeHelper {
       });
     });
   }
+  
 }
 
 export const visualizeHelper = new VisualizeHelper();

@@ -66,7 +66,7 @@ class NavBar extends Component<any, State> {
               <NavLink
                 activeClassName="nav-bar__link--active"
                 className="nav-bar__link"
-                to={title === 'Driver' ? '/driverDashboard' : '/dashboard'}
+                to={title === 'Driver' ? '/driverDashboard' : '/managerDashboard'}
               >
                 <i className="icon-ic-trending-up nav-bar__icon " />
                 <span className="nav-bar__text" >Trends and Analytics</span>
@@ -82,24 +82,18 @@ class NavBar extends Component<any, State> {
                     <span className="nav-bar__text">Franchises</span>
                   </a>
                 </li>
-                <li className={'nav-bar__item'} title='Roles and Permissions'>
-                  <a
-                    className="nav-bar__link"
-                    href="#"
-                    onClick={this.toggleNoAccess}
-                  >
-                    <i className="icon-ic-people-outline nav-bar__icon " />
-                    <span className="nav-bar__text">Roles and Permissions</span>
-                  </a>
+                <li className={'nav-bar__item'} title="People">
+                  <i className="icon-ic-people-outline nav-bar__icon " />
+                  <span className="nav-bar__text">People</span>
                 </li>
-                <li className={'nav-bar__item'} title="Reports">
+                <li className={'nav-bar__item'} title='Reports and Dashboards'>
                   <NavLink
                     activeClassName="nav-bar__link--active"
                     className="nav-bar__link"
-                    to="/reports"
+                    to="/repository"
                   >
-                    <i className="icon-ic-assignment nav-bar__icon " />
-                    <span className="nav-bar__text">Reports</span>
+                  <i className="icon-ic-assignment nav-bar__icon " />
+                    <span className="nav-bar__text">Reports and Dashboards</span>
                   </NavLink>
                 </li>
               </>

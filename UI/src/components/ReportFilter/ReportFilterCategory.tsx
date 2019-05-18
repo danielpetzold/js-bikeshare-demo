@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './ReportFilter.scss';
-import { ReportFilterData, ReportFilterOption } from "../../pages/ViewReport/ViewReport.types";
+import { ReportFilterData, ReportFilterOption } from "./ReportFilter.types";
 
 interface FilterCategoryState {
   isOpen: boolean;
