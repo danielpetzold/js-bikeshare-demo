@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 import './ViewDashboard.scss';
 import filterIcon from '../../fonts/icons/filter-icon.svg';
 import NavBar from '../../components/NavBar/NavBar';
-//import ReportFilter from '../../components/ReportFilter/ReportFilter';
-//import { ReportFilterData, ReportFilterOption } from '../../components/ReportFilter/ReportFilter.types';
 import JasperReportsService from "../../services/JasperReportsService";
 
 import Dropdown, { Option } from '../../components/Dropdown/Dropdown';
@@ -56,14 +54,16 @@ class ViewDashboard extends Component<any, ViewDashboardState> {
 	  
 	  this.state.selectedReportUri =  uri != null ? uri : '';
 	  this.state.selectedReportName = name != null ? name : '';
-	  this.state.repositoryResource = this.getResource(uri);
+	  // to try and find dashboard input controls
+	  // not implemented, since I can't find them in the resource
+	  //this.state.repositoryResource = this.getResource(uri);
   }
 
   async getResource(uri: string | null) {
 	  let foundResource: any = null;
   	  if (uri != null) {
 		  const restURL = '/rest_v2/resources' + uri + '?expanded=true';
-		  console.log(restURL);
+		  //console.log(restURL);
 		  foundResource = await JasperReportsService.get(restURL, {});
 		  console.log(foundResource);
 		  //this.state.repositoryResource = foundResource;
@@ -72,16 +72,20 @@ class ViewDashboard extends Component<any, ViewDashboardState> {
   }
   
   async componentDidMount() {
-    await this.getFilters();
+    // not used, since can't determine dashboard filters
+    //await this.getFilters();
+
     this.showReport();
   }
 
+  // not used, since can't determine dashboard filters
   changeReport = (params: any, error: any) => {
 	if (!error && this.state.currentDashboard != null) {
 		this.state.currentDashboard.params(params).run();
 	}
   }
   
+  // not used, since can't determine dashboard filters
   async getFilters() {
     //this.setState({selectedFilters: {}});
     await visualizeHelper.getInputControl(
@@ -93,7 +97,7 @@ class ViewDashboard extends Component<any, ViewDashboardState> {
 		}
 	)
     .then((success: any) => {
-		console.log(success);
+		//console.log(success);
 		var inputControls: any = success.inputControls;
 		var filters: any = success.success;
         let reportFilters = filters.map((control: any) => {
@@ -106,35 +110,17 @@ class ViewDashboard extends Component<any, ViewDashboardState> {
         });
 
 		this.setState({ currentFilters: inputControls });
-        // Set filters
-        //this.setState({filters: reportFilters});
-
-		/*
-        // Set initial filter
-        let filters: any = {};
-        reportFilters.forEach((filter: ReportFilterData) => {
-          filters[filter.id] = filter.options[1];
-        });
-        this.setState({selectedFilters: filters});
-		*/
     })
 	.catch((err) => {
-		console.log('I get called:', err.message); // I get called: 'Something awful happened'
+		console.log('I get called:', err.message);
 	});
   }
 
   showReport() {
     if (this.state.selectedReportUri) {
-
-		/*
-      let params: any = {};
-      for (let filter in this.state.selectedFilters) {
-        params[filter] = [this.state.selectedFilters[filter].value];
-      }
-	  */
       visualizeHelper.getDashboard(this.state.selectedReportUri, 'report')
         .then((success: any) => {
-          console.log('success', success);
+			//console.log('success', success);
 			var dashboard: any = success.dashboard;
 			var result: any = success.success;
 			this.setState({ currentDashboard: dashboard });
@@ -157,28 +143,6 @@ class ViewDashboard extends Component<any, ViewDashboardState> {
     });
   };
 
-  toggleFilter = () => {
-    this.setState({ isFilterOpen: !this.state.isFilterOpen });
-  };
-
-/*
-  setFilter = (filterId: string, option: ReportFilterOption) => {
-    let newFilters: any = Object.assign({}, this.state.selectedFilters);
-    newFilters[filterId] = option;
-    this.setState({selectedFilters: newFilters}, () => this.showReport());
-
-  };
-
-  resetFilters = () => {
-    if (this.state.filters) {
-      let newState = Object.assign({}, this.state.selectedFilters);
-      this.state.filters.forEach((filter: any) => {
-        newState[filter.id] = filter.options[1];
-      });
-      this.setState({selectedFilters: newState}, () => this.showReport());
-    }
-  };
-*/
   render() {
     const {
       isReportSelectOpen,
@@ -230,7 +194,8 @@ class ViewDashboard extends Component<any, ViewDashboardState> {
                       Modify / Export
                     </button>
                   </div>
-                  <img src={filterIcon} alt="filter" onClick={this.toggleFilter}/>
+                  <img src={filterIcon} alt="filter" 
+					 style={{display: (this.state.currentFilters && this.state.currentFilters.length) ? 'block' : 'none' }}/>
                 </div>
               </div>
             </div>
@@ -245,17 +210,5 @@ class ViewDashboard extends Component<any, ViewDashboardState> {
     );
   }
 }
-
-/*
-              <div className={'grid__column-10 grid__column-m-4'}>
-                <div id="report" className={'jsdashboard-view__table'}>
-                  
-                </div>
-              </div>
-              <div className={'grid__column-2 grid__column-m-2'}>
-                  <div id="inputControl" />
-              </div>
- *
- */
  
 export default ViewDashboard;

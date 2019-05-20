@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 import './ViewJasperReport.scss';
 import filterIcon from '../../fonts/icons/filter-icon.svg';
 import NavBar from '../../components/NavBar/NavBar';
-//import ReportFilter from '../../components/ReportFilter/ReportFilter';
-//import { ReportFilterData, ReportFilterOption } from '../../components/ReportFilter/ReportFilter.types';
 import JasperReportsService from "../../services/JasperReportsService";
 
 import Dropdown, { Option } from '../../components/Dropdown/Dropdown';
@@ -21,9 +19,6 @@ interface ViewJasperReportState {
   currentJasperReport: any;
   currentFilters: any;
   repositoryResource: any;
-  //reportFilters: any[];
-  //filters: ReportFilterData[] | null;
-  //selectedFilters: any;
 }
 
 
@@ -44,9 +39,6 @@ class ViewJasperReport extends Component<any, ViewJasperReportState> {
 		currentJasperReport: null,
 		currentFilters: null,
 		repositoryResource: null
-		//reportFilters: [],
-		//filters: [],
-		//selectedFilters: {}
   };
   
   constructor(props: Props) {
@@ -58,15 +50,12 @@ class ViewJasperReport extends Component<any, ViewJasperReportState> {
 	  
 	  this.state.selectedReportUri =  uri != null ? uri : '';
 	  this.state.selectedReportName = name != null ? name : '';
-	  //console.log('constructor uri ' + uri);
   }
 
   async getResource(uri: string | null) {
 	  let foundResource: any = null;
   	  if (uri != null) {
 		  foundResource = await JasperReportsService.get('/rest_v2/resources' + uri + '?expanded=true', {});
-		  //console.log(foundResource);
-		  //this.state.repositoryResource = foundResource;
 	  }
 	  return foundResource;
   }
@@ -76,7 +65,6 @@ class ViewJasperReport extends Component<any, ViewJasperReportState> {
 
 	let inputControlsArray: any = foundResource.data.inputControls;
 	let filtersAttached = inputControlsArray != null && inputControlsArray.length > 0;
-	//console.log('filtersAttached: ' + filtersAttached);
 
 	this.setState({
 		repositoryResource: foundResource,
@@ -199,17 +187,15 @@ class ViewJasperReport extends Component<any, ViewJasperReportState> {
                 <div className={'jsreport-header__bottom'}>
                   <div className={'jsreport-header__buttons'}>
                     <button className={'jsreport-view__btn--create btn--primary'}
-                            //disabled={!(this.state.filters && this.state.filters.length)}
                             onClick={this.createReport}>
                       Create
                     </button>
                     <button className={'jsreport-view__btn--actions btn--secondary'}
-                            //disabled={!(this.state.filters && this.state.filters.length)}
                             onClick={this.modifyReport}>
                       Modify / Export
                     </button>
                   </div>
-                  <img src={filterIcon} alt="filter"/>
+                  <img src={filterIcon} alt="filter" style={{display: (this.state.currentFilters && this.state.currentFilters.length) ? 'block' : 'none' }}/>
                 </div>
               </div>
             </div>

@@ -219,7 +219,7 @@ class Repository extends Component<any, RepositoryState> {
             <div className={'grid__row repository-header'}>
               <div className={'grid__column-12 grid__column-m-4'}>
                 <div className={'repository-header__top'}>
-                  <h3 className={'repository-header__title'}>Reports and Dashboards</h3>
+                  <h3 className={'repository-header__title'}>Your Reports and Dashboards</h3>
                   <div className={'header-select'}>
                     <h5>{selectedName} - {selectedType}</h5>
                   </div>

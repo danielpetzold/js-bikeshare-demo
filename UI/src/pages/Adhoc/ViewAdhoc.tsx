@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 import './ViewAdhoc.scss';
 import filterIcon from '../../fonts/icons/filter-icon.svg';
 import NavBar from '../../components/NavBar/NavBar';
-//import ReportFilter from '../../components/ReportFilter/ReportFilter';
-//import { ReportFilterData, ReportFilterOption } from '../../components/ReportFilter/ReportFilter.types';
 import Dropdown, { Option } from '../../components/Dropdown/Dropdown';
 import { visualizeHelper } from '../../helpers/VisualizeHelper';
 
@@ -17,9 +15,6 @@ interface ViewAdhocState {
   selectedReportUri: string;
   currentAdhocView: any;
   currentFilters: any;
-  //reportFilters: any[];
-  //filters: ReportFilterData[] | null;
-  //selectedFilters: any;
 }
 
 
@@ -38,9 +33,6 @@ class ViewAdhoc extends Component<any, ViewAdhocState> {
 		selectedReportUri: '',
 		currentAdhocView: null,
 		currentFilters: null
-		//reportFilters: [],
-		//filters: [],
-		//selectedFilters: {}
   };
   
   constructor(props: Props) {
@@ -76,7 +68,7 @@ class ViewAdhoc extends Component<any, ViewAdhocState> {
 		}
 	)
       .then((success: any) => {
-		console.log(success);
+		//console.log(success);
 		var inputControls: any = success.inputControls;
 		var filters: any = success.success;
         let reportFilters = filters.map((control: any) => {
@@ -89,32 +81,14 @@ class ViewAdhoc extends Component<any, ViewAdhocState> {
         });
 
 		this.setState({ currentFilters: inputControls });
-        // Set filters
-        //this.setState({filters: reportFilters});
-
-		/*
-        // Set initial filter
-        let filters: any = {};
-        reportFilters.forEach((filter: ReportFilterData) => {
-          filters[filter.id] = filter.options[1];
-        });
-        this.setState({selectedFilters: filters});
-		*/
       });
   }
 
   showReport() {
     if (this.state.selectedReportUri) {
-
-		/*
-      let params: any = {};
-      for (let filter in this.state.selectedFilters) {
-        params[filter] = [this.state.selectedFilters[filter].value];
-      }
-	  */
       visualizeHelper.getAdHocView(this.state.selectedReportUri, 'report')
         .then((success: any) => {
-          console.log('success', success);
+          //console.log('success', success);
 			var adhocView: any = success.adhocView;
 			var result: any = success.success;
 			this.setState({ currentAdhocView: adhocView });
@@ -137,28 +111,6 @@ class ViewAdhoc extends Component<any, ViewAdhocState> {
     });
   };
 
-  toggleFilter = () => {
-    this.setState({ isFilterOpen: !this.state.isFilterOpen });
-  };
-
-/*
-  setFilter = (filterId: string, option: ReportFilterOption) => {
-    let newFilters: any = Object.assign({}, this.state.selectedFilters);
-    newFilters[filterId] = option;
-    this.setState({selectedFilters: newFilters}, () => this.showReport());
-
-  };
-
-  resetFilters = () => {
-    if (this.state.filters) {
-      let newState = Object.assign({}, this.state.selectedFilters);
-      this.state.filters.forEach((filter: any) => {
-        newState[filter.id] = filter.options[1];
-      });
-      this.setState({selectedFilters: newState}, () => this.showReport());
-    }
-  };
-*/
   render() {
     const {
       isReportSelectOpen,
@@ -181,17 +133,15 @@ class ViewAdhoc extends Component<any, ViewAdhocState> {
                 <div className={'adhoc-header__bottom'}>
                   <div className={'adhoc-header__buttons'}>
                     <button className={'adhoc-view__btn--create btn--primary'}
-                            //disabled={!(this.state.filters && this.state.filters.length)}
                             onClick={this.createReport}>
                       Create
                     </button>
                     <button className={'adhoc-view__btn--actions btn--secondary'}
-                            //disabled={!(this.state.filters && this.state.filters.length)}
                             onClick={this.modifyReport}>
                       Modify / Export
                     </button>
                   </div>
-                  <img src={filterIcon} alt="filter" onClick={this.toggleFilter}/>
+                  <img src={filterIcon} alt="filter" style={{display: (this.state.currentFilters && this.state.currentFilters.length) ? 'block' : 'none' }}/>
                 </div>
               </div>
             </div>
