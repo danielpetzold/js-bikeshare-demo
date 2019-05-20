@@ -36,7 +36,10 @@ class Repository extends Component<any, RepositoryState> {
   }
 
   async getRepositoryTree() {
-	await visualizeHelper.getResources('/public/Samples', ['folder', 'reportUnit', 'dashboard', 'adhocDataView'])
+	  // '/public/Samples'
+	await visualizeHelper.getResources(`${process.env.REACT_APP_REPOSITORY_START_FOLDER}`,
+			['folder', 'reportUnit', 'dashboard', 'adhocDataView'],
+			'updateDate')
 		.then((resources: any) => {
 			
 			/*
@@ -120,7 +123,7 @@ class Repository extends Component<any, RepositoryState> {
 				  }
 				);
 			});
-			console.log(treeArray);
+			//console.log(treeArray);
 			// OK - finally got the tree. Let's get it up there!
 			this.setState({ treeData: treeArray });
 			
@@ -193,23 +196,7 @@ class Repository extends Component<any, RepositoryState> {
   };
 
   selectedNode = (e: any) => {
-	  console.log(e);
-	 /*
-	 description: "/public/Samples"
-hasNodes: true
-index: 0
-isOpen: false
-key: "/public//public/Samples"
-label: "Samples"
-level: 1
-locale: undefined
-name: "Samples"
-openNodes: ["/public"]
-parent: "/public"
-resourceType: "folder"
-uri: "/public/Samples"
-searchTerm: ""
-	  */
+	  //console.log(e);
     this.setState({
 		selectedName: e.name,
 		selectedType: e.resourceType,

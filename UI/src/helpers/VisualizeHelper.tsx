@@ -1,20 +1,20 @@
-import { JaspersoftRepositoryItem, JaspersoftRepositoryItems,
-JaspersoftRepositoryTreeNode, JaspersoftRepositoryTreeNodes } from "../pages/Repository/Repository.types";
+import { JaspersoftRepositoryTreeNodes } from "../pages/Repository/Repository.types";
 
 /**
  * Helper functions for interfacing with Visualizer.js global instance.
  */
 
-export interface Report {
-  container: string;
-  resource: string;
-}
 
 class VisualizeHelper {
   /**
    * Type definitions do not yet exist for Visualize.js. Casting as any, for now.
    */
   private viz = (window as any).visualize;
+  private vizObj: any = null;
+  
+  constructor() {
+	  //console.log('new VisualizeHelper');
+  }
 
   /**
    * Token-Based Authentication Login
@@ -41,48 +41,74 @@ class VisualizeHelper {
     });
   }
 
-  /**
-   * Token-Based Authentication Logout
-   */
-  logOut() {
-    this.viz((v: any) => {
-      return async () => {
-        await v.logout();
-      };
-    });
-  }
+	initializeVisualizeObject(): Promise<any> {
+		return new Promise<any>( resolve => {
+			//console.log('initializeVisualizeObject. vizObj null: ' + (this.vizObj == null).toString());
+			this.viz((v: any) => {
+			  this.vizObj = v;
+			  //console.log('got new initializeVisualizeObject');
+			  resolve(this.vizObj);
+			});
+		});
+	}
 
+  async getVisualizeObject() {
+	  //console.log('getVisualizeObject. vizObj null: ' + (this.vizObj == null).toString());
+	  if (this.vizObj == null) {
+		    await this.initializeVisualizeObject();
+			return this.vizObj;
+	  } else {
+		//console.log('not null vizObj');
+		return this.vizObj;
+	  }
+  }
+  /**
+   * Authentication Logout
+   */
+  async logOut(): Promise<any> {
+	  return new Promise<any>( resolve => {
+		//console.log('logout called');
+		this.getVisualizeObject()
+			.then(vizObj => {
+				vizObj.logout();
+				this.vizObj = null;
+				//console.log('logout done');
+				resolve(true);
+		});
+	  });
+  }
   /**
    * Get report
    * @param uiContainer
    * @param resourcePath
    * @param params
    * @param linkOptions
-   */
+  */
   getReport(
-    uiContainer: string,
     resourcePath: string,
+    uiContainer: string,
     params: any = {},
     linkOptions: any = {}
   ) {
     return new Promise((resolve, reject) => {
-      this.viz((v: any) => {
-        let aReport: any = v.report({
-          container: `#${uiContainer}`,
-          resource: resourcePath,
-          params: params,
-          linkOptions: linkOptions,
-          scrollToTop: false,
-          loadingOverlay: true,
-          success: (success: any) => {
-            resolve({ success: success, report: aReport });
-          },
-          error: (err: any) => {
-            console.log('getReport', err);
-            reject(err);
-          }
-        });
-      });
+	  this.getVisualizeObject()
+		.then(vizObj => {
+			let aReport: any = vizObj.report({
+			  container: `#${uiContainer}`,
+			  resource: resourcePath,
+			  params: params,
+			  linkOptions: linkOptions,
+			  scrollToTop: false,
+			  loadingOverlay: true,
+			  success: (success: any) => {
+				resolve({ success: success, report: aReport });
+			  },
+			  error: (err: any) => {
+				console.log('getReport', err);
+				reject(err);
+			  }
+			});
+		});
     });
   }
 
@@ -93,25 +119,26 @@ class VisualizeHelper {
    * @param params
    */
   getAdHocView(
-	uiContainer: string,
 	resourcePath: string,
+	uiContainer: string,
 	params: any = {}
   ) {
     return new Promise((resolve, reject) => {
-      this.viz((v: any) => {
-        let aView: any = v.adhocView({
-          container: `#${uiContainer}`,
-          resource: resourcePath,
-          params: params,
-          success: (success: any) => {
-            resolve({ success: success, adhocView: aView });
-          },
-          error: (err: any) => {
-            console.log('getAdHocView', err);
-            reject(err);
-          }
-        });
-      });
+	  this.getVisualizeObject()
+		.then(vizObj => {
+			let aView: any = vizObj.adhocView({
+			  container: `#${uiContainer}`,
+			  resource: resourcePath,
+			  params: params,
+			  success: (success: any) => {
+				resolve({ success: success, adhocView: aView });
+			  },
+			  error: (err: any) => {
+				console.log('getAdHocView', err);
+				reject(err);
+			  }
+			});
+		});
     });
   }
 
@@ -122,25 +149,26 @@ class VisualizeHelper {
    * @param params
    */
   getDashboard(
-	uiContainer: string,
 	resourcePath: string,
+	uiContainer: string,
 	params: any = {}
   ) {
     return new Promise((resolve, reject) => {
-      this.viz((v: any) => {
-        let aDashboard: any = v.dashboard({
-          container: `#${uiContainer}`,
-          resource: resourcePath,
-          params: params,
-          success: (success: any) => {
-            resolve({ success: success, dashboard: aDashboard });
-          },
-          error: (err: any) => {
-            console.log('getDashboard', err);
-            reject(err);
-          }
-        });
-      });
+	  this.getVisualizeObject()
+		.then(vizObj => {
+			let aDashboard: any = vizObj.dashboard({
+			  container: `#${uiContainer}`,
+			  resource: resourcePath,
+			  params: params,
+			  success: (success: any) => {
+				resolve({ success: success, dashboard: aDashboard });
+			  },
+			  error: (err: any) => {
+				console.log('getDashboard', err);
+				reject(err);
+			  }
+			});
+		})
     });
   }
 
@@ -157,10 +185,9 @@ class VisualizeHelper {
 	events: any = {}
   ) {
     return new Promise((resolve, reject) => {
-      this.viz((v: any) => {
-        let controls: any = v.inputControls({
+	  let controls: any;
+	  let icVizProperties: any = {
           resource: resourcePath,
-		  container: `#${uiContainer}`,
           params: params,
           success: (success: any) => {
             resolve({ success: success, inputControls: controls });
@@ -170,8 +197,15 @@ class VisualizeHelper {
             reject(err);
           },
 		  events: events
-        });
-      });
+        };
+	  if (uiContainer && uiContainer.length > 0) {
+		  icVizProperties["container"] = `#${uiContainer}`;
+	  }
+	  this.getVisualizeObject()
+		.then(vizObj => {
+			//console.log('ic vizObj', vizObj);
+			controls = vizObj.inputControls(icVizProperties);
+		});
     });
   }
 
@@ -180,25 +214,29 @@ class VisualizeHelper {
    * @param folderUrl starting folder
    * @param types resource types. see visualize.js doc. Default to repo browsing types
    */
-  getResources(folderUrl: string, types: any) {
+  getResources(folderUri: string, types: any, sortBy: string) {
 	if (types == null) {
 		types = ['folder', 'reportUnit', 'dashboard', 'adhocDataView'];
 	}
+	if (sortBy == null) {
+		sortBy = 'uri';
+	}
     return new Promise((resolve, reject) => {
-      this.viz((v: any) => {
-        v.resourcesSearch({
-          folderUri: folderUrl,
-          recursive: true,
-          types: types,
-		  sortBy: "uri",
-          success: function(repo: JaspersoftRepositoryTreeNodes) {
-            resolve(repo);
-          },
-          error: function(err: any) {
-            reject(err);
-          }
-        });
-      });
+   	  this.getVisualizeObject()
+		.then(vizObj => {
+			vizObj.resourcesSearch({
+			  folderUri: folderUri,
+			  recursive: true,
+			  types: types,
+			  sortBy: sortBy,
+			  success: function(repo: JaspersoftRepositoryTreeNodes) {
+				resolve(repo);
+			  },
+			  error: function(err: any) {
+				reject(err);
+			  }
+			});
+		});
     });
   }
   

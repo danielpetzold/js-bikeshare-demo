@@ -34,6 +34,7 @@ export const loginUser = (role: String) => {
  */
 export const logOutUser = () => {
   return async (dispatch: Dispatch) => {
+	//console.log('logout action called');
     await visualizeHelper.logOut();
     dispatch(setUserLoggedOut());
     localStorage.clear();

@@ -44,7 +44,7 @@ class ViewReport extends Component<any, ReportsState> {
   }
 
   async getReports() {
-    await visualizeHelper.getResources('/public/Bikeshare_demo/Ad_hoc/App_Report_List', ['adhocDataView'])
+    await visualizeHelper.getResources('/public/Bikeshare_demo/Ad_hoc/App_Report_List', ['adhocDataView'], 'updateDate')
       .then((reports: any) => {
 
         let reportMap = reports.map((report: Report) => {

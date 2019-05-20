@@ -58,14 +58,14 @@ class ViewJasperReport extends Component<any, ViewJasperReportState> {
 	  
 	  this.state.selectedReportUri =  uri != null ? uri : '';
 	  this.state.selectedReportName = name != null ? name : '';
-	  console.log('constructor uri ' + uri);
+	  //console.log('constructor uri ' + uri);
   }
 
   async getResource(uri: string | null) {
 	  let foundResource: any = null;
   	  if (uri != null) {
 		  foundResource = await JasperReportsService.get('/rest_v2/resources' + uri + '?expanded=true', {});
-		  console.log(foundResource);
+		  //console.log(foundResource);
 		  //this.state.repositoryResource = foundResource;
 	  }
 	  return foundResource;
@@ -76,7 +76,7 @@ class ViewJasperReport extends Component<any, ViewJasperReportState> {
 
 	let inputControlsArray: any = foundResource.data.inputControls;
 	let filtersAttached = inputControlsArray != null && inputControlsArray.length > 0;
-	console.log('filtersAttached: ' + filtersAttached);
+	//console.log('filtersAttached: ' + filtersAttached);
 
 	this.setState({
 		repositoryResource: foundResource,
@@ -96,7 +96,7 @@ class ViewJasperReport extends Component<any, ViewJasperReportState> {
   
   async getFilters() {
 	if (!this.state.filtersAttached) {
-		console.log('no filters');
+		//console.log('no filters');
 	}
     //this.setState({selectedFilters: {}});
     await visualizeHelper.getInputControl(
@@ -108,7 +108,7 @@ class ViewJasperReport extends Component<any, ViewJasperReportState> {
 		}
 	)
     .then((success: any) => {
-		console.log('input control success');
+		//console.log('input control success');
 		var inputControls: any = success.inputControls;
 		var filters: any = success.success;
         let reportFilters = filters.map((control: any) => {
@@ -123,15 +123,15 @@ class ViewJasperReport extends Component<any, ViewJasperReportState> {
 		this.setState({ currentFilters: inputControls });
     })
 	.catch((err) => {
-		console.log('inputControls error:', err.message);
+		//console.log('inputControls error:', err.message);
 	});
   }
 
   showReport() {
     if (this.state.selectedReportUri) {
-      visualizeHelper.getReport('report', this.state.selectedReportUri)
+      visualizeHelper.getReport(this.state.selectedReportUri, 'report')
         .then((success: any) => {
-          console.log('report success', success);
+          //console.log('report success', success);
 			var report: any = success.report;
 			var result: any = success.success;
 			this.setState({ currentJasperReport: report });
@@ -166,7 +166,7 @@ class ViewJasperReport extends Component<any, ViewJasperReportState> {
 	
 	let reportContainer = [];
 	
-	console.log('rendering filtersAttached ' + filtersAttached);
+	//console.log('rendering filtersAttached ' + filtersAttached);
 	
 	if (loading || filtersAttached) {
 		reportContainer.push(

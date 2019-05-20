@@ -132,7 +132,7 @@ class ViewDashboard extends Component<any, ViewDashboardState> {
         params[filter] = [this.state.selectedFilters[filter].value];
       }
 	  */
-      visualizeHelper.getDashboard('report', this.state.selectedReportUri)
+      visualizeHelper.getDashboard(this.state.selectedReportUri, 'report')
         .then((success: any) => {
           console.log('success', success);
 			var dashboard: any = success.dashboard;

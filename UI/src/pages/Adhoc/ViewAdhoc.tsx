@@ -112,7 +112,7 @@ class ViewAdhoc extends Component<any, ViewAdhocState> {
         params[filter] = [this.state.selectedFilters[filter].value];
       }
 	  */
-      visualizeHelper.getAdHocView('report', this.state.selectedReportUri)
+      visualizeHelper.getAdHocView(this.state.selectedReportUri, 'report')
         .then((success: any) => {
           console.log('success', success);
 			var adhocView: any = success.adhocView;

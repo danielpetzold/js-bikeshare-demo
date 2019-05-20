@@ -119,7 +119,7 @@ class Dashboard extends React.Component<DashboardProps, DashboardState> {
     let params: any = this.getParams();
     // KPI Report
     promiseArray.push(
-      this.displayReport('kpi-report', 'FM_Dashboard_KPIS', params, {
+      this.displayReport('FM_Dashboard_KPIS', 'kpi-report', params, {
         events: {
           click: this.changeDetailsReport
         }
@@ -128,26 +128,26 @@ class Dashboard extends React.Component<DashboardProps, DashboardState> {
 
     // KPI Details Report
     promiseArray.push(
-      this.displayReport('in-need-report', this.state.kpiDetailReport, params)
+      this.displayReport(this.state.kpiDetailReport, 'in-need-report', params)
     );
 
     // Peak Trip Times
     promiseArray.push(
-      this.displayReport('peak-trip-report', 'Dashboard_Peak_Trip_Times', params)
+      this.displayReport('Dashboard_Peak_Trip_Times', 'peak-trip-report', params)
     );
 
     return Promise.all(promiseArray);
   }
 
   displayReport(
-    containerId: string,
     reportName: string,
+    containerId: string,
     params: any,
     linkOptions: any = {}
   ) {
     return visualizeHelper.getReport(
-      containerId,
       `/public/Bikeshare_demo/Reports/Dashboard_Reports/${reportName}`,
+      containerId,
       params,
       linkOptions
     );
@@ -165,7 +165,7 @@ class Dashboard extends React.Component<DashboardProps, DashboardState> {
   };
 
   getFilterData = () => {
-    return visualizeHelper.getInputControl('', filterDataICUri);
+    return visualizeHelper.getInputControl(filterDataICUri, '');
   };
 
   closeFilter = () => {
@@ -185,7 +185,7 @@ class Dashboard extends React.Component<DashboardProps, DashboardState> {
 
   changeDetailsReport = (e: any, link: any) => {
     e.preventDefault();
-    this.displayReport('in-need-report', link.href, this.getParams());
+    this.displayReport(link.href, 'in-need-report', this.getParams());
     this.setState({ kpiDetailReport: link.href });
   };
 

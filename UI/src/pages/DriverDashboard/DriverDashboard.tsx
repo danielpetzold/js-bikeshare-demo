@@ -65,8 +65,8 @@ class DriverDashboard extends Component<any, State> {
 
   getReports = async () => {
     await visualizeHelper.getReport(
-      'summary-report',
       `/public/Bikeshare_demo/Reports/Dashboard_Reports/Maintenance_Summary`,
+      'summary-report',
       { Session_ID: [this.props.sessionId] }
     );
 
@@ -74,8 +74,8 @@ class DriverDashboard extends Component<any, State> {
     this.state.isMobile ? report += '_Mobile': '';
 
     await visualizeHelper.getReport(
-      'check-in-report',
       report,
+      'check-in-report',
       { Session_ID: [this.props.sessionId] },
       {
         events: {
