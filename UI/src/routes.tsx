@@ -9,6 +9,7 @@ import ViewAdhoc from './pages/Adhoc/ViewAdhoc';
 import EditAdhoc from './pages/Adhoc/EditAdhoc';
 import ViewDashboard from './pages/DashboardManagement/ViewDashboard';
 import EditDashboard from './pages/DashboardManagement/EditDashboard';
+import EmptyPage from './pages/EmptyPage/EmptyPage';
 
 // @ts-ignore
 // Allows access to route only if token exists
@@ -46,6 +47,7 @@ const routes = (
     <PrivateRoute exact path="/dashboard" component={ViewDashboard} />
     <PrivateRoute exact path="/dashboards/new" component={EditDashboard} />
     <PrivateRoute exact path="/dashboards/edit" component={EditDashboard} />
+    <PrivateRoute path="/emptyPage" component={EmptyPage} />
   </Switch>
 );
 

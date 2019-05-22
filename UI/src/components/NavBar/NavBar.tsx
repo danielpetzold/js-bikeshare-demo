@@ -82,15 +82,15 @@ class NavBar extends Component<any, State> {
                     <span className="nav-bar__text">Franchises</span>
                   </a>
                 </li>
-                <li className={'nav-bar__item'} title="People">
+                <li className={'nav-bar__item'} title="Empty">
                   <i className="icon-ic-people-outline nav-bar__icon " />
-                  <span className="nav-bar__text">People</span>
+                  <span className="nav-bar__text">Empty Page</span>
                 </li>
-                <li className={'nav-bar__item'} title='Reports and Dashboards'>
+                <li className={'nav-bar__item'} title='Empty Page'>
                   <NavLink
                     activeClassName="nav-bar__link--active"
                     className="nav-bar__link"
-                    to="/repository"
+                    to="/emptyPage"
                   >
                   <i className="icon-ic-assignment nav-bar__icon " />
                     <span className="nav-bar__text">Reports and Dashboards</span>
