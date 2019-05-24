@@ -1,4 +1,25 @@
 /*
+ * Copyright (C) 2005 - 2019 TIBCO Software Inc. All rights reserved.
+ * http://www.jaspersoft.com.
+ *
+ * Unless you have purchased a commercial license agreement from Jaspersoft,
+ * the following license terms apply:
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+
+/*
  * From: base.css
  */
 .control {
@@ -1081,6 +1102,11 @@ http://www.dynarch.com/projects/calendar/old/
 /*
  * pagination and zoom controls
  */
+.control.zoom,
+.control.search {
+    padding: 0;
+}
+
 .control.paging {
 	float: left;
 }
@@ -1088,26 +1114,30 @@ http://www.dynarch.com/projects/calendar/old/
 .control.paging .input,
 .control.zoom .input,
 .control.search .input {
-	top: -10px;
 	margin: 0 4px;
+}
+
+.control.paging .input {
+    margin-right: 8px;
 }
 
 .control.zoom input {
 	height: 22px;
+    margin-top: 0;
 	width: 46px;
-	/* height:15px; */ /* DELETE IF NO PROBLEMS */
 }
 
 .control.paging input {
 	height: 22px;
+    margin-top: 0;
 	width: 50px;
 }
 
 .control.search input {
+    border-right-color: transparent;
 	height: 22px;
+    margin-top: 0;
 	width: 105px;
-	/* width: 85px */ /* DELETE IF NO PROBLEMS */
-	/* height:15px; */ /* DELETE IF NO PROBLEMS */
 }
 
 .control.paging .button,
@@ -1117,61 +1147,82 @@ http://www.dynarch.com/projects/calendar/old/
 	margin-bottom: 0;
 }
 
-.control.zoom > .button.action.square,
-.control.search > .button.action.square {
-	height: 24px;
-	margin: 0;
-	width: 22px;
-    /* height: 28px; */
-    /* width: 20px; */
+.control.search .button {
+    margin-left: -4px;
 }
 
-.control.paging > .button.action > .wrap,
+.control.zoom > .button.action,
+.control.search > .button.action,
+.control.paging > .button.action {
+	height: 22px;
+    margin-top: 0;
+    min-height: 22px;
+	width: 24px;
+}
+
+.control.zoom > .button.action {
+    margin-right: 2px;
+    margin-left: 2px;
+}
+
+.control.search > .button.action.searchPrevious {
+    margin-left: 4px;
+    margin-right: 0;
+}
+
+.control.search > .button.action.searchNext {
+    margin-left: 0;
+    margin-right: 0
+}
+
 .control.zoom > .button.action > .wrap,
-.control.search > .button.action > .wrap  {
-    height: 28px;
+.control.search > .button.action > .wrap,
+.control.paging > .button.action > .wrap {
+    height: 22px;
+    width: 24px;
 }
 
 .control.zoom .button.action > .wrap > .icon,
-.control.search .button.action > .wrap > .icon {
-    height: 28px;
-    width: 20px;
+.control.search .button.action > .wrap > .icon,
+.control.paging .button.action > .wrap > .icon {
+    height: 22px;
+    width: 22px;
 }
 
-.control.zoom .button.action.zoomIn .icon,
-.control.zoom .button.action.zoomIn.over .icon {
-    background-position: 3px -822px;
+.control.zoom .button.action.zoomIn .icon {
+    background-position: 5px -826px;
 }
 
-.control.zoom .button.action.zoomOut .icon,
-.control.zoom .button.action.zoomOut.over .icon {
-    background-position: 3px -862px;
-}
-
+.control.zoom .button.action.zoomIn.over .icon,
 .control.zoom .button.action.zoomIn.pressed .icon {
-    background-position: -38px -822px;
+    background-position: -35px -826px;
 }
 
+.control.zoom .button.action.zoomOut .icon {
+    background-position: 6px -866px;
+}
+
+.control.zoom .button.action.zoomOut.over .icon,
 .control.zoom .button.action.zoomOut.pressed .icon {
-    background-position: -38px -862px;
+    background-position: -34px -866px;
+}
+
+.control.search .button.action.searchPrevious .icon {
+    background-position: 3px -48px;
 }
 
 .control.search .button.action.searchPrevious.over .icon,
-.control.search .button.action.searchPrevious .icon {
-    background-position: 4px -45px;
+.control.search .button.action.searchPrevious.pressed .icon {
+    background-position: -51px -48px;
+}
+
+.control.search .button.action.searchNext .icon {
+    background-position: 1px 5px;
 }
 
 .control.search .button.action.searchNext.over .icon,
-.control.search .button.action.searchNext .icon {
-    background-position: 0 8px;
-}
-
-.control.search .button.action.searchPrevious.pressed .icon {
-    background-position: -50px -45px;
-}
-
 .control.search .button.action.searchNext.pressed .icon {
-    background-position: -54px 8px;
+    background-position: -52px 5px;
 }
 
 .control.zoom .button.capsule,
@@ -1184,14 +1235,66 @@ http://www.dynarch.com/projects/calendar/old/
 	width: 22px;
 }
 
+
+.control.paging .button.action {
+    margin: 0;
+}
+
+.paging .action.square.over,
+.paging .action.square.pressed,
+.paging .action.square.over,
+.paging .action.square.pressed  {
+    background: none;
+}
+
+.toolbar #page_first .icon {
+    background-position: 4px -102px;
+}
+
+.toolbar #page_first.over .icon,
+.toolbar #page_first.pressed .icon {
+    background-position: -50px -102px;
+}
+
+.toolbar #page_prev .icon {
+    background-position: 4px -48px;
+}
+
+.toolbar #page_prev.over .icon,
+.toolbar #page_prev.pressed .icon {
+    background-position: -50px -48px;
+}
+
+.toolbar #page_next .icon {
+    background-position: 2px 5px;
+}
+
+.toolbar #page_next.over .icon,
+.toolbar #page_next.pressed .icon {
+    background-position: -52px 5px;
+}
+
+.toolbar #page_last .icon {
+    background-position: 5px -155px;
+}
+
+.toolbar #page_last.over .icon,
+.toolbar #page_last.pressed .icon{
+    background-position: -48px -155px;
+}
+
 /* text input with drop-down menu, new in Emerald 3 */
 .textPlus > input[type=text] {
-	margin-left:0;
-	padding:2px 3px;
+	margin-left: 0;
+	padding: 2px 3px;
+}
+
+.control.textPlus {
+    height: 22px;
 }
 
 .textPlus > .button {
-	background-color: none;
+	background: none;
 	border: 1px solid #c0c0c0;
 	border-top: 1px solid #848484;
 	border-left: none;
@@ -1765,7 +1868,7 @@ input.booleanComboInput{
 	border-top:1px solid #b5b5b5;
 	border-right:1px solid #b5b5b5; */
 	/* gradient end values are #fba82a and #fb7c24 */
-	/* background: url("images/tabs_horizontal_sprite.png") repeat-x scroll 0 0 #fb7c24 */;
+	/* background: url("images/tabs_horizontal_sprite.png") repeat-x scroll 0 0 #fb7c24 */
 }
 
 /* .tabSet.horizontal.buttons .pressed */
@@ -2028,7 +2131,7 @@ div.olap_level_label {
     position: absolute;
     top: 0px;
     left: 0px;
-    z-index: 999;
+    z-index: 9999;
     display: none;
 }
 .calendar2 > .content > .header {

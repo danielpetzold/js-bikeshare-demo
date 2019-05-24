@@ -1,3 +1,24 @@
+/*
+ * Copyright (C) 2005 - 2019 TIBCO Software Inc. All rights reserved.
+ * http://www.jaspersoft.com.
+ *
+ * Unless you have purchased a commercial license agreement from Jaspersoft,
+ * the following license terms apply:
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+
 #frame {
 	position: absolute;
 	top: 32px;
@@ -473,8 +494,6 @@ ______________________________________________________________
 	position: relative;
 	white-space: nowrap;
 	z-index: 1;
-
-	/* border-bottom:1px solid #c5c5c5; */ /* REMOVE */
 }
 
 .column.decorated > .content.hasFooter > .footer {
@@ -482,23 +501,12 @@ ______________________________________________________________
 	border-top: 1px solid #D4D5D5;
 	white-space:nowrap;
 	z-index: 100;
-
-/* these may be redundant, delete if needed
-	padding:0px 20px;
-	height:37px;
-*/
 }
 
 .column.decorated > .content > .body {
 	position: absolute;
-		/* top: 28px; */
 		top: 27px;
 		left: 0;
-}
-
-.column.decorated > .content>#filter-container {
-	/* fixes ie7 issue of too much dead space between title and filter container */
-	*top: 0px; /* IE7 */
 }
 
 .column.decorated > .content.hasFooter > .body {
@@ -508,7 +516,6 @@ ______________________________________________________________
 .column.decorated.minimized {
 	min-width: 24px !important;
 	width: 24px !important;
-	/* min-width: 0; */ /* not sure why this is here */
 }
 
 .column.decorated.minimized .vtitle {
@@ -539,15 +546,10 @@ ______________________________________________________________
 
 .column.decorated.minimized.secondary {
 	border-right :1px solid #e3e3e3;
-
-	/* margin-left: 0; */ /* DELETE */
 }
 
 .column.decorated.minimized.tertiary {
 	border-left :1px solid #e3e3e3;
-
-	/* right: 1px !important; */
-	/* margin-right: 0; */ /* DELETE */
 }
 
 /* .tabbed */
@@ -1236,7 +1238,7 @@ There are 2 types:
 }
 
 .menu.primaryNav #main_home .wrap {
-	text-indent: -5000px;
+	/*text-indent: -5000px;*/
     width: 34px;
 }
 

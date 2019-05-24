@@ -1,4 +1,25 @@
 /*
+ * Copyright (C) 2005 - 2019 TIBCO Software Inc. All rights reserved.
+ * http://www.jaspersoft.com.
+ *
+ * Unless you have purchased a commercial license agreement from Jaspersoft,
+ * the following license terms apply:
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+
+/*
 dialogSpecific.css
 
 pods skin
@@ -52,6 +73,7 @@ FLOATING DIALOGS
 
 #aboutBox {
     width: 380px;
+    z-index: 5000;
 }
 
 
@@ -212,8 +234,8 @@ FLOATING DIALOGS
 
 
 .standardConfirm {
-	max-width: 550px \9; IE8 and IE9
-	min-width: 300px;
+    min-width: 300px;
+    max-width: 550px \9; /* IE8 and IE9 */
 }
 
 @media screen and (-webkit-min-device-pixel-ratio:0) {
@@ -336,8 +358,9 @@ FLOATING DIALOGS
 
 .saveAs .groupBox {
     height: 280px;
-	margin:0;
-	float: none;
+    margin:0;
+    float: none;
+    overflow:auto;
 }
 
 .saveAs>.content>.body .groupBox {
@@ -648,36 +671,41 @@ textarea[readonly]#viewQueryInput   {
 
 /* selectFolder */
 
-/* fix for IE8 */
-.selectFolder.newResizeableDialog .jr-mDialog-body .subcontainer {
-	height: 320px;
-}
-
+/*bottom padding adds unwanted space in folder tree*/
 .newResizeableDialog.jr .jr-mDialog-body .subcontainer {
-	padding-bottom: 5px;
+    /*padding-bottom: 5px;*/
 	min-width: 0;
 	min-height: 0;
 	height: calc(100% - 76px);
 }
+
+.newResizeableDialog.jr .jr-mDialog-body-wrapper.subcontainer.jr {
+    height: 100%;
+    margin: 0;
+    padding: 2em 2em 1em 2em;
+    width: 100%;
+}
+
 .newResizeableDialog.jr .jr-mDialog-footer {
 	width: 100%;
 	position: absolute;
 	bottom: 0;
-	padding: 0.845em 1.40em;
+	padding-top: 7px;
 }
+
 .newResizeableDialog.jr .jr-mDialog-footer .button.action {
 	margin-right: 10px;
 }
 
-
 .selectFolder.newResizeableDialog.jr .jr-mDialog-body .subcontainer .control.groupBox.treeBox {
 	width: 100%;
-	height: 286px; /* for IE8 */
 	height: calc(100% - 14px);
 }
+
 .selectFolder.newResizeableDialog.jr .jr-mDialog-body .subcontainer .control.groupBox.treeBox > .content {
 	height: 100%;
 }
+
 .selectFolder.newResizeableDialog.jr .jr-mDialog-body .subcontainer .control.groupBox.treeBox > .content .body {
 	height: 100%;
 }

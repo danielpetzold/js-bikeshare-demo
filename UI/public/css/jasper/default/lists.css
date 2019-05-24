@@ -1,4 +1,25 @@
 /*
+ * Copyright (C) 2005 - 2019 TIBCO Software Inc. All rights reserved.
+ * http://www.jaspersoft.com.
+ *
+ * Unless you have purchased a commercial license agreement from Jaspersoft,
+ * the following license terms apply:
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+
+/*
  * From: base.css
  */
 .list .leaf, .list .node {
@@ -36,7 +57,8 @@ ul.decorated li {
 }
 
 .list.buttonSet > li.node,
-.list.buttonSet > li.leaf {
+.list.buttonSet > li.leaf,
+.list.toolsRight > li.leaf {
     overflow: visible;
 }
 
@@ -47,9 +69,9 @@ ul.decorated li {
 }
 
 .toolbar > .list.buttonSet .leaf,
+.toolbar > .list.toolsRight .leaf,
 .toolbar > .list.buttonSet .node {
-    height: 100%; /* NEW */
-    padding: 0px !important;
+    padding: 0 !important;
 }
 
 .toolbar .list.buttonSet,
@@ -104,6 +126,24 @@ and (max-device-width : 1024px) {
     .list.column.simple {
         width:542px;
     }
+}
+
+.list.buttonSet .leaf.divider,
+.list.toolsRight .leaf.divider {
+    position: relative;
+    margin: 0 4px;
+}
+
+.list.toolsRight .leaf.divider {
+    float: left;
+}
+
+.list.buttonSet .leaf.divider:last-of-type {
+    margin-right: 0;
+}
+
+.list.toolsRight .leaf.divider:first-of-type {
+    margin-left: 0;
 }
 
 /*

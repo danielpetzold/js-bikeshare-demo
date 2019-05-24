@@ -1,4 +1,25 @@
 /*
+ * Copyright (C) 2005 - 2019 TIBCO Software Inc. All rights reserved.
+ * http://www.jaspersoft.com.
+ *
+ * Unless you have purchased a commercial license agreement from Jaspersoft,
+ * the following license terms apply:
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+
+/*
  * From: button.css
  */
 .button {
@@ -1024,7 +1045,7 @@ button.capsule.mini .wrap {
 .action.pressed,
 .action.square.pressed {
 	/* gradient end values are #c1c1c1 to #9b9a9a with a top inner shadow */
-	/* background-position: 0 -100px */;
+	/* background-position: 0 -100px */
 	background-color: #9b9a9a;
 }
 
@@ -1036,7 +1057,6 @@ button.capsule.mini .wrap {
 .action.primary.over,
 .action.primary.pressed {
 	background-color: #195b8a;
-	/* background-color: #f9771d; */
 }
 
 .action.checking {

@@ -1,20 +1,12 @@
-/*! jQuery UI - v1.10.4 - 2016-02-04
+/*! jQuery UI - v1.12.1 - 2018-07-23
 * http://jqueryui.com
 * Includes:
-
-    jquery.ui.core.css,
-    jquery.ui.resizable.css,
-    jquery.ui.slider.css,
-    jquery.ui.datepicker.css,
-    jquery.ui.theme.css
-
-* Standalone addons:
-
-    jquery-ui-timepicker-addon.css
-
-CSS was generated with .jr prefix
-
-* To view and modify this theme, visit http://jqueryui.com/themeroller/?ffDefault=Lucida%20Grande%2CLucida%20Sans%2CArial%2Csans-serif&fwDefault=bold&fsDefault=1.1em&cornerRadius=5px&bgColorHeader=5c9ccc&bgTextureHeader=gloss_wave&bgImgOpacityHeader=55&borderColorHeader=4297d7&fcHeader=ffffff&iconColorHeader=d8e7f3&bgColorContent=fcfdfd&bgTextureContent=inset_hard&bgImgOpacityContent=100&borderColorContent=a6c9e2&fcContent=222222&iconColorContent=469bdd&bgColorDefault=dfeffc&bgTextureDefault=glass&bgImgOpacityDefault=85&borderColorDefault=c5dbec&fcDefault=2e6e9e&iconColorDefault=6da8d5&bgColorHover=d0e5f5&bgTextureHover=glass&bgImgOpacityHover=75&borderColorHover=79b7e7&fcHover=1d5987&iconColorHover=217bc0&bgColorActive=f5f8f9&bgTextureActive=inset_hard&bgImgOpacityActive=100&borderColorActive=79b7e7&fcActive=e17009&iconColorActive=f9bd01&bgColorHighlight=fbec88&bgTextureHighlight=flat&bgImgOpacityHighlight=55&borderColorHighlight=fad42e&fcHighlight=363636&iconColorHighlight=2e83ff&bgColorError=fef1ec&bgTextureError=glass&bgImgOpacityError=95&borderColorError=cd0a0a&fcError=cd0a0a&iconColorError=cd0a0a&bgColorOverlay=aaaaaa&bgTextureOverlay=flat&bgImgOpacityOverlay=0&opacityOverlay=30&bgColorShadow=aaaaaa&bgTextureShadow=flat&bgImgOpacityShadow=0&opacityShadow=30&thicknessShadow=8px&offsetTopShadow=-8px&offsetLeftShadow=-8px&cornerRadiusShadow=8px
+    core.css,
+    resizable.css,
+    datepicker.css,
+    slider.css,
+    theme.css
+* To view and modify this theme, visit http://jqueryui.com/themeroller/?scope=.jr&folderName=jr&cornerRadiusShadow=8px&offsetLeftShadow=-8px&offsetTopShadow=-8px&thicknessShadow=8px&opacityShadow=30&bgImgOpacityShadow=0&bgTextureShadow=flat&bgColorShadow=aaaaaa&opacityOverlay=30&bgImgOpacityOverlay=0&bgTextureOverlay=flat&bgColorOverlay=aaaaaa&iconColorError=cd0a0a&fcError=cd0a0a&borderColorError=cd0a0a&bgImgOpacityError=95&bgTextureError=glass&bgColorError=fef1ec&iconColorHighlight=2e83ff&fcHighlight=363636&borderColorHighlight=fad42e&bgImgOpacityHighlight=55&bgTextureHighlight=flat&bgColorHighlight=fbec88&iconColorActive=f9bd01&fcActive=e17009&borderColorActive=79b7e7&bgImgOpacityActive=100&bgTextureActive=inset_hard&bgColorActive=f5f8f9&iconColorHover=217bc0&fcHover=1d5987&borderColorHover=79b7e7&bgImgOpacityHover=75&bgTextureHover=glass&bgColorHover=d0e5f5&iconColorDefault=6da8d5&fcDefault=2e6e9e&borderColorDefault=c5dbec&bgImgOpacityDefault=85&bgTextureDefault=glass&bgColorDefault=dfeffc&iconColorContent=469bdd&fcContent=222222&borderColorContent=a6c9e2&bgImgOpacityContent=100&bgTextureContent=inset_hard&bgColorContent=fcfdfd&iconColorHeader=d8e7f3&fcHeader=ffffff&borderColorHeader=4297d7&bgImgOpacityHeader=55&bgTextureHeader=gloss_wave&bgColorHeader=5c9ccc&cornerRadius=5px&fsDefault=1.1em&fwDefault=bold&ffDefault=Lucida%20Grande%2CLucida%20Sans%2CArial%2Csans-serif
 * Copyright jQuery Foundation and other contributors; Licensed MIT */
 /* Layout helpers
 ----------------------------------*/
@@ -55,11 +47,6 @@ CSS was generated with .jr prefix
   clear: both;
 }
 
-.jr .ui-helper-clearfix {
-  min-height: 0;
-  /* support: IE7 */
-}
-
 .jr .ui-helper-zfix {
   width: 100%;
   height: 100%;
@@ -68,6 +55,7 @@ CSS was generated with .jr prefix
   position: absolute;
   opacity: 0;
   filter: Alpha(Opacity=0);
+  /* support: IE8 */
 }
 
 .jr .ui-front {
@@ -78,16 +66,22 @@ CSS was generated with .jr prefix
 ----------------------------------*/
 .jr .ui-state-disabled {
   cursor: default !important;
+  pointer-events: none;
 }
 
 /* Icons
 ----------------------------------*/
-/* states and images */
 .jr .ui-icon {
   display: block;
   text-indent: -99999px;
   overflow: hidden;
   background-repeat: no-repeat;
+}
+
+.jr .ui-widget-icon-block {
+  left: 50%;
+  margin-left: -8px;
+  display: block;
 }
 
 /* Misc visuals
@@ -109,6 +103,8 @@ CSS was generated with .jr prefix
   position: absolute;
   font-size: 0.1px;
   display: block;
+  -ms-touch-action: none;
+  touch-action: none;
 }
 
 .jr .ui-resizable-disabled .ui-resizable-handle,
@@ -393,6 +389,16 @@ CSS was generated with .jr prefix
   border-left-width: 1px;
 }
 
+/* Icons */
+.jr .ui-datepicker .ui-icon {
+  display: block;
+  text-indent: -99999px;
+  overflow: hidden;
+  background-repeat: no-repeat;
+  left: .5em;
+  top: .3em;
+}
+
 .jr .ui-slider {
   position: relative;
   text-align: left;
@@ -404,6 +410,8 @@ CSS was generated with .jr prefix
   width: 1.2em;
   height: 1.2em;
   cursor: default;
+  -ms-touch-action: none;
+  touch-action: none;
 }
 
 .jr .ui-slider .ui-slider-range {
@@ -415,7 +423,7 @@ CSS was generated with .jr prefix
   background-position: 0 0;
 }
 
-/* For IE8 - See #6727 */
+/* support: IE8 - See #6727 */
 .jr .ui-slider.ui-state-disabled .ui-slider-handle,
 .jr .ui-slider.ui-state-disabled .ui-slider-range {
   filter: inherit;
@@ -486,6 +494,10 @@ CSS was generated with .jr prefix
   font-size: 1em;
 }
 
+.jr .ui-widget.ui-widget-content {
+  border: 1px solid #c5dbec;
+}
+
 .jr .ui-widget-content {
   border: 1px solid #a6c9e2;
   background: #fcfdfd url("images/ui-bg_inset-hard_100_fcfdfd_1x100.png") 50% bottom repeat-x;
@@ -511,6 +523,16 @@ CSS was generated with .jr prefix
 ----------------------------------*/
 .jr .ui-state-default,
 .jr .ui-widget-content .ui-state-default,
+.jr .ui-widget-header .ui-state-default,
+.jr .ui-button,
+html .jr .ui-button.ui-state-disabled:hover,
+html .jr .ui-button.ui-state-disabled:active {
+  border: 1px solid #c5dbec;
+  background: #dfeffc url("images/ui-bg_glass_85_dfeffc_1x400.png") 50% 50% repeat-x;
+  font-weight: bold;
+  color: #2e6e9e;
+}
+
 .jr .ui-widget-header .ui-state-default {
   border: 1px solid #c5dbec;
   /*background: #dfeffc url(images/ui-bg_glass_85_dfeffc_1x400.png) 50% 50% repeat-x;*/
@@ -522,7 +544,11 @@ CSS was generated with .jr prefix
 
 .jr .ui-state-default a,
 .jr .ui-state-default a:link,
-.jr .ui-state-default a:visited {
+.jr .ui-state-default a:visited,
+a.jr .ui-button,
+a:link.jr .ui-button,
+a:visited.jr .ui-button,
+.jr .ui-button {
   color: #2e6e9e;
   text-decoration: none;
 }
@@ -532,6 +558,15 @@ CSS was generated with .jr prefix
 .jr .ui-widget-header .ui-state-hover,
 .jr .ui-state-focus,
 .jr .ui-widget-content .ui-state-focus,
+.jr .ui-widget-header .ui-state-focus,
+.jr .ui-button:hover,
+.jr .ui-button:focus {
+  border: 1px solid #79b7e7;
+  background: #d0e5f5 url("images/ui-bg_glass_75_d0e5f5_1x400.png") 50% 50% repeat-x;
+  font-weight: bold;
+  color: #1d5987;
+}
+
 .jr .ui-widget-header .ui-state-focus {
   border: 1px solid #79b7e7;
   /*background: #d0e5f5 url(images/ui-bg_glass_75_d0e5f5_1x400.png) 50% 50% repeat-x;*/
@@ -548,18 +583,33 @@ CSS was generated with .jr prefix
 .jr .ui-state-focus a,
 .jr .ui-state-focus a:hover,
 .jr .ui-state-focus a:link,
-.jr .ui-state-focus a:visited {
+.jr .ui-state-focus a:visited,
+a.jr .ui-button:hover,
+a.jr .ui-button:focus {
   color: #1d5987;
   text-decoration: none;
 }
 
+.jr .ui-visual-focus {
+  box-shadow: 0 0 3px 1px #5e9ed6;
+}
+
 .jr .ui-state-active,
 .jr .ui-widget-content .ui-state-active,
-.jr .ui-widget-header .ui-state-active {
+.jr .ui-widget-header .ui-state-active,
+a.jr .ui-button:active,
+.jr .ui-button:active,
+.jr .ui-button.ui-state-active:hover {
   border: 1px solid #79b7e7;
   background: #f5f8f9 url("images/ui-bg_inset-hard_100_f5f8f9_1x100.png") 50% 50% repeat-x;
   font-weight: bold;
   color: #e17009;
+}
+
+.jr .ui-icon-background,
+.jr .ui-state-active .ui-icon-background {
+  border: #79b7e7;
+  background-color: #e17009;
 }
 
 .jr .ui-state-active a,
@@ -575,8 +625,19 @@ CSS was generated with .jr prefix
 .jr .ui-widget-content .ui-state-highlight,
 .jr .ui-widget-header .ui-state-highlight {
   border: 1px solid #fad42e;
+  background: #fbec88;
+  color: #363636;
+}
+
+.jr .ui-widget-header .ui-state-highlight {
+  border: 1px solid #fad42e;
   background: #fbec88 url(images/ui-bg_flat_55_fbec88_40x100.png) 50% 50% repeat-x;
   color: #363636;
+}
+
+.jr .ui-state-checked {
+  border: 1px solid #fad42e;
+  background: #fbec88;
 }
 
 .jr .ui-state-highlight a,
@@ -625,12 +686,13 @@ CSS was generated with .jr prefix
 .jr .ui-widget-header .ui-state-disabled {
   opacity: .35;
   filter: Alpha(Opacity=35);
+  /* support: IE8 */
   background-image: none;
 }
 
 .jr .ui-state-disabled .ui-icon {
   filter: Alpha(Opacity=35);
-  /* For IE8 - See #6059 */
+  /* support: IE8 - See #6059 */
 }
 
 /* Icons
@@ -650,20 +712,20 @@ CSS was generated with .jr prefix
   background-image: url("images/ui-icons_d8e7f3_256x240.png");
 }
 
-.jr .ui-state-default .ui-icon {
-  background-image: url("images/ui-icons_6da8d5_256x240.png");
-}
-
 .jr .ui-state-hover .ui-icon,
-.jr .ui-state-focus .ui-icon {
+.jr .ui-state-focus .ui-icon,
+.jr .ui-button:hover .ui-icon,
+.jr .ui-button:focus .ui-icon {
   background-image: url("images/ui-icons_217bc0_256x240.png");
 }
 
-.jr .ui-state-active .ui-icon {
+.jr .ui-state-active .ui-icon,
+.jr .ui-button:active .ui-icon {
   background-image: url("images/ui-icons_f9bd01_256x240.png");
 }
 
-.jr .ui-state-highlight .ui-icon {
+.jr .ui-state-highlight .ui-icon,
+.jr .ui-button .ui-state-highlight.ui-icon {
   background-image: url("images/ui-icons_2e83ff_256x240.png");
 }
 
@@ -672,48 +734,52 @@ CSS was generated with .jr prefix
   background-image: url("images/ui-icons_cd0a0a_256x240.png");
 }
 
+.jr .ui-button .ui-icon {
+  background-image: url("images/ui-icons_6da8d5_256x240.png");
+}
+
 /* positioning */
 .jr .ui-icon-blank {
   background-position: 16px 16px;
 }
 
-.jr .ui-icon-carat-1-n {
+.jr .ui-icon-caret-1-n {
   background-position: 0 0;
 }
 
-.jr .ui-icon-carat-1-ne {
+.jr .ui-icon-caret-1-ne {
   background-position: -16px 0;
 }
 
-.jr .ui-icon-carat-1-e {
+.jr .ui-icon-caret-1-e {
   background-position: -32px 0;
 }
 
-.jr .ui-icon-carat-1-se {
+.jr .ui-icon-caret-1-se {
   background-position: -48px 0;
 }
 
-.jr .ui-icon-carat-1-s {
-  background-position: -64px 0;
+.jr .ui-icon-caret-1-s {
+  background-position: -65px 0;
 }
 
-.jr .ui-icon-carat-1-sw {
+.jr .ui-icon-caret-1-sw {
   background-position: -80px 0;
 }
 
-.jr .ui-icon-carat-1-w {
+.jr .ui-icon-caret-1-w {
   background-position: -96px 0;
 }
 
-.jr .ui-icon-carat-1-nw {
+.jr .ui-icon-caret-1-nw {
   background-position: -112px 0;
 }
 
-.jr .ui-icon-carat-2-n-s {
+.jr .ui-icon-caret-2-n-s {
   background-position: -128px 0;
 }
 
-.jr .ui-icon-carat-2-e-w {
+.jr .ui-icon-caret-2-e-w {
   background-position: -144px 0;
 }
 
@@ -734,7 +800,7 @@ CSS was generated with .jr prefix
 }
 
 .jr .ui-icon-triangle-1-s {
-  background-position: -64px -16px;
+  background-position: -65px -16px;
 }
 
 .jr .ui-icon-triangle-1-sw {
@@ -774,7 +840,7 @@ CSS was generated with .jr prefix
 }
 
 .jr .ui-icon-arrow-1-s {
-  background-position: -64px -32px;
+  background-position: -65px -32px;
 }
 
 .jr .ui-icon-arrow-1-sw {
@@ -822,7 +888,7 @@ CSS was generated with .jr prefix
 }
 
 .jr .ui-icon-arrowthick-1-n {
-  background-position: 0 -48px;
+  background-position: 1px -48px;
 }
 
 .jr .ui-icon-arrowthick-1-ne {
@@ -1406,10 +1472,11 @@ CSS was generated with .jr prefix
 }
 
 /* Overlays */
-.ui-widget-overlay {
+.jr .ui-widget-overlay {
   background: #aaaaaa url(images/ui-bg_flat_0_aaaaaa_40x100.png) 50% 50% repeat-x;
   opacity: .3;
   filter: Alpha(Opacity=30);
+  /* support: IE8 */
 }
 
 .jr .ui-widget-shadow {
@@ -1431,6 +1498,17 @@ CSS was generated with .jr prefix
 
 .jr .ui-timepicker-div dl {
   text-align: left;
+}
+
+.jr .ui-timepicker-div .ui_tpicker_unit_hide {
+  display: none;
+}
+
+.jr .ui-timepicker-div .ui_tpicker_time input {
+  background: transparent;
+  border: 0;
+  padding: 0;
+  color: #222222;
 }
 
 .jr .ui-timepicker-div dl dt {

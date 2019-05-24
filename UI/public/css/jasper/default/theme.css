@@ -1,4 +1,25 @@
 /*
+ * Copyright (C) 2005 - 2019 TIBCO Software Inc. All rights reserved.
+ * http://www.jaspersoft.com.
+ *
+ * Unless you have purchased a commercial license agreement from Jaspersoft,
+ * the following license terms apply:
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+
+/*
  * From: theme.css
  */
 
@@ -786,11 +807,15 @@ Others are the selectors that are assigned to objects automatically.
  */
 
 #logo {
-	background: url(images/logo.png) no-repeat 0 0 transparent;
+	background-image: url(images/logo_reverse.svg);
+    background-repeat: no-repeat;
+    background-color: transparent;
+    background-position: 0 0;
+    background-size: contain;
 	border: none;
 	height: 22px;
 	width: 176px;
-	margin: 6px 4px 0 8px;
+	margin: 7px 4px 0 8px;
 }
 
 /* ----------- */
@@ -1045,16 +1070,16 @@ button.action:focus,
 
 /* HOME PAGE, BUTTONS AND LINKS */
 #loginPage #submitButton.subfocus,
-#helpLoggingIn .button.action.subfocus{
+#helpLoggingIn .button.action.subfocus {
 	background-color: #195b8a;
 }
 
 .buttonIconToggle.isOpen:focus {
-	background-position: -1px -1004px;
+	background-position: -48px -1004px;
 }
 
 .buttonIconToggle.isClosed:focus {
-	background-position: -20px -1004px;
+	background-position: -80px -1008px;
 }
 
 .resourceBlock .fileName.subfocus a {

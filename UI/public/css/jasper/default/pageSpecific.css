@@ -1,3 +1,24 @@
+/*
+ * Copyright (C) 2005 - 2019 TIBCO Software Inc. All rights reserved.
+ * http://www.jaspersoft.com.
+ *
+ * Unless you have purchased a commercial license agreement from Jaspersoft,
+ * the following license terms apply:
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+
 /* LOGIN PAGE */
 
 #loginPage > .banner {
@@ -54,10 +75,6 @@
 
 #loginPage #localeAndTimeZone select:last-of-type {
     margin-bottom: 16px;
-}
-
-#loginPage #submitButton:hover { /* this is temporary until we can dynamically add the .over class to this element */
-    background-color: #195b8a;
 }
 
 #loginPage .login {
@@ -492,7 +509,6 @@
 #addResource_listOfValues .list.attributesTable .column.one,
 #addResource_listOfValues .list.attributesTable .column.two,
 #addResource_listOfValues .list.attributesTable .column.three  {
-    /* border-right: 1px solid #FFFFFF; */
     padding-left: 6px;
     text-overflow: ellipsis;
 }
@@ -921,10 +937,6 @@
     display: none;
 }
 
-/* #addResource_query_step1
-   #addResource_locateDataSource
-   #addResource_query_step3 */
-
 #addResource_query_step1 #flowControls .stepIndicator .icon,
 #addResource_locateDataSource #flowControls .stepIndicator .icon,
 #addResource_query_step3 #flowControls .stepIndicator .icon {
@@ -1072,8 +1084,8 @@ x:-o-prefocus, #selectedDataSources label {
 
 #selectedSubDataSourcesList .dataSourceName {
     display: inline-block;
-    height: 100%
-line-height: 24px;
+    height: 100%;
+    line-height: 24px;
 }
 
 
@@ -1081,58 +1093,6 @@ line-height: 24px;
 /*
  * From: dashboardDesigner.css
  */
-#dashboardDesigner .primary.column > .content > .body {
-    background: url("images/grid_20x20_bkgd.png") repeat scroll -10px -10px #F6F9F9;
-}
-
-#dashboardDesigner .list.collapsible.folders .leaf > .wrap > .icon {
-    display: none;
-}
-
-#dashboardDesigner .list.collapsible.folders .leaf > .wrap {
-    margin-top:1px;
-    margin-left:2px;
-}
-
-#dashboardDesigner fieldset.control {
-    width:100%;
-}
-
-#dashboardDesigner fieldset.control a,
-#dashboardViewer fieldset.control a {
-    display: none;
-}
-
-/* persists the body font rules in dashboard view mode */
-#dashboardViewerFrame .componentContainer.control {
-    font-size:11px;
-    font-weight:normal;
-    font-family: Verdana, Arial, Helvetica, sans-serif;
-}
-
-
-.dashboardViewer #back {
-    border-right: 0 solid #cdcdcd;
-    border-left: 0 solid #cdcdcd;
-    right: -8px;
-    padding: 0 6px;
-}
-
-.dashboardViewer #back .wrap {
-    text-indent: inherit;
-}
-
-.dashboardViewer #back .icon {
-    background-image: none;
-}
-
-#dashboardViewerFrame {
-    top: 29px;
-}
-
-#dashboardViewerFrame.withTitle {
-    top: 68px;
-}
 
 #sizeGuide {
     border:1px dotted #aaa;
@@ -1163,9 +1123,6 @@ line-height: 24px;
     width: auto;
 }
 
-#dashboardViewer #sizeGuide {
-    box-shadow:none;
-}
 
 #dashboardDropZone {
     top: 68px;
@@ -1201,20 +1158,6 @@ line-height: 24px;
     height:40px; /* do not forget to change DashboardState.DASHBOARD_TITLE_HEIGHT accordingly */
     line-height: 40px;
     text-align: center;
-}
-
-#dashboardDesigner #title {
-    background-color: #e0e0e0;
-    -webkit-user-select:text;
-    -moz-user-select:text;
-    top: 58px;
-}
-
-#dashboardDesigner #fontSizeTester{
-    z-index:-99999;
-    top:-9999px;
-    position:absolute;
-    line-height:normal;
 }
 
 .dragmarquee{
@@ -1479,42 +1422,6 @@ line-height: 24px;
 .componentContainer.iframe.hideLoadingAnimation {
     background-image: none !important;
 }
-
-/* dashboardViewer */
-#dashboardViewer #marquee,
-#dashboardViewer #framePlaceholder,
-#dashboardViewer .componentContainer > .sizer,
-#dashboardViewer .componentContainer > .overlay,
-#dashboardViewer #customURL {
-    display:none;
-}
-
-#dashboardViewer #sizeGuide {
-    border:none;
-    background: none;
-    margin:0;
-}
-
-#dashboardViewer #sizeGuide.proportional {
-    -moz-box-shadow:none;
-    -webkit-box-shadow:none;
-}
-
-#dashboardViewer #sizeGuide .label {
-    display:none;
-}
-
-#dashboardViewer .componentContainer.iframe,
-#dashboardViewer .componentContainer.displayText {
-    border:none;
-}
-
-#dashboardViewer #title {
-    background-color: transparent;
-    top:28px;
-}
-
-#dashboardViewer fieldset.control {width:100%;}
 
 .componentContainer.iframe > .floatingMenu {
     margin:0;
@@ -1849,14 +1756,6 @@ and (orientation:landscape) {
     *margin-left: 4px; /* IE7 */
 }
 
-/*
- * From: demo.css
- */
-#home_user #outerFrame #dashboardViewer .body .body {
-    overflow:auto;
-}
-
-
 /* Ad Hoc Designer */
 
 #designer .toolbar {
@@ -1995,7 +1894,6 @@ and (orientation:landscape) {
 #designer #availableFields .measure .header,
 #designer #availableFields .dimension .header {
     border-bottom: 1px solid #fff;
-    /* border-bottom-color: #b7b7b7; */
 }
 
 #adhoc #adhocCanvasContainer{
@@ -2217,7 +2115,7 @@ and (max-device-width : 1024px) {
 
 #designer .columnSizer{
     z-index:501;
-    width:3px;
+    width:7px;
     position:absolute;
     padding-left:1px;
     padding-right:1px;
@@ -3017,7 +2915,6 @@ li.dragging.measure {
     -khtml-box-sizing: border-box;
     box-sizing: border-box;
     overflow: visible;
-    /* padding: 5px 7px 0 7px; */
 }
 
 #filters #filter-container {
@@ -3425,7 +3322,7 @@ li.dragging.measure {
 /* #domainDesigner_display */
 
 #domainDesigner_display #properties > .content > .body {
-    padding: 0 8px; /* NEW */
+    padding: 0 8px;
 }
 
 #domainDesigner_display #setsAndItems > .content > .body {
@@ -3624,10 +3521,6 @@ li.dragging.measure {
     display: none;
 }
 
-/* #propertiesButtons .button {
-    margin-top:4px;
-} REDUNDANT */
-
 #manage_users #propertiesButtons,
 #manage_roles #propertiesButtons,
 #manage_orgs #propertiesButtons {
@@ -3820,7 +3713,6 @@ li.dragging.measure {
 
 /* Custom file upload input (see bug 24261)*/
 .fakeFileUpload input[type='file'] {
-    /*display: none; */
     opacity:0;
     filter:alpha(opacity=0);
     position:absolute;
@@ -4070,39 +3962,46 @@ li.dragging.measure {
 
 #reportViewer .toolbar {
     border-top: 1px solid #fff;
-    min-width: 950px;
+    min-width: 1025px;
 }
 
 #reportViewer .toolsRight {
     float: right;
+    height: 27px;
+    margin-bottom: 0;
+    margin-right: 3px;
 }
 
-#reportViewer .control.paging,
 #reportViewer .control.zoom,
-#reportViewer .control.search {
+#reportViewer .control.search,
+#reportViewer .control.paging {
+    float: left;
     height: 100%;
     margin: 0;
     width: auto;
 }
 
-#reportViewer .control.paging {
-    float: left;
-    margin-right: 12px;
+#reportViewer .control.zoom .button.action,
+#reportViewer .control.search .button.action,
+#reportViewer .control.paging .button.action {
+    min-height: 27px;
+    width: 28px;
 }
 
-#reportViewer .control.zoom {
-    float: left;
-    padding-left: 8px;
-    padding-right: 0;
-    margin-left: 12px;
-    margin-right: 10px;
+#reportViewer .control.paging > .button.action > .wrap,
+#reportViewer .control.zoom > .button.action > .wrap,
+#reportViewer .control.search > .button.action > .wrap {
+    left: 2px;
 }
 
-#reportViewer .control.search {
-    float: left;
-    padding-left: 10px;
-    padding-right: 8px;
+#reportViewer .toolsRight .button.action.up.over,
+#reportViewer .toolsRight .button.action.up.pressed,
+#reportViewer .toolsRight .button.action.down,
+#reportViewer .toolsRight .button.action.down.over,
+#reportViewer .toolsRight .button.action.down.pressed {
+    background-color: #195b8a;
 }
+
 
 #reportViewer .control.search .textPlus {
     margin-right: 0
@@ -4111,7 +4010,7 @@ li.dragging.measure {
 #reportViewer #reportViewFrame > .content > .header {
     height: auto;
     border-bottom: none;
-    min-width: 950px;
+    min-width: 1025px;
     zoom:1; /* IE */
 }
 
@@ -4133,16 +4032,12 @@ li.dragging.measure {
     margin-left: 24px;
 }
 
-#reportViewer #zoom_value_button.over .icon,
-#reportViewer #zoom_value_button.pressed .icon {
-    background-position: 4px -86px
-}
-
 /* pagination and zoom controls containers */
 
-#reportViewer .control.paging .input,
-#reportViewer .control.zoom .input {
-    height: 100%;
+#reportViewer .control.zoom .input,
+#reportViewer .control.search .input,
+#reportViewer .control.paging .input {
+    top: 3px;
     *top: -4px; /* IE7 */
     zoom: 1; /* IE */
 }
@@ -4155,80 +4050,7 @@ li.dragging.measure {
     float:left;
 }
 
-/* pagination and zoom icon properties and positions */
-
-#reportViewer #pagination .action.square {
-    height: 100%;
-    margin: 0;
-    width: 28px;
-}
-
-#reportViewer #pagination .action.square.over,
-#reportViewer #pagination .action.square.pressed,
-#reportViewer #reportZoom .action.square.over,
-#reportViewer #reportZoom .action.square.pressed  {
-    background: none;
-}
-
-#reportViewer #pagination .action.square > .wrap > .icon {
-    height: 28px;
-    width: 28px;
-}
-
-#reportViewer .toolbar #page_first .icon,
-#reportViewer .toolbar #page_first.over .icon {
-    background-position: 7px -99px;
-}
-
-#reportViewer .toolbar #page_prev .icon,
-#reportViewer .toolbar #page_prev.over .icon {
-    background-position: 7px -46px;
-}
-
-#reportViewer .toolbar #page_next .icon,
-#reportViewer .toolbar #page_next.over .icon {
-    background-position: 3px 7px;
-}
-
-#reportViewer .toolbar #page_last .icon,
-#reportViewer .toolbar #page_last.over .icon {
-    background-position: 5px -152px;
-}
-
-#reportViewer .toolbar #page_first.pressed .icon {
-    background-position: -47px -99px;
-}
-
-#reportViewer .toolbar #page_prev.pressed .icon {
-    background-position: -47px -46px;
-}
-
-#reportViewer .toolbar #page_next.pressed .icon {
-    background-position: -51px 7px;
-}
-
-#reportViewer .toolbar #page_last.pressed .icon{
-    background-position: -48px -152px;
-}
-
-#reportViewer .toolbar #page_first[disabled] .icon {
-    background-position: -88px -99px;
-}
-
-#reportViewer .toolbar #page_prev[disabled] .icon {
-    background-position: -88px -46px;
-}
-
-#reportViewer .toolbar #page_next[disabled] .icon {
-    background-position: -92px 7px;
-}
-
-#reportViewer .toolbar #page_last[disabled] .icon {
-    background-position: -90px -152px;
-}
-
 #reportViewer  .toolbar > .buttonSet {
-    /* float: right; */
     float: left;
     height: 27px; /* 1px shorter than height because of top white border */
     margin-right: 10px;
@@ -4257,6 +4079,16 @@ li.dragging.measure {
 #reportViewer #viewerToolbar .buttonSet .button .icon {
     background-image: url("images/viewer_toolbar_buttons_sprite.png");
     background-repeat: no-repeat;
+}
+
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+    /*
+        Safari and Google Chrome only
+        To address discrepancy in rendering between PC and Mac WebKit
+    */
+    #reportViewer #viewerToolbar .buttonSet .button {
+        margin-top: 0;
+    }
 }
 
 /* viewer toolbar sprite positions */
@@ -4430,9 +4262,6 @@ li.dragging.measure {
 #reportViewer #dataRefreshButton {
     border: none;
     height: 28px;
-    width: 28px;
-    margin-left: 10px;
-    *position:absolute; /* IE7 */
 }
 
 #reportViewer #dataRefreshButton .wrap {
@@ -4442,16 +4271,16 @@ li.dragging.measure {
 
 #reportViewer #dataRefreshButton .icon {
     background-image: url("images/viewer_toolbar_buttons_sprite.png");
-    background-position: 1px -216px;
-    width: 26px;
+    background-position: 3px -214px;
+    width: 100%;
 }
 
 #reportViewer #dataRefreshButton.up.over .icon {
-    background-position: -36px -216px;
+    background-position: -34px -214px;
 }
 
 #reportViewer #dataRefreshButton.up.pressed .icon {
-    background-position: -74px -216px;
+    background-position: -72px -214px;
 }
 
 #reportViewer .twoColumn .primary.column {
@@ -4460,11 +4289,16 @@ li.dragging.measure {
 
 #reportViewFrame.column.decorated > .content {
     overflow-x: auto;
-} /* NEW */
+}
 
 #reportViewFrame.column.decorated > .content > .body {
     min-width: 950px;
     overflow-x: auto;
+}
+
+#reportViewFrame .header > .list.buttonSet {
+    height: 28px;
+    margin-left: 10px;
 }
 
 div.body.swipeScroll {position:absolute !important;}
@@ -4662,15 +4496,15 @@ and (max-device-width : 1024px) {
 
 
 /* START Tabbed Reports overrides */
-#reportPartsContainer div.reportPart.active {
+/* #reportPartsContainer div.reportPart.active {
     height: 23px !important;
-}
+} */
 
-div#reportPartsContainer div.reportPart {
+/* div#reportPartsContainer div.reportPart {
     border: none !important;
     background-color: transparent !important;
     min-width: 80px !important;
-}
+} */
 
 div#reportPartsContainer span {
     line-height: 22px !important;
@@ -4682,10 +4516,62 @@ div#reportPartsContainer span {
     font-weight: bold !important;
 }
 
-#reportPartsNavigation {
-    top: -3px !important;
-}
 /* END Tabbed Reports overrides */
+
+
+/* REPORT TABLE OF CONTENTS TABS */
+#reportPartsController {
+    height: 28px;
+    position: absolute;
+    right: 22px;
+    top: 0;
+}
+
+#reportPartsContainer .reportPart {
+    border: 1px solid transparent;
+    cursor: pointer;
+    display: inline-block;
+    height: 22px;
+    line-height: 22px;
+    margin: 0 2px;
+    min-width: 60px;
+    position: relative;
+    top: 6px;
+    white-space: nowrap;
+    zoom: 1;
+}
+
+#reportPartsContainer .reportPart.active {
+    border: 1px solid #c5c5c5;
+    border-bottom: transparent;
+}
+
+#reportPartsContainer .reportPart span {
+    color: #666;
+    display: block;
+    font-weight: bold;
+    height: 100%;
+    line-height: 22px;
+    min-width: 60px;
+    padding: 0 12px;
+    text-align: center;
+    width: auto;
+}
+
+#reportPartsContainer .reportPart.active span {
+    background: #fff;
+    color: #195b8a;
+    border-bottom: 1px solid transparent;
+}
+
+#reportPartsContainer .control.search .button.action {
+    height: 28px;
+}
+
+#reportPartsContainer .button.action.up.over {
+    background-color: #195b8a;
+}
+
 
 /* Repository */
 
@@ -5677,10 +5563,7 @@ body.locale-pt_BR .schedulerApp .outputTab .control.browser input {
     display: inline;
 }
 
-/*
-    User attributes view
-
-*/
+/* User attributes view */
 
 .nothingToDisplay #attributesTab {
     display: none;
@@ -5862,9 +5745,7 @@ textarea#errorReport {
     overflow: auto;
 }
 
-/*
-  Draggable controls
-*/
+/* Draggable controls */
 
 .horizontalPlaceholder {
     height: 6px;
@@ -6015,7 +5896,7 @@ textarea#errorReport {
     background-position: -2px -554px;
 }
 .workflow-icon-repository {
-    background-position: -2px -713px;
+    background-position: -2px -712px;
 }
 .workflow-icon-serversettings {
     background-position: -2px -792px;
@@ -6054,8 +5935,6 @@ textarea#errorReport {
     height: 24px;
     line-height: 24px;
     padding-right: 16px;
-    /* color: #1572cf; old color */
-    /* color definition is in theme.css so element can remain themable */
 }
 
 .workflow-buttonContainer .left {}
@@ -6100,7 +5979,6 @@ and (orientation:portrait) {
     font-size: 12px;
     font-weight: bold;
     line-height: inherit;
-    /* color definition is in theme.css so element can remain themable */
 }
 
 .resourceBlock-list {
@@ -6114,16 +5992,19 @@ and (orientation:portrait) {
     padding-left: 4px;
 }
 
-.resourceBlock-list-icon {
-    background-image: url("images/lists_sprite.png");
-    width:17px;
-    height:22px;
-    float:left;
+.resourceBlock-list li a {
+    padding-left: 2px;
 }
 
-.resourceBlock-list-icon.start {background-position:0 -1128px}
+.resourceBlock-list-icon {
+    background: rgba(0, 0, 0, 0) url(images/gr-link-theme.png) no-repeat 0 6px / 12px;
+    width: 17px;
+    height: 22px;
+    float: left;
+}
 
-.resourceBlock-list-icon.link {background-position:0 -1423px}
+
+.resourceBlock-list-icon.start {background-position:0 -1128px}
 
 
 /* color definitions for the links below are in theme.css so they remain themable */
@@ -6177,17 +6058,18 @@ and (orientation:portrait) {
     background-image: url("images/disclosure_indicators_sprite.png");
     background-color: transparent;
     background-repeat: no-repeat;
-    width: 18px;
     height: inherit;
     margin-left: 6px;
+    transform: scale(.5);
+    width: 18px;
 }
 
 .buttonIconToggle.isOpen {
-    background-position: 0 -923px;
+    background-position: -50px -924px;
 }
 
 .buttonIconToggle.isClosed {
-    background-position: -20px -923px;
+    background-position: -82px -928px;
 }
 
 .disableCursor   a {
@@ -6251,12 +6133,6 @@ and (orientation:portrait) {
 }
 .sList li > div {
     padding: 2px 0 2px 0;
-}
-
-/* Fix for dashboards */
-#dashboardDesigner .sList li a,
-#dashboardViewer .sList li a {
-    display: inline !important;
 }
 
 /* Single select component */
@@ -6501,9 +6377,8 @@ and (orientation:portrait) {
     opacity: .4;
 }
 
-#dashboardDesigner .sSelect-sSearch .searchLockup,
-#dashboardViewer .sSelect-sSearch .searchLockup {
-    min-width: 0 !important;
+.topOfPage .ssPlaceholder > div {
+    min-width: 220px;
 }
 
 /* Multi select compoennt */
@@ -6777,59 +6652,6 @@ input[type="text"].mSelect-input {
     z-index: 1001;
 }
 
-#dashboardDesigner .mSelect-footer a,
-#dashboardViewer .mSelect-footer a {
-    display: inline !important;
-}
-
-#dashboardViewer a {
-    cursor:pointer;
-}
-
-/* for narrow select controls, START */
-#dashboardDesigner .mSelect-footer-narrow,
-#dashboardViewer .mSelect-footer-narrow {
-    height:auto;
-    border-top:1px solid #999999;
-}
-
-#dashboardDesigner .mSelect-footer-narrow .mSelect-footer-selectOptions,
-#dashboardViewer .mSelect-footer-narrow .mSelect-footer-selectOptions {
-    margin:0;
-}
-
-#dashboardDesigner .mSelect-footer-narrow a,
-#dashboardViewer .mSelect-footer-narrow a {
-    display: block !important;
-    padding-top:3px;
-    padding-bottom:3px;
-}
-
-#dashboardDesigner .mSelect-footer-narrow .mSelect-footer-button,
-#dashboardViewer .mSelect-footer-narrow .mSelect-footer-button {
-    display: block !important;
-    position: relative;
-    border-left:none;
-    border-top:1px solid #999999;
-    height:18px;
-    width:100%;
-}
-/* for narrow select controls, END */
-
-
-/* styles which allows multiselet to be resizable */
-#dashboardDesigner .msPlaceholder,
-#dashboardViewer .msPlaceholder {
-    height: 100%;
-    width: 100%;
-}
-
-#dashboardDesigner .picker input,
-#dashboardViewer .picker input {
-    width: 100% !important;
-}
-
-
 #designer #availableFieldsMutton,
 #designer #availableFieldsMutton.over,
 #designer #availableMeasuresMutton,
@@ -6854,9 +6676,9 @@ input[type="text"].mSelect-input {
 
 .sourceDialogNew > .jr-mDialog-footer {
     position: absolute !important;
-        bottom: 0;
-        right: 0;
-        left: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
     padding-left: 20px !important;
 }
 
@@ -6924,6 +6746,7 @@ input[type="text"].mSelect-input {
 .sourceDialogNew .control.searchLockup .button.searchClear.over,
 .sourceDialogNew .control.searchLockup .button.searchClear.pressed {
     background-position: -84px -59px;
+    background-color: white;
 }
 
 .sourceDialogNew .hideRoot>.node>.subcontainer>.j-view-port-chunk>.collapsible{
@@ -6936,6 +6759,11 @@ input[type="text"].mSelect-input {
 .jive_chartMenu .wrap.over {
     background-color: #1388d8 !important;
     color: #fff !important;
+}
+
+#jive_dialog,
+.jive_chartTypeSelector {
+    z-index: 6000 !important; /* must be larger than 5500 */
 }
 
 /* =============================================== */
