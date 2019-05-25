@@ -1,0 +1,27 @@
+FROM node:10
+
+# image to do UI development
+
+# Create app directory
+# mount a volume to override
+WORKDIR /usr/src/app
+
+# get the source from the mount
+#COPY src src
+#COPY public public
+#COPY *.json ./
+#COPY *.lock ./
+#COPY .env.* ./
+
+#done in the entrypoint[dev.sh
+#RUN npm install
+
+EXPOSE 3000
+
+# does npm install && npm start
+COPY docker/entrypoint-dev.sh /
+RUN chmod +x /entrypoint-dev.sh
+CMD ["/entrypoint-dev.sh"]
+
+
+
