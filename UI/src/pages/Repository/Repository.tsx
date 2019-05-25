@@ -198,7 +198,7 @@ class Repository extends Component<any, RepositoryState> {
   selectedNode = (e: any) => {
 	  //console.log(e);
     this.setState({
-		selectedName: e.name,
+		selectedName: e.label,
 		selectedType: e.resourceType,
 		selectedUri: e.uri
 	});
