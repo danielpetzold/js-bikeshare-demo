@@ -1,0 +1,85 @@
+version: '3.1'
+
+# this docker-compose launches bikeshare-api container
+# and puts them behind a proxy to present 1 app to the browser
+# you need to configure the haproxy.cfg to point to your jasperreports server and
+# bikeshare-ui
+# if you are doing UI development, have the UI node app running on localhost:3000,
+# defined in the haproxy.cfg
+
+services:
+
+  haproxy:
+    image: haproxy:1.9
+
+    ports:
+        - 80:80
+        - 9999:9999
+    volumes:
+    # Override volumes
+    # Under Docker for Windows, these have to be under the logged in user's User area
+    # You configure the haproxy.cfg to point to your jasperserver-pro and
+    # the bikeshare-api and UI instances.
+        - /home/ubuntu/Documents/js-bikeshare-demo/deploy/Docker/development:/usr/local/etc/haproxy
+
+    depends_on:
+        - bikeshare-ui # in development, use node app running on localhost:3000
+        - bikeshare-api
+        - jasperserver-pro
+
+# in development, use UI app running on localhost:3000, defined in haproxy.cfg
+  bikeshare-ui:
+    image: bikeshare-ui:dev
+
+    # because we are using a reverse proxy, not need to expose the API port
+    #ports:
+    #  - 80:80
+
+    env_file: env.properties
+
+    # if set, these values override settings from env_file
+    #environment:
+
+    # point to source. has to have npm install run on
+    volumes:
+      - /home/ubuntu/Documents/js-bikeshare-demo/UI:/usr/src/app
+ 
+    depends_on:
+      - bikeshare-api
+
+  bikeshare-api:
+    image: bikeshare-api
+
+    # because we are using a reverse proxy, not need to expose the API port
+    #ports:
+    #  - 8888:8888
+
+    env_file: env.properties
+
+    environment:
+        - POSTGRES_HOST=172.31.33.138
+
+
+  jasperserver-pro:
+    image: jasperserver-pro:7.2.0
+
+    # ports only through proxy
+    #ports:
+    #  - "8080:8080"
+    #  - "8443:8443"
+
+    env_file: jrs-env.properties
+
+    # if set, these values override settings from env_file
+    environment:
+        - DB_HOST=172.31.33.138
+
+    # Override license, JRS and Tomcat customizations, SSL keystore
+    # Under Docker for Windows, these have to be under the logged in user's User area
+    volumes:
+        - /home/ubuntu/Documents/Docker/jasperserver-pro/mnt/License:/usr/local/share/jasperserver-pro/license 
+        - /home/ubuntu/Documents/Docker/jasperserver-pro/mnt/jasperserver-pro:/usr/local/share/jasperserver-pro/customization 
+        #- /C/Users/swood/Documents/Docker/tomcat:/usr/local/share/jasperserver-pro/keystore 
+        #- /C/Users/swood/Documents/Docker/tomcat:/usr/local/share/jasperserver-pro/tomcat-customization 
+
+
