@@ -1,0 +1,30 @@
+version: '2'
+
+services:
+  jrs-pro:
+    image: jasperserver-pro:7.2.0
+
+    ports:
+      - "8080:8080"
+      - "8443:8443"
+
+    env_file: env.properties
+
+    # if set, these values override settings from env_file
+    #environment:
+
+    # Override license, JRS and Tomcat customizations, SSL keystore
+    # Under Docker for Windows, these have to be under the logged in user's User area
+    volumes:
+        - /home/ubuntu/Documents/Docker/jasperserver-pro/mnt/License:/usr/local/share/jasperserver-pro/license 
+        - /home/ubuntu/Documents/Docker/jasperserver-pro/mnt/Docker/jasperserver-pro:/usr/local/share/jasperserver-pro/customization 
+        #- /home/ubuntu/Documents/Docker/jasperserver-pro/mnt/Docker/tomcat:/usr/local/share/jasperserver-pro/keystore 
+        #- /home/ubuntu/Documents/Docker/jasperserver-pro/mnt/Docker/tomcat:/usr/local/share/jasperserver-pro/tomcat-customization 
+
+    #depends_on:
+    # If you want to use Postgres in a container
+    #  - jrs_database
+
+#jrs_database:
+#  image: postgres:9.6
+#  env_file: .env
