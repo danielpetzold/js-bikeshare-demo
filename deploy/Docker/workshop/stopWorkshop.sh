@@ -4,7 +4,7 @@ docker stop portainer
 
 docker stop pgadmin4
 
-cd /home/ubuntu/Documents/js-bikeshare-demo/deploy/Docker/development
+cd /home/ubuntu/Documents/js-bikeshare-demo/deploy/Docker/workshop
 docker-compose down
 
 cd ~/Documents
