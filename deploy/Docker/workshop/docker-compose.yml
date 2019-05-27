@@ -20,7 +20,9 @@ services:
     # Under Docker for Windows, these have to be under the logged in user's User area
     # You configure the haproxy.cfg to point to your jasperserver-pro and
     # the bikeshare-api and UI instances.
-        - /home/ubuntu/Documents/js-bikeshare-demo/deploy/Docker/development:/usr/local/etc/haproxy
+        - /home/ubuntu/Documents/js-bikeshare-demo/deploy/Docker/workshop:/usr/local/etc/haproxy
+
+    network_mode: host
 
     depends_on:
         - bikeshare-ui # in development, use node app running on localhost:3000
@@ -32,18 +34,21 @@ services:
     image: bikeshare-ui:dev
 
     # because we are using a reverse proxy, not need to expose the API port
-    #ports:
-    #  - 80:80
+    ports:
+      - 3000:8888
 
     env_file: env.properties
 
     # if set, these values override settings from env_file
-    #environment:
+    environment:
+      - PORT=3000
 
     # point to source. has to have npm install run on
     volumes:
       - /home/ubuntu/Documents/js-bikeshare-demo/UI:/usr/src/app
  
+    network_mode: host
+
     depends_on:
       - bikeshare-api
 
@@ -51,28 +56,31 @@ services:
     image: bikeshare-api
 
     # because we are using a reverse proxy, not need to expose the API port
-    #ports:
-    #  - 8888:8888
+    ports:
+      - 8888:8888
 
     env_file: env.properties
 
     environment:
-        - POSTGRES_HOST=172.31.33.138
+        #- POSTGRES_HOST=172.31.23.248
+        - POSTGRES_HOST=localhost
 
+    network_mode: host
 
   jasperserver-pro:
     image: jasperserver-pro:7.2.0
 
     # ports only through proxy
-    #ports:
-    #  - "8080:8080"
-    #  - "8443:8443"
+    ports:
+      - 8080:8080
+      - 8443:8443
 
     env_file: jrs-env.properties
 
     # if set, these values override settings from env_file
     environment:
-        - DB_HOST=172.31.33.138
+        #- DB_HOST=172.31.23.248
+        - DB_HOST=localhost
 
     # Override license, JRS and Tomcat customizations, SSL keystore
     # Under Docker for Windows, these have to be under the logged in user's User area
@@ -82,4 +90,5 @@ services:
         #- /C/Users/swood/Documents/Docker/tomcat:/usr/local/share/jasperserver-pro/keystore 
         #- /C/Users/swood/Documents/Docker/tomcat:/usr/local/share/jasperserver-pro/tomcat-customization 
 
+    network_mode: host
 
