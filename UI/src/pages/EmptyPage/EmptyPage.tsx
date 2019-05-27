@@ -3,149 +3,83 @@ import './EmptyPage.scss';
 import filterIcon from '../../fonts/icons/filter-icon.svg';
 import NavBar from '../../components/NavBar/NavBar';
 import JasperReportsService from "../../services/JasperReportsService";
+import { DashboardProps, ReportParams } from "../Dashboard/Dashboard.types";
 
 import Dropdown, { Option } from '../../components/Dropdown/Dropdown';
 import { visualizeHelper } from '../../helpers/VisualizeHelper';
 
+const dashboard_report_uri_root: string = '/public/Bikeshare_demo/Reports/Dashboard_Reports';
+const kpi_report_uri: string = dashboard_report_uri_root + '/FM_Dashboard_KPIS';
+const default_detail_report_uri: string = dashboard_report_uri_root + '/Dashboard_Stations_InNeed_Detail';
+
 interface EmptyPageState {
-  isFilterOpen: boolean;
-  exportModalOpen: boolean;
-  actionsOpen: boolean;
-  isReportSelectOpen: boolean;
-  reportOptions: Option[];
-  selectedReportName: string;
-  selectedReportUri: string;
-  currentVObject: any;
-  currentFilters: any;
-  repositoryResource: any;
+	kpiReport: any;
+	detailReport: any;
+	selectedFilters: any;
 }
 
 
-interface Props {
-  location: any;
-}
-
-class EmptyPage extends Component<any, EmptyPageState> {
+class EmptyPage extends Component<DashboardProps, EmptyPageState> {
   state: EmptyPageState =  {
-		isFilterOpen: false,
-		exportModalOpen: false,
-		isReportSelectOpen: false,
-		actionsOpen: false,
-		reportOptions: [],
-		selectedReportName: '',
-		selectedReportUri: '',
-		currentVObject: null,
-		currentFilters: null,
-		repositoryResource: null
-  };
-  
-  constructor(props: Props) {
-	  super(props);
-	  /*
-	  const search = props.location.search; // should be '?resource=/public/path'
-	  const params: URLSearchParams = new URLSearchParams(search);
-	  const uri: string | null = params.get('resource'); 
-	  const name: string | null = params.get('name'); 
-	  
-	  this.state.selectedReportUri =  uri != null ? uri : '';
-	  this.state.selectedReportName = name != null ? name : '';
-	  */
-  }
-
-  async getResource(uri: string | null) {
-	  let foundResource: any = null;
-  	  if (uri != null) {
-		  const restURL = '/rest_v2/resources' + uri + '?expanded=true';
-		  //console.log(restURL);
-		  foundResource = await JasperReportsService.get(restURL, {});
-		  console.log(foundResource);
-		  this.state.repositoryResource = foundResource;
-	  }
-	  return foundResource;
-  }
-  
-  async componentDidMount() {
-    await this.getFilters();
-    this.showReport();
-  }
-
-  changeReport = (params: any, error: any) => {
-	if (!error && this.state.currentVObject != null) {
-		this.state.currentVObject.params(params).run();
+	kpiReport: null,
+	detailReport: null,
+	selectedFilters: {
+		Region: '3',
+		Franchise: 'BA',
+		Timeframe: 'lastweek'
 	}
-  }
-  
-  async getFilters() {
-    await visualizeHelper.getInputControl(
-		this.state.selectedReportUri,
-		'inputControl',
-		{},
-		{
-			change: this.changeReport
-		}
-	)
-    .then((success: any) => {
-		var inputControls: any = success.inputControls;
-
-		this.setState({ currentFilters: inputControls });
-    })
-	.catch((err) => {
-		console.log('error getFilters:', err.message);
-	});
-  }
-
-  showReport() {
-    if (this.state.selectedReportUri) {
-      visualizeHelper.getDashboard(this.state.selectedReportUri, 'report')
-        .then((success: any) => {
-			//console.log('success', success);
-			var dashboard: any = success.dashboard;
-			var result: any = success.success;
-			this.setState({ currentVObject: dashboard });
-        });
-    }
-  }
-
-  modifyReport = (e: any) => {
-    e.preventDefault();
-		this.props.history.push({
-		  pathname: '/dashboard/edit',
-		  search: `?resource=${this.state.selectedReportUri}`
-		});
   };
 
-  createReport = (e: any) => {
+
+  constructor(props: DashboardProps) {
+    super(props);
+  }
+
+  changeDetailsReport = (e: any, link: any) => {
     e.preventDefault();
-    this.props.history.push({
-      pathname: '/dashboard/new'
-    });
+    visualizeHelper.getReport(dashboard_report_uri_root + '/' + link.href, 'detail-report', this.getParams())
+        .then((success: any) => {
+		var report: any = success.report;
+		var result: any = success.success;
+		this.setState({ detailReport: report });
+        });
+  }
+
+  async componentDidMount() {
+	/*
+      visualizeHelper.getReport(kpi_report_uri, 'kpi-report', this.getParams(), {
+        events: {
+          click: this.changeDetailsReport
+        }
+      })
+        .then((success: any) => {
+		var report: any = success.report;
+		var result: any = success.success;
+		this.setState({ kpiReport: report });
+        });
+      visualizeHelper.getReport(default_detail_report_uri, 'detail-report', this.getParams())
+        .then((success: any) => {
+		var report: any = success.report;
+		var result: any = success.success;
+		this.setState({ detailReport: report });
+        });
+    */
+  }
+
+
+  getParams = () => {
+    let params: ReportParams = {};
+    for (let key in this.state.selectedFilters) {
+      params[key] = [this.state.selectedFilters[key]];
+    }
+    this.props.sessionId
+      ? (params = { ...params, Session_ID: [this.props.sessionId] })
+      : null;
+    console.log(params);
+    return params;
   };
 
   render() {
-    const {
-      isReportSelectOpen,
-      reportOptions,
-      selectedReportName,
-	  currentFilters
-    } = this.state;
-
-	let vObjectContainer = [];
-	
-	if (currentFilters != null) {
-		vObjectContainer.push(
-		  <div key='leftcol' className={'grid__column-10 grid__column-m-4'}>
-			<div id="report" className={'jspage-view__table'}/>
-		  </div>);
-		vObjectContainer.push(
-		  <div key='rightcol' className={'grid__column-2 grid__column-m-2'}>
-			  <div id="inputControl" />
-		  </div>);
-	} else {
-		vObjectContainer.push(
-		  <div key='fullcol' className={'grid__column-12 grid__column-m-4'}>
-			<div id="report" className={'jspage-view__table'}/>
-		  </div>);
-	}
 
     return (
       <>
@@ -161,26 +95,29 @@ class EmptyPage extends Component<any, EmptyPageState> {
                 {/* Bottom Header Row */}
                 <div className={'jspage-header__bottom'}>
                   <div className={'jspage-header__buttons'}>
-                    <button className={'jspage-view__btn--create btn--primary'}
-                            //disabled={!(this.state.filters && this.state.filters.length)}
-                            onClick={this.createReport}>
+                    <button className={'jspage-view__btn--create btn--primary'}>
                       Create
                     </button>
-                    <button className={'jspage-view__btn--actions btn--secondary'}
-                            //disabled={!(this.state.filters && this.state.filters.length)}
-                            onClick={this.modifyReport}>
+                    <button className={'jspage-view__btn--actions btn--secondary'}>
                       Modify / Export
                     </button>
                   </div>
-                  <img src={filterIcon} alt="filter" 
-					 style={{display: (this.state.currentFilters && this.state.currentFilters.length) ? 'block' : 'none' }}/>
                 </div>
               </div>
             </div>
 
-            {/* REPORT */}
             <div className={'grid__row'}>
-			  {vObjectContainer}
+                <div className={'grid__column-12 grid__column-m-4'}>
+                  <div
+                    id={'kpi-report'}
+                  />
+                </div>
+            </div>
+
+            <div className={'grid__row'}>
+                <div className={'grid__column-8 grid__column-m-4'} >
+                  <div id={'detail-report'}></div>
+                </div>
             </div>
           </div>
         </div>
