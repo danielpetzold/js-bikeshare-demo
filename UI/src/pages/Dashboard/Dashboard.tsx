@@ -193,6 +193,8 @@ class Dashboard extends React.Component<DashboardProps, DashboardState> {
     let selectedRegion = this.filters.Region.options.find((option: any) => {
       return option.value === marker.options.regionId;
     });
+    console.log('map region selected: ', selectedRegion);
+
     this.setFilter(Object.assign({}, {...this.state.selectedFilters, Region: selectedRegion} ));
   };
 
@@ -222,6 +224,7 @@ class Dashboard extends React.Component<DashboardProps, DashboardState> {
 
   render() {
     let map = null;
+    console.log('this.state.displayedMap: ' + this.state.displayedMap);
     if (this.state.displayedMap === 'Franchise' && this.state.franchiseMapData.length) {
       map = <FranchiseMap mapData={this.state.franchiseMapData} onClick={this.onClickMapMarker} />;
     } else if (this.state.displayedMap === 'Region' && this.state.regionMapData){
