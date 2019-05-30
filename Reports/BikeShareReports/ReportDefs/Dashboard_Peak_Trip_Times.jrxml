@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 7.2.1.final using JasperReports Library version 6.6.0  -->
-<!-- 2019-05-03T11:40:16 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Dashboard_Peak_Trip_Times" pageWidth="284" pageHeight="336" columnWidth="284" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="f6a4b4bb-5500-44c7-9f2e-3eca62fbded4">
-	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="BikeShare-Adapter-Dev"/>
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<property name="com.jaspersoft.studio.unit." value="pixel"/>
 	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
@@ -15,10 +13,12 @@
 	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
 	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="229"/>
 	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="766"/>
-	<property name="ireport.jasperserver.url" value="http://JRS-bikes-ElasticL-1K5YHF91VRJUO-1806919984.us-east-2.elb.amazonaws.com/jasperserver-pro/"/>
+	<property name="ireport.jasperserver.url" value="http://jrs-bikes-elasticl-1k5yhf91vrjuo-1806919984.us-east-2.elb.amazonaws.com/jasperserver-pro/"/>
 	<property name="ireport.jasperserver.user" value="superuser"/>
 	<property name="ireport.jasperserver.reportUnit" value="/public/Bikeshare_demo/Reports/Dashboard_Reports/Dashboard_Peak_Trip_Times"/>
 	<property name="com.jaspersoft.jasperreports.highcharts.interactive" value="false"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Bikeshare demo Local"/>
+	<property name="ireport.jasperserver.report.resource" value="/public/Bikeshare_demo/Reports/Dashboard_Reports/Dashboard_Peak_Trip_Times_files/main_jrxml"/>
 	<import value="java.util.Date"/>
 	<import value="java.time.LocalDate"/>
 	<import value="java.time.format.DateTimeFormatter"/>
@@ -30,25 +30,28 @@
 	</parameter>
 	<parameter name="Timeframe" class="java.lang.String">
 		<parameterDescription><![CDATA[Allowed values: current, last24, lastweek, lastmonth, lastquarter, annual. Value will determine values of Start_Date & End_Date.]]></parameterDescription>
+		<defaultValueExpression><![CDATA["lastweek"]]></defaultValueExpression>
 	</parameter>
 	<parameter name="Franchise" class="java.lang.String">
 		<parameterDescription><![CDATA[The Franchise Id (system_id)]]></parameterDescription>
+		<defaultValueExpression><![CDATA["BA"]]></defaultValueExpression>
 	</parameter>
 	<parameter name="Region" class="java.lang.String">
 		<parameterDescription><![CDATA[The Region Id - Maps to Region Input Control]]></parameterDescription>
+		<defaultValueExpression><![CDATA["3"]]></defaultValueExpression>
 	</parameter>
 	<parameter name="Start_Date" class="java.util.Date" isForPrompting="false">
 		<parameterDescription><![CDATA[Requires java.time.LocalDate;java.time.format.DateTimeFormatter; imported into report. Will be programatically determined by examining the Timeframe parameter value.]]></parameterDescription>
-		<defaultValueExpression><![CDATA[Objects.equals($P{Timeframe}, "current") ? Date.from(LocalDate.now().minusDays(1).atStartOfDay().toInstant(ZoneOffset.UTC))  :
-	Objects.equals($P{Timeframe}, "last24") ? Date.from(LocalDate.now().minusDays(2).atStartOfDay().toInstant(ZoneOffset.UTC)) :
-		Objects.equals($P{Timeframe}, "lastweek") ? Date.from(LocalDate.now().minusWeeks(1).atStartOfDay().toInstant(ZoneOffset.UTC)) :
-			Objects.equals($P{Timeframe}, "lastmonth") ? Date.from(LocalDate.now().minusMonths(1).atStartOfDay().toInstant(ZoneOffset.UTC)) :
-				Objects.equals($P{Timeframe}, "lastquarter") ? Date.from(LocalDate.now().minusMonths(3).atStartOfDay().toInstant(ZoneOffset.UTC)) :
-					 Date.from(LocalDate.now().minusYears(1).atStartOfDay().toInstant(ZoneOffset.UTC))]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA[Objects.equals($P{Timeframe}, "current") ? Date.from(java.time.LocalDate.now().minusDays(1).atStartOfDay().toInstant(java.time.ZoneOffset.UTC))  :
+	Objects.equals($P{Timeframe}, "last24") ? Date.from(java.time.LocalDate.now().minusDays(2).atStartOfDay().toInstant(java.time.ZoneOffset.UTC)) :
+		Objects.equals($P{Timeframe}, "lastweek") ? Date.from(java.time.LocalDate.now().minusWeeks(1).atStartOfDay().toInstant(java.time.ZoneOffset.UTC)) :
+			Objects.equals($P{Timeframe}, "lastmonth") ? Date.from(java.time.LocalDate.now().minusMonths(1).atStartOfDay().toInstant(java.time.ZoneOffset.UTC)) :
+				Objects.equals($P{Timeframe}, "lastquarter") ? Date.from(java.time.LocalDate.now().minusMonths(3).atStartOfDay().toInstant(java.time.ZoneOffset.UTC)) :
+					 Date.from(java.time.LocalDate.now().minusYears(1).atStartOfDay().toInstant(java.time.ZoneOffset.UTC))]]></defaultValueExpression>
 	</parameter>
 	<parameter name="End_Date" class="java.util.Date" isForPrompting="false">
 		<parameterDescription><![CDATA[Requires java.time.LocalDate;java.time.format.DateTimeFormatter; imported into report. Will be programatically determined by examing the Timeframe parameter value.]]></parameterDescription>
-		<defaultValueExpression><![CDATA[Objects.equals($P{Timeframe}, "current") ? Date.from(LocalDate.now().plusDays(1).atStartOfDay().toInstant(ZoneOffset.UTC)) : Date.from(LocalDate.now().atStartOfDay().toInstant(ZoneOffset.UTC))]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA[Objects.equals($P{Timeframe}, "current") ? Date.from(java.time.LocalDate.now().plusDays(1).atStartOfDay().toInstant(java.time.ZoneOffset.UTC)) : Date.from(java.time.LocalDate.now().atStartOfDay().toInstant(java.time.ZoneOffset.UTC))]]></defaultValueExpression>
 	</parameter>
 	<parameter name="Session_ID" class="java.lang.String">
 		<parameterDescription><![CDATA[A unique id passed by the web app to combine/merge data by session.]]></parameterDescription>
@@ -56,24 +59,23 @@
 	<queryString>
 		<![CDATA[select details.*, final_min_max.*
  from
-
-	(Select EXTRACT(HOUR FROM tt.start_time) as hour_of_day, Count(*) as trip_count
-				   From trip_today "tt"
-					inner join station_information "si" on tt.start_station_id = si.station_id and tt.system_id = si.system_id
-				   where tt.system_id =  $P{Franchise}  and ($P{Region} is null OR si.region_id =  $P{Region}  )
-					and date(tt.start_time) >  $P{Start_Date}  and  date(tt.start_time)  < $P{End_Date} 
-				   Group By EXTRACT(HOUR FROM tt.start_time)
-				   Order By "hour_of_day") as details
+	(Select EXTRACT(HOUR FROM tt.start_time_today)::integer as hour_of_day, Count(*) as trip_count
+				   From trip_today tt
+					inner join station_information si on tt.start_station_id = si.station_id and tt.system_id = si.system_id
+				   where tt.system_id =  $P{Franchise} and ($P{Region} is null OR si.region_id = $P{Region})
+					and date(tt.start_time_today) between $P{Start_Date} and $P{End_Date}
+				   Group By EXTRACT(HOUR FROM tt.start_time_today)::integer
+				   Order By hour_of_day) as details
 
  join
-	(select max(totals.trip_count), min(totals.trip_count), totals.hour_of_day as "max_hour"
+	(select max(totals.trip_count), min(totals.trip_count), totals.hour_of_day as max_hour
 		from
-			(Select EXTRACT(HOUR FROM tt.start_time) as hour_of_day, Count(*) as trip_count
-			   From trip_today "tt"
-			   inner join station_information "si" on tt.start_station_id = si.station_id and tt.system_id = si.system_id
+			(Select EXTRACT(HOUR FROM tt.start_time_today)::integer as hour_of_day, Count(*) as trip_count
+			   From trip_today tt
+			   inner join station_information si on tt.start_station_id = si.station_id and tt.system_id = si.system_id
 			   where tt.system_id = $P{Franchise} and ($P{Region} is null OR si.region_id = $P{Region})
-				and date(tt.start_time) >  $P{Start_Date}  and  date(tt.start_time)  < $P{End_Date} 
-			   Group By EXTRACT(HOUR FROM tt.start_time)
+				and date(tt.start_time_today) between $P{Start_Date} and $P{End_Date}
+			   Group By EXTRACT(HOUR FROM tt.start_time_today)::integer
 			   Order By Count(*) DESC LIMIT 1) as totals
 	   Group By totals.hour_of_day
 	) as final_min_max 
@@ -95,7 +97,7 @@ on 1=1]]>
 		<property name="com.jaspersoft.studio.field.label" value="max_hour"/>
 	</field>
 	<variable name="FormattedHour" class="java.lang.String">
-		<variableExpression><![CDATA[$F{hour_of_day} <13 ? 
+		<variableExpression><![CDATA[$F{hour_of_day} < 13 ? 
 	(     $F{hour_of_day} == 0 ? "12am" : $F{hour_of_day} == 12 ? $F{hour_of_day}.toString() + "pm" : $F{hour_of_day}.toString()  + "am"   ) 
 		:   Integer.toString($F{hour_of_day} - 12) + "pm"]]></variableExpression>
 	</variable>
