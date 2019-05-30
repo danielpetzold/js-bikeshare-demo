@@ -20,7 +20,7 @@ services:
     # Under Docker for Windows, these have to be under the logged in user's User area
     # You configure the haproxy.cfg to point to your jasperserver-pro and
     # the bikeshare-api and UI instances.
-        - /home/ubuntu/Documents/js-bikeshare-demo/deploy/Docker/workshop:/usr/local/etc/haproxy
+        - /home/tibco/Documents/js-bikeshare-demo/deploy/Docker/workshop:/usr/local/etc/haproxy
 
     network_mode: host
 
@@ -45,7 +45,7 @@ services:
 
     # point to source. has to have npm install run on
     volumes:
-      - /home/ubuntu/Documents/js-bikeshare-demo/UI:/usr/src/app
+      - /home/tibco/Documents/js-bikeshare-demo/UI:/usr/src/app
  
     network_mode: host
 
@@ -85,8 +85,8 @@ services:
     # Override license, JRS and Tomcat customizations, SSL keystore
     # Under Docker for Windows, these have to be under the logged in user's User area
     volumes:
-        - /home/ubuntu/Documents/Docker/jasperserver-pro/mnt/License:/usr/local/share/jasperserver-pro/license 
-        - /home/ubuntu/Documents/Docker/jasperserver-pro/mnt/jasperserver-pro:/usr/local/share/jasperserver-pro/customization 
+        - /home/tibco/Documents/Docker/jasperserver-pro/mnt/License:/usr/local/share/jasperserver-pro/license 
+        - /home/tibco/Documents/Docker/jasperserver-pro/mnt/jasperserver-pro:/usr/local/share/jasperserver-pro/customization 
         #- /C/Users/swood/Documents/Docker/tomcat:/usr/local/share/jasperserver-pro/keystore 
         #- /C/Users/swood/Documents/Docker/tomcat:/usr/local/share/jasperserver-pro/tomcat-customization 
 

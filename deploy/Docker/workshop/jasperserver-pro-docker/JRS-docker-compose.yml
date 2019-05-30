@@ -16,10 +16,12 @@ services:
     # Override license, JRS and Tomcat customizations, SSL keystore
     # Under Docker for Windows, these have to be under the logged in user's User area
     volumes:
-        - /home/ubuntu/Documents/Docker/jasperserver-pro/mnt/License:/usr/local/share/jasperserver-pro/license 
-        - /home/ubuntu/Documents/Docker/jasperserver-pro/mnt/Docker/jasperserver-pro:/usr/local/share/jasperserver-pro/customization 
+        - /home/tibco/Documents/Docker/jasperserver-pro/mnt/License:/usr/local/share/jasperserver-pro/license 
+        - /home/tibco/Documents/Docker/jasperserver-pro/mnt/Docker/jasperserver-pro:/usr/local/share/jasperserver-pro/customization 
         #- /home/ubuntu/Documents/Docker/jasperserver-pro/mnt/Docker/tomcat:/usr/local/share/jasperserver-pro/keystore 
         #- /home/ubuntu/Documents/Docker/jasperserver-pro/mnt/Docker/tomcat:/usr/local/share/jasperserver-pro/tomcat-customization 
+
+    network_mode: host
 
     #depends_on:
     # If you want to use Postgres in a container
