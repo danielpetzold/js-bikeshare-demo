@@ -14,7 +14,7 @@
 	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="683"/>
 	<property name="ireport.jasperserver.report.resource" value="/public/Bikeshare_demo/Reports/Dashboard_Reports/Maintenance_Summary_files/main_jrxml"/>
 	<property name="ireport.jasperserver.reportUnit" value="/public/Bikeshare_demo/Reports/Dashboard_Reports/Maintenance_Summary"/>
-	<template><![CDATA["ReportDefs/StyleTemplates/BikeShare_Style.jrtx"]]></template>
+	<template><![CDATA["repo:/public/Bikeshare_demo/Resources/Styles/BikeShare_Style.jrtx"]]></template>
 	<parameter name="Session_ID" class="java.lang.String"/>
 	<parameter name="Route" class="java.lang.String">
 		<defaultValueExpression><![CDATA["SF10"]]></defaultValueExpression>

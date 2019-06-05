@@ -38,7 +38,7 @@
 		<parameterDescription><![CDATA[The Region Id - Maps to Region Input Control]]></parameterDescription>
 	</parameter>
 	<parameter name="Start_Date" class="java.lang.String" isForPrompting="false">
-		<parameterDescription><![CDATA[Requires java.time.java.time.LocalDate;java.time.format.java.time.format.DateTimeFormatter; imported into report. Will be programatically determined by examining the Timeframe parameter value.]]></parameterDescription>
+		<parameterDescription><![CDATA[Requires java.time.java.time.LocalDate;java.time.format.java.time.format.DateTimeFormatter; imported into report. Full packages need to be specified to allow the data and chart previews to work. Will be programatically determined by examining the Timeframe parameter value.]]></parameterDescription>
 		<defaultValueExpression><![CDATA[Objects.equals($P{Timeframe}, "current") ? java.time.LocalDate.now().minusDays(1).format(java.time.format.DateTimeFormatter.ofPattern("MMdduuuu")) :
 	Objects.equals($P{Timeframe}, "last24") ? java.time.LocalDate.now().minusDays(2).format(java.time.format.DateTimeFormatter.ofPattern("MMdduuuu")) :
 		Objects.equals($P{Timeframe}, "lastweek") ? java.time.LocalDate.now().minusWeeks(1).format(java.time.format.DateTimeFormatter.ofPattern("MMdduuuu")) :

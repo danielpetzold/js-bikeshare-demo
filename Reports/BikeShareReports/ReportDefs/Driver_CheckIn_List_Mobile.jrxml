@@ -126,7 +126,7 @@ Order By rs.is_completed DESC, rs.stop_order]]>
 		<variableExpression><![CDATA[$V{REPORT_COUNT}]]></variableExpression>
 	</variable>
 	<variable name="ArrivalTime" class="java.time.LocalTime">
-		<variableExpression><![CDATA[LocalTime.of(6,0,0).plusMinutes(22 * $V{REPORT_COUNT})]]></variableExpression>
+		<variableExpression><![CDATA[java.time.LocalTime.of(6,0,0).plusMinutes(22 * $V{REPORT_COUNT})]]></variableExpression>
 	</variable>
 	<variable name="IsInNeed" class="java.lang.Boolean">
 		<variableExpression><![CDATA[($F{num_bikes_available} < 3 || $F{num_bikes_disabled} > 5)]]></variableExpression>

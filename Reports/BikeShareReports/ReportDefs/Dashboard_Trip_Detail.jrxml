@@ -37,16 +37,16 @@
 	</parameter>
 	<parameter name="Start_Date" class="java.lang.String" isForPrompting="false">
 		<parameterDescription><![CDATA[Requires java.time.LocalDate;java.time.format.DateTimeFormatter; imported into report. Will be programatically determined by examining the Timeframe parameter value.]]></parameterDescription>
-		<defaultValueExpression><![CDATA[Objects.equals($P{Timeframe}, "current") ? LocalDate.now().minusDays(1).format(DateTimeFormatter.ofPattern("MMdduuuu")) :
-	Objects.equals($P{Timeframe}, "last24") ? LocalDate.now().minusDays(2).format(DateTimeFormatter.ofPattern("MMdduuuu")) :
-		Objects.equals($P{Timeframe}, "lastweek") ? LocalDate.now().minusWeeks(1).format(DateTimeFormatter.ofPattern("MMdduuuu")) :
-			Objects.equals($P{Timeframe}, "lastmonth") ? LocalDate.now().minusMonths(1).format(DateTimeFormatter.ofPattern("MMdduuuu")) :
-				Objects.equals($P{Timeframe}, "lastquarter") ? LocalDate.now().minusMonths(3).format(DateTimeFormatter.ofPattern("MMdduuuu")) :
-					 LocalDate.now().minusYears(1).format(DateTimeFormatter.ofPattern("MMdduuuu"))]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA[Objects.equals($P{Timeframe}, "current") ? java.time.LocalDate.now().minusDays(1).format(java.time.format.DateTimeFormatter.ofPattern("MMdduuuu")) :
+	Objects.equals($P{Timeframe}, "last24") ? java.time.LocalDate.now().minusDays(2).format(java.time.format.DateTimeFormatter.ofPattern("MMdduuuu")) :
+		Objects.equals($P{Timeframe}, "lastweek") ? java.time.LocalDate.now().minusWeeks(1).format(java.time.format.DateTimeFormatter.ofPattern("MMdduuuu")) :
+			Objects.equals($P{Timeframe}, "lastmonth") ? java.time.LocalDate.now().minusMonths(1).format(java.time.format.DateTimeFormatter.ofPattern("MMdduuuu")) :
+				Objects.equals($P{Timeframe}, "lastquarter") ? java.time.LocalDate.now().minusMonths(3).format(java.time.format.DateTimeFormatter.ofPattern("MMdduuuu")) :
+					 java.time.LocalDate.now().minusYears(1).format(java.time.format.DateTimeFormatter.ofPattern("MMdduuuu"))]]></defaultValueExpression>
 	</parameter>
 	<parameter name="End_Date" class="java.lang.String" isForPrompting="false">
 		<parameterDescription><![CDATA[Requires java.time.LocalDate;java.time.format.DateTimeFormatter; imported into report. Will be programatically determined by examing the Timeframe parameter value.]]></parameterDescription>
-		<defaultValueExpression><![CDATA[Objects.equals($P{Timeframe}, "current") ? LocalDate.now().plusDays(1).format(DateTimeFormatter.ofPattern("MMdduuuu")) : LocalDate.now().format(DateTimeFormatter.ofPattern("MMdduuuu"))]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA[Objects.equals($P{Timeframe}, "current") ? java.time.LocalDate.now().plusDays(1).format(java.time.format.DateTimeFormatter.ofPattern("MMdduuuu")) : java.time.LocalDate.now().format(java.time.format.DateTimeFormatter.ofPattern("MMdduuuu"))]]></defaultValueExpression>
 	</parameter>
 	<queryString language="SQL">
 		<![CDATA[Select rkt.system_id
