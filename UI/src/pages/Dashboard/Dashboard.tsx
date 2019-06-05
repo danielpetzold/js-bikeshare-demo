@@ -53,10 +53,8 @@ class Dashboard extends React.Component<DashboardProps, DashboardState> {
     this.getFilterData()
       .then((success: any) => {
         this.setFilters(success);
-        return this.getReports();
-      })
-      .then(() => {
         this.getMap();
+        this.getReports();
       });
   }
 
