@@ -46,6 +46,7 @@ class EmptyPage extends Component<DashboardProps, EmptyPageState> {
   }
 
   async componentDidMount() {
+			/*
       visualizeHelper.getReport(kpi_report_uri, 'kpi-report', this.getParams(), {
         events: {
           click: this.changeDetailsReport
@@ -62,6 +63,7 @@ class EmptyPage extends Component<DashboardProps, EmptyPageState> {
 				var result: any = success.success;
 				this.setState({ detailReport: report });
       });
+			*/
   }
 
 
@@ -80,7 +82,8 @@ class EmptyPage extends Component<DashboardProps, EmptyPageState> {
   exportAReport = (e: any) => {
     e.preventDefault();
 
-   let report: any = this.state.detailReport;
+		/*
+    let report: any = this.state.detailReport;
 
     report.export({
       //export options here        
@@ -93,6 +96,8 @@ class EmptyPage extends Component<DashboardProps, EmptyPageState> {
 		}, function (error: any) {
 				console.log(error);
 		});
+		*/
+
   }
 
   render() {
@@ -109,14 +114,14 @@ class EmptyPage extends Component<DashboardProps, EmptyPageState> {
             <div className={'grid__row jspage-header'}>
               <div className={'grid__column-12 grid__column-m-4'}>
                 <div className={'jspage-header__top'}>
-                  <h3 className={'jspage-header__title'}>I am alive!!!!!</h3>
+                  <h3 className={'jspage-header__title'}>I am empty!</h3>
                 </div>
 
                 {/* Bottom Header Row */}
                 <div className={'jspage-header__bottom'}>
                   <div className={'jspage-header__buttons'}>
                     <button className={'jspage-view__btn--create btn--primary'} onClick={this.exportAReport} >
-                      Export Detail
+                      Button 1
                     </button>
                     <button className={'jspage-view__btn--actions btn--secondary'}>
                       Button 2
