@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 7.2.1.final using JasperReports Library version 6.6.0  -->
-<!-- 2019-05-03T11:40:14 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Dashboard_Bikes_Fixed_Detail" pageWidth="592" pageHeight="336" columnWidth="572" leftMargin="0" rightMargin="20" topMargin="0" bottomMargin="0" uuid="e10eeb15-bdef-4f8d-8e81-93f3dc60bf1f">
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
-	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="BikeShare-Adapter-Dev"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Bikeshare demo Local"/>
 	<property name="com.jaspersoft.studio.unit." value="pixel"/>
 	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
 	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
@@ -15,12 +14,13 @@
 	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
 	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="292"/>
 	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="704"/>
-	<property name="ireport.jasperserver.url" value="http://JRS-bikes-ElasticL-1K5YHF91VRJUO-1806919984.us-east-2.elb.amazonaws.com/jasperserver-pro/"/>
+	<property name="ireport.jasperserver.url" value="http://localhost:8080/jasperserver-pro/"/>
 	<property name="ireport.jasperserver.user" value="superuser"/>
 	<property name="ireport.jasperserver.reportUnit" value="/public/Bikeshare_demo/Reports/Dashboard_Reports/Dashboard_Bikes_Fixed_Detail"/>
 	<property name="com.jaspersoft.jasperreports.highcharts.interactive" value="false"/>
-	<import value="java.time.LocalDate"/>
-	<import value="java.time.format.DateTimeFormatter"/>
+	<property name="ireport.jasperserver.report.resource" value="/public/Bikeshare_demo/Reports/Dashboard_Reports/Dashboard_Bikes_Fixed_Detail_files/main_jrxml"/>
+	<import value="java.time.format.*"/>
+	<import value="java.time.*"/>
 	<template><![CDATA["repo:/public/Bikeshare_demo/Resources/Styles/BikeShare_Style.jrtx"]]></template>
 	<parameter name="Debug" class="java.lang.Boolean">
 		<parameterDescription><![CDATA[During development, may set to true to view parameter values passed into report.]]></parameterDescription>
@@ -28,7 +28,7 @@
 	</parameter>
 	<parameter name="Timeframe" class="java.lang.String">
 		<parameterDescription><![CDATA[Allowed values: current, last24, lastweek, lastmonth, lastquarter, annual. Value will determine values of Start_Date & End_Date.]]></parameterDescription>
-		<defaultValueExpression><![CDATA["current"]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA["lastweek"]]></defaultValueExpression>
 	</parameter>
 	<parameter name="Franchise" class="java.lang.String">
 		<parameterDescription><![CDATA[The Franchise Id (system_id)]]></parameterDescription>
@@ -38,17 +38,17 @@
 		<parameterDescription><![CDATA[The Region Id - Maps to Region Input Control]]></parameterDescription>
 	</parameter>
 	<parameter name="Start_Date" class="java.lang.String" isForPrompting="false">
-		<parameterDescription><![CDATA[Requires java.time.LocalDate;java.time.format.DateTimeFormatter; imported into report. Will be programatically determined by examining the Timeframe parameter value.]]></parameterDescription>
-		<defaultValueExpression><![CDATA[Objects.equals($P{Timeframe}, "current") ? LocalDate.now().minusDays(1).format(DateTimeFormatter.ofPattern("MMdduuuu")) :
-	Objects.equals($P{Timeframe}, "last24") ? LocalDate.now().minusDays(2).format(DateTimeFormatter.ofPattern("MMdduuuu")) :
-		Objects.equals($P{Timeframe}, "lastweek") ? LocalDate.now().minusWeeks(1).format(DateTimeFormatter.ofPattern("MMdduuuu")) :
-			Objects.equals($P{Timeframe}, "lastmonth") ? LocalDate.now().minusMonths(1).format(DateTimeFormatter.ofPattern("MMdduuuu")) :
-				Objects.equals($P{Timeframe}, "lastquarter") ? LocalDate.now().minusMonths(3).format(DateTimeFormatter.ofPattern("MMdduuuu")) :
-					 LocalDate.now().minusYears(1).format(DateTimeFormatter.ofPattern("MMdduuuu"))]]></defaultValueExpression>
+		<parameterDescription><![CDATA[Requires java.time.java.time.LocalDate;java.time.format.java.time.format.DateTimeFormatter; imported into report. Will be programatically determined by examining the Timeframe parameter value.]]></parameterDescription>
+		<defaultValueExpression><![CDATA[Objects.equals($P{Timeframe}, "current") ? java.time.LocalDate.now().minusDays(1).format(java.time.format.DateTimeFormatter.ofPattern("MMdduuuu")) :
+	Objects.equals($P{Timeframe}, "last24") ? java.time.LocalDate.now().minusDays(2).format(java.time.format.DateTimeFormatter.ofPattern("MMdduuuu")) :
+		Objects.equals($P{Timeframe}, "lastweek") ? java.time.LocalDate.now().minusWeeks(1).format(java.time.format.DateTimeFormatter.ofPattern("MMdduuuu")) :
+			Objects.equals($P{Timeframe}, "lastmonth") ? java.time.LocalDate.now().minusMonths(1).format(java.time.format.DateTimeFormatter.ofPattern("MMdduuuu")) :
+				Objects.equals($P{Timeframe}, "lastquarter") ? java.time.LocalDate.now().minusMonths(3).format(java.time.format.DateTimeFormatter.ofPattern("MMdduuuu")) :
+					 java.time.LocalDate.now().minusYears(1).format(java.time.format.DateTimeFormatter.ofPattern("MMdduuuu"))]]></defaultValueExpression>
 	</parameter>
 	<parameter name="End_Date" class="java.lang.String" isForPrompting="false">
-		<parameterDescription><![CDATA[Requires java.time.LocalDate;java.time.format.DateTimeFormatter; imported into report. Will be programatically determined by examing the Timeframe parameter value.]]></parameterDescription>
-		<defaultValueExpression><![CDATA[Objects.equals($P{Timeframe}, "current") ? LocalDate.now().plusDays(1).format(DateTimeFormatter.ofPattern("MMdduuuu")) : LocalDate.now().format(DateTimeFormatter.ofPattern("MMdduuuu"))]]></defaultValueExpression>
+		<parameterDescription><![CDATA[Requires java.time.java.time.LocalDate;java.time.format.java.time.format.DateTimeFormatter; imported into report. Will be programatically determined by examing the Timeframe parameter value.]]></parameterDescription>
+		<defaultValueExpression><![CDATA[Objects.equals($P{Timeframe}, "current") ? java.time.LocalDate.now().plusDays(1).format(java.time.format.DateTimeFormatter.ofPattern("MMdduuuu")) : java.time.LocalDate.now().format(java.time.format.DateTimeFormatter.ofPattern("MMdduuuu"))]]></defaultValueExpression>
 	</parameter>
 	<queryString language="SQL">
 		<![CDATA[Select rkt.system_id
