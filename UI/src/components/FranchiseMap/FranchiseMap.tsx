@@ -109,9 +109,9 @@ class FranchiseMap extends Component<FranchiseMapProps> {
   }
 
   inNeedStatusColor(percent: number) {
-    return percent < 4
+    return percent < 2
       ? colors.green
-      : percent >= 4 && percent < 12
+      : percent >= 2 && percent < 3.9
       ? colors.yellow
       : colors.red;
   }
