@@ -22,14 +22,26 @@ RUN apt-get update && apt-get install -y --no-install-recommends apt-utils && \
 
 ENV PHANTOMJS_VERSION 2.1.1
 
-# Due to erratic availability, phantomjs is a resource
-COPY resources/phantomjs*.tar.bz2 /tmp/phantomjs.tar.bz2
-
-RUN tar -xjf /tmp/phantomjs.tar.bz2 -C /tmp && \
+# Extract phantomjs, move to /usr/local/share/phantomjs, link to /usr/local/bin.
+# Comment out if phantomjs not required.
+RUN wget \
+    "https://bitbucket.org/ariya/phantomjs/downloads/\
+phantomjs-2.1.1-linux-x86_64.tar.bz2" \
+    -O /tmp/phantomjs.tar.bz2 --no-verbose && \
+    tar -xjf /tmp/phantomjs.tar.bz2 -C /tmp && \
     rm -f /tmp/phantomjs.tar.bz2 && \
     mv /tmp/phantomjs*linux-x86_64 /usr/local/share/phantomjs && \
     ln -sf /usr/local/share/phantomjs/bin/phantomjs /usr/local/bin && \
     rm -rf /tmp/*
+
+# If the phantom wget is failing, download it manually to resources,
+# comment out above and uncomment below
+#COPY resources/phantomjs*.tar.bz2 /tmp/phantomjs.tar.bz2
+#RUN tar -xjf /tmp/phantomjs.tar.bz2 -C /tmp && \
+#    rm -f /tmp/phantomjs.tar.bz2 && \
+#    mv /tmp/phantomjs*linux-x86_64 /usr/local/share/phantomjs && \
+#    ln -sf /usr/local/share/phantomjs/bin/phantomjs /usr/local/bin && \
+#    rm -rf /tmp/*
 	
 # Set default environment options.
 ENV CATALINA_OPTS="-XX:MaxMetaspaceSize=378m"

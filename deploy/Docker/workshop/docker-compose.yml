@@ -25,7 +25,7 @@ services:
     network_mode: host
 
     depends_on:
-        - bikeshare-ui # in development, use node app running on localhost:3000
+        - bikeshare-ui
         - bikeshare-api
         - jasperserver-pro
 
