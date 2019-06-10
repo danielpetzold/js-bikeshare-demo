@@ -59,7 +59,8 @@ class Dashboard extends React.Component<DashboardProps, DashboardState> {
   }
 
   setFilters(success: any) {
-    let filterList = Object.assign({}, ...(success.map((item: any) => {
+	console.log(success);
+    let filterList = Object.assign({}, ...(success.success.map((item: any) => {
         return (
           {
             [item.id]: {
