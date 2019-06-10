@@ -4,8 +4,9 @@ cd /usr/src/app
 # build the site with environment variables
 npm run build
 
-mkdir -p /var/www/bikeshare
-cp -r build/* /var/www/bikeshare
+# /var/www/bikeshare or /var/www
+mkdir -p $STATIC_BIKESHARE_APP_PATH
+cp -r build/* $STATIC_BIKESHARE_APP_PATH 
 
 echo Can replace in nginx.conf JRS: $JASPERSERVER_URL Bikeshare API $BIKESHARE_API_URL
 
