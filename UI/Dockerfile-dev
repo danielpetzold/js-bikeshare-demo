@@ -13,7 +13,7 @@ WORKDIR /usr/src/app
 #COPY *.lock ./
 #COPY .env.* ./
 
-#done in the entrypoint[dev.sh
+#done in the entrypoint-dev.sh
 #RUN npm install
 
 EXPOSE 3000
@@ -21,7 +21,8 @@ EXPOSE 3000
 # does npm install && npm start
 COPY docker/entrypoint-dev.sh /
 RUN chmod +x /entrypoint-dev.sh
-CMD ["/entrypoint-dev.sh"]
+
+ENTRYPOINT ["/entrypoint-dev.sh"]
 
 
 
