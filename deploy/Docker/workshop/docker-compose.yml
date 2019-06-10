@@ -13,82 +13,128 @@ services:
     image: haproxy:1.9
 
     ports:
-        - 80:80
+        - 105:80
         - 9999:9999
     volumes:
     # Override volumes
     # Under Docker for Windows, these have to be under the logged in user's User area
     # You configure the haproxy.cfg to point to your jasperserver-pro and
     # the bikeshare-api and UI instances.
-        - /home/tibco/Documents/js-bikeshare-demo/deploy/Docker/workshop:/usr/local/etc/haproxy
+        #- /home/tibco/Documents/js-bikeshare-demo/deploy/Docker/workshop:/usr/local/etc/haproxy
+        - /C/Users/swood/Documents/Github/js-bikeshare-demo/deploy/Docker/workshop:/usr/local/etc/haproxy
 
-    network_mode: host
+    # network_mode: host
 
     depends_on:
         - bikeshare-ui
         - bikeshare-api
         - jasperserver-pro
 
-# in development, use UI app running on localhost:3000, defined in haproxy.cfg
-  bikeshare-ui:
-    image: bikeshare-ui:dev
+# In development, UI app running in node on port 3000, defined in haproxy.cfg
+# Allows you to change the Typescript and have the app refresh automatically.
+# App refresh under Linux was fine, as per the workshop
+# I found on Windows, at least, start up was very slow, and the app did not refresh.
+# So you instead can have an npm start environment locally and have the haproxy point to that.
+
+#  bikeshare-ui:
+#    image: bikeshare-ui-dev
 
     # because we are using a reverse proxy, not need to expose the API port
-    ports:
-      - 3000:8888
+    #ports:
+    #  - 3000:8888
+
+#    env_file: env.properties
+
+    # if set, these values override settings from env_file
+#    environment:
+#      - PORT=3000
+
+    # point to source. has to have npm install run on
+#    volumes:
+      # - /home/tibco/Documents/js-bikeshare-demo/UI:/usr/src/app
+#      - /C/Users/swood/Documents/Github/js-bikeshare-demo/UI:/usr/src/app
+ 
+    #network_mode: host
+
+#    depends_on:
+#      - bikeshare-api
+#      - jasperserver-pro
+
+# Static web site build of the UI
+
+  bikeshare-ui:
+    image: bikeshare-ui:1.0
+
+    # because we are using a reverse proxy, not need to expose the API port
+    #ports:
+    #  - 80:80
 
     env_file: env.properties
 
-    # if set, these values override settings from env_file
     environment:
-      - PORT=3000
-
-    # point to source. has to have npm install run on
-    volumes:
-      - /home/tibco/Documents/js-bikeshare-demo/UI:/usr/src/app
- 
-    network_mode: host
+      - JASPERSERVER_URL=/jasperserver-pro
+      - BIKESHARE_API_URL=/bikeshare-api
+      - STATIC_BIKESHARE_APP_PATH=/var/www
 
     depends_on:
       - bikeshare-api
+      - jasperserver-pro
 
   bikeshare-api:
     image: bikeshare-api
 
     # because we are using a reverse proxy, not need to expose the API port
-    ports:
-      - 8888:8888
+    #ports:
+    #  - 8888:8888
 
     env_file: env.properties
 
     environment:
-        #- POSTGRES_HOST=172.31.23.248
-        - POSTGRES_HOST=localhost
+       #- POSTGRES_HOST=172.31.23.248
+       #- POSTGRES_HOST=localhost
+       - POSTGRES_HOST=jasperserver_pro_repository
 
-    network_mode: host
+    #network_mode: host
+
+    depends_on:
+      - jasperserver_pro_repository
 
   jasperserver-pro:
     image: jasperserver-pro:7.2.0
 
     # ports only through proxy
-    ports:
-      - 8080:8080
-      - 8443:8443
+    #ports:
+    #  - 8080:8080
+    #  - 8443:8443
 
     env_file: jrs-env.properties
 
     # if set, these values override settings from env_file
     environment:
         #- DB_HOST=172.31.23.248
-        - DB_HOST=localhost
+        - DB_HOST=jasperserver_pro_repository
 
     # Override license, JRS and Tomcat customizations, SSL keystore
     # Under Docker for Windows, these have to be under the logged in user's User area
     volumes:
-        - /home/tibco/Documents/Docker/jasperserver-pro/mnt/License:/usr/local/share/jasperserver-pro/license 
-        - /home/tibco/Documents/Docker/jasperserver-pro/mnt/jasperserver-pro:/usr/local/share/jasperserver-pro/customization 
-        #- /C/Users/swood/Documents/Docker/tomcat:/usr/local/share/jasperserver-pro/keystore 
-        #- /C/Users/swood/Documents/Docker/tomcat:/usr/local/share/jasperserver-pro/tomcat-customization 
+      #- /home/tibco/Documents/Docker/jasperserver-pro/mnt/License:/usr/local/share/jasperserver-pro/license 
+      #- /home/tibco/Documents/Docker/jasperserver-pro/mnt/jasperserver-pro:/usr/local/share/jasperserver-pro/customization 
+      #- /C/Users/swood/Documents/Docker/tomcat:/usr/local/share/jasperserver-pro/keystore 
+      #- /C/Users/swood/Documents/Docker/tomcat:/usr/local/share/jasperserver-pro/tomcat-customization 
+      - /C/Users/swood/Documents/Github/js-bikeshare-demo/JRSConfig/jasperserver-pro-7.2:/usr/local/share/jasperserver-pro/customization 
 
-    network_mode: host
+    #network_mode: host
+
+    depends_on:
+        - jasperserver_pro_repository
+    
+  jasperserver_pro_repository:
+    image: js-bikeshare-data
+    env_file: env.properties
+    
+    volumes:
+      - postgres-bikeshare-data:/var/lib/postgresql/data
+
+volumes:
+  postgres-bikeshare-data:
 
