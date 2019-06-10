@@ -6,6 +6,10 @@ interface FranchiseMapProps {
   onClick: (marker: any) => void;
 }
 
+interface FranchiseMapState {
+  isActivated: boolean
+}
+
 // Map tiles using openMapTiles schema from Carto Positron style
 const baseMapUrl = 'http://basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png';
 const markerImage: any = require(`../../assets/GrayMarker.png`);
@@ -15,7 +19,7 @@ const colors = {
   red: '#ef473f'
 };
 
-class FranchiseMap extends Component<FranchiseMapProps> {
+class FranchiseMap extends Component<FranchiseMapProps, FranchiseMapState> {
   geo: any;
   map: any;
   customTilelayer: any;
@@ -24,7 +28,10 @@ class FranchiseMap extends Component<FranchiseMapProps> {
   franchiseMarkerLayer: any;
   vectorLayer: any;
 
-
+  state: FranchiseMapState = {
+    isActivated: false
+  };
+  
   componentDidMount() {
     // Get reference to GeoAnalytics global instance
     this.geo = (window as any).T;
@@ -43,6 +50,11 @@ class FranchiseMap extends Component<FranchiseMapProps> {
     this.addFranchiseMapMarkers();
   }
 
+  disableOverlay = (event: any) => {
+    event.preventDefault();
+    this.setState({isActivated: true});
+  };
+  
   addMapTiles() {
     this.customTilelayer = new this.geo.TileLayer(baseMapUrl, {
       name: "Openstreetmap"
@@ -117,8 +129,15 @@ class FranchiseMap extends Component<FranchiseMapProps> {
   }
 
   render() {
+	let overlayClass = ['franchise-map__overlay'];
+    if (this.state.isActivated) {
+      overlayClass.push('franchise-map__overlay--disabled');
+    }
     return(
-      <div id='franchise-map' className='franchise-map'></div>
+      <div className={'franchise-map'}>
+        <div className={overlayClass.join(' ')} onClick={this.disableOverlay}></div>
+        <div id='franchise-map' className='franchise-map__container'></div>
+      </div>
     )
   }
 }
