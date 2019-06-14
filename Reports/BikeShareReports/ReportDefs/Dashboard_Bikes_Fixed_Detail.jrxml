@@ -18,7 +18,6 @@
 	<property name="ireport.jasperserver.user" value="superuser"/>
 	<property name="ireport.jasperserver.reportUnit" value="/public/Bikeshare_demo/Reports/Dashboard_Reports/Dashboard_Bikes_Fixed_Detail"/>
 	<property name="com.jaspersoft.jasperreports.highcharts.interactive" value="false"/>
-	<property name="ireport.jasperserver.report.resource" value="/public/Bikeshare_demo/Reports/Dashboard_Reports/Dashboard_Bikes_Fixed_Detail_files/main_jrxml"/>
 	<import value="java.time.format.*"/>
 	<import value="java.time.*"/>
 	<template><![CDATA["repo:/public/Bikeshare_demo/Resources/Styles/BikeShare_Style.jrtx"]]></template>
