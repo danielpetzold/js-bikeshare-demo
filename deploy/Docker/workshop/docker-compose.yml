@@ -1,6 +1,6 @@
 version: '3.1'
 
-# this docker-compose launches bikeshare-api container
+# this docker-compose launches all the components of the Bikeshare application.
 # and puts them behind a proxy to present 1 app to the browser
 # you need to configure the haproxy.cfg to point to your jasperreports server and
 # bikeshare-ui
@@ -13,72 +13,79 @@ services:
     image: haproxy:1.9
 
     ports:
-        - 105:80
-        - 9999:9999
+      - 105:80
+      - 9999:9999
+        
     volumes:
     # Override volumes
     # Under Docker for Windows, these have to be under the logged in user's User area
-    # You configure the haproxy.cfg to point to your jasperserver-pro and
-    # the bikeshare-api and UI instances.
-        #- /home/tibco/Documents/js-bikeshare-demo/deploy/Docker/workshop:/usr/local/etc/haproxy
-        - /C/Users/swood/Documents/Github/js-bikeshare-demo/deploy/Docker/workshop:/usr/local/etc/haproxy
+    # You configure the haproxy.cfg to point to your jasperserver-pro, bikeshare-api and UI instances.
+      #- /home/tibco/Documents/js-bikeshare-demo/deploy/Docker/workshop:/usr/local/etc/haproxy
+      - /C/Users/swood/Documents/Github/js-bikeshare-demo/deploy/Docker/workshop:/usr/local/etc/haproxy
 
     # network_mode: host
 
     depends_on:
-        - bikeshare-ui
-        - bikeshare-api
-        - jasperserver-pro
+      - bikeshare-ui
+      - bikeshare-api
+      - jasperserver-pro
 
 # In development, UI app running in node on port 3000, defined in haproxy.cfg
 # Allows you to change the Typescript and have the app refresh automatically.
-# App refresh under Linux was fine, as per the workshop
+# App refresh under Linux was fine, as per the workshop.
 # I found on Windows, at least, start up was very slow, and the app did not refresh.
 # So you instead can have an npm start environment locally and have the haproxy point to that.
 
-#  bikeshare-ui:
-#    image: bikeshare-ui-dev
+# if you want a static UI web site, comment out this bikeshare-ui service and
+# comment in the service below
+
+  bikeshare-ui:
+    image: bikeshare-ui:dev
 
     # because we are using a reverse proxy, not need to expose the API port
     #ports:
     #  - 3000:8888
 
-#    env_file: env.properties
-
-    # if set, these values override settings from env_file
-#    environment:
-#      - PORT=3000
-
-    # point to source. has to have npm install run on
-#    volumes:
-      # - /home/tibco/Documents/js-bikeshare-demo/UI:/usr/src/app
-#      - /C/Users/swood/Documents/Github/js-bikeshare-demo/UI:/usr/src/app
- 
-    #network_mode: host
-
-#    depends_on:
-#      - bikeshare-api
-#      - jasperserver-pro
-
-# Static web site build of the UI
-
-  bikeshare-ui:
-    image: bikeshare-ui:1.0
-
-    # because we are using a reverse proxy, not need to expose the API port
-    #ports:
-    #  - 80:80
-
     env_file: env.properties
 
+    # if set, these values override settings from env_file
     environment:
-      - JASPERSERVER_URL=/jasperserver-pro
-      - BIKESHARE_API_URL=/bikeshare-api
-      - STATIC_BIKESHARE_APP_PATH=/var/www
+      - PORT=3000
+
+   # point to source. has to have npm install run on
+    volumes:
+     # - /home/tibco/Documents/js-bikeshare-demo/UI:/usr/src/app
+      - /C/Users/swood/Documents/Github/js-bikeshare-demo/UI:/usr/src/app
+      # this allows the node_modules to be in the container
+      # and ignore node_modules currently in the volume above
+      - /usr/src/app/node_modules/
+
+   #network_mode: host
 
     depends_on:
       - bikeshare-api
       - jasperserver-pro
+
+# Static web site build of the UI. If you inclued this,
+# exclude bikeshare-ui above
+
+  # bikeshare-ui:
+    # image: bikeshare-ui:1.0
+
+    # # because we are using a reverse proxy, not need to expose the API port
+    # #ports:
+    # #  - 80:80
+
+    # env_file: env.properties
+
+    # environment:
+      # - JASPERSERVER_URL=/jasperserver-pro
+      # - BIKESHARE_API_URL=/bikeshare-api
+      # - STATIC_BIKESHARE_APP_PATH=/var/www
+
+    # depends_on:
+      # - bikeshare-api
+      # - jasperserver-pro
 
   bikeshare-api:
     image: bikeshare-api
@@ -93,6 +100,7 @@ services:
        #- POSTGRES_HOST=172.31.23.248
        #- POSTGRES_HOST=localhost
        - POSTGRES_HOST=jasperserver_pro_repository
+       #- POSTGRES_HOST=host.docker.internal
 
     #network_mode: host
 
@@ -112,7 +120,7 @@ services:
     # if set, these values override settings from env_file
     environment:
         #- DB_HOST=172.31.23.248
-        - DB_HOST=jasperserver_pro_repository
+      - DB_HOST=jasperserver_pro_repository
 
     # Override license, JRS and Tomcat customizations, SSL keystore
     # Under Docker for Windows, these have to be under the logged in user's User area
@@ -126,7 +134,7 @@ services:
     #network_mode: host
 
     depends_on:
-        - jasperserver_pro_repository
+      - jasperserver_pro_repository
     
   jasperserver_pro_repository:
     image: js-bikeshare-data

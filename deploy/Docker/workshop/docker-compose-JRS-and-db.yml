@@ -1,0 +1,40 @@
+version: '3.1'
+
+# Launch JRS only
+# If not already done,
+# - Build the repository and bikeshare databases
+# - minimal import JRS
+# Can login to do some maintenance
+
+services:
+
+  jasperserver-pro:
+    image: jasperserver-pro:7.2.0
+
+    ports:
+      - 8080:8080
+      - 8443:8443
+
+    env_file: jrs-env.properties
+
+    # if set, these values override settings from env_file
+    environment:
+     - DB_HOST=jasperserver_pro_repository
+     - JRS_LOAD_SAMPLES=false
+
+    #network_mode: host
+
+    depends_on:
+      - jasperserver_pro_repository
+  
+  # this is a Postgres 10 container with the bikeshare data initialized  
+  jasperserver_pro_repository:
+    image: js-bikeshare-data
+    env_file: env.properties
+    
+    volumes:
+      - postgres-bikeshare-data:/var/lib/postgresql/data
+
+volumes:
+  postgres-bikeshare-data:
+
