@@ -52,7 +52,7 @@
 
 		pendo.initialize({
 			visitor: {
-				id: 'bikeshare-demo' 
+				id: 'bikeshare-demo-' + Math.random().toString(36).replace(/[^a-zA-Z0-9]+/g, '')
 			},
 
 			account: {
