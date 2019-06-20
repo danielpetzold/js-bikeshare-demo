@@ -7,13 +7,14 @@ interface FranchiseMapProps {
 }
 
 // Map tiles using openMapTiles schema from Carto Positron style
-const baseMapUrl = 'http://basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png';
+const baseMapUrl = 'https://basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png';
 const markerImage: any = require(`../../assets/GrayMarker.png`);
 const colors = {
   green: '#1c9d6c',
   yellow: '#f19b19',
   red: '#ef473f'
 };
+const defaultZoom = 9; // Hardcoded for now until provided by API
 
 class FranchiseMap extends Component<FranchiseMapProps> {
   geo: any;
@@ -33,8 +34,10 @@ class FranchiseMap extends Component<FranchiseMapProps> {
     this.map = new this.geo.Map(
       mapContainer,
       {
-        zoom: 9, // Hardcoded for now until provided by API
-        center: new this.geo.LatLng(37.5988531222099, -122.156530953733)
+        zoom: defaultZoom, 
+        center: new this.geo.LatLng(37.5988531222099, -122.156530953733),
+        minZoom: defaultZoom,
+        maxZoom: defaultZoom
       }
     );
 
@@ -62,9 +65,7 @@ class FranchiseMap extends Component<FranchiseMapProps> {
         panDown: "Pan down",
         panLeft: "Pan left",
         panRight: "Pan right",
-        reset: "Reset map",
-        zoomIn: "Zoom in",
-        zoomOut: "Zoom out"
+        reset: "Reset map"
       }
     });
     this.map.addControl(this.navigationControl);
