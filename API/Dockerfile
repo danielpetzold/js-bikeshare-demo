@@ -8,7 +8,6 @@ WORKDIR /usr/src/app
 COPY src src
 COPY *.json ./
 COPY *.js ./
-COPY .env ./
 
 RUN npm install
 
