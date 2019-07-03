@@ -1,21 +1,20 @@
-version: '3.1'
+version: "3.1"
 
 services:
-
   haproxy:
     image: haproxy:1.9
 
     ports:
-        - 105:80
-        - 9999:9999
+      - 105:80
+      - 9999:9999
     volumes:
-    # Override volumes
-    # Under Docker for Windows, these have to be under the logged in user's User area
-        - /C/Users/swood/Documents/Github/js-bikeshare-demo/deploy/Docker:/usr/local/etc/haproxy
+      # Override volumes
+      # Under Docker for Windows, these have to be under the logged in user's User area
+      - /Users/roland/Documents/Code/Docker/js-bikeshare-demo/deploy/Docker:/usr/local/etc/haproxy
 
     depends_on:
-        - bikeshare-ui
-        - bikeshare-api
+      - bikeshare-ui
+      - bikeshare-api
 
   bikeshare-ui:
     image: bikeshare-ui
@@ -32,7 +31,7 @@ services:
 
     # Override volumes
     # Under Docker for Windows, these have to be under the logged in user's User area
-    # you don't need to do this: the entrypoint.sh will use the nginx.template included 
+    # you don't need to do this: the entrypoint.sh will use the nginx.template included
     # via the docker build
     #volumes:
     #  - /C/Users/swood/Documents/Github/js-bikeshare-demo/UI/docker:/conf
@@ -47,5 +46,4 @@ services:
     #ports:
     #  - 8888:8888
 
-    env_file: env.properties
-
+    env_file: .env
