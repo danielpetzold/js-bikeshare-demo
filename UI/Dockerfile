@@ -12,7 +12,6 @@ COPY src src
 COPY public public
 COPY *.json ./
 COPY *.lock ./
-COPY .env.production ./
 
 RUN mkdir /conf && \
 	npm install
