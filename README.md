@@ -35,7 +35,7 @@ This TIBCO Jaspersoft Bikeshare Demonstration Application is designed to show th
 
 # Deployment Architecture
 
-![Bikeshare deployment components](assets/Bikeshare components.png)
+![Bikeshare deployment components](/tree/develop/assets/Bikeshare-components.png)
 
 # Manual Setup
 
