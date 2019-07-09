@@ -6,7 +6,7 @@ This TIBCO Jaspersoft Bikeshare Demonstration Application is designed to show th
 
 * UI
     * React/Typescript web app
-    * Deployed as a static web site or run as a node app in development mode: “npm start”
+    * Deployed as a static web site or run as a node app in development mode: â€œnpm startâ€�
 
 * API
     * Node.js Express app
@@ -35,7 +35,7 @@ This TIBCO Jaspersoft Bikeshare Demonstration Application is designed to show th
 
 # Deployment Architecture
 
-![Bikeshare deployment components](blob/develop/tree/develop/assets/Bikeshare-components.png)
+![Bikeshare deployment components](Bikeshare-components.png)
 
 # Manual Setup
 
@@ -56,12 +56,12 @@ This TIBCO Jaspersoft Bikeshare Demonstration Application is designed to show th
     * BS-server-settings-export.zip
     * Bikeshare-JRS-export.zip
   * Create the Bikeshare orgs and users
-    * Add a “BikeShare” org manually
+    * Add a â€œBikeShareâ€� org manually
     * Import Bikeshare_org_user_export.zip into the new Bikeshare org.
 
-        * If you get: `import from superuser does not work Import of an organization to the root is not allowed.`, that means you tried to import into the root org, which does not work in JasperReports Server. Use the new organization’s jasperadmin account.
+        * If you get: `import from superuser does not work Import of an organization to the root is not allowed.`, that means you tried to import into the root org, which does not work in JasperReports Server. Use the new organizationâ€™s jasperadmin account.
 
-        * Note: There will be a few “access denied” on resources under the public folder, you can ignore them.
+        * Note: There will be a few â€œaccess deniedâ€� on resources under the public folder, you can ignore them.
 
   * Within JRS, update the server attributes affecting the Bikeshare data Source :
       * bikeshareDBHost
