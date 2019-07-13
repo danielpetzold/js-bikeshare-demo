@@ -21,8 +21,8 @@ const greenDotImage: any = require(`../../assets/Green-Dot.png`);
 const greenCircleImage: any = require(`../../assets/Green-Circle.png`);
 const closeImage: any = require(`../../assets/close.png`);
 
-const itineraryServiceAccount = "demo";
-const itineraryServiceKey = '2u7kdn4DnYE=';
+const itineraryServiceAccount = "swood";
+const itineraryServiceKey = 'XdfO3lD91Vg=';
 const itineraryServiceURL = 'https://geowebservices.maporama.com/';
 
 class RegionMap extends Component<RegionMapProps> {
@@ -44,10 +44,14 @@ class RegionMap extends Component<RegionMapProps> {
     let mapContainer = this.geo.DomUtil.get('region-map');
     let tibcoLayerStandard = new this.geo.TibcoLayer({name: "TibcoLayer 1"});
 
+	var currentZoom = this.props.mapData.map_zoom + (this.props.role === DRIVER_ROLE ? 1 : 0);
+	
     this.map = new this.geo.Map(
       mapContainer,
       {
-        zoom: this.props.mapData.map_zoom,
+        zoom: currentZoom,
+        minZoom: currentZoom,
+        maxZoom: currentZoom,
         center: new this.geo.LatLng(this.props.mapData.center_lat, this.props.mapData.center_lon)
       }
     );
@@ -81,9 +85,7 @@ class RegionMap extends Component<RegionMapProps> {
         panDown: "Pan down",
         panLeft: "Pan left",
         panRight: "Pan right",
-        reset: "Reset map",
-        zoomIn: "Zoom in",
-        zoomOut: "Zoom out"
+        reset: "Reset map"
       }
     });
     this.map.addControl(this.navigationControl);
